@@ -1,0 +1,82 @@
+Example Grammar for Julius
+---------------------------------
+
+In order to use VoxForge's acoustic models with Julius, you have to tell it
+what words you want it to recognize and it what context each of those can
+be found. You can do this by writting two files, a .grammar and a .term one,
+and generating .dfa and .dict files out of those. This file will explain you
+briefly how to achieve this.
+
+== QUICK START ==
+
+First, copy the example files to a directory where you can write, like your
+home folder, and uncompress the gziped files:
+
+  mkdir ~/julius-grammar
+  cp /usr/share/doc/julius-voxforge/examples/* ~/julius-grammar
+  cd ~/julius-grammar
+  gunzip * 2>&1 | grep -v ignored
+
+Now let's run the following command (available from package "julius"):
+
+  mkdfa sample
+
+This will generate the files "sample.dfa", "sample.dict" and "sample.term" out
+of the "sample.grammar" and "sample.voca" files. Once we have those, we can run
+Julius with the following command to try the example grammar out:
+
+  julius -input mic -C julian.jconf
+
+Note that only some sentences are recognized, like for example "DIAL ONE TWO"
+or "PHONE STEVE". See the next part to learn how to add more words.
+
+In case your recognition rate is near zero, try replacing "mic" in the
+command above with "oss", "alsa" or "esd".
+
+== CREATING OUR OWN GRAMMAR ==
+
+Now open up the files "sample.voca" and "sample.grammar" and have a look at
+them. The first one defines some categories (lines starting with "%") and lists
+some words, together with their phonetic representation. The .grammar file,
+which may look a bit more confusing, defines the context in which each word
+category can appear.
+
+Feel free to add new words to the existing categories in sample.voca or even
+create new ones (adding at least one rule mentioning them to sample.grammar),
+but don't forget to write their phonetic representation next to them. You can
+get a list of English words and their corresponding phonetic representation
+from ftp://svr-ftp.eng.cam.ac.uk/pub/comp.speech/dictionaries/beep.tar.gz.
+
+About the .grammar file, you need to understand that the lines starting with
+"S :" are those which define the possible sentences and that they are formed
+by one or more category or variables names, between "NS_B " and " NS_E" (which
+most be defined in sample.voca and represent the silence at the end and at the
+start of the sentence). Variables, like we called them previously, are just
+another line in the .grammar file which list a sequence of categories or
+other variables, and, as you see in the sample file, they can have many
+different definitions.
+
+Once you finish playing with the files, you can generate their equivalents in
+Julian's native format again, by running the same command as in the quick start:
+
+  mkdfa sample
+
+Then, run julius as showed above and if everything is right it should recognize
+your new vocabulary now. In the case you get an error about missing phonemes,
+you'll have to remove the words about which it complains, as the available
+acoustic models don't support them.
+
+== PRACTICAL UTILITY ==
+
+As you will probably notice, the VoxForge acoustic model is still far away from
+being suitable for dictation applications and the like, so its utility right
+now is basically restricted to "command and control" applications. For an
+example of how to write a simple one in Python, look at the file command.py
+in /usr/share/doc/julius-voxforge/examples/controlapp/.
+
+== CONTRIBUTE ==
+
+If you want to help contributing speech corpora for your language, see the
+project's main page at http://www.voxforge.org/.
+
+ -- Siegfried-A. Gevatter <rainct@ubuntu.com>. 19/06/2009
