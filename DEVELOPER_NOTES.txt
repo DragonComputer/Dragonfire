@@ -1,0 +1,4 @@
+sudo apt-get install julius
+sudo apt-get install julius-voxforge
+mkdfa sample (for compile .grammer and .voca files , it will generate .dict and .dfa files)
+padsp julius -input mic -C julian.jconf | python -u getcommand.py

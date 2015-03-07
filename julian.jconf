@@ -1,0 +1,262 @@
+# Copyright (c) 1991-2005 Kawahara Lab., Kyoto University
+# Copyright (c) 2000-2005 Shikano Lab., Nara Institute of Science and Technology
+# Copyright (c) 2005 Julius project team, Nagoya Institute of Technology
+# All rights reserved
+#
+# Example of Runtime Configuration File for Julian rev.3.5
+#
+# 1) NOTICE: relative paths must be relative to THIS FILE.
+#	     Current working directory does not affect.
+# 2) Blank lines and comments after '#' are ignored.
+#    Use `\#' to specify `#' in an argument, 
+# 3) Each line should be shorter than 512 bytes.
+# 4) Syntax of each arguments are same as corresponding command options.
+# 5) The commented-out values in this file are default values in Julian.
+#
+
+######################################################################
+#### Files
+######################################################################
+##
+## Grammar definition file (DFA and dictionary)
+##
+
+#### There are three ways to specify the grammar files.
+#### (1) and (2) can be used multiple times.
+
+#### (1) Specify by common prefix of .dfa and .dict files. Comma-separated
+#### prefixes can be specified for multiple grammar recognition
+#-gram /cdrom/testrun/sample_grammars/vfr/vfr
+
+#### (2) Or you can give Julian a text file which contains list of grammar
+#### prefixes one per line.
+#-gramlist file
+
+#### (3) Classic way to specify a grammar.
+-dfa sample.dfa
+-v sample.dict
+
+#### If you want to clear previously specified grammars, use this at the
+#### point.
+#-nogram
+
+##
+## Acoustic HMM file
+##
+# support ascii hmmdefs or binary format (converted by "mkbinhmm")
+# format (ascii/binary) will be automatically detected
+-h /usr/share/julius-voxforge/acoustic/hmmdefs
+
+## triphone model needs HMMList that maps logical triphone to physical ones.
+-hlist /usr/share/julius-voxforge/acoustic/tiedlist
+
+######################################################################
+#### Multiple grammar recognition
+######################################################################
+#-multigramout		# Output results for each grammar
+
+######################################################################
+#### Language Model 
+######################################################################
+##
+## word insertion penalty
+##
+-penalty1 5.0		# first pass
+-penalty2 20.0		# second pass
+
+######################################################################
+#### Dictionary
+######################################################################
+##
+## do not giveup startup on error words
+##
+#-forcedict
+
+######################################################################
+#### Acoustic Model
+######################################################################
+##
+## Context-dependency handling will be enabled according to the model type.
+## Try below if julius wrongly detect the type of hmmdefs
+##
+#-no_ccd		# disable context-dependency handling
+#-force_ccd		# enable context-dependency handling
+
+## 
+## If julius go wrong with checking parameter type, try below.
+##
+#-notypecheck
+#
+
+##
+## (PTM/triphone) switch computation method of IWCD on 1st pass
+##
+#-iwcd1 best N	# assign average of N-best likelihood of the same context
+-iwcd1 max	# assign maximum likelihood of the same context
+#-iwcd1 avg	# assign average likelihood of the same context (default)
+
+######################################################################
+#### Gaussian Pruning
+######################################################################
+## Number of mixtures to select in a mixture pdf.
+## This default value is optimized for IPA99's PTM,
+## with 64 Gaussians per codebook
+#-tmix 2
+
+## Select Gaussian pruning algorithm
+## defulat: beam (standard setting), safe (others)
+-gprune safe		# safe pruning, accurate but slow
+#-gprune heuristic	# heuristic pruning
+#-gprune beam		# beam pruning, fast but sensitive
+#-gprune none		# no pruning
+
+######################################################################
+#### Gaussian Mixture Selection 
+######################################################################
+#-gshmm hmmdefs		# monophone HMM for GMS
+			# (OFF when not specified)
+#-gsnum 24		# number of states to be selected on GMS
+
+######################################################################
+#### Search Parameters
+######################################################################
+#-b 400                 # beam width on 1st pass (#nodes) for monophone
+#-b 800                 # beam width on 1st pass (#nodes) for triphone,PTM
+#-b 1000                # beam width on 1st pass (#nodes) for triphone,PTM,engine=v2.1
+-b2 200                 # beam width on 2nd pass (#words)
+-sb 200.0		# score beam envelope threshold
+#-s 500                 # hypotheses stack size on 2nd pass (#hypo)
+#-m 2000                # hypotheses overflow threshold (#hypo)
+#-lookuprange 5         # lookup range for word expansion (#frame)
+#-n 1                   # num of sentences to find (#sentence)
+#-n 10                  #   (default for 'standard' configuration)
+#-output 1              # num of found sentences to output (#sentence)
+#-looktrellis		# search within only backtrellis words
+
+######################################################################
+#### Inter-word Short Pause Handling
+######################################################################
+##
+## Specify short pause model name to be treated as special
+##
+-spmodel "sp"		# HMM model name
+
+##
+## For insertion of context-free short-term inter-word pauses between words
+##  (multi-path version only)
+##
+-iwsp			# append a skippable sp model at all word ends
+-iwsppenalty -70.0	# transition penalty for the appenede sp models
+
+######################################################################
+#### Speech Input Source
+######################################################################
+## select one (default: mfcfile)
+#-input mfcfile         # MFCC file in HTK parameter file format
+#-input rawfile         # raw wavefile (auto-detect format)
+                        # WAV(16bit) or
+                        # RAW(16bit(signed short),mono,big-endian)
+                        # AIFF,AU (with libsndfile extension)
+			# other than 16kHz, sampling rate should be specified
+			# by "-smpFreq" option
+#-input mic             # direct microphone input
+			# device name can be specified via env. val. "AUDIODEV"
+#-input netaudio -NA host:0    # direct input from DatLink(NetAudio) host
+#-input adinnet -adport portnum # via adinnet network client
+#-input stdin		# from standard tty input (pipe)
+
+#-filelist filename	# specify file list to be recognized in batch mode
+
+#-nostrip		# switch OFF dropping of invalid input segment.
+                        # (default: strip off invalid segment (0 sequence etc.)
+#-zmean			# enable DC offset removal (invalid for mfcfile input)
+
+######################################################################
+#### Recording
+######################################################################
+#-record directory	# auto-save recognized speech data into the dir
+
+######################################################################
+#### GMM-based Input Verification and Rejection
+######################################################################
+#-gmm gmmdefs		# specify GMM definition file in HTK format
+#-gmmnum 10		# num of Gaussians to be computed per mixture
+#-gmmreject "noise,laugh,cough" # list of GMM names to be rejected
+
+######################################################################
+#### Too Short Input Rejection
+######################################################################
+#-rejectshort 800	# reject input shorter than specified millisecond
+
+######################################################################
+#### Speech Detection
+######################################################################
+#-pausesegment		# turn on speech detection by level and zero-cross
+#-nopausesegment	# turn off speech detection by level and zero-cross
+			# (default: on for mic or adinnet, off for file)
+#-lv 2000		# threshold of input level (0-32767)
+#-headmargin 300	# head margin of input segment (msec)
+#-tailmargin 400	# tail margin of input segment (msec)
+#-zc 60			# threshold of number of zero-cross in a second
+
+######################################################################
+#### Acoustic Analysis
+######################################################################
+-smpFreq 16000		# sampling rate (Hz)
+#-smpPeriod 625		# sampling period (ns) (= 10000000 / smpFreq)
+#-fsize 400		# window size (samples)
+#-fshift 160		# frame shift (samples)
+#-delwin 2		# delta window (frames)
+#-hifreq -1		# cut-off hi frequency (Hz) (-1: disable)
+#-lofreq -1		# cut-off low frequency (Hz) (-1: disable)
+#-cmnsave filename	# save CMN param to file (update per input)
+#-cmnload filename	# load initial CMN param from file on startup
+
+######################################################################
+#### Spectral Subtraction (SS)
+######################################################################
+#-sscalc		# do SS using head silence (file input only)
+#-sscalclen 300		# length of head silence for SS (msec)
+#-ssload filename       # load constant noise spectrum from file for SS
+#-ssalpha 2.0		# alpha coef. for SS
+#-ssfloor 0.5		# spectral floor for SS
+
+######################################################################
+#### Forced alignment
+######################################################################
+#-walign		# do forced alignment with result per word 
+#-palign		# do forced alignment with result per phoneme
+#-salign		# do forced alignment with result per HMM state
+
+######################################################################
+#### Word Confidence Scoring
+######################################################################
+#-cmalpha 0.05		# smoothing coef. alpha
+
+######################################################################
+#### Output 
+######################################################################
+#-separatescore		# output language and acoustic score separately
+#-progout		# output partial result per a time interval
+#-proginterval 300	# time interval for "-progout" (msec)
+#-quiet			# output minimal result
+#-demo			# = "-progout -quiet", suitable for dictation demo
+#-debug			# output full message for debug
+#-charconv from to	# output character set conversion (see manual for
+			# available code set name)
+
+######################################################################
+#### Server module mode
+######################################################################
+#-module		# Run Julius on "Server module mode"
+#-module 5530		# (when using another port number for connection)
+#-outcode WLPSC		# select output message toward module (WLPSCwlps)
+
+######################################################################
+#### Misc.
+######################################################################
+#-help			# output help and exit
+#-setting		# output engine configuration and exit
+#-C jconffile		# expand other jconf file in its place
+
+################################################################# end of file
