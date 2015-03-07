@@ -25,15 +25,20 @@ def command(speech_object):
 				userin.espeak("My name is Dragonfire.")
 				previous_command = com
         		if(com == "OPEN FILE MANAGER"):
-				userin = Data(["pantheon-files"],"File Manager")
-	    			userin.interact()
+				userin = Data(["sudo","pantheon-files"],"File Manager")
 				userin.espeak("File Manager")
+				userin.interact(0)
 				previous_command = com
 			if(com == "OPEN WEB BROWSER"):
 				userin= Data(["sensible-browser"],"Web Browser")
-				userin.interact()
 				userin.espeak("Web Browser")
+				userin.interact(0)
 				previous_command = com
+			if(com == "SHUT DOWN THE COMPUTER"):
+                                userin= Data(["sudo poweroff"],"Shutting down")
+                                userin.espeak("Shutting down")
+				userin.interact(3)
+                                previous_command = com
             
 			
 			
