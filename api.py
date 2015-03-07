@@ -12,7 +12,7 @@ class Data:
 		if self.speak == True:
 			self.say(self.message)
 		else:
-			subprocess.Popen(["notify-send","SoundSight", self.message])
+			subprocess.Popen(["notify-send","Dragonfire", self.message])
 	def say(self,message):
 		if songRunning == True:
 			subprocess.Popen(["rhythmbox-client","--pause"])
@@ -22,3 +22,5 @@ class Data:
 		proc.wait()
 		if songRunning == True:
 			subprocess.Popen(["rhythmbox-client","--play"])
+	def espeak(self,message):
+		subprocess.Popen(["espeak","-v","en",message])
