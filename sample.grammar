@@ -1,1 +1,3 @@
 S : NS_B S1 S2 S3 NS_E
+S : NS_B V1 V2 NS_E
+S : NS_B C1 C2 C3 C4 NS_E
