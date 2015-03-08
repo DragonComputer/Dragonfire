@@ -5,6 +5,8 @@ from lxml import etree
 from api import Data
 from subprocess import call
 import time
+import subprocess
+import urllib2
 
 
 def command(speech_object):
@@ -18,26 +20,36 @@ def command(speech_object):
 			print com
 			if (com == "DRAGON FIRE"):
 				userin = Data([" "]," ")
-				userin.espeak("Yes sir")
+				userin.espeak("Yes sir.")
 				previous_command = com
 			if (com == "WHAT IS YOUR NAME"):
 				userin = Data([" "]," ")
 				userin.espeak("My name is Dragonfire.")
 				previous_command = com
-        		if(com == "OPEN FILE MANAGER"):
-				userin = Data(["sudo","pantheon-files"],"File Manager")
+			if (com == "WHAT IS YOUR GENDER"):
+                                userin = Data([" "]," ")
+                                userin.espeak("I don't have a gender identity. I'm a computer program sir.")
+                                previous_command = com
+        		if (com == "OPEN FILE MANAGER"):
+				userin = Data(["pantheon-files"],"File Manager")
 				userin.espeak("File Manager")
 				userin.interact(0)
 				previous_command = com
-			if(com == "OPEN WEB BROWSER"):
+			if (com == "OPEN WEB BROWSER"):
 				userin= Data(["sensible-browser"],"Web Browser")
 				userin.espeak("Web Browser")
 				userin.interact(0)
 				previous_command = com
-			if(com == "SHUT DOWN THE COMPUTER"):
-                                userin= Data(["sudo poweroff"],"Shutting down")
+			if (com == "SHUT DOWN THE COMPUTER"):
+                                userin= Data(["sudo","poweroff"],"Shutting down")
                                 userin.espeak("Shutting down")
 				userin.interact(3)
+                                previous_command = com
+			if (com.startswith("SEARCH FOR")):
+				userin = Data(["sensible-browser","http://en.wikipedia.org/wiki/"+com[11:].lower()],com[11:])
+				userin.interact(0)
+				wikicontent = urllib2.urlopen("http://en.wikipedia.org/wiki/"+com[11:].lower()).read()
+                                userin.espeak(com[11:].lower())
                                 previous_command = com
             
 			
