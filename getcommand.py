@@ -7,6 +7,7 @@ from subprocess import call
 import time
 import subprocess
 import urllib2
+from bs4 import BeautifulSoup
 
 
 def command(speech_object):
@@ -20,36 +21,42 @@ def command(speech_object):
 			print com
 			if (com == "DRAGON FIRE"):
 				userin = Data([" "]," ")
-				userin.espeak("Yes sir.")
+				userin.say("Yes sir.")
 				previous_command = com
 			if (com == "WHAT IS YOUR NAME"):
 				userin = Data([" "]," ")
-				userin.espeak("My name is Dragonfire.")
+				userin.say("My name is Dragon Fire.")
 				previous_command = com
 			if (com == "WHAT IS YOUR GENDER"):
                                 userin = Data([" "]," ")
-                                userin.espeak("I don't have a gender identity. I'm a computer program sir.")
+                                userin.say("I have a female voice but I don't have a gender identity. I'm a computer program sir.")
                                 previous_command = com
         		if (com == "OPEN FILE MANAGER"):
 				userin = Data(["pantheon-files"],"File Manager")
-				userin.espeak("File Manager")
+				userin.say("File Manager")
 				userin.interact(0)
 				previous_command = com
 			if (com == "OPEN WEB BROWSER"):
 				userin= Data(["sensible-browser"],"Web Browser")
-				userin.espeak("Web Browser")
+				userin.say("Web Browser")
 				userin.interact(0)
 				previous_command = com
 			if (com == "SHUT DOWN THE COMPUTER"):
                                 userin= Data(["sudo","poweroff"],"Shutting down")
-                                userin.espeak("Shutting down")
+                                userin.say("Shutting down")
 				userin.interact(3)
                                 previous_command = com
 			if (com.startswith("SEARCH FOR")):
 				userin = Data(["sensible-browser","http://en.wikipedia.org/wiki/"+com[11:].lower()],com[11:])
 				userin.interact(0)
-				wikicontent = urllib2.urlopen("http://en.wikipedia.org/wiki/"+com[11:].lower()).read()
-                                userin.espeak(com[11:].lower())
+				wikihtmlcontent = urllib2.urlopen("http://en.wikipedia.org/wiki/"+com[11:].lower().replace(" ","_")).read()
+				parsed_html = BeautifulSoup(wikihtmlcontent)
+				wikicontent = parsed_html.body.find("p").text
+				wikicontent = "".join([i if ord(i) < 128 and i.isalnum() else ' ' for i in wikicontent])
+				#wikicontent = "".join([i if i.isalnum() or i==' ' else '' for i in wikicontent])
+				print wikicontent
+				userin.say(wikicontent)
+                                #userin.say(com[11:].lower())
                                 previous_command = com
             
 			
