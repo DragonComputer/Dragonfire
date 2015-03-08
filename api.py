@@ -17,13 +17,13 @@ class Data:
 		#	self.say(self.message)
 		#else:
 	def say(self,message):
-		if songRunning == True:
-			subprocess.Popen(["rhythmbox-client","--pause"])
+		#if songRunning == True:
+		#	subprocess.Popen(["rhythmbox-client","--pause"])
 		proc = subprocess.Popen(["festival","--tts"],stdin=subprocess.PIPE)
 		proc.stdin.write(message)
 		proc.stdin.close()
 		proc.wait()
-		if songRunning == True:
-			subprocess.Popen(["rhythmbox-client","--play"])
+		#if songRunning == True:
+		#	subprocess.Popen(["rhythmbox-client","--play"])
 	def espeak(self,message):
-		subprocess.Popen(["espeak","-v","en",message])
+		subprocess.Popen(["espeak","-v","en-uk-north",message])
