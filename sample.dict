@@ -1,17 +1,27 @@
 0	[<s>]	sil
 1	[</s>]	sil
-2	[DRAGON]	d r ae g ax n
-3	[FIRE]	f ay er
-4	[WHAT]	w ah t
-4	[SHUT]	sh ah t
-5	[IS]	ih z
-5	[DOWN]	d aw n
-6	[YOUR]	y ao r
-6	[THE]	dh ax
-7	[NAME]	n ey m
-7	[COMPUTER]	k ax m p y uw dx er
-8	[OPEN]	ow p ax n
-9	[FILE]	f ay l
-9	[WEB]	w eh b
-10	[MANAGER]	m ae n ax jh er
-10	[BROWSER]	b r aw z er
+2	[YES]	y eh s
+2	[NO]	n ow
+2	[OKAY]	ow k ey
+3	[DRAGON]	d r ae g ax n
+4	[FIRE]	f ay er
+5	[OPEN]	ow p ax n
+6	[FILE]	f ay l
+6	[WEB]	w eh b
+7	[MANAGER]	m ae n ax jh er
+7	[BROWSER]	b r aw z er
+8	[WHAT]	w ah t
+8	[SHUT]	sh ah t
+9	[IS]	ih z
+9	[DOWN]	d aw n
+10	[YOUR]	y ao r
+10	[THE]	dh ax
+11	[NAME]	n ey m
+11	[COMPUTER]	k ax m p y uw dx er
+11	[GENDER]	jh eh n d er
+12	[SEARCH]	s er ch
+13	[FOR]	f ao r
+14	[OXFORD]	aa k s f er d
+14	[UNIVERSITY]	y uw n ax v er s ax dx iy
+14	[BILL]	b ih l
+14	[GATES]	g ey t s

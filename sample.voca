@@ -4,36 +4,53 @@
 % NS_E
 </s>        sil
 
-% V1
+% S101
+YES	y eh s
+NO	n ow
+OKAY	ow k ey
+
+% S201
 DRAGON	d r ae g ax n
 
-% V2
+% S202
 FIRE	f ay er
 
-% C1
-WHAT	w ah t
-SHUT	sh ah t
-
-% C2
-IS		ih z
-DOWN	d aw n
-
-% C3
-YOUR	y ao r
-THE		dh ax
-
-% C4
-NAME	n ey m
-COMPUTER	k ax m p y uw dx er
-
-% S1
+% S301
 OPEN	ow p ax n
 
-% S2
+% S302
 FILE	f ay l
 WEB     w eh b
 
-% S3
+% S303
 MANAGER	m ae n ax jh er
 BROWSER	b r aw z er
 
+% S401
+WHAT	w ah t
+SHUT	sh ah t
+
+% S402
+IS		ih z
+DOWN	d aw n
+
+% S403
+YOUR	y ao r
+THE		dh ax
+
+% S404
+NAME	n ey m
+COMPUTER	k ax m p y uw dx er
+GENDER	jh eh n d er
+
+% SEARCH201
+SEARCH	s er ch
+
+% SEARCH202
+FOR	f ao r
+
+% SEARCH_WORDS
+OXFORD	aa k s f er d
+UNIVERSITY	y uw n ax v er s ax dx iy
+BILL	b ih l
+GATES	g ey t s
