@@ -10,7 +10,8 @@ sudo ln -s cmu_us_clb_arctic cmu_us_clb_arctic_clunits
 sudo cp /etc/festival.scm /etc/festival.scm.backup
 sudo echo "(set! voice_default 'voice_cmu_us_clb_arctic_clunits)" >> /etc/festival.scm
 
-sudo apt-get install python-bs4
+sudo apt-get install python-pip
+sudo pip install wikipedia
 
 mkdfa sample (for compile .grammer and .voca files , it will generate .dict and .dfa files)
 

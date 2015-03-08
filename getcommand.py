@@ -7,7 +7,7 @@ from subprocess import call
 import time
 import subprocess
 import urllib2
-from bs4 import BeautifulSoup
+import wikipedia
 
 
 def command(speech_object):
@@ -49,17 +49,14 @@ def command(speech_object):
 			if (com.startswith("SEARCH FOR")):
 				userin = Data(["sensible-browser","http://en.wikipedia.org/wiki/"+com[11:].lower()],com[11:])
 				userin.interact(0)
-				wikihtmlcontent = urllib2.urlopen("http://en.wikipedia.org/wiki/"+com[11:].lower().replace(" ","_")).read()
-				parsed_html = BeautifulSoup(wikihtmlcontent)
-				wikicontent = parsed_html.body.find("p").text
-				wikicontent = "".join([i if ord(i) < 128 and i.isalnum() else ' ' for i in wikicontent])
-				#wikicontent = "".join([i if i.isalnum() or i==' ' else '' for i in wikicontent])
-				print wikicontent
-				userin.say(wikicontent)
-                                #userin.say(com[11:].lower())
-                                previous_command = com
-            
-			
+				
+				try:
+					wikipage = wikipedia.page(com[11:].lower())
+					wikicontent = "".join([i if ord(i) < 128 else ' ' for i in wikipage.content])
+					userin.say(wikicontent)
+            				previous_command = com
+				except:
+					pass
 			
 
 if __name__ == '__main__':
