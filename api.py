@@ -22,7 +22,7 @@ class Data:
 		proc = subprocess.Popen(["festival","--tts"],stdin=subprocess.PIPE)
 		proc.stdin.write(message)
 		proc.stdin.close()
-		proc.wait()
+		#proc.wait()
 		#if songRunning == True:
 		#	subprocess.Popen(["rhythmbox-client","--play"])
 	def espeak(self,message):
