@@ -5,23 +5,58 @@
 2	[OKAY]	ow k ey
 3	[DRAGON]	d r ae g ax n
 4	[FIRE]	f ay er
-5	[OPEN]	ow p ax n
-6	[FILE]	f ay l
-6	[WEB]	w eh b
-7	[MANAGER]	m ae n ax jh er
-7	[BROWSER]	b r aw z er
-8	[WHAT]	w ah t
-8	[SHUT]	sh ah t
-9	[IS]	ih z
-9	[DOWN]	d aw n
-10	[YOUR]	y ao r
-10	[THE]	dh ax
-11	[NAME]	n ey m
-11	[COMPUTER]	k ax m p y uw dx er
-11	[GENDER]	jh eh n d er
-12	[SEARCH]	s er ch
-13	[FOR]	f ao r
-14	[OXFORD]	aa k s f er d
-14	[UNIVERSITY]	y uw n ax v er s ax dx iy
-14	[BILL]	b ih l
-14	[GATES]	g ey t s
+5	[WHAT]	w ah t
+5	[WHO]	hh uw
+5	[WHOEVER]	hh uw eh v er
+5	[WHOM]	hh uw m
+5	[WHOSE]	hh uw z
+6	[BE]	b iy
+6	[AM]	ae m
+6	[IS]	ih z
+6	[ARE]	aa r
+7	[HE]	hh iy
+7	[HER]	hh er
+7	[HERSELF]	hh er s eh l f
+7	[HIM]	hh ih m
+7	[HIMSELF]	hh ix m s eh l f
+7	[I]	ay
+7	[IT]	ih t
+7	[ITSELF]	ix t s eh l f
+7	[ME]	m iy
+7	[MYSELF]	m ay s eh l f
+7	[OURS]	aw er z
+7	[OURSELVES]	aw er s eh l v z
+7	[SHE]	sh iy
+7	[THEIRS]	dh eh r z
+7	[THEM]	dh eh m
+7	[THEMSELVES]	dh eh m s eh l v z
+7	[THEY]	dh ey
+7	[US]	ah s
+7	[WE]	w iy
+7	[YOU]	y uw
+7	[YOURSELF]	y er s eh l f
+8	[HER]	hh er
+8	[HIS]	hh ih z
+8	[ITS]	ih t s
+8	[MINE]	m ay n
+8	[MY]	m ay
+8	[OUR]	aw er
+8	[OURS]	aw er z
+8	[THEIR]	dh eh r
+8	[YOUR]	y ao r
+9	[OPEN]	ow p ax n
+10	[FILE]	f ay l
+10	[WEB]	w eh b
+11	[MANAGER]	m ae n ax jh er
+11	[BROWSER]	b r aw z er
+12	[SHUT]	sh ah t
+13	[DOWN]	d aw n
+14	[THE]	dh ax
+15	[COMPUTER]	k ax m p y uw dx er
+15	[GENDER]	jh eh n d er
+16	[SEARCH]	s er ch
+17	[FOR]	f ao r
+18	[OXFORD]	aa k s f er d
+18	[UNIVERSITY]	y uw n ax v er s ax dx iy
+18	[BILL]	b ih l
+18	[GATES]	g ey t s
