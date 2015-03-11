@@ -1,5 +1,4 @@
 sudo apt-get install julius
-sudo apt-get install julius-voxforge
 
 sudo apt-get install festival
 sudo apt-get install festflex-cmu

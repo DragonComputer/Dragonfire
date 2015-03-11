@@ -45,10 +45,10 @@
 ##
 # support ascii hmmdefs or binary format (converted by "mkbinhmm")
 # format (ascii/binary) will be automatically detected
--h /usr/share/julius-voxforge/acoustic/hmmdefs
+-h acoustic_model_files/hmmdefs
 
 ## triphone model needs HMMList that maps logical triphone to physical ones.
--hlist /usr/share/julius-voxforge/acoustic/tiedlist
+-hlist acoustic_model_files/tiedlist
 
 ######################################################################
 #### Multiple grammar recognition
