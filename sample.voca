@@ -22,33 +22,50 @@ WHOEVER hh uw eh v er
 WHOM hh uw m
 WHOSE hh uw z
 
-% AM_IS_ARE
+% BE
 BE	b iy
+
+% AM
 AM	ae m
+
+% IS
 IS	ih z
+
+% ARE
 ARE aa r
 
-% PRP
+% I
+I ay
+
+% ME
+ME m iy
+
+% YOU
+YOU y uw
+
+% PRP_SINGULAR
 HE hh iy
 HER hh er
-HERSELF hh er s eh l f
 HIM hh ih m
-HIMSELF hh ix m s eh l f
-I ay
+SHE sh iy
 IT ih t
+
+% PRP_PLURAL
+US ah s
+WE w iy
+THEY dh ey
+THEM dh eh m
+YOU y uw
+
+% PRP
 ITSELF ix t s eh l f
-ME m iy
+HIMSELF hh ix m s eh l f
+HERSELF hh er s eh l f
 MYSELF m ay s eh l f
 OURS aw er z
 OURSELVES aw er s eh l v z
-SHE sh iy
 THEIRS dh eh r z
-THEM dh eh m
 THEMSELVES dh eh m s eh l v z
-THEY dh ey
-US ah s
-WE w iy
-YOU y uw
 YOURSELF y er s eh l f
 
 % PRPS
