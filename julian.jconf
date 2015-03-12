@@ -105,9 +105,9 @@
 
 ## Select Gaussian pruning algorithm
 ## defulat: beam (standard setting), safe (others)
--gprune safe		# safe pruning, accurate but slow
+#-gprune safe		# safe pruning, accurate but slow
 #-gprune heuristic	# heuristic pruning
-#-gprune beam		# beam pruning, fast but sensitive
+-gprune beam		# beam pruning, fast but sensitive
 #-gprune none		# no pruning
 
 ######################################################################
