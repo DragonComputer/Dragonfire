@@ -1,4 +1,5 @@
 #!/usr/bin/python
+# -*- coding: utf-8 -*-
 import sys
 import api
 from lxml import etree
@@ -9,27 +10,44 @@ import subprocess
 import urllib2
 import wikipedia
 from random import randint
+import getpass
+import os
+import ConfigParser
 
 def command(speech_object):
 	previous_command = ""
 	while(True):
+		
 		line = speech_object.readline()
 		if(line.startswith("sentence1: ")):
 			com = line[15:-6]
 			if (previous_command == com):
 				continue
 			print com
+
+                	Config = ConfigParser.ConfigParser()
+                	Config.read("config.ini")
+                	user_prefix = Config.get("BasicUserData","Prefix")
+
 			if (com == "DRAGON FIRE"):
 				tts_kill()
 				userin = Data([" "]," ")
 				words_dragonfire = {
-					0 : "Yes, master.",
+					0 : "Yes, " + user_prefix + ".",
 					1 : "Yes. I'm waiting.",
 					2 : "What is your orders?"
 				}
 				userin.say(words_dragonfire[randint(0,2)])
 			if (com == "ENOUGH" or com == "OKAY"):
 				tts_kill()
+			if (com == "WHO AM I"):
+                                tts_kill()
+				user_full_name = os.popen("getent passwd $LOGNAME | cut -d: -f5 | cut -d, -f1").read()
+				user_full_name = user_full_name[:-1]
+                                userin = Data(["echo"], user_full_name)
+                                userin.say("You are " + user_full_name + ",sir")
+				userin.interact(0)
+                                previous_command = com
 			if (com == "WHAT IS YOUR NAME"):
 				tts_kill()
 				userin = Data([" "]," ")
@@ -38,7 +56,7 @@ def command(speech_object):
 			if (com == "WHAT IS YOUR GENDER"):
 				tts_kill()
                                 userin = Data([" "]," ")
-                                userin.say("I have a female voice but I don't have a gender identity. I'm a computer program sir.")
+                                userin.say("I have a female voice but I don't have a gender identity. I'm a computer program " + user_prefix + ".")
                                 previous_command = com
         		if (com == "OPEN FILE MANAGER"):
 				tts_kill()

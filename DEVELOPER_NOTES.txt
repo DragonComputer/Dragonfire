@@ -14,4 +14,4 @@ sudo pip install wikipedia
 
 mkdfa sample (for compile .grammer and .voca files , it will generate .dict and .dfa files)
 
-padsp julius -input mic -C julian.jconf | python -u getcommand.py
+padsp julius -input mic -C julian.jconf | ./getcommand.py
