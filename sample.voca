@@ -36,6 +36,9 @@ WHATEVER w ah t eh v er
 WHICH w ih ch
 WHOSE hh uw z
 
+% I_M
+I'M	ay m
+
 % BE
 BE	b iy
 
@@ -82,12 +85,16 @@ THEIRS dh eh r z
 THEMSELVES dh eh m s eh l v z
 YOURSELF y er s eh l f
 
+% PRPS_1
+MY m ay
+YOUR	y ao r
+
 % PRPS
 HER	hh er
 HIS hh ih z
 ITS ih t s
-MINE	m ay n
 MY m ay
+MINE	m ay n
 OUR aw er
 OURS	aw er z
 THEIR dh eh r
@@ -128,6 +135,27 @@ OXFORD	aa k s f er d
 UNIVERSITY	y uw n ax v er s ax dx iy
 BILL	b ih l
 GATES	g ey t s
+
+% DT_1
+A ax
+
+% DT
+A ax
+ALL ao l
+AN ae n
+ANOTHER ax n ah dh er
+ANY eh n iy
+BOTH b ow th
+DEL d eh l
+EACH iy ch
+EVERY eh v er iy
+LE l ax
+NEITHER n iy dh er
+SOME s ah m
+THE dh ax
+THESE dh iy z
+THIS dh ih s
+THOSE dh ow z
 
 % NN
 GENDER	jh eh n d er
@@ -384,6 +412,7 @@ BOUNTY b aw n t iy
 BOW b aw
 BOWL b ow l
 BOX b aa k s
+BOY b oy
 BOY'S b oy z
 BRAIN b r ey n
 BRANCH b r ae n ch
@@ -1180,7 +1209,6 @@ GILDING g ih l d ix ng
 GIN jh ih n
 GINGER jh ih n jh er
 GIRL g er l
-GIRL'S g er l z
 GLANCE g l ae n s
 GLARE g l eh r
 GLASS g l ae s
@@ -1564,7 +1592,6 @@ MAJORITY m ax jh ao r ax dx iy
 MALL m ao l
 MALNUTRITION m ae l n uw t r ih sh ax n
 MAN m ae n
-MAN'S m ae n z
 MANAGEMENT m ae n ax jh m ax n t
 MANAGER m ae n ax jh er
 MANIFESTATION m ae n ax f eh s t ey sh ax n
