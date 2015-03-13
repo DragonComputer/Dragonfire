@@ -28,6 +28,8 @@ def command(speech_object):
 					2 : "What is your orders?"
 				}
 				userin.say(words_dragonfire[randint(0,2)])
+			if (com == "ENOUGH" or com == "OKAY"):
+				tts_kill()
 			if (com == "WHAT IS YOUR NAME"):
 				tts_kill()
 				userin = Data([" "]," ")
