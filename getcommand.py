@@ -14,6 +14,8 @@ import getpass
 import os
 import ConfigParser
 import xml.etree.ElementTree as ET
+from pykeyboard import PyKeyboard
+import datetime
 
 def command(speech_object):
 	previous_command = ""
@@ -113,15 +115,20 @@ def command(speech_object):
 						youtube_title = child.text
 					if child.tag == "{http://www.w3.org/2005/Atom}link":
 						youtube_url = child.attrib["href"]
-						break
-				
-				print youtube_title
-				print youtube_url				
+						break				
 
 				userin = Data(["sensible-browser",youtube_url],youtube_title)
 				youtube_title = "".join([i if ord(i) < 128 else ' ' for i in youtube_title])
+				k = PyKeyboard()
+				k.tap_key('space')
 				userin.say(youtube_title)
 				userin.interact(0)
+				time.sleep(3)
+				k.tap_key(k.tab_key)
+				k.tap_key(k.tab_key)
+				k.tap_key(k.tab_key)
+				k.tap_key(k.tab_key)
+				k.tap_key('f')
 			else:
 				tts_kill()
                                 userin = Data(["echo"],com + " ?")
@@ -133,8 +140,26 @@ def tts_kill():
 	call(["pkill", "audsp"])
 	call(["pkill", "aplay"])
 
+def dragon_greet():
+	time = datetime.datetime.now().time()
+
+	Config = ConfigParser.ConfigParser()
+        Config.read("config.ini")
+        user_prefix = Config.get("BasicUserData","Prefix")
+	
+	if time < datetime.time(12):
+		userin = Data([" "]," ")
+		userin.say("Good morning " + user_prefix)
+	elif datetime.time(12) < time  and time < datetime.time(18):
+                userin = Data([" "]," ")
+                userin.say("Good afternoon " + user_prefix)
+	else:
+                userin = Data([" "]," ")
+                userin.say("Good evening " + user_prefix)
+
 if __name__ == '__main__':
 	try:
+		dragon_greet()
 		command(sys.stdin)
 	except KeyboardInterrupt:
 		sys.exit(1)
