@@ -13,6 +13,7 @@ from random import randint
 import getpass
 import os
 import ConfigParser
+import xml.etree.ElementTree as ET
 
 def command(speech_object):
 	previous_command = ""
@@ -103,6 +104,24 @@ def command(speech_object):
             				previous_command = com
 				except:
 					pass
+			elif (com.startswith("YOU TUBE SEARCH FOR")):
+				tts_kill()
+				root = ET.fromstring(urllib2.urlopen("http://gdata.youtube.com/feeds/api/videos?vq=" + com[20:].lower().replace(" ", "%20") + "&racy=include&orderby=relevance&start-index=1&max-results=1").read())
+				
+				for child in root[15]:
+					if child.tag == "{http://www.w3.org/2005/Atom}title":
+						youtube_title = child.text
+					if child.tag == "{http://www.w3.org/2005/Atom}link":
+						youtube_url = child.attrib["href"]
+						break
+				
+				print youtube_title
+				print youtube_url				
+
+				userin = Data(["sensible-browser",youtube_url],youtube_title)
+				youtube_title = "".join([i if ord(i) < 128 else ' ' for i in youtube_title])
+				userin.say(youtube_title)
+				userin.interact(0)
 			else:
 				tts_kill()
                                 userin = Data(["echo"],com + " ?")
