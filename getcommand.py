@@ -92,12 +92,12 @@ def command(speech_object):
                                 userin.say("Shutting down")
 				userin.interact(3)
                                 previous_command = com
-			elif (com.startswith("SEARCH FOR")):
+			elif (com.startswith("WIKI PEDIA SEARCH FOR")):
 				tts_kill()
-				userin = Data(["sensible-browser","http://en.wikipedia.org/wiki/"+com[11:].lower()],com[11:])
+				userin = Data(["sensible-browser","http://en.wikipedia.org/wiki/"+com[22:].lower()],com[22:])
 				userin.interact(0)
 				try:
-					wikipage = wikipedia.page(com[11:].lower())
+					wikipage = wikipedia.page(com[22:].lower())
 					wikicontent = "".join([i if ord(i) < 128 else ' ' for i in wikipage.content])
 					userin.say(wikicontent)
             				previous_command = com
