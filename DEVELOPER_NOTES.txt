@@ -11,6 +11,8 @@ sudo echo "(set! voice_default 'voice_cmu_us_clb_arctic_clunits)" >> /etc/festiv
 
 sudo apt-get install python-pip
 sudo pip install wikipedia
+sudo pip install PyUserInput
+sudo apt-get install  python-xlib
 
 mkdfa sample (for compile .grammer and .voca files , it will generate .dict and .dfa files)
 
