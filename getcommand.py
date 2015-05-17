@@ -17,23 +17,26 @@ import xml.etree.ElementTree as ET
 from pykeyboard import PyKeyboard
 import datetime
 
+
 def command(speech_object):
 	previous_command = ""
+	global inactive
 	while(True):
 		
 		line = speech_object.readline()
 		if(line.startswith("sentence1: ")):
 			com = line[15:-6]
-			#if (previous_command == com):
-			#	continue
+			if (inactive == 1 and com != "DRAGON FIRE" and com != "WAKEUP"):
+				continue
 			print com
 
                 	Config = ConfigParser.ConfigParser()
                 	Config.read("config.ini")
                 	user_prefix = Config.get("BasicUserData","Prefix")
 
-			if (com == "DRAGON FIRE"):
+			if (com == "DRAGON FIRE" or com == "WAKEUP"):
 				tts_kill()
+				inactive = 0
 				userin = Data([" "]," ")
 				words_dragonfire = {
 					0 : "Yes, " + user_prefix + ".",
@@ -41,6 +44,13 @@ def command(speech_object):
 					2 : "What is your orders?"
 				}
 				userin.say(words_dragonfire[randint(0,2)])
+			elif (com == "GO TO SLEEP"):
+				tts_kill()
+				inactive = 1
+                                userin = Data(["echo"],"Dragonfire deactivated. To reactivate say 'Dragonfire!' or 'Wake Up!'")
+                                userin.say("I'm going to sleep")
+                                userin.interact(0)
+                                previous_command = com
 			elif (com == "ENOUGH" or com == "OKAY"):
 				tts_kill()
 			elif (com == "WHO AM I" or com == "WHAT IS MY NAME"):
@@ -148,17 +158,21 @@ def dragon_greet():
         user_prefix = Config.get("BasicUserData","Prefix")
 	
 	if time < datetime.time(12):
-		userin = Data([" "]," ")
+		userin = Data(["echo"],"To activate say 'Dragonfire!' or 'Wake Up!'")
 		userin.say("Good morning " + user_prefix)
+		userin.interact(0)
 	elif datetime.time(12) < time  and time < datetime.time(18):
-                userin = Data([" "]," ")
+                userin = Data(["echo"],"To activate say 'Dragonfire!' or 'Wake Up!'")
                 userin.say("Good afternoon " + user_prefix)
+		userin.interact(0)
 	else:
-                userin = Data([" "]," ")
+                userin = Data(["echo"],"To activate say 'Dragonfire!' or 'Wake Up!'")
                 userin.say("Good evening " + user_prefix)
+		userin.interact(0)
 
 if __name__ == '__main__':
 	try:
+		inactive = 1
 		dragon_greet()
 		command(sys.stdin)
 	except KeyboardInterrupt:
