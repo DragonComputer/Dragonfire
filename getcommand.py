@@ -16,6 +16,8 @@ import ConfigParser
 import xml.etree.ElementTree as ET
 from pykeyboard import PyKeyboard
 import datetime
+from apiclient.discovery import build
+from apiclient.errors import HttpError
 
 
 def command(speech_object):
@@ -118,14 +120,46 @@ def command(speech_object):
 					pass
 			elif (com.startswith("YOU TUBE SEARCH FOR")):
 				tts_kill()
-				root = ET.fromstring(urllib2.urlopen("http://gdata.youtube.com/feeds/api/videos?vq=" + com[20:].lower().replace(" ", "%20") + "&racy=include&orderby=relevance&start-index=1&max-results=1").read())
+
+				DEVELOPER_KEY = "AIzaSyAcwHj2qzI7KWDUN4RkBTX8Y4lrU78lncA"
+				YOUTUBE_API_SERVICE_NAME = "youtube"
+				YOUTUBE_API_VERSION = "v3"
+
+				youtube = build(YOUTUBE_API_SERVICE_NAME, YOUTUBE_API_VERSION, developerKey=DEVELOPER_KEY)
+
+				search_response = youtube.search().list(q=com[20:].lower().replace(" ", "%20"), part="id,snippet").execute()
+
+				videos = []
+				channels = []
+				playlists = []
+
+				# Add each result to the appropriate list, and then display the lists of
+				# matching videos, channels, and playlists.
+				for search_result in search_response.get("items", []):
+					if search_result["id"]["kind"] == "youtube#video":
+      						#videos.append("%s (%s)" % (search_result["snippet"]["title"], search_result["id"]["videoId"]))
+						videos.append(search_result["snippet"]["title"])
+						videos.append(search_result["id"]["videoId"])
+					elif search_result["id"]["kind"] == "youtube#channel":
+      						channels.append("%s (%s)" % (search_result["snippet"]["title"], search_result["id"]["channelId"]))
+    					elif search_result["id"]["kind"] == "youtube#playlist":
+      						playlists.append("%s (%s)" % (search_result["snippet"]["title"], search_result["id"]["playlistId"]))
+
+				#print "Videos:\n", "\n".join(videos), "\n"
+				#print "Channels:\n", "\n".join(channels), "\n"
+				#print "Playlists:\n", "\n".join(playlists), "\n"
+
+				youtube_title = videos[0]
+				youtube_url = "https://www.youtube.com/watch?v=%s" % (videos[1])
+
+				#root = ET.fromstring(urllib2.urlopen("http://gdata.youtube.com/feeds/api/videos?vq=" + com[20:].lower().replace(" ", "%20") + "&racy=include&orderby=relevance&start-index=1&max-results=1").read())
 				
-				for child in root[15]:
-					if child.tag == "{http://www.w3.org/2005/Atom}title":
-						youtube_title = child.text
-					if child.tag == "{http://www.w3.org/2005/Atom}link":
-						youtube_url = child.attrib["href"]
-						break				
+				#for child in root[15]:
+				#	if child.tag == "{http://www.w3.org/2005/Atom}title":
+				#		youtube_title = child.text
+				#	if child.tag == "{http://www.w3.org/2005/Atom}link":
+				#		youtube_url = child.attrib["href"]
+				#		break				
 
 				userin = Data(["sensible-browser",youtube_url],youtube_title)
 				youtube_title = "".join([i if ord(i) < 128 else ' ' for i in youtube_title])

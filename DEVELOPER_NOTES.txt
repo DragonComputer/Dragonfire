@@ -13,7 +13,9 @@ sudo apt-get install python-pip
 sudo pip install wikipedia
 sudo pip install PyUserInput
 sudo apt-get install  python-xlib
+pip install --upgrade google-api-python-client
 
-mkdfa sample (for compile .grammer and .voca files , it will generate .dict and .dfa files)
+#For compiling .grammer and .voca files , it will generate .dict and .dfa files:
+mkdfa sample
 
 padsp julius -input mic -C julian.jconf | ./getcommand.py
