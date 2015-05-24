@@ -14,6 +14,7 @@ sudo pip install wikipedia
 sudo pip install PyUserInput
 sudo apt-get install  python-xlib
 pip install --upgrade google-api-python-client
+sudo python speech_recognition-master/setup.py install
 
 #For compiling .grammer and .voca files , it will generate .dict and .dfa files:
 mkdfa sample
