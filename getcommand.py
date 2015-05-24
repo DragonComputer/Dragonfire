@@ -18,7 +18,7 @@ from pykeyboard import PyKeyboard
 import datetime
 from apiclient.discovery import build
 from apiclient.errors import HttpError
-
+import glob
 
 def command(speech_object):
 	previous_command = ""
@@ -179,6 +179,10 @@ def command(speech_object):
                                 userin.say("Unrecognized command.")
                                 userin.interact(0)
                                 previous_command = com
+			newest = max(glob.iglob('./audio_recordings/*.[Ww][Aa][Vv]'), key=os.path.getctime)
+			print newest
+			os.system('rm ./audio_recordings/*')
+
 
 def tts_kill():
 	call(["pkill", "audsp"])
