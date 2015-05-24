@@ -19,6 +19,7 @@ import datetime
 from apiclient.discovery import build
 from apiclient.errors import HttpError
 import glob
+import speech_recognition as sr
 
 def command(speech_object):
 	previous_command = ""
@@ -109,6 +110,7 @@ def command(speech_object):
                                 previous_command = com
 			elif (com.startswith("WIKI PEDIA SEARCH FOR")):
 				tts_kill()
+				print google_speech_api()
 				userin = Data(["sensible-browser","http://en.wikipedia.org/wiki/"+com[22:].lower()],com[22:])
 				userin.interact(0)
 				try:
@@ -179,8 +181,8 @@ def command(speech_object):
                                 userin.say("Unrecognized command.")
                                 userin.interact(0)
                                 previous_command = com
-			newest = max(glob.iglob('./audio_recordings/*.[Ww][Aa][Vv]'), key=os.path.getctime)
-			print newest
+			#newest = max(glob.iglob('./audio_recordings/*.[Ww][Aa][Vv]'), key=os.path.getctime)
+			#print newest
 			os.system('rm ./audio_recordings/*')
 
 
@@ -207,6 +209,19 @@ def dragon_greet():
                 userin = Data(["echo"],"To activate say 'Dragonfire!' or 'Wake Up!'")
                 userin.say("Good evening " + user_prefix)
 		userin.interact(0)
+
+def google_speech_api():
+	
+	newest_recording = max(glob.iglob('./audio_recordings/*.[Ww][Aa][Vv]'), key=os.path.getctime)
+
+        r = sr.Recognizer()
+        with sr.WavFile(newest_recording) as source:            # use "test.wav" as the audio source
+        	audio = r.record(source)                        # extract audio data from the file
+        try:
+        	return r.recognize(audio)   # recognize speech using Google Speech Recognition
+        except LookupError:                                     # speech is unintelligible
+                print("Could not understand audio")
+
 
 if __name__ == '__main__':
 	try:
