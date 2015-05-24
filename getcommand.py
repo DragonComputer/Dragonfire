@@ -122,8 +122,12 @@ def command(speech_object):
             				previous_command = com
 				except:
 					pass
-			elif (com.startswith("YOU TUBE SEARCH FOR")):
+			elif (com == "YOU TUBE SEARC"):
 				tts_kill()
+
+				sr_result = google_speech_api()
+                                search_query = sr_result[sr_result.find("search for")+11:]
+                                print search_query
 
 				DEVELOPER_KEY = "AIzaSyAcwHj2qzI7KWDUN4RkBTX8Y4lrU78lncA"
 				YOUTUBE_API_SERVICE_NAME = "youtube"
@@ -131,7 +135,7 @@ def command(speech_object):
 
 				youtube = build(YOUTUBE_API_SERVICE_NAME, YOUTUBE_API_VERSION, developerKey=DEVELOPER_KEY)
 
-				search_response = youtube.search().list(q=com[20:].lower().replace(" ", "%20"), part="id,snippet").execute()
+				search_response = youtube.search().list(q=search_query, part="id,snippet").execute()
 
 				videos = []
 				channels = []
