@@ -108,13 +108,15 @@ def command(speech_object):
                                 userin.say("Shutting down")
 				userin.interact(3)
                                 previous_command = com
-			elif (com.startswith("WIKI PEDIA SEARCH FOR")):
+			elif (com == "WIKI PEDIA SEARC"):
 				tts_kill()
-				print google_speech_api()
-				userin = Data(["sensible-browser","http://en.wikipedia.org/wiki/"+com[22:].lower()],com[22:])
+				sr_result = google_speech_api()
+				search_query = sr_result[sr_result.find("search for")+11:]
+				print search_query
+				userin = Data(["sensible-browser","http://en.wikipedia.org/wiki/"+search_query],search_query)
 				userin.interact(0)
 				try:
-					wikipage = wikipedia.page(com[22:].lower())
+					wikipage = wikipedia.page(search_query)
 					wikicontent = "".join([i if ord(i) < 128 else ' ' for i in wikipage.content])
 					userin.say(wikicontent)
             				previous_command = com

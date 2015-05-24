@@ -23,19 +23,6 @@ FIRE	f ay er
 % WH
 WHAT w ah t
 WHO hh uw
-WHOEVER hh uw eh v er
-WHOM hh uw m
-WHOSE hh uw z
-HOW hh aw
-WHEN w eh n
-WHENEVER w eh n eh v er
-WHERE w eh r
-WHERE'S w eh r z
-WHEREVER w eh r eh v er
-WHY w ay
-WHATEVER w ah t eh v er
-WHICH w ih ch
-WHOSE hh uw z
 
 % I_M
 I'M	ay m
@@ -153,12 +140,6 @@ SEARCH	s er ch
 % SEARCH_5
 FOR	f ao r
 
-% SEARCH_WORDS
-OXFORD	aa k s f er d
-UNIVERSITY	y uw n ax v er s ax dx iy
-BILL	b ih l
-GATES	g ey t s
-
 % DT_1
 A ax
 
@@ -197,4 +178,3 @@ TO	t uw
 
 %SLEEP
 SLEEP	s l iy p
-
