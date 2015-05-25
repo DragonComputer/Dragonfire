@@ -95,6 +95,10 @@ CAMERA	k ae m er ax
 CALENDAR	k ae l ax n d er
 CALCULATOR	k ae l k y ax l ey dx er
 STEAM	s t iy m
+WRITER	r ay dx er
+MATH	m ae th
+IMPRESS	ix m p r eh s
+DRAW	d r ao
 
 % OPEN201
 FILE	f ay l
@@ -102,6 +106,8 @@ WEB     w eh b
 PHOTO	f ow t ow
 VIDEO	v ih dx iy ow
 SOFTWARE	s ao f t w eh r
+OFFICE	ao f ax s
+INK	ih ng k
 
 % OPEN202
 MANAGER	m ae n ax jh er
@@ -109,6 +115,8 @@ BROWSER	b r aw z er
 SHOP	sh aa p
 EDITOR	eh dx ax dx er
 CENTER	s eh n t er
+SUITE	s w iy t
+SCAPE	s k ey p
 
 % SHUT
 SHUT	sh ah t

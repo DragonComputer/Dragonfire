@@ -114,6 +114,12 @@ def command(speech_object):
                                 userin.say("Photo editor")
                                 userin.interact(0)
                                 previous_command = com
+                        elif (com == "OPEN INK SCAPE"):
+                                tts_kill()
+                                userin = Data(["inkscape"],"Inkscape")
+                                userin.say("Inkscape")
+                                userin.interact(0)
+                                previous_command = com
                         elif (com == "OPEN VIDEO EDITOR"):
                                 tts_kill()
                                 userin = Data(["kdenlive"],"Kdenlive")
@@ -150,6 +156,36 @@ def command(speech_object):
                                 userin.say("Software Center")
                                 userin.interact(0)
                                 previous_command = com
+                        elif (com == "OPEN OFFICE SUITE"):
+                                tts_kill()
+                                userin = Data(["libreoffice"],"LibreOffice")
+                                userin.say("Office Suite")
+                                userin.interact(0)
+                                previous_command = com
+                        elif (com == "OPEN WRITER"):
+                                tts_kill()
+                                userin = Data(["libreoffice","--writer"],"LibreOffice Writer")
+                                userin.say("Writer")
+                                userin.interact(0)
+                                previous_command = com
+                        elif (com == "OPEN MATH"):
+                                tts_kill()
+                                userin = Data(["libreoffice","--math"],"LibreOffice Math")
+                                userin.say("Math")
+                                userin.interact(0)
+                                previous_command = com
+                        elif (com == "OPEN IMPRESS"):
+                                tts_kill()
+                                userin = Data(["libreoffice","--impress"],"LibreOffice Impress")
+                                userin.say("Impress")
+                                userin.interact(0)
+                                previous_command = com
+                        elif (com == "OPEN DRAW"):
+                                tts_kill()
+                                userin = Data(["libreoffice","--draw"],"LibreOffice Draw")
+                                userin.say("Draw")
+                                userin.interact(0)
+                                previous_command = com
 			elif (com == "SHUT DOWN THE COMPUTER"):
 				tts_kill()
                                 userin = Data(["sudo","poweroff"],"Shutting down")
@@ -159,6 +195,9 @@ def command(speech_object):
 			elif (com == "WIKI PEDIA SEARC"):
 				tts_kill()
 				sr_result = google_speech_api()
+				if (sr_result == 0):
+					speech_error()
+					continue
 				search_query = sr_result[sr_result.find("search for")+11:]
 				print search_query
 				userin = Data(["sensible-browser","http://en.wikipedia.org/wiki/"+search_query],search_query)
@@ -174,6 +213,9 @@ def command(speech_object):
 				tts_kill()
 
 				sr_result = google_speech_api()
+                                if (sr_result == 0):
+                                        speech_error()
+                                        continue
                                 search_query = sr_result[sr_result.find("search for")+11:]
                                 print search_query
 
@@ -275,6 +317,13 @@ def google_speech_api():
         	return r.recognize(audio)   # recognize speech using Google Speech Recognition
         except LookupError:                                     # speech is unintelligible
                 print("Could not understand audio")
+		return 0
+
+def speech_error():
+	userin = Data(["echo"],"An error occurred")
+        userin.say("An error occurred while processing the speech input, please try again" + user_prefix)
+        userin.interact(0)
+
 
 
 if __name__ == '__main__':
