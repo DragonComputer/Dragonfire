@@ -90,7 +90,7 @@ def command(speech_object):
                                 userin = Data([" "]," ")
                                 userin.say("I have a female voice but I don't have a gender identity. I'm a computer program, " + user_prefix + ".")
                                 previous_command = com
-        		elif (com == "OPEN FILE MANAGER"):
+        		elif (com == "OPEN FILE MANAGER" or com == "OPEN FILES"):
 				tts_kill()
 				userin = Data(["pantheon-files"],"File Manager")
 				userin.say("File Manager")
@@ -102,6 +102,54 @@ def command(speech_object):
 				userin.say("Web Browser")
 				userin.interact(0)
 				previous_command = com
+                        elif (com == "OPEN BLENDER"):
+                                tts_kill()
+                                userin = Data(["blender"],"Blender")
+                                userin.say("Blender 3D computer graphics software")
+                                userin.interact(0)
+                                previous_command = com
+                        elif (com == "OPEN PHOTO SHOP" or com == "OPEN PHOTO EDITOR"):
+                                tts_kill()
+                                userin = Data(["gimp"],"GIMP")
+                                userin.say("Photo editor")
+                                userin.interact(0)
+                                previous_command = com
+                        elif (com == "OPEN VIDEO EDITOR"):
+                                tts_kill()
+                                userin = Data(["kdenlive"],"Kdenlive")
+                                userin.say("Video editor")
+                                userin.interact(0)
+                                previous_command = com
+                        elif (com == "OPEN CAMERA"):
+                                tts_kill()
+                                userin = Data(["snap-photobooth"],"Camera")
+                                userin.say("Camera")
+                                userin.interact(0)
+                                previous_command = com
+                        elif (com == "OPEN CALENDAR"):
+                                tts_kill()
+                                userin = Data(["maya-calendar"],"Calendar")
+                                userin.say("Calendar")
+                                userin.interact(0)
+                                previous_command = com
+                  	elif (com == "OPEN CALCULATOR"):
+                                tts_kill()
+                                userin = Data(["pantheon-calculator"],"Calculator")
+                                userin.say("Calculator")
+                                userin.interact(0)
+                                previous_command = com
+                        elif (com == "OPEN STEAM"):
+                                tts_kill()
+                                userin = Data(["steam"],"Steam")
+                                userin.say("Steam Game Store")
+                                userin.interact(0)
+                                previous_command = com
+                        elif (com == "OPEN SOFTWARE CENTER"):
+                                tts_kill()
+                                userin = Data(["software-center"],"Software Center")
+                                userin.say("Software Center")
+                                userin.interact(0)
+                                previous_command = com
 			elif (com == "SHUT DOWN THE COMPUTER"):
 				tts_kill()
                                 userin = Data(["sudo","poweroff"],"Shutting down")
