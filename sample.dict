@@ -46,51 +46,62 @@
 19	[THEIR]	dh eh r
 19	[YOUR]	y ao r
 20	[OPEN]	ow p ax n
-21	[FILE]	f ay l
-21	[WEB]	w eh b
-22	[MANAGER]	m ae n ax jh er
-22	[BROWSER]	b r aw z er
-23	[SHUT]	sh ah t
-24	[DOWN]	d aw n
-25	[THE]	dh ax
-26	[COMPUTER]	k ax m p y uw dx er
-26	[GENDER]	jh eh n d er
-27	[MAKE]	m ey k
-28	[WIKI]	w ih k iy
-28	[YOU]	y uw
-28	[GOO]	g uh
-29	[PEDIA]	p iy dx iy ax
-29	[TUBE]	t uw b
-29	[GLE]	g ax l
-30	[WIKI]	w ih k iy
-31	[PEDIA]	p iy dx iy ax
-32	[TUBE]	t uw b
-33	[SEARCH]	s er ch
-34	[FOR]	f ao r
-35	[A]	ax
+21	[FILES]	f ay l z
+21	[BLENDER]	b l eh n d er
+21	[CAMERA]	k ae m er ax
+21	[CALENDAR]	k ae l ax n d er
+21	[CALCULATOR]	k ae l k y ax l ey dx er
+21	[STEAM]	s t iy m
+22	[FILE]	f ay l
+22	[WEB]	w eh b
+22	[PHOTO]	f ow t ow
+22	[VIDEO]	v ih dx iy ow
+22	[SOFTWARE]	s ao f t w eh r
+23	[MANAGER]	m ae n ax jh er
+23	[BROWSER]	b r aw z er
+23	[SHOP]	sh aa p
+23	[EDITOR]	eh dx ax dx er
+23	[CENTER]	s eh n t er
+24	[SHUT]	sh ah t
+25	[DOWN]	d aw n
+26	[THE]	dh ax
+27	[COMPUTER]	k ax m p y uw dx er
+28	[MAKE]	m ey k
+29	[WIKI]	w ih k iy
+29	[YOU]	y uw
+29	[GOO]	g uh
+30	[PEDIA]	p iy dx iy ax
+30	[TUBE]	t uw b
+30	[GLE]	g ax l
+31	[WIKI]	w ih k iy
+32	[PEDIA]	p iy dx iy ax
+33	[TUBE]	t uw b
+34	[SEARCH]	s er ch
+35	[FOR]	f ao r
 36	[A]	ax
-36	[ALL]	ao l
-36	[AN]	ae n
-36	[ANOTHER]	ax n ah dh er
-36	[ANY]	eh n iy
-36	[BOTH]	b ow th
-36	[DEL]	d eh l
-36	[EACH]	iy ch
-36	[EVERY]	eh v er iy
-36	[LE]	l ax
-36	[NEITHER]	n iy dh er
-36	[SOME]	s ah m
-36	[THE]	dh ax
-36	[THESE]	dh iy z
-36	[THIS]	dh ih s
-36	[THOSE]	dh ow z
-37	[GENDER]	jh eh n d er
-37	[BOY]	b oy
-37	[MAN]	m ae n
-37	[NAME]	n ey m
-37	[GIRL]	g er l
-37	[WOMAN]	w uh m ax n
-37	[LADY]	l ey dx iy
-38	[GO]	g ow
-39	[TO]	t uw
-40	[SLEEP]	s l iy p
+37	[A]	ax
+37	[ALL]	ao l
+37	[AN]	ae n
+37	[ANOTHER]	ax n ah dh er
+37	[ANY]	eh n iy
+37	[BOTH]	b ow th
+37	[DEL]	d eh l
+37	[EACH]	iy ch
+37	[EVERY]	eh v er iy
+37	[LE]	l ax
+37	[NEITHER]	n iy dh er
+37	[SOME]	s ah m
+37	[THE]	dh ax
+37	[THESE]	dh iy z
+37	[THIS]	dh ih s
+37	[THOSE]	dh ow z
+38	[GENDER]	jh eh n d er
+38	[BOY]	b oy
+38	[MAN]	m ae n
+38	[NAME]	n ey m
+38	[GIRL]	g er l
+38	[WOMAN]	w uh m ax n
+38	[LADY]	l ey dx iy
+39	[GO]	g ow
+40	[TO]	t uw
+41	[SLEEP]	s l iy p

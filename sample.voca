@@ -85,29 +85,42 @@ OURS	aw er z
 THEIR dh eh r
 YOUR	y ao r
 
-% S301
+% OPEN
 OPEN	ow p ax n
 
-% S302
+% OPEN101
+FILES	f ay l z
+BLENDER	b l eh n d er
+CAMERA	k ae m er ax
+CALENDAR	k ae l ax n d er
+CALCULATOR	k ae l k y ax l ey dx er
+STEAM	s t iy m
+
+% OPEN201
 FILE	f ay l
 WEB     w eh b
+PHOTO	f ow t ow
+VIDEO	v ih dx iy ow
+SOFTWARE	s ao f t w eh r
 
-% S303
+% OPEN202
 MANAGER	m ae n ax jh er
 BROWSER	b r aw z er
+SHOP	sh aa p
+EDITOR	eh dx ax dx er
+CENTER	s eh n t er
 
-% S401
+% SHUT
 SHUT	sh ah t
 
-% S402
+% DOWN
 DOWN	d aw n
 
-% S403
+% THE
 THE		dh ax
 
-% S404
+% COMPUTER
 COMPUTER	k ax m p y uw dx er
-GENDER	jh eh n d er
 
 % SEARCH_1
 MAKE	m ey k
