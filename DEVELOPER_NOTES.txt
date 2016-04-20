@@ -1,20 +1,21 @@
 sudo apt-get install julius
 
 sudo apt-get install festival
-sudo apt-get install festflex-cmu
+sudo apt-get install festlex-cmu
 cd /usr/share/festival/voices/english/
 sudo wget -c http://www.speech.cs.cmu.edu/cmu_arctic/packed/cmu_us_clb_arctic-0.95-release.tar.bz2
-sudo tar jxf cmu_us_clb_arctic-0.95-release.tar.bz2 
+sudo tar jxf cmu_us_clb_arctic-0.95-release.tar.bz2
 sudo ln -s cmu_us_clb_arctic cmu_us_clb_arctic_clunits
 sudo cp /etc/festival.scm /etc/festival.scm.backup
+sudo chmod o+w /etc/festival.scm
 sudo echo "(set! voice_default 'voice_cmu_us_clb_arctic_clunits)" >> /etc/festival.scm
 
 sudo apt-get install python-pip
 sudo pip install wikipedia
 sudo pip install PyUserInput
 sudo apt-get install  python-xlib
-pip install --upgrade google-api-python-client
-sudo python speech_recognition-master/setup.py install
+sudo pip install --upgrade google-api-python-client
+sudo pip install SpeechRecognition
 
 #For compiling .grammer and .voca files , it will generate .dict and .dfa files:
 mkdfa sample

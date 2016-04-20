@@ -1,0 +1,7 @@
+# Ignore Hearing Data #
+###################
+*.wav
+
+# Ignore Python compiled code (byte code) #
+###################
+*.pyc
