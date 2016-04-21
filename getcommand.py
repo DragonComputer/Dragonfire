@@ -277,9 +277,9 @@ def command(speech_object):
 				userin.say("Unrecognized command.")
 				userin.interact(0)
 				previous_command = com
-			#newest = max(glob.iglob('./audio_recordings/*.[Ww][Aa][Vv]'), key=os.path.getctime)
+			#newest = max(glob.iglob('/tmp/' + str(datetime.date.today().year) + '*.[Ww][Aa][Vv]'), key=os.path.getctime)
 			#print newest
-			os.system('rm ./audio_recordings/*')
+			os.system('rm /tmp/' + str(datetime.date.today().year) + '*.[Ww][Aa][Vv]')
 
 
 def tts_kill():
@@ -308,13 +308,13 @@ def dragon_greet():
 
 def google_speech_api():
 
-	newest_recording = max(glob.iglob('./audio_recordings/*.[Ww][Aa][Vv]'), key=os.path.getctime)
+	newest_recording = max(glob.iglob('/tmp/' + str(datetime.date.today().year) + '*.[Ww][Aa][Vv]'), key=os.path.getctime)
 
 	r = sr.Recognizer()
 	with sr.WavFile(newest_recording) as source:            # use "test.wav" as the audio source
 		audio = r.record(source)                        # extract audio data from the file
 	try:
-		return r.recognize(audio)   # recognize speech using Google Speech Recognition
+		return r.recognize_google(audio)   # recognize speech using Google Speech Recognition
 	except LookupError:                                     # speech is unintelligible
 			print("Could not understand audio")
 	return 0
