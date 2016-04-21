@@ -6,7 +6,7 @@ Dragonfire is an open source virtual assistant project for Ubuntu based Linux di
 
 ### Version
 
-0.3.2
+0.3.3
 
 ### Installation
 

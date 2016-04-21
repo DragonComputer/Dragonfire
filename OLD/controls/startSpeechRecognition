@@ -1,2 +1,0 @@
-#!/bin/bash
-padsp julius -input mic -C $HOME/project/julius-grammer/julian.jconf | python $HOME/project/controls/getcommand.py 
