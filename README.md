@@ -6,7 +6,7 @@ Dragonfire is an open source virtual assistant project for Ubuntu based Linux di
 
 ### Version
 
-0.3.3
+0.3.5
 
 ### Installation
 
@@ -20,7 +20,7 @@ sudo pip install dragonfire
 ```Shell
 dragonfire
 ```
-### Use a better US English female speaker
+### Use a better US English female speaker(recommended)
 
 ```Shell
 git clone https://github.com/mertyildiran/Dragonfire.git
