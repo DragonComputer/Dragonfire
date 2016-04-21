@@ -20,12 +20,15 @@ from apiclient.discovery import build
 from apiclient.errors import HttpError
 import glob
 import speech_recognition as sr
+import inspect
+
+DRAGONFIRE_PATH = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 
 def command(speech_object):
 	previous_command = ""
 	global inactive
 	while(True):
-		
+
 		line = speech_object.readline()
 		if(line.startswith("sentence1: ")):
 			com = line[15:-6]
@@ -34,7 +37,7 @@ def command(speech_object):
 			print com
 
 			Config = ConfigParser.ConfigParser()
-			Config.read("config.ini")
+			Config.read( DRAGONFIRE_PATH + "/config.ini")
 			user_prefix = Config.get("BasicUserData","Prefix")
 
 			if (com == "DRAGON FIRE" or com == "WAKEUP"):
@@ -66,7 +69,7 @@ def command(speech_object):
 				previous_command = com
 			elif (com == "I'M A WOMAN" or com == "I'M A GIRL" or com == "I'M A LADY"):
 				tts_kill()
-				cfgfile = open("config.ini",'w')
+				cfgfile = open( DRAGONFIRE_PATH + "/config.ini",'w')
 				Config.set("BasicUserData","Prefix","My Lady")
 				Config.write(cfgfile)
 				cfgfile.close()
@@ -74,7 +77,7 @@ def command(speech_object):
 				userin.say("Pardon, My Lady.")
 			elif (com == "I'M A MAN" or com == "I'M A BOY"):
 				tts_kill()
-				cfgfile = open("config.ini",'w')
+				cfgfile = open( DRAGONFIRE_PATH + "/config.ini",'w')
 				Config.set("BasicUserData","Prefix","Sir")
 				Config.write(cfgfile)
 				cfgfile.close()
@@ -290,7 +293,7 @@ def dragon_greet():
 	time = datetime.datetime.now().time()
 
 	Config = ConfigParser.ConfigParser()
-	Config.read("config.ini")
+	Config.read( DRAGONFIRE_PATH + "/config.ini")
 	user_prefix = Config.get("BasicUserData","Prefix")
 
 	if time < datetime.time(12):
@@ -329,17 +332,16 @@ def initiate():
 		global inactive
 		inactive = 1
 		dragon_greet()
-		sys.stdin = subprocess.Popen(["padsp", "julius", "-input", "mic", "-C", "julian.jconf"], stdout=subprocess.PIPE).stdout
+		sys.stdin = subprocess.Popen(["padsp", "julius", "-input", "mic", "-C", DRAGONFIRE_PATH + "/julian.jconf"], stdout=subprocess.PIPE).stdout
 		command(sys.stdin)
 	except KeyboardInterrupt:
 		sys.exit(1)
-
 
 if __name__ == '__main__':
 	try:
 		inactive = 1
 		dragon_greet()
-		sys.stdin = subprocess.Popen(["padsp", "julius", "-input", "mic", "-C", "julian.jconf"], stdout=subprocess.PIPE).stdout
+		sys.stdin = subprocess.Popen(["padsp", "julius", "-input", "mic", "-C", DRAGONFIRE_PATH + "julian.jconf"], stdout=subprocess.PIPE).stdout
 		command(sys.stdin)
 	except KeyboardInterrupt:
 		sys.exit(1)
