@@ -5,3 +5,9 @@
 # Ignore Python compiled code (byte code) #
 ###################
 *.pyc
+
+# Ignore directories related with packaging #
+###################
+dragonfire.egg-info/
+dist/
+build/
