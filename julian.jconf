@@ -8,7 +8,7 @@
 # 1) NOTICE: relative paths must be relative to THIS FILE.
 #	     Current working directory does not affect.
 # 2) Blank lines and comments after '#' are ignored.
-#    Use `\#' to specify `#' in an argument, 
+#    Use `\#' to specify `#' in an argument,
 # 3) Each line should be shorter than 512 bytes.
 # 4) Syntax of each arguments are same as corresponding command options.
 # 5) The commented-out values in this file are default values in Julian.
@@ -56,7 +56,7 @@
 #-multigramout		# Output results for each grammar
 
 ######################################################################
-#### Language Model 
+#### Language Model
 ######################################################################
 ##
 ## word insertion penalty
@@ -82,7 +82,7 @@
 #-no_ccd		# disable context-dependency handling
 #-force_ccd		# enable context-dependency handling
 
-## 
+##
 ## If julius go wrong with checking parameter type, try below.
 ##
 #-notypecheck
@@ -111,7 +111,7 @@
 #-gprune none		# no pruning
 
 ######################################################################
-#### Gaussian Mixture Selection 
+#### Gaussian Mixture Selection
 ######################################################################
 #-gshmm hmmdefs		# monophone HMM for GMS
 			# (OFF when not specified)
@@ -154,9 +154,9 @@
 ## select one (default: mfcfile)
 #-input mfcfile         # MFCC file in HTK parameter file format
 #-input rawfile         # raw wavefile (auto-detect format)
-                        # WAV(16bit) or
-                        # RAW(16bit(signed short),mono,big-endian)
-                        # AIFF,AU (with libsndfile extension)
+						# WAV(16bit) or
+						# RAW(16bit(signed short),mono,big-endian)
+						# AIFF,AU (with libsndfile extension)
 			# other than 16kHz, sampling rate should be specified
 			# by "-smpFreq" option
 #-input mic             # direct microphone input
@@ -168,13 +168,13 @@
 #-filelist filename	# specify file list to be recognized in batch mode
 
 #-nostrip		# switch OFF dropping of invalid input segment.
-                        # (default: strip off invalid segment (0 sequence etc.)
+						# (default: strip off invalid segment (0 sequence etc.)
 #-zmean			# enable DC offset removal (invalid for mfcfile input)
 
 ######################################################################
 #### Recording
 ######################################################################
--record ./audio_recordings/	# auto-save recognized speech data into the dir
+-record /tmp	# auto-save recognized speech data into the dir
 
 ######################################################################
 #### GMM-based Input Verification and Rejection
@@ -224,7 +224,7 @@
 ######################################################################
 #### Forced alignment
 ######################################################################
-#-walign		# do forced alignment with result per word 
+#-walign		# do forced alignment with result per word
 #-palign		# do forced alignment with result per phoneme
 #-salign		# do forced alignment with result per HMM state
 
@@ -234,7 +234,7 @@
 #-cmalpha 0.05		# smoothing coef. alpha
 
 ######################################################################
-#### Output 
+#### Output
 ######################################################################
 #-separatescore		# output language and acoustic score separately
 #-progout		# output partial result per a time interval
