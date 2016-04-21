@@ -25,7 +25,7 @@ def command(speech_object):
 	previous_command = ""
 	global inactive
 	while(True):
-
+		
 		line = speech_object.readline()
 		if(line.startswith("sentence1: ")):
 			com = line[15:-6]
@@ -324,12 +324,22 @@ def speech_error():
 	userin.say("An error occurred while processing the speech input, please try again" + user_prefix)
 	userin.interact(0)
 
+def initiate():
+	try:
+		global inactive
+		inactive = 1
+		dragon_greet()
+		sys.stdin = subprocess.Popen(["padsp", "julius", "-input", "mic", "-C", "julian.jconf"], stdout=subprocess.PIPE).stdout
+		command(sys.stdin)
+	except KeyboardInterrupt:
+		sys.exit(1)
 
 
 if __name__ == '__main__':
 	try:
 		inactive = 1
 		dragon_greet()
+		sys.stdin = subprocess.Popen(["padsp", "julius", "-input", "mic", "-C", "julian.jconf"], stdout=subprocess.PIPE).stdout
 		command(sys.stdin)
 	except KeyboardInterrupt:
 		sys.exit(1)
