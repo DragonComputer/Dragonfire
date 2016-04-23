@@ -23,7 +23,7 @@ setup(
 	# Versions should comply with PEP440.  For a discussion on single-sourcing
 	# the version across setup.py and the project code, see
 	# https://packaging.python.org/en/latest/single_source_version.html
-	version='0.3.6',
+	version='0.3.9',
 
 	description='Dragonfire is an open source virtual assistant project for Ubuntu based Linux distributions',
 	long_description=long_description,
@@ -48,7 +48,7 @@ setup(
 
 		# Indicate who your project is intended for
 		'Intended Audience :: Developers',
-		'Scientific/Engineering :: Human Machine Interfaces',
+		'Topic :: Scientific/Engineering :: Human Machine Interfaces',
 
 		# Pick your license as you wish (should match "license" above)
 		'License :: OSI Approved :: MIT License',
