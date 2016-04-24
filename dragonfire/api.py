@@ -1,6 +1,11 @@
 #!/usr/bin/python
+# -*- coding: utf-8 -*-
+
 import subprocess
 import time
+import os
+
+FNULL = open(os.devnull, 'w')
 
 songRunning = False
 class Data:
@@ -19,7 +24,9 @@ class Data:
 	def say(self,message):
 		#if songRunning == True:
 		#	subprocess.Popen(["rhythmbox-client","--pause"])
-		proc = subprocess.Popen(["festival","--tts"],stdin=subprocess.PIPE)
+		print "Dragonfire: " + message.upper().replace("ı","I")
+		print "_______________________________________________________________\n"
+		proc = subprocess.Popen(["festival","--tts"], stdin=subprocess.PIPE, stdout=FNULL, stderr=FNULL)
 		proc.stdin.write(message)
 		proc.stdin.close()
 		#proc.wait()
