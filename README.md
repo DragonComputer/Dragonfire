@@ -6,7 +6,7 @@ Dragonfire is an open source virtual assistant project for Ubuntu based Linux di
 
 ### Version
 
-0.3.9
+0.4.0
 
 ### Installation
 
@@ -28,9 +28,9 @@ cd Dragonfire/
 ./install.sh
 ```
 
-### For generating .dict and .dfa files from .grammer and .voca files(for developers), use
+#### For generating .dict and .dfa files from .grammer and .voca files(for developers), use
 
 ```Shell
-cd Dragonfire/
+cd Dragonfire/dragonfire/
 mkdfa sample
 ```
