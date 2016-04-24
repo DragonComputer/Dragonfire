@@ -17,14 +17,15 @@ class Data:
 		subprocess.Popen(["notify-send","Dragonfire", self.message])
 		if self.command != "":
 			time.sleep(duration)
-			subprocess.Popen(self.command,stdout=subprocess.PIPE)
+			subprocess.Popen(self.command, stdout=FNULL, stderr=FNULL)
 		#if self.speak == True:
 		#	self.say(self.message)
 		#else:
 	def say(self,message):
 		#if songRunning == True:
 		#	subprocess.Popen(["rhythmbox-client","--pause"])
-		print "Dragonfire: " + message.upper().replace("ı","I")
+		if len(message) < 10000:
+			print "Dragonfire: " + message.upper()
 		print "_______________________________________________________________\n"
 		proc = subprocess.Popen(["festival","--tts"], stdin=subprocess.PIPE, stdout=FNULL, stderr=FNULL)
 		proc.stdin.write(message)
