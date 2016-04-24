@@ -1,5 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
+
 import sys
 import api
 from lxml import etree
@@ -24,17 +25,19 @@ import inspect
 
 DRAGONFIRE_PATH = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 
-def command(speech_object):
+def command(speech):
+
 	previous_command = ""
 	global inactive
+
 	while(True):
 
-		line = speech_object.readline()
+		line = speech.readline()
 		if(line.startswith("sentence1: ")):
 			com = line[15:-6]
+			print "You: " + com
 			if (inactive == 1 and com != "DRAGON FIRE" and com != "WAKEUP"):
 				continue
-			print com
 
 			Config = ConfigParser.ConfigParser()
 			Config.read( DRAGONFIRE_PATH + "/config.ini")
@@ -58,6 +61,7 @@ def command(speech_object):
 				userin.interact(0)
 				previous_command = com
 			elif (com == "ENOUGH"):
+				print "Dragonfire quiets."
 				tts_kill()
 			elif (com == "WHO AM I" or com == "WHAT IS MY NAME"):
 				tts_kill()
@@ -111,7 +115,7 @@ def command(speech_object):
 				userin.say("Blender 3D computer graphics software")
 				userin.interact(0)
 				previous_command = com
-			elif (com == "PHOTO SHOP" or com == "OPEN PHOTO EDITOR"):
+			elif (com == "PHOTO SHOP" or com == "PHOTO EDITOR"):
 				tts_kill()
 				userin = Data(["gimp"],"GIMP")
 				userin.say("Photo editor")
@@ -280,16 +284,19 @@ def command(speech_object):
 				userin.say("Unrecognized command.")
 				userin.interact(0)
 				previous_command = com
+
 			#newest = max(glob.iglob('/tmp/' + str(datetime.date.today().year) + '*.[Ww][Aa][Vv]'), key=os.path.getctime)
 			#print newest
 			os.system('rm /tmp/' + str(datetime.date.today().year) + '*.[Ww][Aa][Vv]')
 
 
 def tts_kill():
-	call(["pkill", "audsp"])
-	call(["pkill", "aplay"])
+	FNULL = open(os.devnull, 'w')
+	call(["pkill", "audsp"], stdout=FNULL, stderr=FNULL)
+	call(["pkill", "aplay"], stdout=FNULL, stderr=FNULL)
 
 def dragon_greet():
+	print "_______________________________________________________________\n"
 	time = datetime.datetime.now().time()
 
 	Config = ConfigParser.ConfigParser()
@@ -333,9 +340,12 @@ def initiate():
 		inactive = 1
 		dragon_greet()
 		# padsp julius -input mic -C julian.jconf | ./getcommand.py
-		sys.stdin = subprocess.Popen(["padsp", "julius", "-input", "mic", "-C", DRAGONFIRE_PATH + "/julian.jconf"], stdout=subprocess.PIPE).stdout
-		command(sys.stdin)
+		julius_proc = subprocess.Popen(["padsp", "julius", "-input", "mic", "-C", DRAGONFIRE_PATH + "/julian.jconf"], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+		speech = julius_proc.stdout
+		command(speech)
+		#command(sys.stdin)
 	except KeyboardInterrupt:
+		julius_proc.terminate()
 		sys.exit(1)
 
 if __name__ == '__main__':
