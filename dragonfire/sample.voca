@@ -8,24 +8,20 @@
 ENOUGH	ix n ah f
 WAKEUP	w ey k ah p
 
-% GARBAGE
-GARBAGE g aa r b ix jh
-
 % DRAGON
 DRAGON	d r ae g ax n
 
 % FIRE
 FIRE	f ay er
 
-% WH
-WHAT w ah t
+% WHO
 WHO hh uw
 
-% I_M
-I'M	ay m
+% WHAT
+WHAT w ah t
 
-% BE
-BE	b iy
+% I
+I ay
 
 % AM
 AM	ae m
@@ -33,57 +29,12 @@ AM	ae m
 % IS
 IS	ih z
 
-% ARE
-ARE aa r
-
-% I
-I ay
-
-% ME
-ME m iy
-
-% YOU
-YOU y uw
-
-% PRP_SINGULAR
-HE hh iy
-HER hh er
-HIM hh ih m
-SHE sh iy
-IT ih t
-
-% PRP_PLURAL
-US ah s
-WE w iy
-THEY dh ey
-THEM dh eh m
-YOU y uw
-
-% PRP
-ITSELF ix t s eh l f
-HIMSELF hh ix m s eh l f
-HERSELF hh er s eh l f
-MYSELF m ay s eh l f
-OURS aw er z
-OURSELVES aw er s eh l v z
-THEIRS dh eh r z
-THEMSELVES dh eh m s eh l v z
-YOURSELF y er s eh l f
-
 % PRPS_1
 MY m ay
 YOUR	y ao r
 
-% PRPS
-HER	hh er
-HIS hh ih z
-ITS ih t s
+% MY
 MY m ay
-MINE	m ay n
-OUR aw er
-OURS	aw er z
-THEIR dh eh r
-YOUR	y ao r
 
 % OPEN
 OPEN	ow p ax n
@@ -100,22 +51,46 @@ MATH	m ae th
 IMPRESS	ix m p r eh s
 DRAW	d r ao
 
-% OPEN201
+% FILE
 FILE	f ay l
+
+% MANAGER
+MANAGER	m ae n ax jh er
+
+% WEB
 WEB     w eh b
+
+% BROWSER
+BROWSER	b r aw z er
+
+% PHOTO
 PHOTO	f ow t ow
+
+% SHOP
+SHOP	sh aa p
+
+% VIDEO
 VIDEO	v ih dx iy ow
+
+% EDITOR
+EDITOR	eh dx ax dx er
+
+% SOFTWARE
 SOFTWARE	s ao f t w eh r
+
+% CENTER
+CENTER	s eh n t er
+
+% OFFICE
 OFFICE	ao f ax s
+
+% SUITE
+SUITE	s w iy t
+
+% INK
 INK	ih ng k
 
-% OPEN202
-MANAGER	m ae n ax jh er
-BROWSER	b r aw z er
-SHOP	sh aa p
-EDITOR	eh dx ax dx er
-CENTER	s eh n t er
-SUITE	s w iy t
+% SCAPE
 SCAPE	s k ey p
 
 % SHUT
@@ -130,24 +105,14 @@ THE		dh ax
 % COMPUTER
 COMPUTER	k ax m p y uw dx er
 
-% SEARCH_1
-MAKE	m ey k
-
-% SEARCH_2
-WIKI	w ih k iy
-YOU	y uw
-GOO	g uh
-
-% SEARCH_3
-PEDIA	p iy dx iy ax
-TUBE	t uw b
-GLE	g ax l
-
 % WIKI
 WIKI	w ih k iy
 
 % PEDIA
 PEDIA	p iy dx iy ax
+
+% YOU
+YOU y uw
 
 % TUBE
 TUBE	t uw b
@@ -158,35 +123,16 @@ SEARCH	s er ch
 % SEARCH_5
 FOR	f ao r
 
-% DT_1
-A ax
-
-% DT
-A ax
-ALL ao l
-AN ae n
-ANOTHER ax n ah dh er
-ANY eh n iy
-BOTH b ow th
-DEL d eh l
-EACH iy ch
-EVERY eh v er iy
-LE l ax
-NEITHER n iy dh er
-SOME s ah m
-THE dh ax
-THESE dh iy z
-THIS dh ih s
-THOSE dh ow z
-
-% NN
-GENDER	jh eh n d er
-BOY b oy
-MAN m ae n
+% WHNN
 NAME n ey m
-GIRL g er l
-WOMAN w uh m ax n
+GENDER	jh eh n d er
+
+% TITLE
+TITLE t ay dx ax l
+
+% SIRLADY
 LADY l ey dx iy
+SIR s er
 
 %GO
 GO	g ow

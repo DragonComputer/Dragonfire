@@ -2,114 +2,56 @@
 1	[</s>]	sil
 2	[ENOUGH]	ix n ah f
 2	[WAKEUP]	w ey k ah p
-3	[GARBAGE]	g aa r b ix jh
-4	[DRAGON]	d r ae g ax n
-5	[FIRE]	f ay er
+3	[DRAGON]	d r ae g ax n
+4	[FIRE]	f ay er
+5	[WHO]	hh uw
 6	[WHAT]	w ah t
-6	[WHO]	hh uw
-7	[I'M]	ay m
-8	[BE]	b iy
-9	[AM]	ae m
-10	[IS]	ih z
-11	[ARE]	aa r
-12	[I]	ay
-13	[ME]	m iy
-14	[YOU]	y uw
-15	[HE]	hh iy
-15	[HER]	hh er
-15	[HIM]	hh ih m
-15	[SHE]	sh iy
-15	[IT]	ih t
-16	[US]	ah s
-16	[WE]	w iy
-16	[THEY]	dh ey
-16	[THEM]	dh eh m
-16	[YOU]	y uw
-17	[ITSELF]	ix t s eh l f
-17	[HIMSELF]	hh ix m s eh l f
-17	[HERSELF]	hh er s eh l f
-17	[MYSELF]	m ay s eh l f
-17	[OURS]	aw er z
-17	[OURSELVES]	aw er s eh l v z
-17	[THEIRS]	dh eh r z
-17	[THEMSELVES]	dh eh m s eh l v z
-17	[YOURSELF]	y er s eh l f
-18	[MY]	m ay
-18	[YOUR]	y ao r
-19	[HER]	hh er
-19	[HIS]	hh ih z
-19	[ITS]	ih t s
-19	[MY]	m ay
-19	[MINE]	m ay n
-19	[OUR]	aw er
-19	[OURS]	aw er z
-19	[THEIR]	dh eh r
-19	[YOUR]	y ao r
-20	[OPEN]	ow p ax n
-21	[FILES]	f ay l z
-21	[BLENDER]	b l eh n d er
-21	[CAMERA]	k ae m er ax
-21	[CALENDAR]	k ae l ax n d er
-21	[CALCULATOR]	k ae l k y ax l ey dx er
-21	[STEAM]	s t iy m
-21	[WRITER]	r ay dx er
-21	[MATH]	m ae th
-21	[IMPRESS]	ix m p r eh s
-21	[DRAW]	d r ao
-22	[FILE]	f ay l
-22	[WEB]	w eh b
-22	[PHOTO]	f ow t ow
-22	[VIDEO]	v ih dx iy ow
+7	[I]	ay
+8	[AM]	ae m
+9	[IS]	ih z
+10	[MY]	m ay
+10	[YOUR]	y ao r
+11	[MY]	m ay
+12	[OPEN]	ow p ax n
+13	[FILES]	f ay l z
+13	[BLENDER]	b l eh n d er
+13	[CAMERA]	k ae m er ax
+13	[CALENDAR]	k ae l ax n d er
+13	[CALCULATOR]	k ae l k y ax l ey dx er
+13	[STEAM]	s t iy m
+13	[WRITER]	r ay dx er
+13	[MATH]	m ae th
+13	[IMPRESS]	ix m p r eh s
+13	[DRAW]	d r ao
+14	[FILE]	f ay l
+15	[MANAGER]	m ae n ax jh er
+16	[WEB]	w eh b
+17	[BROWSER]	b r aw z er
+18	[PHOTO]	f ow t ow
+19	[SHOP]	sh aa p
+20	[VIDEO]	v ih dx iy ow
+21	[EDITOR]	eh dx ax dx er
 22	[SOFTWARE]	s ao f t w eh r
-22	[OFFICE]	ao f ax s
-22	[INK]	ih ng k
-23	[MANAGER]	m ae n ax jh er
-23	[BROWSER]	b r aw z er
-23	[SHOP]	sh aa p
-23	[EDITOR]	eh dx ax dx er
 23	[CENTER]	s eh n t er
-23	[SUITE]	s w iy t
-23	[SCAPE]	s k ey p
-24	[SHUT]	sh ah t
-25	[DOWN]	d aw n
-26	[THE]	dh ax
-27	[COMPUTER]	k ax m p y uw dx er
-28	[MAKE]	m ey k
-29	[WIKI]	w ih k iy
-29	[YOU]	y uw
-29	[GOO]	g uh
-30	[PEDIA]	p iy dx iy ax
-30	[TUBE]	t uw b
-30	[GLE]	g ax l
-31	[WIKI]	w ih k iy
-32	[PEDIA]	p iy dx iy ax
-33	[TUBE]	t uw b
-34	[SEARCH]	s er ch
-35	[FOR]	f ao r
-36	[A]	ax
-37	[A]	ax
-37	[ALL]	ao l
-37	[AN]	ae n
-37	[ANOTHER]	ax n ah dh er
-37	[ANY]	eh n iy
-37	[BOTH]	b ow th
-37	[DEL]	d eh l
-37	[EACH]	iy ch
-37	[EVERY]	eh v er iy
-37	[LE]	l ax
-37	[NEITHER]	n iy dh er
-37	[SOME]	s ah m
-37	[THE]	dh ax
-37	[THESE]	dh iy z
-37	[THIS]	dh ih s
-37	[THOSE]	dh ow z
-38	[GENDER]	jh eh n d er
-38	[BOY]	b oy
-38	[MAN]	m ae n
+24	[OFFICE]	ao f ax s
+25	[SUITE]	s w iy t
+26	[INK]	ih ng k
+27	[SCAPE]	s k ey p
+28	[SHUT]	sh ah t
+29	[DOWN]	d aw n
+30	[THE]	dh ax
+31	[COMPUTER]	k ax m p y uw dx er
+32	[WIKI]	w ih k iy
+33	[PEDIA]	p iy dx iy ax
+34	[YOU]	y uw
+35	[TUBE]	t uw b
+36	[SEARCH]	s er ch
+37	[FOR]	f ao r
 38	[NAME]	n ey m
-38	[GIRL]	g er l
-38	[WOMAN]	w uh m ax n
-38	[LADY]	l ey dx iy
-39	[GO]	g ow
-40	[TO]	t uw
-41	[SLEEP]	s l iy p
+38	[GENDER]	jh eh n d er
+39	[TITLE]	t ay dx ax l
+40	[LADY]	l ey dx iy
+40	[SIR]	s er
+41	[GO]	g ow
+42	[TO]	t uw
+43	[SLEEP]	s l iy p
