@@ -57,7 +57,7 @@ def command(speech_object):
 				userin.say("I'm going to sleep")
 				userin.interact(0)
 				previous_command = com
-			elif (com == "ENOUGH" or com == "OKAY"):
+			elif (com == "ENOUGH"):
 				tts_kill()
 			elif (com == "WHO AM I" or com == "WHAT IS MY NAME"):
 				tts_kill()
@@ -67,7 +67,7 @@ def command(speech_object):
 				userin.say("Your name is " + user_full_name + "," + user_prefix + ".")
 				userin.interact(0)
 				previous_command = com
-			elif (com == "I'M A WOMAN" or com == "I'M A GIRL" or com == "I'M A LADY"):
+			elif (com == "MY TITLE IS LADY"):
 				tts_kill()
 				cfgfile = open( DRAGONFIRE_PATH + "/config.ini",'w')
 				Config.set("BasicUserData","Prefix","My Lady")
@@ -75,7 +75,7 @@ def command(speech_object):
 				cfgfile.close()
 				userin = Data([" "]," ")
 				userin.say("Pardon, My Lady.")
-			elif (com == "I'M A MAN" or com == "I'M A BOY"):
+			elif (com == "MY TITLE IS SIR"):
 				tts_kill()
 				cfgfile = open( DRAGONFIRE_PATH + "/config.ini",'w')
 				Config.set("BasicUserData","Prefix","Sir")
@@ -93,13 +93,13 @@ def command(speech_object):
 				userin = Data([" "]," ")
 				userin.say("I have a female voice but I don't have a gender identity. I'm a computer program, " + user_prefix + ".")
 				previous_command = com
-			elif (com == "OPEN FILE MANAGER" or com == "OPEN FILES"):
+			elif (com == "FILE MANAGER" or com == "OPEN FILES"):
 				tts_kill()
 				userin = Data(["pantheon-files"],"File Manager")
 				userin.say("File Manager")
 				userin.interact(0)
 				previous_command = com
-			elif (com == "OPEN WEB BROWSER"):
+			elif (com == "WEB BROWSER"):
 				tts_kill()
 				userin = Data(["sensible-browser"],"Web Browser")
 				userin.say("Web Browser")
@@ -111,19 +111,19 @@ def command(speech_object):
 				userin.say("Blender 3D computer graphics software")
 				userin.interact(0)
 				previous_command = com
-			elif (com == "OPEN PHOTO SHOP" or com == "OPEN PHOTO EDITOR"):
+			elif (com == "PHOTO SHOP" or com == "OPEN PHOTO EDITOR"):
 				tts_kill()
 				userin = Data(["gimp"],"GIMP")
 				userin.say("Photo editor")
 				userin.interact(0)
 				previous_command = com
-			elif (com == "OPEN INK SCAPE"):
+			elif (com == "INK SCAPE"):
 				tts_kill()
 				userin = Data(["inkscape"],"Inkscape")
 				userin.say("Inkscape")
 				userin.interact(0)
 				previous_command = com
-			elif (com == "OPEN VIDEO EDITOR"):
+			elif (com == "VIDEO EDITOR"):
 				tts_kill()
 				userin = Data(["kdenlive"],"Kdenlive")
 				userin.say("Video editor")
@@ -153,13 +153,13 @@ def command(speech_object):
 				userin.say("Steam Game Store")
 				userin.interact(0)
 				previous_command = com
-			elif (com == "OPEN SOFTWARE CENTER"):
+			elif (com == "SOFTWARE CENTER"):
 				tts_kill()
 				userin = Data(["software-center"],"Software Center")
 				userin.say("Software Center")
 				userin.interact(0)
 				previous_command = com
-			elif (com == "OPEN OFFICE SUITE"):
+			elif (com == "OFFICE SUITE"):
 				tts_kill()
 				userin = Data(["libreoffice"],"LibreOffice")
 				userin.say("Office Suite")
@@ -332,6 +332,7 @@ def initiate():
 		global inactive
 		inactive = 1
 		dragon_greet()
+		# padsp julius -input mic -C julian.jconf | ./getcommand.py
 		sys.stdin = subprocess.Popen(["padsp", "julius", "-input", "mic", "-C", DRAGONFIRE_PATH + "/julian.jconf"], stdout=subprocess.PIPE).stdout
 		command(sys.stdin)
 	except KeyboardInterrupt:
@@ -341,6 +342,7 @@ if __name__ == '__main__':
 	try:
 		inactive = 1
 		dragon_greet()
+		# padsp julius -input mic -C julian.jconf | ./getcommand.py
 		sys.stdin = subprocess.Popen(["padsp", "julius", "-input", "mic", "-C", DRAGONFIRE_PATH + "julian.jconf"], stdout=subprocess.PIPE).stdout
 		command(sys.stdin)
 	except KeyboardInterrupt:
