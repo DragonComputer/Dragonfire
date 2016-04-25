@@ -34,18 +34,22 @@ def command(speech):
 	while(True):
 
 		line = speech.readline()
-		if line.startswith("sentence1: "):
-			com = line[15:-6]
-			if com != "WIKI PEDIA SEARC" and com != "YOU TUBE SEARC":
-				print "You: " + com
-			if inactive == 1 and com != "DRAGON FIRE" and com != "WAKEUP":
+		if line.startswith("sentence1: ") or line.startswith("<search failed>"):
+			com = google_speech_api()
+			if (com == 0):
+				speech_error()
+				continue
+			com = com.upper()
+			print "You: " + com
+
+			if inactive == 1 and "DRAGON FIRE" not in com and "WAKE UP" not in com:
 				continue
 
 			Config = ConfigParser.ConfigParser()
 			Config.read( DRAGONFIRE_PATH + "/config.ini")
 			user_prefix = Config.get("BasicUserData","Prefix")
 
-			if com == "DRAGON FIRE" or com == "WAKEUP":
+			if "DRAGON FIRE" in com or "WAKE UP" in com:
 				tts_kill()
 				inactive = 0
 				userin = Data([" "]," ")
@@ -55,17 +59,17 @@ def command(speech):
 					2 : "What is your orders?"
 				}
 				userin.say(words_dragonfire[randint(0,2)])
-			elif com == "GO TO SLEEP":
+			elif "GO TO SLEEP" in com:
 				tts_kill()
 				inactive = 1
 				userin = Data(["echo"],"Dragonfire deactivated. To reactivate say 'Dragonfire!' or 'Wake Up!'")
 				userin.say("I'm going to sleep")
 				userin.interact(0)
 				previous_command = com
-			elif com == "ENOUGH":
+			elif "ENOUGH" in com:
 				print "Dragonfire quiets."
 				tts_kill()
-			elif com == "WHO AM I" or com == "WHAT IS MY NAME":
+			elif "WHO AM I" in com or "WHAT IS MY NAME" in com:
 				tts_kill()
 				user_full_name = os.popen("getent passwd $LOGNAME | cut -d: -f5 | cut -d, -f1").read()
 				user_full_name = user_full_name[:-1]
@@ -73,7 +77,7 @@ def command(speech):
 				userin.say("Your name is " + user_full_name + "," + user_prefix + ".")
 				userin.interact(0)
 				previous_command = com
-			elif com == "MY TITLE IS LADY":
+			elif "MY TITLE IS LADY" in com or "I'M A LADY" in com or "I'M A WOMAN" in com or "I'M A GIRL" in com:
 				tts_kill()
 				cfgfile = open( DRAGONFIRE_PATH + "/config.ini",'w')
 				Config.set("BasicUserData","Prefix","My Lady")
@@ -81,7 +85,7 @@ def command(speech):
 				cfgfile.close()
 				userin = Data([" "]," ")
 				userin.say("Pardon, My Lady.")
-			elif com == "MY TITLE IS SIR":
+			elif "MY TITLE IS SIR" in com or "I'M A MAN" in com or "I'M A BOY" in com:
 				tts_kill()
 				cfgfile = open( DRAGONFIRE_PATH + "/config.ini",'w')
 				Config.set("BasicUserData","Prefix","Sir")
@@ -89,127 +93,133 @@ def command(speech):
 				cfgfile.close()
 				userin = Data([" "]," ")
 				userin.say("Pardon, Sir.")
-			elif com == "WHAT IS YOUR NAME":
+			elif "WHAT IS YOUR NAME" in com:
 				tts_kill()
 				userin = Data([" "]," ")
 				userin.say("My name is Dragon Fire.")
 				previous_command = com
-			elif com == "WHAT IS YOUR GENDER":
+			elif "WHAT IS YOUR GENDER" in com:
 				tts_kill()
 				userin = Data([" "]," ")
 				userin.say("I have a female voice but I don't have a gender identity. I'm a computer program, " + user_prefix + ".")
 				previous_command = com
-			elif com == "FILE MANAGER" or com == "OPEN FILES":
+			elif "FILE MANAGER" in com or "OPEN FILES" in com:
 				tts_kill()
 				userin = Data(["pantheon-files"],"File Manager")
 				userin.say("File Manager")
 				userin.interact(0)
 				previous_command = com
-			elif com == "WEB BROWSER":
+			elif "WEB BROWSER" in com:
 				tts_kill()
 				userin = Data(["sensible-browser"],"Web Browser")
 				userin.say("Web Browser")
 				userin.interact(0)
 				previous_command = com
-			elif com == "OPEN BLENDER":
+			elif "OPEN BLENDER" in com:
 				tts_kill()
 				userin = Data(["blender"],"Blender")
 				userin.say("Blender 3D computer graphics software")
 				userin.interact(0)
 				previous_command = com
-			elif com == "PHOTO SHOP" or com == "PHOTO EDITOR":
+			elif "PHOTO SHOP" in com or "PHOTO EDITOR" in com:
 				tts_kill()
 				userin = Data(["gimp"],"GIMP")
 				userin.say("Photo editor")
 				userin.interact(0)
 				previous_command = com
-			elif com == "INK SCAPE":
+			elif "INKSCAPE" in com:
 				tts_kill()
 				userin = Data(["inkscape"],"Inkscape")
 				userin.say("Inkscape")
 				userin.interact(0)
 				previous_command = com
-			elif com == "VIDEO EDITOR":
+			elif "VIDEO EDITOR" in com:
 				tts_kill()
 				userin = Data(["kdenlive"],"Kdenlive")
 				userin.say("Video editor")
 				userin.interact(0)
 				previous_command = com
-			elif com == "OPEN CAMERA":
+			elif "OPEN CAMERA" in com:
 				tts_kill()
 				userin = Data(["snap-photobooth"],"Camera")
 				userin.say("Camera")
 				userin.interact(0)
 				previous_command = com
-			elif com == "OPEN CALENDAR":
+			elif "OPEN CALENDAR" in com:
 				tts_kill()
 				userin = Data(["maya-calendar"],"Calendar")
 				userin.say("Calendar")
 				userin.interact(0)
 				previous_command = com
-			elif com == "OPEN CALCULATOR":
+			elif "OPEN CALCULATOR" in com:
 				tts_kill()
 				userin = Data(["pantheon-calculator"],"Calculator")
 				userin.say("Calculator")
 				userin.interact(0)
 				previous_command = com
-			elif com == "OPEN STEAM":
+			elif "OPEN STEAM" in com:
 				tts_kill()
 				userin = Data(["steam"],"Steam")
 				userin.say("Steam Game Store")
 				userin.interact(0)
 				previous_command = com
-			elif com == "SOFTWARE CENTER":
+			elif "SOFTWARE CENTER" in com:
 				tts_kill()
 				userin = Data(["software-center"],"Software Center")
 				userin.say("Software Center")
 				userin.interact(0)
 				previous_command = com
-			elif com == "OFFICE SUITE":
+			elif "OFFICE SUITE" in com:
 				tts_kill()
 				userin = Data(["libreoffice"],"LibreOffice")
 				userin.say("Office Suite")
 				userin.interact(0)
 				previous_command = com
-			elif com == "OPEN WRITER":
+			elif "OPEN WRITER" in com:
 				tts_kill()
 				userin = Data(["libreoffice","--writer"],"LibreOffice Writer")
 				userin.say("Writer")
 				userin.interact(0)
 				previous_command = com
-			elif com == "OPEN MATH":
+			elif "OPEN MATH" in com:
 				tts_kill()
 				userin = Data(["libreoffice","--math"],"LibreOffice Math")
 				userin.say("Math")
 				userin.interact(0)
 				previous_command = com
-			elif com == "OPEN IMPRESS":
+			elif "OPEN IMPRESS" in com:
 				tts_kill()
 				userin = Data(["libreoffice","--impress"],"LibreOffice Impress")
 				userin.say("Impress")
 				userin.interact(0)
 				previous_command = com
-			elif com == "OPEN DRAW":
+			elif "OPEN DRAW" in com:
 				tts_kill()
 				userin = Data(["libreoffice","--draw"],"LibreOffice Draw")
 				userin.say("Draw")
 				userin.interact(0)
 				previous_command = com
-			elif com == "SHUT DOWN THE COMPUTER":
+			elif "SHUT DOWN THE COMPUTER" in com:
 				tts_kill()
 				userin = Data(["sudo","poweroff"],"Shutting down")
 				userin.say("Shutting down")
 				userin.interact(3)
 				previous_command = com
-			elif com == "WIKI PEDIA SEARC":
+			elif com == "EXIT" or com == "QUIT":
 				tts_kill()
-				sr_result = google_speech_api()
-				if (sr_result == 0):
-					speech_error()
-					continue
-				print "You: " + sr_result.upper()
-				search_query = sr_result[sr_result.find("search for")+11:]
-				userin = Data(["sensible-browser","http://en.wikipedia.org/wiki/"+search_query],search_query)
+				userin = Data([" "]," ")
+				userin.say("Goodbye, " + user_prefix)
+				previous_command = com
+				julius_proc.terminate()
+				try:
+					os.system('rm /tmp/' + str(datetime.date.today().year) + '*.[Ww][Aa][Vv]')
+				except:
+					pass
+				sys.exit(1)
+			elif "WIKIPEDIA" in com and "SEARCH" in com:
+				tts_kill()
+				search_query = com.replace("SEARCH ", "").replace(" SEARCH", "").replace(" IN WIKIPEDIA", "").replace("IN WIKIPEDIA ", "").replace(" ON WIKIPEDIA", "").replace("ON WIKIPEDIA ", "").replace(" USING WIKIPEDIA", "").replace("USING WIKIPEDIA ", "").replace(" WIKIPEDIA", "").replace("WIKIPEDIA ", "")
+				userin = Data(["sensible-browser","http://en.wikipedia.org/wiki/"+search_query.lower()],search_query)
 				userin.interact(0)
 				try:
 					wikipage = wikipedia.page(search_query)
@@ -218,15 +228,9 @@ def command(speech):
 					previous_command = com
 				except:
 					pass
-			elif com == "YOU TUBE SEARC":
+			elif "YOUTUBE" in com and "SEARCH" in com:
 				tts_kill()
-
-				sr_result = google_speech_api()
-				if (sr_result == 0):
-					speech_error()
-					continue
-				print "You: " + sr_result.upper()
-				search_query = sr_result[sr_result.find("search for")+11:]
+				search_query = com.replace("SEARCH ", "").replace(" SEARCH", "").replace(" IN YOUTUBE", "").replace("IN YOUTUBE ", "").replace(" ON YOUTUBE", "").replace("ON YOUTUBE ", "").replace(" USING YOUTUBE", "").replace("USING YOUTUBE ", "").replace(" YOUTUBE", "").replace("YOUTUBE ", "")
 
 				DEVELOPER_KEY = "AIzaSyAcwHj2qzI7KWDUN4RkBTX8Y4lrU78lncA"
 				YOUTUBE_API_SERVICE_NAME = "youtube"
@@ -289,10 +293,6 @@ def command(speech):
 
 			#newest = max(glob.iglob('/tmp/' + str(datetime.date.today().year) + '*.[Ww][Aa][Vv]'), key=os.path.getctime)
 			#print newest
-			try:
-				os.system('rm /tmp/' + str(datetime.date.today().year) + '*.[Ww][Aa][Vv]')
-			except:
-				pass
 
 
 def tts_kill():
@@ -300,6 +300,7 @@ def tts_kill():
 	call(["pkill", "aplay"], stdout=FNULL, stderr=FNULL)
 
 def dragon_greet():
+	tts_kill()
 	print "_______________________________________________________________\n"
 	time = datetime.datetime.now().time()
 
@@ -329,18 +330,20 @@ def google_speech_api():
 		audio = r.record(source)                        # extract audio data from the file
 	try:
 		return r.recognize_google(audio)   # recognize speech using Google Speech Recognition
-	except LookupError:                                     # speech is unintelligible
-			print("Could not understand audio")
+	except:
+		pass
 	return 0
 
 def speech_error():
+	tts_kill()
 	userin = Data(["echo"],"An error occurred")
-	userin.say("An error occurred while processing the speech input, please try again" + user_prefix)
+	userin.say("I couldn't understand, please repeat again")
 	userin.interact(0)
 
 def initiate():
 	try:
 		global inactive
+		global julius_proc
 		inactive = 1
 		dragon_greet()
 		# padsp julius -input mic -C julian.jconf | ./getcommand.py
@@ -350,6 +353,10 @@ def initiate():
 		#command(sys.stdin)
 	except KeyboardInterrupt:
 		julius_proc.terminate()
+		try:
+			os.system('rm /tmp/' + str(datetime.date.today().year) + '*.[Ww][Aa][Vv]')
+		except:
+			pass
 		sys.exit(1)
 
 if __name__ == '__main__':
