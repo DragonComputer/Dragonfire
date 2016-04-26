@@ -22,11 +22,15 @@ from apiclient.errors import HttpError
 import glob
 import speech_recognition as sr
 import inspect
+import aiml
 
 DRAGONFIRE_PATH = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 FNULL = open(os.devnull, 'w')
 
 def command(speech):
+
+	kernel = aiml.Kernel()
+	kernel.learn(DRAGONFIRE_PATH + "/aiml/*.aiml")
 
 	previous_command = ""
 	global inactive
@@ -36,9 +40,11 @@ def command(speech):
 		line = speech.readline()
 		if line.startswith("sentence1: ") or line.startswith("<search failed>"):
 			com = google_speech_api()
+
 			if (com == 0):
-				speech_error()
+				#speech_error()
 				continue
+
 			com = com.upper()
 			print "You: " + com
 
@@ -286,9 +292,17 @@ def command(speech):
 				k.tap_key('f')
 			else:
 				tts_kill()
-				userin = Data(["echo"],com + " ?")
-				userin.say("Unrecognized command.")
-				userin.interact(0)
+				dragonfire_respond = kernel.respond(com)
+				userin = Data([" "]," ")
+				if dragonfire_respond:
+					userin.say(dragonfire_respond)
+				else:
+					words_dragonfire = {
+						0 : "I'm not that smart, " + user_prefix + ".",
+						1 : "Please, be simple.",
+						2 : "Excuse me? I have an average IQ."
+					}
+					userin.say(words_dragonfire[randint(0,2)])
 				previous_command = com
 
 			#newest = max(glob.iglob('/tmp/' + str(datetime.date.today().year) + '*.[Ww][Aa][Vv]'), key=os.path.getctime)
