@@ -23,6 +23,8 @@ import glob
 import speech_recognition as sr
 import inspect
 import aiml
+import contextlib
+import cStringIO
 
 DRAGONFIRE_PATH = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 FNULL = open(os.devnull, 'w')
@@ -30,7 +32,9 @@ FNULL = open(os.devnull, 'w')
 def command(speech):
 
 	kernel = aiml.Kernel()
-	kernel.learn(DRAGONFIRE_PATH + "/aiml/*.aiml")
+	with nostdout():
+		with nostderr():
+			kernel.learn(DRAGONFIRE_PATH + "/aiml/*.aiml")
 
 	previous_command = ""
 	global inactive
@@ -224,64 +228,60 @@ def command(speech):
 				sys.exit(1)
 			elif "WIKIPEDIA" in com and "SEARCH" in com:
 				tts_kill()
-				search_query = com.replace("SEARCH ", "").replace(" SEARCH", "").replace(" IN WIKIPEDIA", "").replace("IN WIKIPEDIA ", "").replace(" ON WIKIPEDIA", "").replace("ON WIKIPEDIA ", "").replace(" USING WIKIPEDIA", "").replace("USING WIKIPEDIA ", "").replace(" WIKIPEDIA", "").replace("WIKIPEDIA ", "")
-				userin = Data(["sensible-browser","http://en.wikipedia.org/wiki/"+search_query.lower()],search_query)
-				userin.interact(0)
-				try:
-					wikipage = wikipedia.page(search_query)
-					wikicontent = "".join([i if ord(i) < 128 else ' ' for i in wikipage.content])
-					userin.say(wikicontent)
-					previous_command = com
-				except:
-					pass
+				with nostdout():
+					with nostderr():
+						search_query = com.replace("SEARCH ", "").replace(" SEARCH", "").replace(" IN WIKIPEDIA", "").replace("IN WIKIPEDIA ", "").replace(" ON WIKIPEDIA", "").replace("ON WIKIPEDIA ", "").replace(" USING WIKIPEDIA", "").replace("USING WIKIPEDIA ", "").replace(" WIKIPEDIA", "").replace("WIKIPEDIA ", "")
+
+						userin = Data(["sensible-browser","http://en.wikipedia.org/wiki/"+search_query.lower()],search_query)
+						userin.interact(0)
+						wikicontent = ""
+						try:
+							wikipage = wikipedia.page(search_query)
+							wikicontent = "".join([i if ord(i) < 128 else ' ' for i in wikipage.content])
+						except:
+							pass
+				userin.say(wikicontent)
+				previous_command = com
 			elif "YOUTUBE" in com and "SEARCH" in com:
 				tts_kill()
-				search_query = com.replace("SEARCH ", "").replace(" SEARCH", "").replace(" IN YOUTUBE", "").replace("IN YOUTUBE ", "").replace(" ON YOUTUBE", "").replace("ON YOUTUBE ", "").replace(" USING YOUTUBE", "").replace("USING YOUTUBE ", "").replace(" YOUTUBE", "").replace("YOUTUBE ", "")
+				with nostdout():
+					with nostderr():
+						search_query = com.replace("SEARCH ", "").replace(" SEARCH", "").replace(" IN YOUTUBE", "").replace("IN YOUTUBE ", "").replace(" ON YOUTUBE", "").replace("ON YOUTUBE ", "").replace(" USING YOUTUBE", "").replace("USING YOUTUBE ", "").replace(" YOUTUBE", "").replace("YOUTUBE ", "")
 
-				DEVELOPER_KEY = "AIzaSyAcwHj2qzI7KWDUN4RkBTX8Y4lrU78lncA"
-				YOUTUBE_API_SERVICE_NAME = "youtube"
-				YOUTUBE_API_VERSION = "v3"
+						DEVELOPER_KEY = "AIzaSyAcwHj2qzI7KWDUN4RkBTX8Y4lrU78lncA"
+						YOUTUBE_API_SERVICE_NAME = "youtube"
+						YOUTUBE_API_VERSION = "v3"
 
-				youtube = build(YOUTUBE_API_SERVICE_NAME, YOUTUBE_API_VERSION, developerKey=DEVELOPER_KEY)
+						youtube = build(YOUTUBE_API_SERVICE_NAME, YOUTUBE_API_VERSION, developerKey=DEVELOPER_KEY)
 
-				search_response = youtube.search().list(q=search_query, part="id,snippet").execute()
+						search_response = youtube.search().list(q=search_query, part="id,snippet", maxResults=1).execute()
 
-				videos = []
-				channels = []
-				playlists = []
+						videos = []
+						channels = []
+						playlists = []
 
-				# Add each result to the appropriate list, and then display the lists of
-				# matching videos, channels, and playlists.
-				for search_result in search_response.get("items", []):
-					if search_result["id"]["kind"] == "youtube#video":
-						  #videos.append("%s (%s)" % (search_result["snippet"]["title"], search_result["id"]["videoId"]))
-						videos.append(search_result["snippet"]["title"])
-						videos.append(search_result["id"]["videoId"])
-					elif search_result["id"]["kind"] == "youtube#channel":
-						channels.append("%s (%s)" % (search_result["snippet"]["title"], search_result["id"]["channelId"]))
-					elif search_result["id"]["kind"] == "youtube#playlist":
-						playlists.append("%s (%s)" % (search_result["snippet"]["title"], search_result["id"]["playlistId"]))
+						# Add each result to the appropriate list, and then display the lists of
+						# matching videos, channels, and playlists.
+						for search_result in search_response.get("items", []):
+							if search_result["id"]["kind"] == "youtube#video":
+								  #videos.append("%s (%s)" % (search_result["snippet"]["title"], search_result["id"]["videoId"]))
+								videos.append(search_result["snippet"]["title"])
+								videos.append(search_result["id"]["videoId"])
+							elif search_result["id"]["kind"] == "youtube#channel":
+								channels.append("%s (%s)" % (search_result["snippet"]["title"], search_result["id"]["channelId"]))
+							elif search_result["id"]["kind"] == "youtube#playlist":
+								playlists.append("%s (%s)" % (search_result["snippet"]["title"], search_result["id"]["playlistId"]))
 
-				#print "Videos:\n", "\n".join(videos), "\n"
-				#print "Channels:\n", "\n".join(channels), "\n"
-				#print "Playlists:\n", "\n".join(playlists), "\n"
-
-				youtube_title = videos[0]
-				youtube_url = "https://www.youtube.com/watch?v=%s" % (videos[1])
-
-				#root = ET.fromstring(urllib2.urlopen("http://gdata.youtube.com/feeds/api/videos?vq=" + com[20:].lower().replace(" ", "%20") + "&racy=include&orderby=relevance&start-index=1&max-results=1").read())
-
-				#for child in root[15]:
-				#	if child.tag == "{http://www.w3.org/2005/Atom}title":
-				#		youtube_title = child.text
-				#	if child.tag == "{http://www.w3.org/2005/Atom}link":
-				#		youtube_url = child.attrib["href"]
-				#		break
-
-				userin = Data(["sensible-browser",youtube_url],youtube_title)
-				youtube_title = "".join([i if ord(i) < 128 else ' ' for i in youtube_title])
-				k = PyKeyboard()
-				k.tap_key('space')
+						if len(videos) > 1:
+							youtube_title = videos[0]
+							youtube_url = "https://www.youtube.com/watch?v=%s" % (videos[1])
+							userin = Data(["sensible-browser",youtube_url],youtube_title)
+							youtube_title = "".join([i if ord(i) < 128 else ' ' for i in youtube_title])
+						else:
+							youtube_title = "No video found, " + user_prefix + "."
+							userin = Data("",youtube_title)
+						k = PyKeyboard()
+						k.tap_key('space')
 				userin.say(youtube_title)
 				userin.interact(0)
 				time.sleep(3)
@@ -292,7 +292,8 @@ def command(speech):
 				k.tap_key('f')
 			else:
 				tts_kill()
-				dragonfire_respond = kernel.respond(com)
+				with nostderr():
+					dragonfire_respond = kernel.respond(com)
 				userin = Data([" "]," ")
 				if dragonfire_respond:
 					userin.say(dragonfire_respond)
@@ -353,6 +354,20 @@ def speech_error():
 	userin = Data(["echo"],"An error occurred")
 	userin.say("I couldn't understand, please repeat again")
 	userin.interact(0)
+
+@contextlib.contextmanager
+def nostdout():
+	save_stdout = sys.stdout
+	sys.stdout = cStringIO.StringIO()
+	yield
+	sys.stdout = save_stdout
+
+@contextlib.contextmanager
+def nostderr():
+	save_stderr = sys.stderr
+	sys.stderr = cStringIO.StringIO()
+	yield
+	sys.stderr = save_stderr
 
 def initiate():
 	try:
