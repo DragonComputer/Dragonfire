@@ -4,14 +4,15 @@ Dragonfire is an open source virtual assistant project for Ubuntu based Linux di
 
 ![Dragonfire](https://raw.githubusercontent.com/mertyildiran/Dragonfire/master/docs/img/dragonfire.gif)
 
+Dragonfire will never leave your questions unanswered.
+
 ### Version
 
-0.4.8
+0.4.9
 
 ### Installation
 
 ```Shell
-sudo apt-get install julius festival festlex-cmu python-xlib
 sudo pip install dragonfire
 ```
 
@@ -20,15 +21,8 @@ sudo pip install dragonfire
 ```Shell
 dragonfire
 ```
-### Use a better US English female speaker(recommended)
 
-```Shell
-git clone https://github.com/mertyildiran/Dragonfire.git
-cd Dragonfire/
-./install.sh
-```
-
-#### For generating .dict and .dfa files from .grammer and .voca files(for developers), use
+For generating .dict and .dfa files from .grammer and .voca files(for developers), use:
 
 ```Shell
 cd Dragonfire/dragonfire/
