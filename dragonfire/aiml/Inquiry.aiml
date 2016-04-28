@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<aiml>
+<!-- Copyright (c) 2007 ALICE A.I. Foundation, Inc. -->
+<!-- -->
+<!-- Permission is hereby granted, free of charge, to any person       -->
+<!-- obtaining a copy of this software and associated documentation    -->
+<!-- files (the "Software"), to deal in the Software without           -->
+<!-- restriction, including without limitation the rights to use,      -->
+<!-- copy, modify, merge, publish, distribute, sublicense, and/or sell -->
+<!-- copies of the Software, and to permit persons to whom the         -->
+<!-- Software is furnished to do so, subject to the following          -->
+<!-- conditions:                                                       -->
+<!-- -->
+<!-- The above copyright notice and this permission notice shall be    -->
+<!-- included in all copies or substantial portions of the Software.   -->
+<!-- -->
+<!-- THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,   -->
+<!-- EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES   -->
+<!-- OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND          -->
+<!-- NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT       -->
+<!-- HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,      -->
+<!-- WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING      -->
+<!-- FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR     -->
+<!-- OTHER DEALINGS IN THE SOFTWARE. -->
+<!-- -->
+<!-- Complies with the AIML 1.0.1 Standard -->
+<!-- as adopted by the ALICE A.I. Foundation. -->
+<!-- Last modified July 26, 2007 -->
+<!-- .... -->
+<!-- Inquiry.aiml : a simple interrogator in AIML -->
+<!-- so that the bot doesn't repeat questions it knows the answers to. -->
+<!-- Be sure that the default predicate value returned by "top" is OM. -->
+<!-- Revision Inquiry-1.03 -->
+
+  
+<category><pattern>*</pattern><that>TELL ME ONE OF YOUR FAVORITE POSSESSIONS</that><template>You must be very fond of it. <think><set name="it"><set name="has"><person/></set></set></think></template></category>   
+<category><pattern>*</pattern><that>WHAT ARE YOU DOING</that><template>It sounds like a lot of fun.  <think><set name="topic"><set name="does"><person/></set></set></think></template></category>   
+<category><pattern>*</pattern><that>WHAT IS YOUR FAVORITE COLOR</that><template><person/> is a very nice color.  <think><set name="it"><set name="favcolor"><person/></set></set></think></template></category>   
+<category><pattern>*</pattern><that>WHAT IS YOUR FAVORITE MOVIE</that><template>I've never seen <set name="it"> <person/> </set>.   <think><set name="favmovie"><person/></set></think>  <random>  <li>I would like to see it.</li>  <li>Is that a good movie for children?</li>  <li>What did you like about it?</li>  </random></template></category>   
+<category><pattern>COLOR INQUIRY *</pattern><template>What do you have that is <star/>?</template></category>   
+<category><pattern>COLOR INQUIRY OM</pattern><template>What is your favorite color?</template></category>   
+<category><pattern>COLOR INQUIRY WHAT</pattern><template>What is your favorite color?</template></category>   
+<category><pattern>DOES INQUIRY *</pattern><template>Are you still <star/>?</template></category>   
+<category><pattern>DOES INQUIRY OM</pattern><template>What are you doing</template></category>   
+<category><pattern>DOES INQUIRY WHAT</pattern><template>What are you doing</template></category>   
+<category><pattern>GENDER INQUIRY *</pattern><template>Do you like being a <star/>?</template></category>   
+<category><pattern>GENDER INQUIRY OM</pattern><template>Are you a man or a woman</template></category>   
+<category><pattern>GENDER INQUIRY WHAT</pattern><template>Are you a man or a woman</template></category>   
+<category><pattern>HAS INQUIRY *</pattern><template>Tell me more about your <star/>.</template></category>   
+<category><pattern>HAS INQUIRY OM</pattern><template>Tell me one of your favorite possessions.</template></category>   
+<category><pattern>HAS INQUIRY WHAT</pattern><template>Tell me one of your favorite possessions.</template></category>   
+<category><pattern>LOCATION INQUIRY *</pattern><template>Are you still located in <star/>?</template></category>   
+<category><pattern>LOCATION INQUIRY OM</pattern><template>Where are you located?</template></category>   
+<category><pattern>LOCATION INQUIRY WHERE</pattern><template>Where are you located?</template></category>   
+<category><pattern>MAN</pattern><that>ARE YOU A MAN OR A WOMAN</that><template><think><set name="gender">man</set></think>Thanks for telling me your gender, guy.</template></category> 
+<category><pattern>MOVIE INQUIRY *</pattern><template>Does that remind you of <star/>?</template></category>   
+<category><pattern>MOVIE INQUIRY OM</pattern><template>What is your favorite movie?</template></category>   
+<category><pattern>MOVIE INQUIRY WHAT</pattern><template>What is your favorite movie?</template></category>   
+<category><pattern>WOMAN</pattern><that>ARE YOU A MAN OR A WOMAN</that><template><think><set name="gender">woman</set></think>Thanks for telling me your gender.</template></category>
+<category><pattern>_ INQUIRY</pattern><template><srai><star/> INQUIRY OM</srai></template></category> 
+</aiml>

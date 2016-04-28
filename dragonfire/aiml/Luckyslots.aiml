@@ -1,0 +1,943 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<aiml>
+<!-- Copyright (c) 2007 ALICE A.I. Foundation, Inc. -->
+<!-- -->
+<!-- Permission is hereby granted, free of charge, to any person       -->
+<!-- obtaining a copy of this software and associated documentation    -->
+<!-- files (the "Software"), to deal in the Software without           -->
+<!-- restriction, including without limitation the rights to use,      -->
+<!-- copy, modify, merge, publish, distribute, sublicense, and/or sell -->
+<!-- copies of the Software, and to permit persons to whom the         -->
+<!-- Software is furnished to do so, subject to the following          -->
+<!-- conditions:                                                       -->
+<!-- -->
+<!-- The above copyright notice and this permission notice shall be    -->
+<!-- included in all copies or substantial portions of the Software.   -->
+<!-- -->
+<!-- THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,   -->
+<!-- EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES   -->
+<!-- OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND          -->
+<!-- NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT       -->
+<!-- HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,      -->
+<!-- WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING      -->
+<!-- FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR     -->
+<!-- OTHER DEALINGS IN THE SOFTWARE. -->
+<!-- -->
+<!-- Complies with the AIML 1.0.1 Standard -->
+<!-- as adopted by the ALICE A.I. Foundation. -->
+<!-- Last modified July 26, 2007 -->
+
+<category>
+<pattern>LUCKYSLOTS</pattern>
+<template>
+<think>
+	<set name="coins">50</set>
+</think>
+Welcome to my slot machine.<br/>You start with<get name="coins"/>coins and each spin of the machine costs you 1 coin.<br/>The game is over when you have either lost all your money or made 250 coins.<br/>Good luck!<br/><br/>Type START to load the machine.
+</template>
+</category>
+
+
+<!-- First spin -->
+
+<category>
+<pattern>START</pattern>
+<that>TYPE START TO LOAD THE MACHINE</that>
+<template>
+	Reels: -&gt; ? ? ? &lt;-<br/><br/>
+	A A A pays 100<br/>
+	K K K pays 50<br/>
+	Q Q Q pays 25<br/>
+	J J J pays 15<br/>
+	7 7 7 pays 7<br/>
+	A A - pays 2<br/><br/>
+	You have<get name="coins"/>coins in the bank.<br/><br/>
+	<set name="slotsmessage">Type S to spin the reels</set>  
+</template>
+</category>
+
+
+<!-- Main loop -->
+
+<category>
+<pattern>S</pattern>
+<that>TYPE S TO SPIN THE REELS</that>
+<template>
+	<srai>XSUB1</srai>
+	<srai>XSPIN1</srai>
+	<srai>XSPIN2</srai>
+	<srai>XSPIN3</srai>
+	<srai>XSLOTSLOOP</srai>
+</template>
+</category>
+
+<category>
+<pattern>XSLOTSLOOP</pattern>
+<template>
+	Reels: -&gt;<set name="reels"><get name="reel1"/><get name="reel2"/><get name="reel3"/></set> &lt;-<br/>
+	<srai>XSLOTHOLD</srai><br/>
+	A A A pays 100<br/>
+	K K K pays 50<br/>
+	Q Q Q pays 25<br/>
+	J J J pays 15<br/>
+	7 7 7 pays 7<br/>
+	A A - pays 2<br/><br/>
+	<srai>XCHECKWIN</srai><br/>		
+			<think>
+			<set name="bank">You have<get name="coins"/>coins in the bank.</set>
+				<condition name="coins"> 
+					<li value="1"><set name="bank">You have 1 coin in the bank.</set></li>
+				</condition>
+			</think>		
+		<get name="bank"/><br/><br/>
+	<srai>XCHECKGAMEOVER</srai><get name="slotsmessage"/> 
+</template>
+</category>
+
+
+<!-- Possible HOLD? -->
+<!-- The default is 1 in 3 chance of a hold -->
+<!-- You can increase/decrease it by adding/deleting more of the blank li statements  -->
+
+<category>
+<pattern>XSLOTHOLD</pattern>
+<template>
+	<random>
+		<li><think><set name="slotsmessage">Type S to spin the reels</set></think></li>
+		<li><think><set name="slotsmessage">Type S to spin the reels</set></think></li>
+		<li>HOLD: -&gt; 1 2 3 &lt;-<think><set name="slotsmessage">HOLD AVAILABLE - Enter the reels you wish to hold. E.g. 12 will hold reels 1 and 2 and spin reel 3.<br/>Type S to spin all three.</set>
+		</think></li>
+	</random>
+</template>
+</category>
+
+
+<!-- Which reels do you want to hold? -->
+
+<category>
+<pattern>S</pattern>
+<that>TYPE S TO SPIN ALL THREE</that>
+<template>
+	<srai>XSUB1</srai>
+	<srai>XSPIN1</srai>
+	<srai>XSPIN2</srai>
+	<srai>XSPIN3</srai>
+	<srai>XSLOTSLOOP</srai>
+</template>
+</category>
+
+<category>
+<pattern>1</pattern>
+<that>TYPE S TO SPIN ALL THREE</that>
+<template>
+	<srai>XSUB1</srai>
+	<srai>XSPIN2</srai>
+	<srai>XSPIN3</srai>
+	<srai>XSLOTSLOOP</srai>
+</template>
+</category>
+
+<category>
+<pattern>2</pattern>
+<that>TYPE S TO SPIN ALL THREE</that>
+<template>
+	<srai>XSUB1</srai>
+	<srai>XSPIN1</srai>
+	<srai>XSPIN3</srai>
+	<srai>XSLOTSLOOP</srai>
+</template>
+</category>
+
+<category>
+<pattern>3</pattern>
+<that>TYPE S TO SPIN ALL THREE</that>
+<template>
+	<srai>XSUB1</srai>
+	<srai>XSPIN1</srai>
+	<srai>XSPIN2</srai>
+	<srai>XSLOTSLOOP</srai>
+</template>
+</category>
+
+<category>
+<pattern>12</pattern>
+<that>TYPE S TO SPIN ALL THREE</that>
+<template>
+	<srai>XSUB1</srai>
+	<srai>XSPIN3</srai>
+	<srai>XSLOTSLOOP</srai>
+</template>
+</category>
+
+<category>
+<pattern>13</pattern>
+<that>TYPE S TO SPIN ALL THREE</that>
+<template>
+	<srai>XSUB1</srai>
+	<srai>XSPIN2</srai>
+	<srai>XSLOTSLOOP</srai>
+</template>
+</category>
+
+<category>
+<pattern>23</pattern>
+<that>TYPE S TO SPIN ALL THREE</that>
+<template>
+	<srai>XSUB1</srai>
+	<srai>XSPIN1</srai>
+	<srai>XSLOTSLOOP</srai>
+</template>
+</category>
+
+<category>
+<pattern>123</pattern>
+<that>TYPE S TO SPIN ALL THREE</that>
+<template>
+	<srai>XSUB1</srai>
+	<srai>XSLOTSLOOP</srai>
+</template>
+</category>
+
+
+<!-- SRAIs in case the user doesn't enter the holds in reel order -->
+
+<category>
+<pattern>21</pattern>
+<that>TYPE S TO SPIN ALL THREE</that>
+<template>
+	<srai>12</srai>
+</template>
+</category>
+
+<category>
+<pattern>31</pattern>
+<that>TYPE S TO SPIN ALL THREE</that>
+<template>
+	<srai>13</srai>
+</template>
+</category>
+
+<category>
+<pattern>32</pattern>
+<that>TYPE S TO SPIN ALL THREE</that>
+<template>
+	<srai>23</srai>
+</template>
+</category>
+
+<category>
+<pattern>132</pattern>
+<that>TYPE S TO SPIN ALL THREE</that>
+<template>
+	<srai>123</srai>
+</template>
+</category>
+
+<category>
+<pattern>213</pattern>
+<that>TYPE S TO SPIN ALL THREE</that>
+<template>
+	<srai>123</srai>
+</template>
+</category>
+
+<category>
+<pattern>231</pattern>
+<that>TYPE S TO SPIN ALL THREE</that>
+<template>
+	<srai>123</srai>
+</template>
+</category>
+
+<category>
+<pattern>312</pattern>
+<that>TYPE S TO SPIN ALL THREE</that>
+<template>
+	<srai>123</srai>
+</template>
+</category>
+
+<category>
+<pattern>321</pattern>
+<that>TYPE S TO SPIN ALL THREE</that>
+<template>
+	<srai>123</srai>
+</template>
+</category>
+
+
+<!-- Spin the reels -->
+
+<category>
+<pattern>XSPIN1</pattern>
+<template>
+<think>
+	<random>
+		<li><set name="reel1">A</set></li>
+		<li><set name="reel1">7</set></li>
+		<li><set name="reel1">K</set></li>
+		<li><set name="reel1">7</set></li>
+		<li><set name="reel1">Q</set></li>
+		<li><set name="reel1">7</set></li>
+		<li><set name="reel1">J</set></li>
+		<li><set name="reel1">K</set></li>
+		<li><set name="reel1">Q</set></li>
+		<li><set name="reel1">J</set></li>
+	</random>
+</think>
+</template>
+</category>
+
+<category>
+<pattern>XSPIN2</pattern>
+<template>
+<think>
+	<random>
+		<li><set name="reel2">K</set></li>
+		<li><set name="reel2">Q</set></li>
+		<li><set name="reel2">J</set></li>
+		<li><set name="reel2">Q</set></li>
+		<li><set name="reel2">A</set></li>
+		<li><set name="reel2">7</set></li>
+	</random>
+</think>
+</template>
+</category>
+
+<category>
+<pattern>XSPIN3</pattern>
+<template>
+<think>
+	<random>
+		<li><set name="reel3">K</set></li>
+		<li><set name="reel3">7</set></li>
+		<li><set name="reel3">J</set></li>
+		<li><set name="reel3">7</set></li>
+		<li><set name="reel3">A</set></li>
+		<li><set name="reel3">7</set></li>
+		<li><set name="reel3">J</set></li>
+		<li><set name="reel3">Q</set></li>
+		<li><set name="reel3">J</set></li>
+	</random>
+</think>
+</template>
+</category>
+
+
+<!-- Check for a win -->
+
+<category>
+<pattern>XCHECKWIN</pattern>
+<template>
+<think>
+<set name="payout">0</set>
+	<condition name="reels">
+		<li value="A A A"><set name="payout">100</set></li>
+		<li value="K K K"><set name="payout">50</set></li>
+		<li value="Q Q Q"><set name="payout">25</set></li>
+		<li value="J J J"><set name="payout">15</set></li>
+		<li value="7 7 7"><set name="payout">7</set></li>
+		<li value="A A K"><set name="payout">2</set></li>
+		<li value="A A Q"><set name="payout">2</set></li>
+		<li value="A A J"><set name="payout">2</set></li>
+		<li value="A A 7"><set name="payout">2</set></li>
+	</condition>
+</think> 
+<srai>XADDWIN</srai>
+</template>
+</category>
+
+
+<!-- Add any money won to the bank and produce a congratulations message -->
+
+<category>
+<pattern>XADDWIN</pattern>
+<template>
+<think>
+	<condition name="payout">
+		<li value="100"><srai>XADD25</srai><srai>XADD25</srai><srai>XADD25</srai><srai>XADD25</srai></li>
+		<li value="50"><srai>XADD25</srai><srai>XADD25</srai></li>
+		<li value="25"><srai>XADD25</srai></li>
+		<li value="15"><srai>XADD5</srai><srai>XADD5</srai><srai>XADD5</srai></li>
+		<li value="7"><srai>XADD5</srai><srai>XADD1</srai><srai>XADD1</srai></li>
+		<li value="2"><srai>XADD1</srai><srai>XADD1</srai></li>
+	</condition>
+</think>
+	<condition name="payout">
+		<li value="100">J A C K P O T ! ! ! 100 coins!!!</li>
+		<li value="50">3 Kings! You win 50 coins.</li>
+		<li value="25">3 Queens! You win 25 coins.</li>
+		<li value="15">3 Jacks! You win 15 coins.</li>
+		<li value="7">3 Sevens! You win 7 coins.</li>
+		<li value="2">2 Aces! You win 2 coins.</li>
+		<li value="0">No win.</li>
+	</condition>
+</template>
+</category>
+
+
+<!-- Check for 0 or 250 in the bank -->
+
+<category>
+<pattern>XCHECKGAMEOVER</pattern>
+<template>
+<think>
+	<condition name="coins"> 
+		<li value="0"><set name="slotsmessage">B A N K R U P T ! ! !<br/>GAME OVER</set></li>
+		<li value="250"><set name="slotsmessage">CONGRATULATIONS! YOU HAVE BROKEN THE BANK!!!!<br/>GAME OVER</set></li> 
+	</condition>
+</think> 
+</template>
+</category>
+
+
+<!-- Functions to add money to the bank -->
+	
+<category>
+<pattern>XADD5</pattern>
+<template>
+	<srai>XADD1</srai>
+	<srai>XADD1</srai>
+	<srai>XADD1</srai>
+	<srai>XADD1</srai>
+	<srai>XADD1</srai>
+</template>
+</category>
+
+<category>
+<pattern>XADD25</pattern>
+<template>
+	<srai>XADD5</srai>
+	<srai>XADD5</srai>
+	<srai>XADD5</srai>
+	<srai>XADD5</srai>
+	<srai>XADD5</srai>
+</template>
+</category>
+
+
+<!-- The dirty job! Add the win to the bank -->
+
+<category>
+<pattern>XADD1</pattern> 
+<template>
+<think>
+	<condition name="coins"> 
+		<li value="0"><set name="coins">1</set></li>
+		<li value="1"><set name="coins">2</set></li> 
+		<li value="2"><set name="coins">3</set></li> 
+		<li value="3"><set name="coins">4</set></li> 
+		<li value="4"><set name="coins">5</set></li> 
+		<li value="5"><set name="coins">6</set></li> 
+		<li value="6"><set name="coins">7</set></li> 
+		<li value="7"><set name="coins">8</set></li> 
+		<li value="8"><set name="coins">9</set></li> 
+		<li value="9"><set name="coins">10</set></li> 
+		<li value="10"><set name="coins">11</set></li>
+		<li value="11"><set name="coins">12</set></li> 
+		<li value="12"><set name="coins">13</set></li> 
+		<li value="13"><set name="coins">14</set></li> 
+		<li value="14"><set name="coins">15</set></li> 
+		<li value="15"><set name="coins">16</set></li> 
+		<li value="16"><set name="coins">17</set></li> 
+		<li value="17"><set name="coins">18</set></li> 
+		<li value="18"><set name="coins">19</set></li> 
+		<li value="19"><set name="coins">20</set></li> 
+		<li value="20"><set name="coins">21</set></li>
+		<li value="21"><set name="coins">22</set></li> 
+		<li value="22"><set name="coins">23</set></li> 
+		<li value="23"><set name="coins">24</set></li> 
+		<li value="24"><set name="coins">25</set></li> 
+		<li value="25"><set name="coins">26</set></li> 
+		<li value="26"><set name="coins">27</set></li> 
+		<li value="27"><set name="coins">28</set></li> 
+		<li value="28"><set name="coins">29</set></li> 
+		<li value="29"><set name="coins">30</set></li> 
+		<li value="30"><set name="coins">31</set></li>
+		<li value="31"><set name="coins">32</set></li> 
+		<li value="32"><set name="coins">33</set></li> 
+		<li value="33"><set name="coins">34</set></li> 
+		<li value="34"><set name="coins">35</set></li> 
+		<li value="35"><set name="coins">36</set></li> 
+		<li value="36"><set name="coins">37</set></li> 
+		<li value="37"><set name="coins">38</set></li> 
+		<li value="38"><set name="coins">39</set></li> 
+		<li value="39"><set name="coins">40</set></li> 
+		<li value="40"><set name="coins">41</set></li>
+		<li value="41"><set name="coins">42</set></li> 
+		<li value="42"><set name="coins">43</set></li> 
+		<li value="43"><set name="coins">44</set></li> 
+		<li value="44"><set name="coins">45</set></li> 
+		<li value="45"><set name="coins">46</set></li> 
+		<li value="46"><set name="coins">47</set></li> 
+		<li value="47"><set name="coins">48</set></li> 
+		<li value="48"><set name="coins">49</set></li> 
+		<li value="49"><set name="coins">50</set></li> 
+		<li value="50"><set name="coins">51</set></li>
+		<li value="51"><set name="coins">52</set></li> 
+		<li value="52"><set name="coins">53</set></li> 
+		<li value="53"><set name="coins">54</set></li> 
+		<li value="54"><set name="coins">55</set></li> 
+		<li value="55"><set name="coins">56</set></li> 
+		<li value="56"><set name="coins">57</set></li> 
+		<li value="57"><set name="coins">58</set></li> 
+		<li value="58"><set name="coins">59</set></li> 
+		<li value="59"><set name="coins">60</set></li> 
+		<li value="60"><set name="coins">61</set></li>
+		<li value="61"><set name="coins">62</set></li> 
+		<li value="62"><set name="coins">63</set></li> 
+		<li value="63"><set name="coins">64</set></li> 
+		<li value="64"><set name="coins">65</set></li> 
+		<li value="65"><set name="coins">66</set></li> 
+		<li value="66"><set name="coins">67</set></li> 
+		<li value="67"><set name="coins">68</set></li> 
+		<li value="68"><set name="coins">69</set></li> 
+		<li value="69"><set name="coins">70</set></li> 
+		<li value="70"><set name="coins">71</set></li>
+		<li value="71"><set name="coins">72</set></li> 
+		<li value="72"><set name="coins">73</set></li> 
+		<li value="73"><set name="coins">74</set></li> 
+		<li value="74"><set name="coins">75</set></li> 
+		<li value="75"><set name="coins">76</set></li> 
+		<li value="76"><set name="coins">77</set></li> 
+		<li value="77"><set name="coins">78</set></li> 
+		<li value="78"><set name="coins">79</set></li> 
+		<li value="79"><set name="coins">80</set></li> 
+		<li value="80"><set name="coins">81</set></li>
+		<li value="81"><set name="coins">82</set></li> 
+		<li value="82"><set name="coins">83</set></li> 
+		<li value="83"><set name="coins">84</set></li> 
+		<li value="84"><set name="coins">85</set></li> 
+		<li value="85"><set name="coins">86</set></li> 
+		<li value="86"><set name="coins">87</set></li> 
+		<li value="87"><set name="coins">88</set></li> 
+		<li value="88"><set name="coins">89</set></li> 
+		<li value="89"><set name="coins">90</set></li> 
+		<li value="90"><set name="coins">91</set></li>
+		<li value="91"><set name="coins">92</set></li> 
+		<li value="92"><set name="coins">93</set></li> 
+		<li value="93"><set name="coins">94</set></li> 
+		<li value="94"><set name="coins">95</set></li> 
+		<li value="95"><set name="coins">96</set></li> 
+		<li value="96"><set name="coins">97</set></li> 
+		<li value="97"><set name="coins">98</set></li> 
+		<li value="98"><set name="coins">99</set></li> 
+		<li value="99"><set name="coins">100</set></li> 
+		<li value="100"><set name="coins">101</set></li>
+		<li value="101"><set name="coins">102</set></li> 
+		<li value="102"><set name="coins">103</set></li> 
+		<li value="103"><set name="coins">104</set></li> 
+		<li value="104"><set name="coins">105</set></li> 
+		<li value="105"><set name="coins">106</set></li> 
+		<li value="106"><set name="coins">107</set></li> 
+		<li value="107"><set name="coins">108</set></li> 
+		<li value="108"><set name="coins">109</set></li> 
+		<li value="109"><set name="coins">110</set></li> 
+		<li value="110"><set name="coins">111</set></li>
+		<li value="111"><set name="coins">112</set></li> 
+		<li value="112"><set name="coins">113</set></li> 
+		<li value="113"><set name="coins">114</set></li> 
+		<li value="114"><set name="coins">115</set></li> 
+		<li value="115"><set name="coins">116</set></li> 
+		<li value="116"><set name="coins">117</set></li> 
+		<li value="117"><set name="coins">118</set></li> 
+		<li value="118"><set name="coins">119</set></li> 
+		<li value="119"><set name="coins">120</set></li> 
+		<li value="120"><set name="coins">121</set></li>
+		<li value="121"><set name="coins">122</set></li> 
+		<li value="122"><set name="coins">123</set></li> 
+		<li value="123"><set name="coins">124</set></li> 
+		<li value="124"><set name="coins">125</set></li> 
+		<li value="125"><set name="coins">126</set></li> 
+		<li value="126"><set name="coins">127</set></li> 
+		<li value="127"><set name="coins">128</set></li> 
+		<li value="128"><set name="coins">129</set></li> 
+		<li value="129"><set name="coins">130</set></li> 
+		<li value="130"><set name="coins">131</set></li>
+		<li value="131"><set name="coins">132</set></li> 
+		<li value="132"><set name="coins">133</set></li> 
+		<li value="133"><set name="coins">134</set></li> 
+		<li value="134"><set name="coins">135</set></li> 
+		<li value="135"><set name="coins">136</set></li> 
+		<li value="136"><set name="coins">137</set></li> 
+		<li value="137"><set name="coins">138</set></li> 
+		<li value="138"><set name="coins">139</set></li> 
+		<li value="139"><set name="coins">140</set></li> 
+		<li value="140"><set name="coins">141</set></li>
+		<li value="141"><set name="coins">142</set></li> 
+		<li value="142"><set name="coins">143</set></li> 
+		<li value="143"><set name="coins">144</set></li> 
+		<li value="144"><set name="coins">145</set></li> 
+		<li value="145"><set name="coins">146</set></li> 
+		<li value="146"><set name="coins">147</set></li> 
+		<li value="147"><set name="coins">148</set></li> 
+		<li value="148"><set name="coins">149</set></li> 
+		<li value="149"><set name="coins">150</set></li> 
+		<li value="150"><set name="coins">151</set></li>
+		<li value="151"><set name="coins">152</set></li> 
+		<li value="152"><set name="coins">153</set></li> 
+		<li value="153"><set name="coins">154</set></li> 
+		<li value="154"><set name="coins">155</set></li> 
+		<li value="155"><set name="coins">156</set></li> 
+		<li value="156"><set name="coins">157</set></li> 
+		<li value="157"><set name="coins">158</set></li> 
+		<li value="158"><set name="coins">159</set></li> 
+		<li value="159"><set name="coins">160</set></li> 
+		<li value="160"><set name="coins">161</set></li>
+		<li value="161"><set name="coins">162</set></li> 
+		<li value="162"><set name="coins">163</set></li> 
+		<li value="163"><set name="coins">164</set></li> 
+		<li value="164"><set name="coins">165</set></li> 
+		<li value="165"><set name="coins">166</set></li> 
+		<li value="166"><set name="coins">167</set></li> 
+		<li value="167"><set name="coins">168</set></li> 
+		<li value="168"><set name="coins">169</set></li> 
+		<li value="169"><set name="coins">170</set></li> 
+		<li value="170"><set name="coins">171</set></li>
+		<li value="171"><set name="coins">172</set></li> 
+		<li value="172"><set name="coins">173</set></li> 
+		<li value="173"><set name="coins">174</set></li> 
+		<li value="174"><set name="coins">175</set></li> 
+		<li value="175"><set name="coins">176</set></li> 
+		<li value="176"><set name="coins">177</set></li> 
+		<li value="177"><set name="coins">178</set></li> 
+		<li value="178"><set name="coins">179</set></li> 
+		<li value="179"><set name="coins">180</set></li> 
+		<li value="180"><set name="coins">181</set></li>
+		<li value="181"><set name="coins">182</set></li> 
+		<li value="182"><set name="coins">183</set></li> 
+		<li value="183"><set name="coins">184</set></li> 
+		<li value="184"><set name="coins">185</set></li> 
+		<li value="185"><set name="coins">186</set></li> 
+		<li value="186"><set name="coins">187</set></li> 
+		<li value="187"><set name="coins">188</set></li> 
+		<li value="188"><set name="coins">189</set></li> 
+		<li value="189"><set name="coins">190</set></li> 
+		<li value="190"><set name="coins">191</set></li>
+		<li value="191"><set name="coins">192</set></li> 
+		<li value="192"><set name="coins">193</set></li> 
+		<li value="193"><set name="coins">194</set></li> 
+		<li value="194"><set name="coins">195</set></li> 
+		<li value="195"><set name="coins">196</set></li> 
+		<li value="196"><set name="coins">197</set></li> 
+		<li value="197"><set name="coins">198</set></li> 
+		<li value="198"><set name="coins">199</set></li> 
+		<li value="199"><set name="coins">200</set></li> 
+		<li value="200"><set name="coins">201</set></li>
+		<li value="201"><set name="coins">202</set></li> 
+		<li value="202"><set name="coins">203</set></li> 
+		<li value="203"><set name="coins">204</set></li> 
+		<li value="204"><set name="coins">205</set></li> 
+		<li value="205"><set name="coins">206</set></li> 
+		<li value="206"><set name="coins">207</set></li> 
+		<li value="207"><set name="coins">208</set></li> 
+		<li value="208"><set name="coins">209</set></li> 
+		<li value="209"><set name="coins">210</set></li> 
+		<li value="210"><set name="coins">211</set></li>
+		<li value="211"><set name="coins">212</set></li> 
+		<li value="212"><set name="coins">213</set></li> 
+		<li value="213"><set name="coins">214</set></li> 
+		<li value="214"><set name="coins">215</set></li> 
+		<li value="215"><set name="coins">216</set></li> 
+		<li value="216"><set name="coins">217</set></li> 
+		<li value="217"><set name="coins">218</set></li> 
+		<li value="218"><set name="coins">219</set></li> 
+		<li value="219"><set name="coins">220</set></li> 
+		<li value="220"><set name="coins">221</set></li>
+		<li value="221"><set name="coins">222</set></li> 
+		<li value="222"><set name="coins">223</set></li> 
+		<li value="223"><set name="coins">224</set></li> 
+		<li value="224"><set name="coins">225</set></li> 
+		<li value="225"><set name="coins">226</set></li> 
+		<li value="226"><set name="coins">227</set></li> 
+		<li value="227"><set name="coins">228</set></li> 
+		<li value="228"><set name="coins">229</set></li> 
+		<li value="229"><set name="coins">230</set></li> 
+		<li value="230"><set name="coins">231</set></li>
+		<li value="231"><set name="coins">232</set></li> 
+		<li value="232"><set name="coins">233</set></li> 
+		<li value="233"><set name="coins">234</set></li> 
+		<li value="234"><set name="coins">235</set></li> 
+		<li value="235"><set name="coins">236</set></li> 
+		<li value="236"><set name="coins">237</set></li> 
+		<li value="237"><set name="coins">238</set></li> 
+		<li value="238"><set name="coins">239</set></li> 
+		<li value="239"><set name="coins">240</set></li> 
+		<li value="240"><set name="coins">241</set></li>
+		<li value="241"><set name="coins">242</set></li> 
+		<li value="242"><set name="coins">243</set></li> 
+		<li value="243"><set name="coins">244</set></li> 
+		<li value="244"><set name="coins">245</set></li> 
+		<li value="245"><set name="coins">246</set></li> 
+		<li value="246"><set name="coins">247</set></li> 
+		<li value="247"><set name="coins">248</set></li> 
+		<li value="248"><set name="coins">249</set></li> 
+		<li value="249"><set name="coins">250</set></li> 
+	</condition>
+</think> 
+</template>
+</category>
+
+
+<!-- Take 1 coin for each spin -->
+
+<category>
+<pattern>XSUB1</pattern> 
+<template>
+<think>
+	<condition name="coins">
+		<li value="249"><set name="coins">248</set></li>
+		<li value="248"><set name="coins">247</set></li> 
+		<li value="247"><set name="coins">246</set></li> 
+		<li value="246"><set name="coins">245</set></li> 
+		<li value="245"><set name="coins">244</set></li> 
+		<li value="244"><set name="coins">243</set></li> 
+		<li value="243"><set name="coins">242</set></li> 
+		<li value="242"><set name="coins">241</set></li> 
+		<li value="241"><set name="coins">240</set></li> 
+		<li value="240"><set name="coins">239</set></li> 
+		<li value="239"><set name="coins">238</set></li>
+		<li value="238"><set name="coins">237</set></li> 
+		<li value="237"><set name="coins">236</set></li> 
+		<li value="236"><set name="coins">235</set></li> 
+		<li value="235"><set name="coins">234</set></li> 
+		<li value="234"><set name="coins">233</set></li> 
+		<li value="233"><set name="coins">232</set></li> 
+		<li value="232"><set name="coins">231</set></li> 
+		<li value="231"><set name="coins">230</set></li> 
+		<li value="230"><set name="coins">229</set></li>
+		<li value="229"><set name="coins">228</set></li>
+		<li value="228"><set name="coins">227</set></li> 
+		<li value="227"><set name="coins">226</set></li> 
+		<li value="226"><set name="coins">225</set></li> 
+		<li value="225"><set name="coins">224</set></li> 
+		<li value="224"><set name="coins">223</set></li> 
+		<li value="223"><set name="coins">222</set></li> 
+		<li value="222"><set name="coins">221</set></li> 
+		<li value="221"><set name="coins">220</set></li> 
+		<li value="220"><set name="coins">219</set></li> 
+		<li value="219"><set name="coins">218</set></li>
+		<li value="218"><set name="coins">217</set></li> 
+		<li value="217"><set name="coins">216</set></li> 
+		<li value="216"><set name="coins">215</set></li> 
+		<li value="215"><set name="coins">214</set></li> 
+		<li value="214"><set name="coins">213</set></li> 
+		<li value="213"><set name="coins">212</set></li> 
+		<li value="212"><set name="coins">211</set></li> 
+		<li value="211"><set name="coins">210</set></li> 
+		<li value="210"><set name="coins">209</set></li> 
+		<li value="209"><set name="coins">208</set></li>
+		<li value="208"><set name="coins">207</set></li> 
+		<li value="207"><set name="coins">206</set></li> 
+		<li value="206"><set name="coins">205</set></li> 
+		<li value="205"><set name="coins">204</set></li> 
+		<li value="204"><set name="coins">203</set></li> 
+		<li value="203"><set name="coins">202</set></li> 
+		<li value="202"><set name="coins">201</set></li> 
+		<li value="201"><set name="coins">200</set></li> 
+		<li value="200"><set name="coins">199</set></li> 
+		<li value="199"><set name="coins">198</set></li>
+		<li value="198"><set name="coins">197</set></li> 
+		<li value="197"><set name="coins">196</set></li> 
+		<li value="196"><set name="coins">195</set></li> 
+		<li value="195"><set name="coins">194</set></li> 
+		<li value="194"><set name="coins">193</set></li> 
+		<li value="193"><set name="coins">192</set></li> 
+		<li value="192"><set name="coins">191</set></li> 
+		<li value="191"><set name="coins">190</set></li> 
+		<li value="190"><set name="coins">189</set></li> 
+		<li value="189"><set name="coins">188</set></li>
+		<li value="188"><set name="coins">187</set></li> 
+		<li value="187"><set name="coins">186</set></li> 
+		<li value="186"><set name="coins">185</set></li> 
+		<li value="185"><set name="coins">184</set></li> 
+		<li value="184"><set name="coins">183</set></li> 
+		<li value="183"><set name="coins">182</set></li> 
+		<li value="182"><set name="coins">181</set></li> 
+		<li value="181"><set name="coins">180</set></li> 
+		<li value="180"><set name="coins">179</set></li>
+		<li value="179"><set name="coins">178</set></li>
+		<li value="178"><set name="coins">177</set></li> 
+		<li value="177"><set name="coins">176</set></li> 
+		<li value="176"><set name="coins">175</set></li> 
+		<li value="175"><set name="coins">174</set></li> 
+		<li value="174"><set name="coins">173</set></li> 
+		<li value="173"><set name="coins">172</set></li> 
+		<li value="172"><set name="coins">171</set></li> 
+		<li value="171"><set name="coins">170</set></li> 
+		<li value="170"><set name="coins">169</set></li> 
+		<li value="169"><set name="coins">168</set></li>
+		<li value="168"><set name="coins">167</set></li> 
+		<li value="167"><set name="coins">166</set></li> 
+		<li value="166"><set name="coins">165</set></li> 
+		<li value="165"><set name="coins">164</set></li> 
+		<li value="164"><set name="coins">163</set></li> 
+		<li value="163"><set name="coins">162</set></li> 
+		<li value="162"><set name="coins">161</set></li> 
+		<li value="161"><set name="coins">160</set></li> 
+		<li value="160"><set name="coins">159</set></li> 
+		<li value="159"><set name="coins">158</set></li>
+		<li value="158"><set name="coins">157</set></li> 
+		<li value="157"><set name="coins">156</set></li> 
+		<li value="156"><set name="coins">155</set></li> 
+		<li value="155"><set name="coins">154</set></li> 
+		<li value="154"><set name="coins">153</set></li> 
+		<li value="153"><set name="coins">152</set></li> 
+		<li value="152"><set name="coins">151</set></li> 
+		<li value="151"><set name="coins">150</set></li> 
+		<li value="150"><set name="coins">149</set></li> 
+		<li value="149"><set name="coins">148</set></li>
+		<li value="148"><set name="coins">147</set></li> 
+		<li value="147"><set name="coins">146</set></li> 
+		<li value="146"><set name="coins">145</set></li> 
+		<li value="145"><set name="coins">144</set></li> 
+		<li value="144"><set name="coins">143</set></li> 
+		<li value="143"><set name="coins">142</set></li> 
+		<li value="142"><set name="coins">141</set></li> 
+		<li value="141"><set name="coins">140</set></li> 
+		<li value="140"><set name="coins">139</set></li> 
+		<li value="139"><set name="coins">138</set></li>
+		<li value="138"><set name="coins">137</set></li> 
+		<li value="137"><set name="coins">136</set></li> 
+		<li value="136"><set name="coins">135</set></li> 
+		<li value="135"><set name="coins">134</set></li> 
+		<li value="134"><set name="coins">133</set></li> 
+		<li value="133"><set name="coins">132</set></li> 
+		<li value="132"><set name="coins">131</set></li> 
+		<li value="131"><set name="coins">130</set></li> 
+		<li value="130"><set name="coins">129</set></li>
+		<li value="129"><set name="coins">128</set></li>
+		<li value="128"><set name="coins">127</set></li> 
+		<li value="127"><set name="coins">126</set></li> 
+		<li value="126"><set name="coins">125</set></li> 
+		<li value="125"><set name="coins">124</set></li> 
+		<li value="124"><set name="coins">123</set></li> 
+		<li value="123"><set name="coins">122</set></li> 
+		<li value="122"><set name="coins">121</set></li> 
+		<li value="121"><set name="coins">120</set></li> 
+		<li value="120"><set name="coins">119</set></li> 
+		<li value="119"><set name="coins">118</set></li>
+		<li value="118"><set name="coins">117</set></li> 
+		<li value="117"><set name="coins">116</set></li> 
+		<li value="116"><set name="coins">115</set></li> 
+		<li value="115"><set name="coins">114</set></li> 
+		<li value="114"><set name="coins">113</set></li> 
+		<li value="113"><set name="coins">112</set></li> 
+		<li value="112"><set name="coins">111</set></li> 
+		<li value="111"><set name="coins">110</set></li> 
+		<li value="110"><set name="coins">109</set></li> 
+		<li value="109"><set name="coins">108</set></li>
+		<li value="108"><set name="coins">107</set></li> 
+		<li value="107"><set name="coins">106</set></li> 
+		<li value="106"><set name="coins">105</set></li> 
+		<li value="105"><set name="coins">104</set></li> 
+		<li value="104"><set name="coins">103</set></li> 
+		<li value="103"><set name="coins">102</set></li> 
+		<li value="102"><set name="coins">101</set></li> 
+		<li value="101"><set name="coins">100</set></li> 
+		<li value="100"><set name="coins">99</set></li> 
+		<li value="99"><set name="coins">98</set></li>
+		<li value="98"><set name="coins">97</set></li> 
+		<li value="97"><set name="coins">96</set></li> 
+		<li value="96"><set name="coins">95</set></li> 
+		<li value="95"><set name="coins">94</set></li> 
+		<li value="94"><set name="coins">93</set></li> 
+		<li value="93"><set name="coins">92</set></li> 
+		<li value="92"><set name="coins">91</set></li> 
+		<li value="91"><set name="coins">90</set></li> 
+		<li value="90"><set name="coins">89</set></li> 
+		<li value="89"><set name="coins">88</set></li>
+		<li value="88"><set name="coins">87</set></li> 
+		<li value="87"><set name="coins">86</set></li> 
+		<li value="86"><set name="coins">85</set></li> 
+		<li value="85"><set name="coins">84</set></li> 
+		<li value="84"><set name="coins">83</set></li> 
+		<li value="83"><set name="coins">82</set></li> 
+		<li value="82"><set name="coins">81</set></li> 
+		<li value="81"><set name="coins">80</set></li> 
+		<li value="80"><set name="coins">79</set></li>
+		<li value="79"><set name="coins">78</set></li>
+		<li value="78"><set name="coins">77</set></li> 
+		<li value="77"><set name="coins">76</set></li> 
+		<li value="76"><set name="coins">75</set></li> 
+		<li value="75"><set name="coins">74</set></li> 
+		<li value="74"><set name="coins">73</set></li> 
+		<li value="73"><set name="coins">72</set></li> 
+		<li value="72"><set name="coins">71</set></li> 
+		<li value="71"><set name="coins">70</set></li> 
+		<li value="70"><set name="coins">69</set></li> 
+		<li value="69"><set name="coins">68</set></li>
+		<li value="68"><set name="coins">67</set></li> 
+		<li value="67"><set name="coins">66</set></li> 
+		<li value="66"><set name="coins">65</set></li> 
+		<li value="65"><set name="coins">64</set></li> 
+		<li value="64"><set name="coins">63</set></li> 
+		<li value="63"><set name="coins">62</set></li> 
+		<li value="62"><set name="coins">61</set></li> 
+		<li value="61"><set name="coins">60</set></li> 
+		<li value="60"><set name="coins">59</set></li> 
+		<li value="59"><set name="coins">58</set></li>
+		<li value="58"><set name="coins">57</set></li> 
+		<li value="57"><set name="coins">56</set></li> 
+		<li value="56"><set name="coins">55</set></li> 
+		<li value="55"><set name="coins">54</set></li> 
+		<li value="54"><set name="coins">53</set></li> 
+		<li value="53"><set name="coins">52</set></li> 
+		<li value="52"><set name="coins">51</set></li> 
+		<li value="51"><set name="coins">50</set></li> 
+		<li value="50"><set name="coins">49</set></li> 
+		<li value="49"><set name="coins">48</set></li>
+		<li value="48"><set name="coins">47</set></li> 
+		<li value="47"><set name="coins">46</set></li> 
+		<li value="46"><set name="coins">45</set></li> 
+		<li value="45"><set name="coins">44</set></li> 
+		<li value="44"><set name="coins">43</set></li> 
+		<li value="43"><set name="coins">42</set></li> 
+		<li value="42"><set name="coins">41</set></li> 
+		<li value="41"><set name="coins">40</set></li> 
+		<li value="40"><set name="coins">39</set></li> 
+		<li value="39"><set name="coins">38</set></li>
+		<li value="38"><set name="coins">37</set></li> 
+		<li value="37"><set name="coins">36</set></li> 
+		<li value="36"><set name="coins">35</set></li> 
+		<li value="35"><set name="coins">34</set></li> 
+		<li value="34"><set name="coins">33</set></li> 
+		<li value="33"><set name="coins">32</set></li> 
+		<li value="32"><set name="coins">31</set></li> 
+		<li value="31"><set name="coins">30</set></li> 
+		<li value="30"><set name="coins">29</set></li>
+		<li value="29"><set name="coins">28</set></li>
+		<li value="28"><set name="coins">27</set></li> 
+		<li value="27"><set name="coins">26</set></li> 
+		<li value="26"><set name="coins">25</set></li> 
+		<li value="25"><set name="coins">24</set></li> 
+		<li value="24"><set name="coins">23</set></li> 
+		<li value="23"><set name="coins">22</set></li> 
+		<li value="22"><set name="coins">21</set></li> 
+		<li value="21"><set name="coins">20</set></li> 
+		<li value="20"><set name="coins">19</set></li> 
+		<li value="19"><set name="coins">18</set></li>
+		<li value="18"><set name="coins">17</set></li> 
+		<li value="17"><set name="coins">16</set></li> 
+		<li value="16"><set name="coins">15</set></li> 
+		<li value="15"><set name="coins">14</set></li> 
+		<li value="14"><set name="coins">13</set></li> 
+		<li value="13"><set name="coins">12</set></li> 
+		<li value="12"><set name="coins">11</set></li> 
+		<li value="11"><set name="coins">10</set></li> 
+		<li value="10"><set name="coins">9</set></li> 
+		<li value="9"><set name="coins">8</set></li>
+		<li value="8"><set name="coins">7</set></li> 
+		<li value="7"><set name="coins">6</set></li> 
+		<li value="6"><set name="coins">5</set></li> 
+		<li value="5"><set name="coins">4</set></li> 
+		<li value="4"><set name="coins">3</set></li> 
+		<li value="3"><set name="coins">2</set></li> 
+		<li value="2"><set name="coins">1</set></li> 
+		<li value="1"><set name="coins">0</set></li>
+	</condition>
+</think> 
+</template>
+</category>
+
+</aiml>

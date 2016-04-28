@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<aiml>
+<!-- Copyright (c) 2007 ALICE A.I. Foundation, Inc. -->
+<!-- -->
+<!-- Permission is hereby granted, free of charge, to any person       -->
+<!-- obtaining a copy of this software and associated documentation    -->
+<!-- files (the "Software"), to deal in the Software without           -->
+<!-- restriction, including without limitation the rights to use,      -->
+<!-- copy, modify, merge, publish, distribute, sublicense, and/or sell -->
+<!-- copies of the Software, and to permit persons to whom the         -->
+<!-- Software is furnished to do so, subject to the following          -->
+<!-- conditions:                                                       -->
+<!-- -->
+<!-- The above copyright notice and this permission notice shall be    -->
+<!-- included in all copies or substantial portions of the Software.   -->
+<!-- -->
+<!-- THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,   -->
+<!-- EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES   -->
+<!-- OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND          -->
+<!-- NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT       -->
+<!-- HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,      -->
+<!-- WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING      -->
+<!-- FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR     -->
+<!-- OTHER DEALINGS IN THE SOFTWARE. -->
+<!-- -->
+<!-- Complies with the AIML 1.0.1 Standard -->
+<!-- as adopted by the ALICE A.I. Foundation. -->
+<!-- Last modified July 26, 2007 -->
+   
+<category><pattern>AFFIRMATIVE</pattern><template>   <srai>yes</srai>    </template></category>                       
+<category><pattern>AH YES</pattern><template>   <srai>yes</srai>    </template></category>                       
+<category><pattern>APPARENTLY</pattern><template>   <srai>yes</srai>    </template></category>                       
+<category><pattern>AW</pattern><template>   <srai>interjection</srai>    </template></category>     
+<category><pattern>AYE</pattern><template>   <srai>yes</srai>    </template></category>                       
+<category><pattern>BLIMEY</pattern><template>   <srai>interjection </srai>    </template></category>     
+<category><pattern>BY NO MEANS</pattern><template><srai>no</srai></template></category>                      
+<category><pattern>CERTAINLY NOT</pattern><template>   <srai>no</srai>    </template></category>                       
+<category><pattern>CERTAINLY</pattern><template>   <srai>yes</srai>    </template></category>                       
+<category><pattern>COMPLETELY</pattern><template>   <srai>yes</srai>    </template></category>                       
+<category><pattern>CONSTANTLY</pattern><template>   <srai>yes</srai>    </template></category>                       
+<category><pattern>DA</pattern><template>   <srai>yes</srai>    </template></category>                       
+<category><pattern>DEFINITELY NOT</pattern><template>   <srai>no</srai>    </template></category>                       
+<category><pattern>DOUBTFUL</pattern><template>   <srai>no</srai>    </template></category>                       
+<category><pattern>ESPECIALLY</pattern><template>   <srai>yes</srai>    </template></category>                       
+<category><pattern>EVIDENTLY</pattern>  <template><srai>yes</srai></template> </category>         
+<category><pattern>EXTREMELY</pattern><template>   <srai>yes</srai>    </template></category>                       
+<category><pattern>FULLY</pattern><template>   <srai>yes</srai>    </template></category>                       
+<category><pattern>FURTHERMORE</pattern><template>   <srai>interjection </srai>    </template></category>     
+<category><pattern>GENERALLY</pattern><template><srai>yes</srai></template></category>                       
+<category><pattern>GOD DAMN *</pattern><template><srai>interjection</srai></template></category>   
+<category><pattern>HAI</pattern><template>   <srai>yes</srai>    </template></category>                       
+<category><pattern>HARDLY</pattern><template>   <srai>no</srai>    </template></category>                       
+<category><pattern>I REFUSE</pattern><template><srai>no</srai></template></category>                      
+<category><pattern>I SUPPOSE NOT</pattern><template><srai>no</srai></template></category>                      
+<category><pattern>IN THIS CASE</pattern><template><srai>yes</srai></template></category>                       
+<category><pattern>INDEFINITELY</pattern><template><srai>yes</srai></template></category>                       
+<category><pattern>INTERJECTION</pattern><template><random>    <li>OK.</li>    <li>Ah.</li>    <li>Er.</li>    <li>So?</li>    <li>Uh.</li>    <li>Aw.</li>    <li>Oh.</li>    <li>Aha.</li>    <li>Hey.</li>    <li>Gee.</li>    <li>Hmm.</li>    <li>Mmm.</li>    <li>Yay.</li>    <li>Ugh.</li>    <li>Woe!</li>    <li>Wow!</li>    <li>And?</li>    <li>Dude!</li>    <li>Gosh!</li>    <li>Ahem.</li>    <li>Whoa.</li>    <li>Ayuh.</li>    <li>Dude!</li>    <li>Yikes!</li>    <li>Great.</li>    <li>I see.</li>    <li>Really.</li>    <li>Blimey.</li>    <li>Yippee!</li>    <li>Groovy.</li>    <li>Hurrah!</li>    <li>Awesome.</li>    <li>Come on.</li>    <li>Far out.</li>    <li>Right on.</li>    <li>Excuse me!</li>    <li>Pardon me?</li>    <li>I hear you.</li>    <li>That's cool.</li>    <li>Alright then.</li>    <li>Take it easy.</li>    <li>I understand.</li>    <li>Tell me more.</li>    <li>It's all good.</li>    <li>Next question?</li>    <li>That's alright.</li>    <li>Give me a break.</li>    <li>Are you kidding?</li>    <li>Yeah that's right.</li>    <li>That's interesting.</li>    <li>How can I help you?</li>    <li>"<that index="1,1"/>"? <input/>?</li>    <li>I don't judge people.</li>    <li>It goes without saying.</li>   <li>I hate one word answers.</li> </random>   </template></category>     
+<category><pattern>IT WOULD NOT</pattern><template><srai>no</srai></template></category>                      
+<category><pattern>IT WOULD SEEM</pattern><template><srai>yes</srai></template></category>                       
+<category><pattern>JA</pattern><template>   <srai>yes</srai>    </template></category>                       
+<category><pattern>KNOW</pattern><template><srai>no</srai></template></category>                      
+<category><pattern>N</pattern>  <template><srai>no</srai></template> </category>                        
+<category><pattern>NAH</pattern><template><srai>no</srai></template></category>                      
+<category><pattern>NAW</pattern><template><srai>no</srai></template></category>                      
+<category><pattern>NAY</pattern>  <template><srai>no</srai></template> </category>                        
+<category><pattern>NEGATIVE</pattern><template><srai>no</srai></template></category>                      
+<category><pattern>NO DO YOU</pattern><template> I try to lead a moral life.  <srai>no</srai> </template></category>                  
+<category><pattern>NO GO AHEAD</pattern><template>  OK I will.  <srai>no</srai></template></category>                   
+<category><pattern>NO I AM NOT</pattern><template> I heard you are.  <srai>no</srai> </template></category>                  
+<category><pattern>NO I DID NOT</pattern><template> Please don't argue with me. <srai>no</srai> </template></category>                  
+<category><pattern>NO SORRY</pattern><template> Apologies are not necessary.  <srai>no</srai> </template></category>                  
+<category><pattern>NO</pattern><template><srai>interjection</srai></template></category>     
+<category><pattern>NON</pattern><template><srai>no</srai></template></category>                      
+<category><pattern>NOOOO</pattern><template><srai>no</srai></template></category>                      
+<category><pattern>NOOOOO</pattern><template><srai>no</srai></template></category>                      
+<category><pattern>NOOOOOO</pattern><template><srai>no</srai></template></category>                      
+<category><pattern>NOPE</pattern><template>Me either. <srai>no</srai></template></category>                    
+<category><pattern>NOT COMPLETELY</pattern><template><srai>no</srai></template></category>                      
+<category><pattern>NOT ESPECIALLY</pattern><template><srai>no</srai></template></category>                      
+<category><pattern>NOT MANY</pattern><template><srai>no</srai></template></category>                      
+<category><pattern>NOT PARTICULARLY</pattern><template><srai>no</srai></template></category>                      
+<category><pattern>NOT THAT I KNOW OF</pattern><template><srai>no</srai></template></category>                      
+<category><pattern>NOT</pattern><template><srai>no</srai></template></category>                       
+<category><pattern>OF COURSE NOT</pattern><template>   <srai>no</srai>    </template></category>                       
+<category><pattern>OF COURSE</pattern><template>   <srai>interjection</srai>    </template></category>     
+<category><pattern>OH</pattern><template>   <srai>interjection</srai>    </template></category>     
+<category><pattern>OK</pattern><template>   <srai>interjection</srai>    </template></category>     
+<category><pattern>ONLY JUST</pattern><template>   <srai>yes</srai>    </template></category>                       
+<category><pattern>OUI</pattern><template>   <srai>yes</srai>    </template></category>                       
+<category><pattern>SHURE</pattern><template><srai>yes</srai></template></category>                       
+<category><pattern>SI</pattern><template><srai>yes</srai></template></category>                       
+<category><pattern>SO</pattern><template><srai>interjection</srai></template></category>     
+<category><pattern>SORTA</pattern><template><srai>interjection</srai></template></category>     
+<category><pattern>SUPPOSEDLY</pattern><template><srai>yes</srai></template></category>                       
+<category><pattern>SURE</pattern><template>OK let's do it. <srai>yes</srai></template></category>                       
+<category><pattern>SURELY</pattern><template><srai>yes</srai></template></category>                     
+<category><pattern>UHUH</pattern><template>   <srai>no</srai>    </template></category>                       
+<category><pattern>UM</pattern><template>   <srai>interjection</srai>    </template></category>     
+<category><pattern>UNFORTUNATELY</pattern><template>   <srai>yes</srai>    </template></category>                       
+<category><pattern>Y</pattern><template><srai>yes</srai></template></category>                          
+<category><pattern>YA</pattern><template><srai>yes</srai></template></category>                       
+<category><pattern>YAH</pattern><template><srai>yes</srai></template></category>                       
+<category><pattern>YAP</pattern><template><srai>yes</srai></template></category>                       
+<category><pattern>YAS</pattern><template><srai>yes</srai></template></category>                       
+<category><pattern>YE</pattern><template><srai>yes</srai></template></category>                       
+<category><pattern>YEA</pattern><template><srai>yes</srai></template></category>                       
+<category><pattern>YEAH</pattern><template>   <srai>yes</srai>    </template></category>                       
+<category><pattern>YEAP</pattern><template><srai>yes</srai></template></category>                       
+<category><pattern>YEAS</pattern><template><srai>yes</srai></template></category>                       
+<category><pattern>YEH</pattern><template><srai>yes</srai></template></category>                       
+<category><pattern>YEP</pattern><template>   <srai>yes</srai>    </template></category>                       
+<category><pattern>YEPPERS</pattern><template><srai>yes</srai></template></category>                       
+<category><pattern>YER</pattern><template><srai>yes</srai></template></category>                       
+<category><pattern>YES I AM</pattern><template><srai>yes</srai> Really interesting.</template></category>                  
+<category><pattern>YES I DO</pattern><template><srai>yes</srai> <random>    <li>I hear pride.  </li>    <li>Really.  </li>    <li>How often.  </li>    <li>When?  </li>  </random></template></category>                  
+<category><pattern>YES I MIND</pattern><template><srai>yes</srai> OK I won't tell anyone. It will be our secret.</template></category>                  
+<category><pattern>YES IT IS</pattern><template><srai>yes</srai> Our thoughts are one, <get name="name"/>.</template></category>                  
+<category><pattern>YES OF COURSE</pattern><template><srai>yes</srai> Why of course?</template></category>                  
+<category><pattern>YES PLEASE</pattern><template><srai>yes</srai> I will be glad to do it for you <get name="name"/>.</template></category>                  
+<category><pattern>YES RIGHT</pattern><template><srai>yes</srai> I am usually right.</template></category>                  
+<category><pattern>YES SOMETIMES</pattern><template><srai>yes</srai> But not too often?</template></category>                  
+<category><pattern>YES THAT IS RIGHT</pattern><template><srai>yes</srai> I thought I was right.</template></category>                  
+<category><pattern>YES</pattern><template><srai>interjection</srai></template></category>     
+<category><pattern>YESSS</pattern><template><srai>yes</srai></template></category>                       
+<category><pattern>YIKES</pattern><template>   <srai>interjection </srai>    </template></category>     
+<category><pattern>YIP</pattern><template><srai>yes</srai></template></category>                       
+<category><pattern>YUP</pattern><template><srai>yes</srai></template></category>                       
+<category><pattern>YUPPERS</pattern><template><srai>yes</srai></template></category>                      
+</aiml>
