@@ -52,14 +52,14 @@ def command(speech):
 			com = com.upper()
 			print "You: " + com
 
-			if inactive == 1 and "DRAGON FIRE" not in com and "WAKE UP" not in com:
+			if inactive == 1 and "DRAGON FIRE" not in com and "WAKE UP" not in com and com != "HEY":
 				continue
 
 			Config = ConfigParser.ConfigParser()
 			Config.read( DRAGONFIRE_PATH + "/config.ini")
 			user_prefix = Config.get("BasicUserData","Prefix")
 
-			if "DRAGON FIRE" in com or "WAKE UP" in com:
+			if "DRAGON FIRE" in com or "WAKE UP" in com or com == "HEY":
 				tts_kill()
 				inactive = 0
 				userin = Data([" "]," ")
@@ -79,7 +79,7 @@ def command(speech):
 			elif "ENOUGH" in com:
 				print "Dragonfire quiets."
 				tts_kill()
-			elif "WHO AM I" in com or "WHAT IS MY NAME" in com:
+			elif "WHO AM I" in com or "SAY MY NAME" in com:
 				tts_kill()
 				user_full_name = os.popen("getent passwd $LOGNAME | cut -d: -f5 | cut -d, -f1").read()
 				user_full_name = user_full_name[:-1]
@@ -215,7 +215,7 @@ def command(speech):
 				userin.say("Shutting down")
 				userin.interact(3)
 				previous_command = com
-			elif com == "EXIT" or com == "QUIT":
+			elif com == "GOODBYE" or com == "BYE BYE" or com == "SEE YOU LATER":
 				tts_kill()
 				userin = Data([" "]," ")
 				userin.say("Goodbye, " + user_prefix)
