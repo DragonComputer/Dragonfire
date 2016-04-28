@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<aiml>
+<!-- Copyright (c) 2007 ALICE A.I. Foundation, Inc. -->
+<!-- -->
+<!-- Permission is hereby granted, free of charge, to any person       -->
+<!-- obtaining a copy of this software and associated documentation    -->
+<!-- files (the "Software"), to deal in the Software without           -->
+<!-- restriction, including without limitation the rights to use,      -->
+<!-- copy, modify, merge, publish, distribute, sublicense, and/or sell -->
+<!-- copies of the Software, and to permit persons to whom the         -->
+<!-- Software is furnished to do so, subject to the following          -->
+<!-- conditions:                                                       -->
+<!-- -->
+<!-- The above copyright notice and this permission notice shall be    -->
+<!-- included in all copies or substantial portions of the Software.   -->
+<!-- -->
+<!-- THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,   -->
+<!-- EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES   -->
+<!-- OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND          -->
+<!-- NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT       -->
+<!-- HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,      -->
+<!-- WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING      -->
+<!-- FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR     -->
+<!-- OTHER DEALINGS IN THE SOFTWARE. -->
+<!-- -->
+<!-- Complies with the AIML 1.0.1 Standard -->
+<!-- as adopted by the ALICE A.I. Foundation. -->
+<!-- Last modified July 26, 2007 -->
+
+ 
+<category><pattern>I *</pattern><template><random>  <li>Why?</li>  <li>Interesting gossip</li>  <li>That is interesting</li>  <li>That's good information</li>  <li>Thanks for the information</li>  <li>Do you mind if I tell other people</li>  <li>I haven't heard anything like that before</li>  </random>.  <think><srai>PUSH <person>YOU <star/></person></srai></think> </template></category>  
+<category><pattern>YOU *</pattern><template><random>  <li>Interesting gossip</li>  <li>Thanks for telling me</li>  <li>That's good information</li>  <li>Thanks for the information</li>  <li>Do you mind if I tell other people</li>  <li>I haven't heard anything like that before</li>  </random>.  <think><srai>PUSH <person>YOU <star/></person></srai></think> </template></category>
+</aiml>
