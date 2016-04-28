@@ -6,6 +6,7 @@ import api
 from lxml import etree
 from dragonfire.utilities import Data
 from dragonfire.nlplib import Classifiers
+from dragonfire.nlplib import TopicExtractor
 from subprocess import call
 import time
 import subprocess
@@ -14,7 +15,7 @@ import wikipedia
 from random import randint
 import getpass
 import os
-import ConfigParser
+import re
 import xml.etree.ElementTree as ET
 from pykeyboard import PyKeyboard
 import datetime
@@ -231,6 +232,7 @@ def command(speech):
 						try:
 							wikipage = wikipedia.page(search_query)
 							wikicontent = "".join([i if ord(i) < 128 else ' ' for i in wikipage.content])
+							wikicontent = re.sub(r'\([^)]*\)', '', wikicontent)
 						except:
 							pass
 				userin.say(wikicontent)
@@ -291,12 +293,14 @@ def command(speech):
 				if dragonfire_respond:
 					userin.say(dragonfire_respond)
 				else:
-					words_dragonfire = {
-						0 : "I'm not that smart, " + user_prefix + ".",
-						1 : "Please, be simple.",
-						2 : "Excuse me? I have an average IQ."
-					}
-					userin.say(words_dragonfire[randint(0,2)])
+					topic_obj = TopicExtractor(com)
+					result = topic_obj.extract()
+					with nostdout():
+						with nostderr():
+							summary = wikipedia.summary(result[0], sentences=1)
+							summary = "".join([i if ord(i) < 128 else ' ' for i in summary])
+							summary = re.sub(r'\([^)]*\)', '', summary)
+					userin.say(summary)
 				previous_command = com
 
 			#newest = max(glob.iglob('/tmp/' + str(datetime.date.today().year) + '*.[Ww][Aa][Vv]'), key=os.path.getctime)
