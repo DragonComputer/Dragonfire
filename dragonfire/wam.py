@@ -10,7 +10,7 @@ class WikipediaAnsweringMachine():
 	def answer(speech):
 		tokens = nltk.word_tokenize(speech)
 		tagged = nltk.pos_tag(tokens)
-		print tagged
+		return tagged
 
 if __name__ == "__main__":
-	WikipediaAnsweringMachine.answer("At eight o'clock on Thursday morning Arthur didn't feel very good.")
+	print WikipediaAnsweringMachine.answer("At eight o'clock on Thursday morning Arthur didn't feel very good.")
