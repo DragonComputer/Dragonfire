@@ -1,0 +1,902 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<aiml version="1.0">
+<!-- Copyright (c) 2007 ALICE A.I. Foundation, Inc. -->
+<!-- -->
+<!-- Permission is hereby granted, free of charge, to any person       -->
+<!-- obtaining a copy of this software and associated documentation    -->
+<!-- files (the "Software"), to deal in the Software without           -->
+<!-- restriction, including without limitation the rights to use,      -->
+<!-- copy, modify, merge, publish, distribute, sublicense, and/or sell -->
+<!-- copies of the Software, and to permit persons to whom the         -->
+<!-- Software is furnished to do so, subject to the following          -->
+<!-- conditions:                                                       -->
+<!-- -->
+<!-- The above copyright notice and this permission notice shall be    -->
+<!-- included in all copies or substantial portions of the Software.   -->
+<!-- -->
+<!-- THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,   -->
+<!-- EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES   -->
+<!-- OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND          -->
+<!-- NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT       -->
+<!-- HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,      -->
+<!-- WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING      -->
+<!-- FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR     -->
+<!-- OTHER DEALINGS IN THE SOFTWARE. -->
+<!-- -->
+<!-- Complies with the AIML 1.0.1 Standard -->
+<!-- as adopted by the ALICE A.I. Foundation. -->
+<!-- Last modified July 26, 2007 -->
+
+
+<!-- http://list.alicebot.org/pipermail/alicebot-style/2002-July/000180.html -->
+<!-- Adapated by Dr. Richard S. Wallace for AAA AIML Set -->
+<!-- Revision 0.04 -->
+<!-- Uses "Program D" style conditions -->
+
+<meta name="author" content="Kim Sullivan"/>
+<meta name="language" content="en"/>
+
+<category>
+<pattern>CALCULATE 0 PLUS 0</pattern>
+<template>
+<think><set name="carry">0</set></think>
+0
+</template>
+</category>
+
+<category>
+<pattern>CALCULATE 0 PLUS 1</pattern>
+<template>
+<think><set name="carry">0</set></think>
+1
+</template>
+</category>
+<category>
+<pattern>CALCULATE 0 PLUS 2</pattern>
+<template>
+<think><set name="carry">0</set></think>
+2
+</template>
+</category>
+<category>
+<pattern>CALCULATE 0 PLUS 3</pattern>
+<template>
+<think><set name="carry">0</set></think>
+3
+</template>
+</category>
+<category>
+<pattern>CALCULATE 0 PLUS 4</pattern>
+<template>
+<think><set name="carry">0</set></think>
+4
+</template>
+</category>
+<category>
+<pattern>CALCULATE 0 PLUS 5</pattern>
+<template>
+<think><set name="carry">0</set></think>
+5
+</template>
+</category>
+<category>
+<pattern>CALCULATE 0 PLUS 6</pattern>
+<template>
+<think><set name="carry">0</set></think>
+6
+</template>
+</category>
+<category>
+<pattern>CALCULATE 0 PLUS 7</pattern>
+<template>
+<think><set name="carry">0</set></think>
+7
+</template>
+</category>
+<category>
+<pattern>CALCULATE 0 PLUS 8</pattern>
+<template>
+<think><set name="carry">0</set></think>
+8
+</template>
+</category>
+<category>
+<pattern>CALCULATE 0 PLUS 9</pattern>
+<template>
+<think><set name="carry">0</set></think>
+9
+</template>
+</category>
+
+
+<category>
+<pattern>CALCULATE 1 PLUS 0</pattern>
+<template>
+<think><set name="carry">0</set></think>
+1
+</template>
+</category>
+<category>
+<pattern>CALCULATE 1 PLUS 1</pattern>
+<template>
+<think><set name="carry">0</set></think>
+2
+</template>
+</category>
+<category>
+<pattern>CALCULATE 1 PLUS 2</pattern>
+<template>
+<think><set name="carry">0</set></think>
+3
+</template>
+</category>
+<category>
+<pattern>CALCULATE 1 PLUS 3</pattern>
+<template>
+<think><set name="carry">0</set></think>
+4
+</template>
+</category>
+<category>
+<pattern>CALCULATE 1 PLUS 4</pattern>
+<template>
+<think><set name="carry">0</set></think>
+5
+</template>
+</category>
+<category>
+<pattern>CALCULATE 1 PLUS 5</pattern>
+<template>
+<think><set name="carry">0</set></think>
+6
+</template>
+</category>
+<category>
+<pattern>CALCULATE 1 PLUS 6</pattern>
+<template>
+<think><set name="carry">0</set></think>
+7
+</template>
+</category>
+<category>
+<pattern>CALCULATE 1 PLUS 7</pattern>
+<template>
+<think><set name="carry">0</set></think>
+8
+</template>
+</category>
+<category>
+<pattern>CALCULATE 1 PLUS 8</pattern>
+<template>
+<think><set name="carry">0</set></think>
+9
+</template>
+</category>
+<category>
+<pattern>CALCULATE 1 PLUS 9</pattern>
+<template>
+<think><set name="carry">1</set></think>
+0
+</template>
+</category>
+
+
+
+<category>
+<pattern>CALCULATE 2 PLUS 0</pattern>
+<template>
+<think><set name="carry">0</set></think>
+2
+</template>
+</category>
+<category>
+<pattern>CALCULATE 2 PLUS 1</pattern>
+<template>
+<think><set name="carry">0</set></think>
+3
+</template>
+</category>
+<category>
+<pattern>CALCULATE 2 PLUS 2</pattern>
+<template>
+<think><set name="carry">0</set></think>
+4
+</template>
+</category>
+<category>
+<pattern>CALCULATE 2 PLUS 3</pattern>
+<template>
+<think><set name="carry">0</set></think>
+5
+</template>
+</category>
+<category>
+<pattern>CALCULATE 2 PLUS 4</pattern>
+<template>
+<think><set name="carry">0</set></think>
+6
+</template>
+</category>
+<category>
+<pattern>CALCULATE 2 PLUS 5</pattern>
+<template>
+<think><set name="carry">0</set></think>
+7
+</template>
+</category>
+<category>
+<pattern>CALCULATE 2 PLUS 6</pattern>
+<template>
+<think><set name="carry">0</set></think>
+8
+</template>
+</category>
+<category>
+<pattern>CALCULATE 2 PLUS 7</pattern>
+<template>
+<think><set name="carry">0</set></think>
+9
+</template>
+</category>
+<category>
+<pattern>CALCULATE 2 PLUS 8</pattern>
+<template>
+<think><set name="carry">1</set></think>
+0
+</template>
+</category>
+<category>
+<pattern>CALCULATE 2 PLUS 9</pattern>
+<template>
+<think><set name="carry">1</set></think>
+1
+</template>
+</category>
+
+
+<category>
+<pattern>CALCULATE 3 PLUS 0</pattern>
+<template>
+<think><set name="carry">0</set></think>
+3
+</template>
+</category>
+<category>
+<pattern>CALCULATE 3 PLUS 1</pattern>
+<template>
+<think><set name="carry">0</set></think>
+4
+</template>
+</category>
+<category>
+<pattern>CALCULATE 3 PLUS 2</pattern>
+<template>
+<think><set name="carry">0</set></think>
+5
+</template>
+</category>
+<category>
+<pattern>CALCULATE 3 PLUS 3</pattern>
+<template>
+<think><set name="carry">0</set></think>
+6
+</template>
+</category>
+<category>
+<pattern>CALCULATE 3 PLUS 4</pattern>
+<template>
+<think><set name="carry">0</set></think>
+7
+</template>
+</category>
+<category>
+<pattern>CALCULATE 3 PLUS 5</pattern>
+<template>
+<think><set name="carry">0</set></think>
+8
+</template>
+</category>
+<category>
+<pattern>CALCULATE 3 PLUS 6</pattern>
+<template>
+<think><set name="carry">0</set></think>
+9
+</template>
+</category>
+<category>
+<pattern>CALCULATE 3 PLUS 7</pattern>
+<template>
+<think><set name="carry">1</set></think>
+0
+</template>
+</category>
+<category>
+<pattern>CALCULATE 3 PLUS 8</pattern>
+<template>
+<think><set name="carry">1</set></think>
+1
+</template>
+</category>
+<category>
+<pattern>CALCULATE 3 PLUS 9</pattern>
+<template>
+<think><set name="carry">1</set></think>
+2
+</template>
+</category>
+
+
+
+<category>
+<pattern>CALCULATE 4 PLUS 0</pattern>
+<template>
+<think><set name="carry">0</set></think>
+4
+</template>
+</category>
+<category>
+<pattern>CALCULATE 4 PLUS 1</pattern>
+<template>
+<think><set name="carry">0</set></think>
+5
+</template>
+</category>
+<category>
+<pattern>CALCULATE 4 PLUS 2</pattern>
+<template>
+<think><set name="carry">0</set></think>
+6
+</template>
+</category>
+<category>
+<pattern>CALCULATE 4 PLUS 3</pattern>
+<template>
+<think><set name="carry">0</set></think>
+7
+</template>
+</category>
+<category>
+<pattern>CALCULATE 4 PLUS 4</pattern>
+<template>
+<think><set name="carry">0</set></think>
+8
+</template>
+</category>
+<category>
+<pattern>CALCULATE 4 PLUS 5</pattern>
+<template>
+<think><set name="carry">0</set></think>
+9
+</template>
+</category>
+<category>
+<pattern>CALCULATE 4 PLUS 6</pattern>
+<template>
+<think><set name="carry">1</set></think>
+0
+</template>
+</category>
+<category>
+<pattern>CALCULATE 4 PLUS 7</pattern>
+<template>
+<think><set name="carry">1</set></think>
+1
+</template>
+</category>
+<category>
+<pattern>CALCULATE 4 PLUS 8</pattern>
+<template>
+<think><set name="carry">1</set></think>
+2
+</template>
+</category>
+<category>
+<pattern>CALCULATE 4 PLUS 9</pattern>
+<template>
+<think><set name="carry">1</set></think>
+3
+</template>
+</category>
+
+
+
+<category>
+<pattern>CALCULATE 5 PLUS 0</pattern>
+<template>
+<think><set name="carry">0</set></think>
+5
+</template>
+</category>
+<category>
+<pattern>CALCULATE 5 PLUS 1</pattern>
+<template>
+<think><set name="carry">0</set></think>
+6
+</template>
+</category>
+<category>
+<pattern>CALCULATE 5 PLUS 2</pattern>
+<template>
+<think><set name="carry">0</set></think>
+7
+</template>
+</category>
+<category>
+<pattern>CALCULATE 5 PLUS 3</pattern>
+<template>
+<think><set name="carry">0</set></think>
+8
+</template>
+</category>
+<category>
+<pattern>CALCULATE 5 PLUS 4</pattern>
+<template>
+<think><set name="carry">0</set></think>
+9
+</template>
+</category>
+<category>
+<pattern>CALCULATE 5 PLUS 5</pattern>
+<template>
+<think><set name="carry">1</set></think>
+0
+</template>
+</category>
+<category>
+<pattern>CALCULATE 5 PLUS 6</pattern>
+<template>
+<think><set name="carry">1</set></think>
+1
+</template>
+</category>
+<category>
+<pattern>CALCULATE 5 PLUS 7</pattern>
+<template>
+<think><set name="carry">1</set></think>
+2
+</template>
+</category>
+<category>
+<pattern>CALCULATE 5 PLUS 8</pattern>
+<template>
+<think><set name="carry">1</set></think>
+3
+</template>
+</category>
+<category>
+<pattern>CALCULATE 5 PLUS 9</pattern>
+<template>
+<think><set name="carry">1</set></think>
+4
+</template>
+</category>
+
+
+
+<category>
+<pattern>CALCULATE 6 PLUS 0</pattern>
+<template>
+<think><set name="carry">0</set></think>
+6
+</template>
+</category>
+<category>
+<pattern>CALCULATE 6 PLUS 1</pattern>
+<template>
+<think><set name="carry">0</set></think>
+7
+</template>
+</category>
+<category>
+<pattern>CALCULATE 6 PLUS 2</pattern>
+<template>
+<think><set name="carry">0</set></think>
+8
+</template>
+</category>
+<category>
+<pattern>CALCULATE 6 PLUS 3</pattern>
+<template>
+<think><set name="carry">0</set></think>
+9
+</template>
+</category>
+<category>
+<pattern>CALCULATE 6 PLUS 4</pattern>
+<template>
+<think><set name="carry">1</set></think>
+0
+</template>
+</category>
+<category>
+<pattern>CALCULATE 6 PLUS 5</pattern>
+<template>
+<think><set name="carry">1</set></think>
+1
+</template>
+</category>
+<category>
+<pattern>CALCULATE 6 PLUS 6</pattern>
+<template>
+<think><set name="carry">1</set></think>
+2
+</template>
+</category>
+<category>
+<pattern>CALCULATE 6 PLUS 7</pattern>
+<template>
+<think><set name="carry">1</set></think>
+3
+</template>
+</category>
+<category>
+<pattern>CALCULATE 6 PLUS 8</pattern>
+<template>
+<think><set name="carry">1</set></think>
+4
+</template>
+</category>
+<category>
+<pattern>CALCULATE 6 PLUS 9</pattern>
+<template>
+<think><set name="carry">1</set></think>
+5
+</template>
+</category>
+
+
+<category>
+<pattern>CALCULATE 7 PLUS 0</pattern>
+<template>
+<think><set name="carry">0</set></think>
+7
+</template>
+</category>
+<category>
+<pattern>CALCULATE 7 PLUS 1</pattern>
+<template>
+<think><set name="carry">0</set></think>
+8
+</template>
+</category>
+<category>
+<pattern>CALCULATE 7 PLUS 2</pattern>
+<template>
+<think><set name="carry">0</set></think>
+9
+</template>
+</category>
+<category>
+<pattern>CALCULATE 7 PLUS 3</pattern>
+<template>
+<think><set name="carry">1</set></think>
+0
+</template>
+</category>
+<category>
+<pattern>CALCULATE 7 PLUS 4</pattern>
+<template>
+<think><set name="carry">1</set></think>
+1
+</template>
+</category>
+<category>
+<pattern>CALCULATE 7 PLUS 5</pattern>
+<template>
+<think><set name="carry">1</set></think>
+2
+</template>
+</category>
+<category>
+<pattern>CALCULATE 7 PLUS 6</pattern>
+<template>
+<think><set name="carry">1</set></think>
+3
+</template>
+</category>
+<category>
+<pattern>CALCULATE 7 PLUS 7</pattern>
+<template>
+<think><set name="carry">1</set></think>
+4
+</template>
+</category>
+<category>
+<pattern>CALCULATE 7 PLUS 8</pattern>
+<template>
+<think><set name="carry">1</set></think>
+5
+</template>
+</category>
+<category>
+<pattern>CALCULATE 7 PLUS 9</pattern>
+<template>
+<think><set name="carry">1</set></think>
+6
+</template>
+</category>
+
+
+
+<category>
+<pattern>CALCULATE 8 PLUS 0</pattern>
+<template>
+<think><set name="carry">0</set></think>
+8
+</template>
+</category>
+<category>
+<pattern>CALCULATE 8 PLUS 1</pattern>
+<template>
+<think><set name="carry">0</set></think>
+9
+</template>
+</category>
+<category>
+<pattern>CALCULATE 8 PLUS 2</pattern>
+<template>
+<think><set name="carry">1</set></think>
+0
+</template>
+</category>
+<category>
+<pattern>CALCULATE 8 PLUS 3</pattern>
+<template>
+<think><set name="carry">1</set></think>
+1
+</template>
+</category>
+<category>
+<pattern>CALCULATE 8 PLUS 4</pattern>
+<template>
+<think><set name="carry">1</set></think>
+2
+</template>
+</category>
+<category>
+<pattern>CALCULATE 8 PLUS 5</pattern>
+<template>
+<think><set name="carry">1</set></think>
+3
+</template>
+</category>
+<category>
+<pattern>CALCULATE 8 PLUS 6</pattern>
+<template>
+<think><set name="carry">1</set></think>
+4
+</template>
+</category>
+<category>
+<pattern>CALCULATE 8 PLUS 7</pattern>
+<template>
+<think><set name="carry">1</set></think>
+5
+</template>
+</category>
+<category>
+<pattern>CALCULATE 8 PLUS 8</pattern>
+<template>
+<think><set name="carry">1</set></think>
+6
+</template>
+</category>
+<category>
+<pattern>CALCULATE 8 PLUS 9</pattern>
+<template>
+<think><set name="carry">1</set></think>
+7
+</template>
+</category>
+
+
+
+<category>
+<pattern>CALCULATE 9 PLUS 0</pattern>
+<template>
+<think><set name="carry">0</set></think>
+9
+</template>
+</category>
+<category>
+<pattern>CALCULATE 9 PLUS 1</pattern>
+<template>
+<think><set name="carry">1</set></think>
+0
+</template>
+</category>
+<category>
+<pattern>CALCULATE 9 PLUS 2</pattern>
+<template>
+<think><set name="carry">1</set></think>
+1
+</template>
+</category>
+<category>
+<pattern>CALCULATE 9 PLUS 3</pattern>
+<template>
+<think><set name="carry">1</set></think>
+2
+</template>
+</category>
+<category>
+<pattern>CALCULATE 9 PLUS 4</pattern>
+<template>
+<think><set name="carry">1</set></think>
+3
+</template>
+</category>
+<category>
+<pattern>CALCULATE 9 PLUS 5</pattern>
+<template>
+<think><set name="carry">1</set></think>
+4
+</template>
+</category>
+<category>
+<pattern>CALCULATE 9 PLUS 6</pattern>
+<template>
+<think><set name="carry">1</set></think>
+5
+</template>
+</category>
+<category>
+<pattern>CALCULATE 9 PLUS 7</pattern>
+<template>
+<think><set name="carry">1</set></think>
+6
+</template>
+</category>
+<category>
+<pattern>CALCULATE 9 PLUS 8</pattern>
+<template>
+<think><set name="carry">1</set></think>
+7
+</template>
+</category>
+<category>
+<pattern>CALCULATE 9 PLUS 9</pattern>
+<template>
+<think><set name="carry">1</set></think>
+8
+</template>
+</category>
+
+
+<category>
+<pattern>IMPLODE * * </pattern>
+<template>
+<srai>IMPLODE <star/><star index="2"/></srai> 
+</template>
+</category>
+
+<category>
+<pattern>IMPLODE * </pattern>
+<template>
+<star/>
+</template>
+</category>
+
+
+<category>
+<pattern>IMPLODED ADD * PLUS *</pattern>
+<template>
+<think>
+  <set name="addresult">
+    <srai>CALCULATE <srai>REVERSE <star index="1"/></srai> PLUS 
+<srai>REVERSE <star index="2"/></srai></srai>
+  </set>
+  <condition name="carry" value="1">
+    <set name="addresult">
+      <get name="addresult"/> 
+    </set>
+  </condition>
+</think>
+
+<!-- Program P-style conditions (permit empty value but wildcards not 
+supported) -->
+<!-- <condition name="matherr"><li value=""><srai>IMPLODE <srai>REVERSE <get name="addresult"/> </srai></srai></li><li><get name="matherr"/><think><set name="matherr"/></think></li></condition> -->
+
+<!-- Program D-style conditions (don't permit empty value in condition) 
+-->
+
+<condition name="matherr">
+<li value="*"><get name="matherr"/><think><set name="matherr"/></think></li>
+<li><srai>IMPLODE <srai>REVERSE <get name="addresult"/> 
+</srai></srai></li>
+</condition>
+
+
+</template>
+</category>
+
+<category>
+<pattern>ADD * PLUS *</pattern>
+<template>
+<think>
+  <set name="addresult">
+    <srai>CALCULATE <srai>REVERSE <star index="1"/></srai> PLUS
+<srai>REVERSE <star index="2"/></srai></srai>
+  </set>
+  <condition name="carry" value="1">
+    <set name="addresult">
+      <get name="addresult"/> 
+    </set>
+  </condition>
+</think>
+
+<!-- Program P-style conditions (permit empty value but wildcards not 
+supported) -->
+<!--<condition name="matherr"><li value=""><srai>REVERSE <get name="addresult"/> </srai></li><li><get name="matherr"/><think><set name="matherr"/></think></li></condition> -->
+
+<!-- Program D-style conditions (don't permit empty value in condition) 
+-->
+
+<condition name="matherr">
+<li value="*"><get name="matherr"/><think><set name="matherr"/></think></li>
+<li>IMPLODE <srai>REVERSE <get name="addresult"/> </srai></li>
+</condition>
+
+</template>
+</category>
+
+
+<category>
+<pattern>REVERSE * * </pattern>
+<template>
+<srai>REVERSE <star index="2"/></srai> <star/>
+</template>
+</category>
+
+<category>
+<pattern>REVERSE * </pattern>
+<template>
+<star/>
+</template>
+</category>
+
+
+<category>
+  <pattern>CALCULATE * PLUS * </pattern>
+  <template>
+    <think><set name="matherr">Can't add <star/> plus <star index="2"/>.</set></think>
+  </template>
+</category>
+
+<category>
+<pattern>CALCULATE * * PLUS * * </pattern>
+<template>
+<srai>CALCULATE <star index="1"/> PLUS <star index="3"/></srai>
+<condition name="carry">
+<li value="1"><srai>CALCULATE <srai>CALCULATE <star index="2"/> PLUS 
+1</srai> <condition name="carry" value="1">1</condition> PLUS <star index="4"/></srai></li>
+<li><srai>CALCULATE <star index="2"/> PLUS <star index="4"/></srai></li>
+</condition>
+</template>
+</category>
+
+<category>
+<pattern>CALCULATE * * PLUS * </pattern>
+<template>
+<srai>CALCULATE <star index="1"/> PLUS <star index="3"/></srai>
+<condition name="carry">
+<li value="1"><srai>CALCULATE <star index="2"/> PLUS 1</srai></li>
+<li><think><set name="carry">0</set></think><star index="2"/></li>
+</condition>
+</template>
+</category>
+
+<category>
+<pattern>CALCULATE * PLUS * *</pattern>
+<template>
+<srai>CALCULATE <star index="1"/> PLUS <star index="2"/></srai>
+<condition name="carry">
+<li value="1"><srai>CALCULATE <star index="3"/> PLUS 1</srai></li>
+<li><think><set name="carry">0</set></think><star index="3"/></li>
+</condition>
+</template>
+</category>
+
+
+</aiml>
