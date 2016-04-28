@@ -8,13 +8,13 @@ Dragonfire is an open source virtual assistant project for Ubuntu based Linux di
 
 Dragonfire does following tasks for each separate command, respectively:
 
- - Search across the built-in functions of Dragonfire
+ - Search across the built-in commands of Dragonfire
  - Explore A.L.I.C.E. AIML
  - Run Wikipedia Answering Machine
 
 ### Version
 
-0.5.4
+0.5.6
 
 ### Installation
 
