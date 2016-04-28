@@ -5,6 +5,7 @@ import sys
 import api
 from lxml import etree
 from dragonfire.utilities import Data
+from dragonfire.nlplib import Classifiers
 from subprocess import call
 import time
 import subprocess
@@ -28,6 +29,7 @@ import cStringIO
 
 DRAGONFIRE_PATH = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 FNULL = open(os.devnull, 'w')
+GENDER_PREFIX = {'male': 'Sir', 'female': 'My Lady'}
 
 def command(speech):
 
@@ -38,6 +40,9 @@ def command(speech):
 
 	previous_command = ""
 	global inactive
+
+	global user_full_name
+	global user_prefix
 
 	while(True):
 
@@ -54,10 +59,6 @@ def command(speech):
 
 			if inactive == 1 and "DRAGON FIRE" not in com and "WAKE UP" not in com and com != "HEY":
 				continue
-
-			Config = ConfigParser.ConfigParser()
-			Config.read( DRAGONFIRE_PATH + "/config.ini")
-			user_prefix = Config.get("BasicUserData","Prefix")
 
 			if "DRAGON FIRE" in com or "WAKE UP" in com or com == "HEY":
 				tts_kill()
@@ -81,28 +82,20 @@ def command(speech):
 				tts_kill()
 			elif "WHO AM I" in com or "SAY MY NAME" in com:
 				tts_kill()
-				user_full_name = os.popen("getent passwd $LOGNAME | cut -d: -f5 | cut -d, -f1").read()
-				user_full_name = user_full_name[:-1]
 				userin = Data(["echo"], user_full_name)
 				userin.say("Your name is " + user_full_name + "," + user_prefix + ".")
 				userin.interact(0)
 				previous_command = com
 			elif "MY TITLE IS LADY" in com or "I'M A LADY" in com or "I'M A WOMAN" in com or "I'M A GIRL" in com:
 				tts_kill()
-				cfgfile = open( DRAGONFIRE_PATH + "/config.ini",'w')
-				Config.set("BasicUserData","Prefix","My Lady")
-				Config.write(cfgfile)
-				cfgfile.close()
+				user_prefix = "My Lady"
 				userin = Data([" "]," ")
-				userin.say("Pardon, My Lady.")
+				userin.say("Pardon, " + user_prefix + ".")
 			elif "MY TITLE IS SIR" in com or "I'M A MAN" in com or "I'M A BOY" in com:
 				tts_kill()
-				cfgfile = open( DRAGONFIRE_PATH + "/config.ini",'w')
-				Config.set("BasicUserData","Prefix","Sir")
-				Config.write(cfgfile)
-				cfgfile.close()
+				user_prefix = "Sir"
 				userin = Data([" "]," ")
-				userin.say("Pardon, Sir.")
+				userin.say("Pardon, " + user_prefix + ".")
 			elif "WHAT IS YOUR NAME" in com:
 				tts_kill()
 				userin = Data([" "]," ")
@@ -319,9 +312,12 @@ def dragon_greet():
 	print "_______________________________________________________________\n"
 	time = datetime.datetime.now().time()
 
-	Config = ConfigParser.ConfigParser()
-	Config.read( DRAGONFIRE_PATH + "/config.ini")
-	user_prefix = Config.get("BasicUserData","Prefix")
+	global user_full_name
+	global user_prefix
+
+	user_full_name = os.popen("getent passwd $LOGNAME | cut -d: -f5 | cut -d, -f1").read()
+	user_full_name = user_full_name[:-1]
+	user_prefix = GENDER_PREFIX[Classifiers.gender(user_full_name.split(' ', 1)[0])]
 
 	if time < datetime.time(12):
 		userin = Data(["echo"],"To activate say 'Dragonfire!' or 'Wake Up!'")
