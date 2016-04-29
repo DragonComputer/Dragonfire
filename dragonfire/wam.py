@@ -10,6 +10,7 @@ import contextlib
 import cStringIO
 import re
 from random import randint
+from nltk.tag import SennaNERTagger
 
 class WikipediaAnsweringMachine():
 
@@ -19,7 +20,7 @@ class WikipediaAnsweringMachine():
 		#tagged = nltk.pos_tag(tokens)
 		topic_obj = TopicExtractor(speech)
 		result = topic_obj.extract()
-		if "BORN" in speech or "BIRTHDATE" in speech or "DATE " in speech or " DATE" in speech or "WHEN" in speech:
+		if "WHEN" in speech or "BIRTHDATE" in speech or "DATE " in speech or " DATE" in speech or "BORN" in speech:
 			with nostdout():
 				with nostderr():
 					try:
@@ -27,6 +28,21 @@ class WikipediaAnsweringMachine():
 						wikicontent = "".join([i if ord(i) < 128 else ' ' for i in wikipage.content])
 						wikicontent = re.sub(r'\([^)]*\)', '', wikicontent)
 						return TimeDetector.tag(wikicontent)[0]
+					except:
+						return noanswer(user_prefix)
+		elif "WHERE" in speech or "LOCATION" in speech or "ADDRESS" in speech or "COUNTRY" in speech or "CITY" in speech or "STREET" in speech:
+			with nostdout():
+				with nostderr():
+					try:
+						wikipage = wikipedia.page(wikipedia.suggest(result[0]))
+						wikicontent = "".join([i if ord(i) < 128 else ' ' for i in wikipage.content])
+						wikicontent = re.sub(r'\([^)]*\)', '', wikicontent)
+						nertagger = SennaNERTagger('/usr/share/senna')
+						tagged = nertagger.tag(wikicontent.split())
+						for tag in tagged:
+							if tag[1] == 'B-LOC':
+								return tag[0]
+						return noanswer(user_prefix)
 					except:
 						return noanswer(user_prefix)
 		else:
