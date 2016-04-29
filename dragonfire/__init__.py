@@ -6,7 +6,7 @@ import api
 from lxml import etree
 from dragonfire.utilities import Data
 from dragonfire.nlplib import Classifiers
-from dragonfire.nlplib import TopicExtractor
+from dragonfire.wam import WikipediaAnsweringMachine
 from subprocess import call
 import time
 import subprocess
@@ -293,14 +293,7 @@ def command(speech):
 				if dragonfire_respond:
 					userin.say(dragonfire_respond)
 				else:
-					topic_obj = TopicExtractor(com)
-					result = topic_obj.extract()
-					with nostdout():
-						with nostderr():
-							summary = wikipedia.summary(result[0], sentences=1)
-							summary = "".join([i if ord(i) < 128 else ' ' for i in summary])
-							summary = re.sub(r'\([^)]*\)', '', summary)
-					userin.say(summary)
+					userin.say(WikipediaAnsweringMachine.answer(com))
 				previous_command = com
 
 			#newest = max(glob.iglob('/tmp/' + str(datetime.date.today().year) + '*.[Ww][Aa][Vv]'), key=os.path.getctime)

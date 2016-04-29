@@ -7,7 +7,7 @@ Linux distributions
 .. figure:: https://raw.githubusercontent.com/mertyildiran/Dragonfire/master/docs/img/dragonfire.gif
    :alt: Dragonfire
 
-   Dragonfire
+
 *Dragonfire will never leave your questions unanswered.*
 
 Dragonfire does following tasks for each separate command, respectively:
@@ -19,7 +19,7 @@ Dragonfire does following tasks for each separate command, respectively:
 Version
 ~~~~~~~
 
-0.5.8
+0.5.9
 
 Installation
 ~~~~~~~~~~~~
