@@ -5,6 +5,7 @@ Dragonfire is an open source virtual assistant project for Ubuntu based
 Linux distributions
 
 .. figure:: https://raw.githubusercontent.com/mertyildiran/Dragonfire/master/docs/img/dragonfire.gif
+   :width: 600 px
    :alt: Dragonfire
 
 
@@ -19,7 +20,7 @@ Dragonfire does following tasks for each separate command, respectively:
 Version
 ~~~~~~~
 
-0.5.9
+0.6.0
 
 Installation
 ~~~~~~~~~~~~
