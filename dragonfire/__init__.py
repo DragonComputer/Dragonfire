@@ -293,7 +293,7 @@ def command(speech):
 				if dragonfire_respond:
 					userin.say(dragonfire_respond)
 				else:
-					userin.say(WikipediaAnsweringMachine.answer(com))
+					userin.say(WikipediaAnsweringMachine.answer(com, user_prefix))
 				previous_command = com
 
 			#newest = max(glob.iglob('/tmp/' + str(datetime.date.today().year) + '*.[Ww][Aa][Vv]'), key=os.path.getctime)
