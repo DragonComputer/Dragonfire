@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<aiml>
+<!-- Copyright (c) 2007 ALICE A.I. Foundation, Inc. -->
+<!-- -->
+<!-- Permission is hereby granted, free of charge, to any person       -->
+<!-- obtaining a copy of this software and associated documentation    -->
+<!-- files (the "Software"), to deal in the Software without           -->
+<!-- restriction, including without limitation the rights to use,      -->
+<!-- copy, modify, merge, publish, distribute, sublicense, and/or sell -->
+<!-- copies of the Software, and to permit persons to whom the         -->
+<!-- Software is furnished to do so, subject to the following          -->
+<!-- conditions:                                                       -->
+<!-- -->
+<!-- The above copyright notice and this permission notice shall be    -->
+<!-- included in all copies or substantial portions of the Software.   -->
+<!-- -->
+<!-- THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,   -->
+<!-- EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES   -->
+<!-- OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND          -->
+<!-- NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT       -->
+<!-- HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,      -->
+<!-- WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING      -->
+<!-- FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR     -->
+<!-- OTHER DEALINGS IN THE SOFTWARE. -->
+<!-- -->
+<!-- Complies with the AIML 1.0.1 Standard -->
+<!-- as adopted by the ALICE A.I. Foundation. -->
+<!-- Last modified July 26, 2007 -->
+
+<category>
+<pattern>MULTIPLE CHOICE TEST</pattern>
+<template>
+<srai>QUESTION I</srai>
+</template>
+</category>
+
+<category>
+<pattern>QUESTION I</pattern>
+<template>
+Who is the best robot? <br/>
+A. R2D2.<br/>
+B. ALICE.<br/>
+C. HAL 9000.<br/>
+
+<think>
+    <set name="topic">
+       QUESTION I 
+    </set>
+</think>
+</template>
+</category>
+
+
+<topic name="QUESTION I"> 
+
+<category> 
+<pattern>_</pattern>
+<template>
+<think>
+ 	<set name="star"><star /></set>
+</think>
+<think><set name="topic">QUESTIONS</set></think>
+<condition>
+<li name="star" value="A">
+	Wrong! Try again!<br />
+	<srai>QUESTION I</srai>
+</li> 
+<li name="star" value="B">
+	This is the correct answer!<br />
+	<srai>QUESTION II</srai>
+</li>
+<li name="star" value="C">
+	Wrong! Try again!<br />
+	<srai>QUESTION I</srai> </li>
+<li>
+	Please answer with just A, B or C. Try again!<br />
+	<srai>QUESTION I</srai>
+</li> 
+</condition>
+</template> </category> 
+
+</topic> 
+
+<category>
+<pattern>QUESTION II</pattern>
+<template>
+Who was the first president? <br/>
+A. George Washington.<br/>
+B. Thomas Jefferson.<br/>
+C. George Bush.<br/>
+<think>
+    <set name="topic">
+       QUESTION II 
+    </set>
+</think>
+</template>
+</category>
+
+<topic name="QUESTION II"> 
+
+<category> 
+<pattern>_</pattern>
+<template>
+<think>
+ <set name="star"><star /></set>
+ <set name="topic">QUESTIONS</set>
+</think>
+
+<condition>
+<li name="star" value="A">
+	This is the correct answer!<br />
+	<srai>QUESTION III</srai>
+</li>
+<li name="star" value="B">
+	Wrong! Try again!<br />
+	<srai>QUESTION II</srai>
+</li> 
+<li name="star" value="C">
+	Wrong! Try again!<br />
+	<srai>QUESTION II</srai> </li>
+<li>
+	Please answer with just A, B or C. Try again!<br />
+	<srai>QUESTION II</srai>
+</li> 
+</condition>
+</template> </category> </topic>
+
+<category>
+<pattern>QUESTION III</pattern>
+<template>What was the first state? <br/>
+A. Virginia.<br/>
+B. Pennsylvania.<br/>
+C. Delaware.<br/>
+<think>
+    <set name="topic">
+       QUESTION III 
+    </set>
+</think>
+</template>
+</category>
+
+<topic name="QUESTION III"> 
+
+<category> 
+<pattern>_</pattern>
+<template>
+<think>
+ <set name="star"><star /></set>
+ <set name="topic">QUESTIONS</set>
+</think>
+<condition>
+<li name="star" value="A">
+	Wrong! Try again!<br />
+	<srai>QUESTION III</srai>
+</li> 
+<li name="star" value="B">
+	Wrong! Try again!<br />
+	<srai>QUESTION III</srai> </li>
+<li name="star" value="C">
+	This is the correct answer!<br />
+	<srai>QUIZ FINISHED</srai>
+</li>
+<li>
+	Please answer with just A, B or C. Try again!<br />
+	<srai>QUESTION III</srai>
+</li> 
+</condition> </template>
+</category> </topic>
+
+<category>
+<pattern>QUIZ FINISHED</pattern>
+<template>
+<think>
+ <set name="topic">QUESTIONS</set>
+</think>
+Congratulations, you have finished the quiz!
+</template>
+</category>
+
+</aiml>
