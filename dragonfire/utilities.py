@@ -28,6 +28,7 @@ class Data:
 			print "Dragonfire: " + message.upper()
 		print "_______________________________________________________________\n"
 		proc = subprocess.Popen(["festival","--tts"], stdin=subprocess.PIPE, stdout=FNULL, stderr=FNULL)
+		message = "".join([i if ord(i) < 128 else ' ' for i in message])
 		proc.stdin.write(message)
 		proc.stdin.close()
 		#proc.wait()
@@ -35,3 +36,7 @@ class Data:
 		#	subprocess.Popen(["rhythmbox-client","--play"])
 	def espeak(self,message):
 		subprocess.Popen(["espeak","-v","en-uk-north",message])
+
+if __name__ == "__main__":
+	userin = Data([" "]," ")
+	userin.say("I have a female voice but I don't have a gender identity. I'm a computer program.")
