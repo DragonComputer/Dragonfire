@@ -15,7 +15,7 @@ Dragonfire does following tasks for each separate command, respectively:
 Version
 ~~~~~~~
 
-0.6.5
+0.6.6
 
 Installation
 ~~~~~~~~~~~~
