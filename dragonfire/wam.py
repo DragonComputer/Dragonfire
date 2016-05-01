@@ -11,6 +11,7 @@ import cStringIO
 import re
 from random import randint
 from nltk.tag import SennaNERTagger
+from collections import Counter
 
 class WikipediaAnsweringMachine():
 
@@ -20,21 +21,27 @@ class WikipediaAnsweringMachine():
 		#tagged = nltk.pos_tag(tokens)
 		topic_obj = TopicExtractor(speech)
 		result = topic_obj.extract()
+		try:
+			print "~Topic: " + result[0]
+		except:
+			pass
+		speech = speech.upper()
 		if "WHEN" in speech or "BIRTHDATE" in speech or "DATE " in speech or " DATE" in speech or "BORN" in speech:
 			with nostdout():
 				with nostderr():
 					try:
-						wikipage = wikipedia.page(wikipedia.suggest(result[0]))
+						wikipage = wikipedia.page(result[0])
 						wikicontent = "".join([i if ord(i) < 128 else ' ' for i in wikipage.content])
-						wikicontent = re.sub(r'\([^)]*\)', '', wikicontent)
-						return TimeDetector.tag(wikicontent)[0]
+						#print TimeDetector.tag(wikicontent)
+						count = Counter(TimeDetector.tag(wikicontent))
+						return count.most_common()[0][0]
 					except:
 						return noanswer(user_prefix)
 		elif "WHERE" in speech or "LOCATION" in speech or "ADDRESS" in speech or "COUNTRY" in speech or "CITY" in speech or "STREET" in speech:
 			with nostdout():
 				with nostderr():
 					try:
-						wikipage = wikipedia.page(wikipedia.suggest(result[0]))
+						wikipage = wikipedia.page(result[0])
 						wikicontent = "".join([i if ord(i) < 128 else ' ' for i in wikipage.content])
 						wikicontent = re.sub(r'\([^)]*\)', '', wikicontent)
 						nertagger = SennaNERTagger('/usr/share/senna')

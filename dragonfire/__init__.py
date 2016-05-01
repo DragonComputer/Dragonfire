@@ -50,6 +50,7 @@ def command(speech):
 		line = speech.readline()
 		if line.startswith("sentence1: ") or line.startswith("<search failed>"):
 			com = google_speech_api()
+			original_com = com
 
 			if (com == 0):
 				#speech_error()
@@ -288,12 +289,13 @@ def command(speech):
 			else:
 				tts_kill()
 				with nostderr():
+					#dragonfire_respond = 0
 					dragonfire_respond = kernel.respond(com)
 				userin = Data([" "]," ")
 				if dragonfire_respond:
 					userin.say(dragonfire_respond)
 				else:
-					userin.say(WikipediaAnsweringMachine.answer(com, user_prefix))
+					userin.say(WikipediaAnsweringMachine.answer(original_com, user_prefix))
 				previous_command = com
 
 			#newest = max(glob.iglob('/tmp/' + str(datetime.date.today().year) + '*.[Ww][Aa][Vv]'), key=os.path.getctime)
