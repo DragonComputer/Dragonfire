@@ -14,12 +14,12 @@ Dragonfire does following tasks for each separate command, respectively:
 
 ### Version
 
-0.6.4
+0.6.5
 
 ### Installation
 
 ```Shell
-sudo pip install dragonfire
+sudo pip install dragonfire --verbose # Dragonfire will install tons of dependencies to your computer. See what is going on while installation with --verbose option.
 ```
 
 ### Usage
