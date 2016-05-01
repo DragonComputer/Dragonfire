@@ -14,12 +14,14 @@ Dragonfire does following tasks for each separate command, respectively:
 
 ### Version
 
-0.6.6
+0.6.7
 
 ### Installation
 
 ```Shell
-sudo pip install dragonfire --verbose # Dragonfire will install tons of dependencies to your computer. See what is going on while installation with --verbose option.
+sudo apt-get -y install openjdk-7-jdk git # Install OpenJDK 7 & GIT
+cd ~ && git clone https://github.com/brmson/yodaqa.git ; cd yodaqa/ && git pull && ./gradlew check && echo | ./gradlew run # Install YodaQA
+sudo pip install dragonfire --verbose # Install Dragonfire
 ```
 
 ### Usage

@@ -6,8 +6,8 @@ import api
 from lxml import etree
 from dragonfire.utilities import Data
 from dragonfire.nlplib import Classifiers
-from dragonfire.wam import WikipediaAnsweringMachine
-from subprocess import call
+from dragonfire.yoda import YodaQA
+from subprocess import call, Popen
 import time
 import subprocess
 import urllib2
@@ -33,6 +33,10 @@ FNULL = open(os.devnull, 'w')
 GENDER_PREFIX = {'male': 'Sir', 'female': 'My Lady'}
 
 def command(speech):
+	#here = os.path.dirname(os.path.realpath(__file__))
+	#os.chdir(os.path.expanduser("~/yodaqa/"))
+	#Popen(["./gradlew","web","-q"], stdout=FNULL, stderr=FNULL)
+	#os.chdir(here)
 
 	kernel = aiml.Kernel()
 	with nostdout():
@@ -295,7 +299,8 @@ def command(speech):
 				if dragonfire_respond:
 					userin.say(dragonfire_respond)
 				else:
-					userin.say(WikipediaAnsweringMachine.answer(original_com, user_prefix))
+					userin.say("I need to do a brief research on the internet. It may take up to 3 minutes, so please be patient.")
+					userin.say(YodaQA.answer("http://qa.ailao.eu", original_com, user_prefix))
 				previous_command = com
 
 			#newest = max(glob.iglob('/tmp/' + str(datetime.date.today().year) + '*.[Ww][Aa][Vv]'), key=os.path.getctime)
