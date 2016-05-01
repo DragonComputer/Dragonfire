@@ -41,7 +41,7 @@ def command(speech):
 	kernel = aiml.Kernel()
 	with nostdout():
 		with nostderr():
-			kernel.learn(DRAGONFIRE_PATH + "/aiml/*.aiml")
+			kernel.learn(DRAGONFIRE_PATH + "/aiml/learn.aiml")
 
 	previous_command = ""
 	global inactive
