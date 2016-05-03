@@ -24,13 +24,16 @@ from apiclient.errors import HttpError
 import glob
 import speech_recognition as sr
 import inspect
-import aiml
+#import aiml
 import contextlib
 import cStringIO
+from dragonfire.learn import Teachable
+import uuid
 
 DRAGONFIRE_PATH = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 FNULL = open(os.devnull, 'w')
 GENDER_PREFIX = {'male': 'Sir', 'female': 'My Lady'}
+CONVO_ID = uuid.uuid4()
 
 def command(speech):
 	#here = os.path.dirname(os.path.realpath(__file__))
@@ -38,10 +41,12 @@ def command(speech):
 	#Popen(["./gradlew","web","-q"], stdout=FNULL, stderr=FNULL)
 	#os.chdir(here)
 
+	'''
 	kernel = aiml.Kernel()
 	with nostdout():
 		with nostderr():
 			kernel.learn(DRAGONFIRE_PATH + "/aiml/learn.aiml")
+	'''
 
 	previous_command = ""
 	global inactive
@@ -292,12 +297,11 @@ def command(speech):
 				k.tap_key('f')
 			else:
 				tts_kill()
-				with nostderr():
-					#dragonfire_respond = 0
-					dragonfire_respond = kernel.respond(com)
+				#dragonfire_respond = kernel.respond(com)
+				teachable_respond = Teachable.respond("http://teach.dragon.computer/", CONVO_ID, original_com)
 				userin = Data([" "]," ")
-				if dragonfire_respond:
-					userin.say(dragonfire_respond)
+				if teachable_respond and "WHAT" not in teachable_respond and "WHERE" not in teachable_respond and "WHO" not in teachable_respond:
+					userin.say(teachable_respond)
 				else:
 					userin.say("I need to do a brief research on the internet. It may take up to 3 minutes, so please be patient.")
 					userin.say(YodaQA.answer("http://qa.ailao.eu", original_com, user_prefix))
