@@ -1,159 +1,579 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 
-	<!-- Free software (c) 2001-2003 ALICE A.I. Foundation.   -->
+	<!-- Free software (c) 2001-2003 ALICE A.I. Foundation.  -->
 	<!-- This program is open source code released under -->
-	<!-- the terms of the GNU General Public License     -->
-	<!-- as published by the Free Software Foundation.   -->
+	<!-- the terms of the GNU General Public License   -->
+	<!-- as published by the Free Software Foundation.  -->
 	<!-- Complies with AIML 1.0 Tag Set Specification -->
-	<!-- as adopted by the ALICE A.I. Foundation.  -->
+	<!-- as adopted by the ALICE A.I. Foundation. -->
 	<!-- Learn.aiml written by Square Bear on 6th March 2009 -->
-	<!-- This AIML allows users to teach your bot  -->
+	<!-- This AIML allows users to teach your bot -->
 	<!-- http://www.square-bear.co.uk -->
 
 <aiml>
 
 <category>
-  <pattern>LEARN * MEANS *</pattern>
-  <template>
-		  Ok I will learn that<star index="1"/>is<star index="2"/>.
-	<srai>XEDUCATE WHAT IS XSPLIT <star index="1"/> XSPLIT <star index="2"/></srai>
-	<srai>XEDUCATE WHERE IS XSPLIT <star index="1"/> XSPLIT <star index="2"/></srai>
-	<srai>XEDUCATE WHO IS XSPLIT <star index="1"/> XSPLIT <star index="2"/></srai>
-  </template>
+ <pattern>LEARN MY * ARE *</pattern>
+ <template>
+<srai>xlearnfact</srai>
+     Ok I will learn that your <star index="1"/> are <star index="2"/> .
+	<srai>XEDUCATE WHAT ARE XSPLIT MY <star index="1"/> XSPLIT <star index="2"/> </srai>
+	<srai>XEDUCATE WHO ARE XSPLIT MY <star index="1"/> XSPLIT <star index="2"/> </srai>
+	<srai>XEDUCATE WHERE ARE XSPLIT MY <star index="1"/> XSPLIT <star index="2"/> </srai>
+	<srai>XEDUCATE WHAT _ ARE XSPLIT MY <star index="1"/> XSPLIT <star index="2"/> </srai>
+	<srai>XEDUCATE WHAT IS XSPLIT MY <star index="1"/> XSPLIT <star index="2"/> </srai>
+	<srai>XEDUCATE WHO IS XSPLIT MY <star index="1"/> XSPLIT <star index="2"/> </srai>
+	<srai>XEDUCATE WHERE IS XSPLIT MY <star index="1"/> XSPLIT <star index="2"/> </srai>
+	<srai>XEDUCATE WHAT _ IS XSPLIT MY <star index="1"/> XSPLIT <star index="2"/> </srai>
+ </template>
 </category>
 
 <category>
-  <pattern>LEARN * IS *</pattern>
-  <template>
-		  Ok I will learn that<star index="1"/>is<star index="2"/>.
-	<srai>XEDUCATE WHAT IS XSPLIT <star index="1"/> XSPLIT <star index="2"/></srai>
-	<srai>XEDUCATE WHERE IS XSPLIT <star index="1"/> XSPLIT <star index="2"/></srai>
-	<srai>XEDUCATE WHO IS XSPLIT <star index="1"/> XSPLIT <star index="2"/></srai>
-  </template>
+ <pattern>LEARN MY * IS *</pattern>
+ <template>
+<srai>xlearnfact</srai>
+     Ok I will learn that your <star index="1"/> is <star index="2"/> .
+	<srai>XEDUCATE WHAT IS XSPLIT MY <star index="1"/> XSPLIT <star index="2"/> </srai>
+	<srai>XEDUCATE WHO IS XSPLIT MY <star index="1"/> XSPLIT <star index="2"/> </srai>
+	<srai>XEDUCATE WHERE IS XSPLIT MY <star index="1"/> XSPLIT <star index="2"/> </srai>
+	<srai>XEDUCATE WHAT _ IS XSPLIT MY <star index="1"/> XSPLIT <star index="2"/> </srai>
+ </template>
 </category>
 
 <category>
-  <pattern>LEARN * WAS *</pattern>
-  <template>
-		  Ok I will learn that<star index="1"/>was<star index="2"/>.
-	<srai>XEDUCATE WHAT WAS XSPLIT <star index="1"/> XSPLIT <star index="2"/></srai>
-	<srai>XEDUCATE WHERE WAS XSPLIT <star index="1"/> XSPLIT <star index="2"/></srai>
-	<srai>XEDUCATE WHO WAS XSPLIT <star index="1"/> XSPLIT <star index="2"/></srai>
-	<srai>XEDUCATE WHAT IS XSPLIT <star index="1"/> XSPLIT <star index="2"/></srai>
-	<srai>XEDUCATE WHERE IS XSPLIT <star index="1"/> XSPLIT <star index="2"/></srai>
-	<srai>XEDUCATE WHO IS XSPLIT <star index="1"/> XSPLIT <star index="2"/></srai>
-  </template>
+ <pattern>MY * ARE *</pattern>
+ <template>
+<srai>xlearnfact</srai>
+     Ok I will learn that your <star index="1"/> are <star index="2"/> .
+	<srai>XEDUCATE WHAT ARE XSPLIT MY <star index="1"/> XSPLIT <star index="2"/> </srai>
+	<srai>XEDUCATE WHO ARE XSPLIT MY <star index="1"/> XSPLIT <star index="2"/> </srai>
+	<srai>XEDUCATE WHERE ARE XSPLIT MY <star index="1"/> XSPLIT <star index="2"/> </srai>
+	<srai>XEDUCATE WHAT _ ARE XSPLIT MY <star index="1"/> XSPLIT <star index="2"/> </srai>
+	<srai>XEDUCATE WHAT IS XSPLIT MY <star index="1"/> XSPLIT <star index="2"/> </srai>
+	<srai>XEDUCATE WHO IS XSPLIT MY <star index="1"/> XSPLIT <star index="2"/> </srai>
+	<srai>XEDUCATE WHERE IS XSPLIT MY <star index="1"/> XSPLIT <star index="2"/> </srai>
+	<srai>XEDUCATE WHAT _ IS XSPLIT MY <star index="1"/> XSPLIT <star index="2"/> </srai>
+ </template>
 </category>
 
 <category>
-  <pattern>LEARN * HAS *</pattern>
-  <template>
-		  Ok I will learn that<star index="1"/>has<star index="2"/>.
-	<srai>XEDUCATE WHAT HAS XSPLIT <star index="1"/> XSPLIT <star index="2"/></srai>
-	<srai>XEDUCATE WHERE HAS XSPLIT <star index="1"/> XSPLIT <star index="2"/></srai>
-	<srai>XEDUCATE WHO HAS XSPLIT <star index="1"/> XSPLIT <star index="2"/></srai>
-  </template>
+ <pattern>MY * IS *</pattern>
+ <template>
+<srai>xlearnfact</srai>
+     Ok I will learn that your <star index="1"/> is <star index="2"/> .
+	<srai>XEDUCATE WHAT IS XSPLIT MY <star index="1"/> XSPLIT <star index="2"/> </srai>
+	<srai>XEDUCATE WHO IS XSPLIT MY <star index="1"/> XSPLIT <star index="2"/> </srai>
+	<srai>XEDUCATE WHERE IS XSPLIT MY <star index="1"/> XSPLIT <star index="2"/> </srai>
+	<srai>XEDUCATE WHAT _ IS XSPLIT MY <star index="1"/> XSPLIT <star index="2"/> </srai>
+ </template>
+</category>
+
+
+
+<category>
+ <pattern>LEARN * MEANS *</pattern>
+ <template>
+<srai>xlearnfact</srai>
+     Ok I will learn that <star index="1"/> is <star index="2"/> .
+	<srai>XEDUCATE WHAT IS XSPLIT <star index="1"/> XSPLIT <star index="2"/> </srai>
+	<srai>XEDUCATE WHERE IS XSPLIT <star index="1"/> XSPLIT <star index="2"/> </srai>
+	<srai>XEDUCATE WHO IS XSPLIT <star index="1"/> XSPLIT <star index="2"/> </srai>
+	<srai>XEDUCATELANG <star index="1"/> XSPLIT <star index="2"/> XSPLIT a language XSPLIT</srai>
+ </template>
 </category>
 
 <category>
-  <pattern>LEARN * ARE *</pattern>
-  <template>
-		  Ok I will learn that<star index="1"/>are<star index="2"/>.
-	<srai>XEDUCATE WHAT ARE XSPLIT <star index="1"/> XSPLIT <star index="2"/></srai>
-	<srai>XEDUCATE WHERE ARE XSPLIT <star index="1"/> XSPLIT <star index="2"/></srai>
-	<srai>XEDUCATE WHO ARE XSPLIT <star index="1"/> XSPLIT <star index="2"/></srai>
-  </template>
+ <pattern>LEARN * IS *</pattern>
+ <template>
+<srai>xlearnfact</srai>
+     Ok I will learn that <star index="1"/> is <star index="2"/> .
+	<srai>XEDUCATE WHAT IS XSPLIT <star index="1"/> XSPLIT <star index="2"/> </srai>
+	<srai>XEDUCATE WHAT _ IS XSPLIT <star index="1"/> XSPLIT <star index="2"/> </srai>
+	<srai>XEDUCATE WHERE IS XSPLIT <star index="1"/> XSPLIT <star index="2"/> </srai>
+	<srai>XEDUCATE WHO IS XSPLIT <star index="1"/> XSPLIT <star index="2"/> </srai>
+	<srai>XEDUCATELANG <star index="1"/> XSPLIT <star index="2"/> XSPLIT a language XSPLIT</srai>
+ </template>
 </category>
 
 <category>
-  <pattern>XEDUCATE * XSPLIT * XSPLIT *</pattern>
-  <template>
+ <pattern>LEARN * WAS *</pattern>
+ <template>
+<srai>xlearnfact</srai>
+     Ok I will learn that <star index="1"/> was <star index="2"/> .
+	<srai>XEDUCATE WHAT WAS XSPLIT <star index="1"/> XSPLIT <star index="2"/> </srai>
+	<srai>XEDUCATE WHERE WAS XSPLIT <star index="1"/> XSPLIT <star index="2"/> </srai>
+	<srai>XEDUCATE WHO WAS XSPLIT <star index="1"/> XSPLIT <star index="2"/> </srai>
+	<srai>XEDUCATE WHAT IS XSPLIT <star index="1"/> XSPLIT <star index="2"/> </srai>
+	<srai>XEDUCATE WHERE IS XSPLIT <star index="1"/> XSPLIT <star index="2"/> </srai>
+	<srai>XEDUCATE WHO IS XSPLIT <star index="1"/> XSPLIT <star index="2"/> </srai>
+	<srai>XEDUCATE WHAT _ WAS XSPLIT <star index="1"/> XSPLIT <star index="2"/> </srai>
+ </template>
+</category>
 
-	  <learn>
+<category>
+ <pattern>LEARN * HAS *</pattern>
+ <template>
+<srai>xlearnfact</srai>
+     Ok I will learn that <star index="1"/> has <star index="2"/> .
+	<srai>XEDUCATE WHAT HAS XSPLIT <star index="1"/> XSPLIT <star index="2"/> </srai>
+	<srai>XEDUCATE WHERE HAS XSPLIT <star index="1"/> XSPLIT <star index="2"/> </srai>
+	<srai>XEDUCATE WHO HAS XSPLIT <star index="1"/> XSPLIT <star index="2"/> </srai>
+	<srai>XEDUCATE WHAT DOES XSPLIT <star index="1"/> XSPLIT HAVE XSPLIT <star index="2"/> </srai>
+ </template>
+</category>
+
+<category>
+ <pattern>MY * HAS *</pattern>
+ <template>
+<srai>xlearnfact</srai>
+     Ok I will learn that your <star index="1"/> has <star index="2"/> .
+	<srai>XEDUCATE WHAT HAS XSPLIT my <star index="1"/> XSPLIT <star index="2"/> </srai>
+	<srai>XEDUCATE WHERE HAS XSPLIT my <star index="1"/> XSPLIT <star index="2"/> </srai>
+	<srai>XEDUCATE WHO HAS XSPLIT my <star index="1"/> XSPLIT <star index="2"/> </srai>
+	<srai>XEDUCATE WHAT DOES XSPLIT my <star index="1"/> XSPLIT HAVE XSPLIT <star index="2"/> </srai>
+ </template>
+</category>
+
+<category>
+ <pattern>LEARN MY * HAS *</pattern>
+ <template>
+<srai>xlearnfact</srai>
+     Ok I will learn that your <star index="1"/> has <star index="2"/> .
+	<srai>XEDUCATE WHAT HAS XSPLIT my <star index="1"/> XSPLIT <star index="2"/> </srai>
+	<srai>XEDUCATE WHERE HAS XSPLIT my <star index="1"/> XSPLIT <star index="2"/> </srai>
+	<srai>XEDUCATE WHO HAS XSPLIT my <star index="1"/> XSPLIT <star index="2"/> </srai>
+	<srai>XEDUCATE WHAT DOES XSPLIT my <star index="1"/> XSPLIT HAVE XSPLIT <star index="2"/> </srai>
+ </template>
+</category>
+
+<category>
+ <pattern>LEARN * ARE *</pattern>
+ <template>
+<srai>xlearnfact</srai>
+     Ok I will learn that <star index="1"/> are <star index="2"/> .
+	<srai>XEDUCATE WHAT ARE XSPLIT <star index="1"/> XSPLIT <star index="2"/> </srai>
+	<srai>XEDUCATE WHERE ARE XSPLIT <star index="1"/> XSPLIT <star index="2"/> </srai>
+	<srai>XEDUCATE WHO ARE XSPLIT <star index="1"/> XSPLIT <star index="2"/> </srai>
+	<srai>XEDUCATE WHAT IS XSPLIT <star index="1"/> XSPLIT <star index="2"/> </srai>
+	<srai>XEDUCATE WHO IS XSPLIT <star index="1"/> XSPLIT <star index="2"/> </srai>
+	<srai>XEDUCATE WHERE IS XSPLIT <star index="1"/> XSPLIT <star index="2"/> </srai>
+	<srai>XEDUCATE WHAT _ IS XSPLIT <star index="1"/> XSPLIT <star index="2"/> </srai>
+	<srai>XEDUCATE WHAT _ ARE XSPLIT <star index="1"/> XSPLIT <star index="2"/> </srai>
+	<srai>XEDUCATELANG <star index="1"/> XSPLIT <star index="2"/> XSPLIT a language XSPLIT</srai>
+ </template>
+</category>
+
+
+<category>
+ <pattern>XEDUCATE * XSPLIT * XSPLIT *</pattern>
+ <template>
+
+   <learn>
 	<category>
-	  <pattern>
-		<eval><uppercase><star index="1"/><star index="3"/></uppercase></eval>
-	  </pattern>
-	  <template>
-		<eval><star index="2"/></eval>
-	  </template>
+	 <pattern>
+	  <eval><uppercase> <star index="1"/> <star index="3"/> </uppercase></eval>
+	 </pattern>
+	 <template>
+	  <eval> <star index="2"/> </eval>
+	 </template>
 	</category>
-	  </learn>
-	  <learn>
+   </learn>
+   <learn>
 	<category>
-	  <pattern>
-		<eval><uppercase><star index="1"/><star index="2"/></uppercase></eval>
-	  </pattern>
-	  <template>
-		<eval><star index="3"/></eval>
-	  </template>
+	 <pattern>
+	  <eval><uppercase> <star index="1"/> <star index="2"/> </uppercase></eval>
+	 </pattern>
+	 <template>
+	  <eval> <star index="3"/> </eval>
+	 </template>
 	</category>
-	  </learn>
+   </learn>
 
-  </template>
+ </template>
 </category>
 
 <category>
-  <pattern>* MEANS *</pattern>
-  <template>
-		  Ok I will add that fact about<person/>to my database.
-	<srai>XEDUCATE WHAT IS XSPLIT <star index="1"/> XSPLIT <star index="2"/></srai>
-	<srai>XEDUCATE WHERE IS XSPLIT <star index="1"/> XSPLIT <star index="2"/></srai>
-	<srai>XEDUCATE WHO IS XSPLIT <star index="1"/> XSPLIT <star index="2"/></srai>
-  </template>
+ <pattern>XEDUCATE * XSPLIT * XSPLIT * XSPLIT *</pattern>
+ <template>
+
+   <learn>
+	<category>
+	 <pattern>
+	  <eval><uppercase> <star index="1"/> <star index="2"/> <star index="3"/> </uppercase></eval>
+	 </pattern>
+	 <template>
+	  <eval> <star index="4"/> </eval>
+	 </template>
+	</category>
+   </learn>
+
+ </template>
 </category>
 
 <category>
-  <pattern>* IS A *</pattern>
-  <template>
-		  Ok I will add that fact about<person/>to my database.
-	<srai>XEDUCATE WHAT IS XSPLIT <star index="1"/> XSPLIT <star index="2"/></srai>
-	<srai>XEDUCATE WHERE IS XSPLIT <star index="1"/> XSPLIT <star index="2"/></srai>
-	<srai>XEDUCATE WHO IS XSPLIT <star index="1"/> XSPLIT <star index="2"/></srai>
-  </template>
+ <pattern>XEDUCATELANG * XSPLIT * XSPLIT * XSPLIT</pattern>
+ <template>
+
+   <learn>
+	<category>
+	 <pattern>
+	  <eval><uppercase> <star index="1"/> </uppercase></eval>
+	 </pattern>
+	 <template>
+	  <eval><srai> <star index="2"/> </srai></eval>
+	 </template>
+	</category>
+   </learn>
+   <learn>
+	<category>
+	 <pattern>
+	  <eval>DO YOU SPEAK<uppercase> <star index="3"/> </uppercase></eval>
+	 </pattern>
+	 <template>
+	  <eval>I was taught that <star index="1"/> means <star index="2"/> in <star index="3"/> .</eval>
+	 </template>
+	</category>
+   </learn>
+
+ </template>
 </category>
 
 <category>
-  <pattern>* IS *</pattern>
-  <template>
-		  Ok I will add that fact about<person/>to my database.
-	<srai>XEDUCATE WHAT IS XSPLIT <star index="1"/> XSPLIT <star index="2"/></srai>
-	<srai>XEDUCATE WHERE IS XSPLIT <star index="1"/> XSPLIT <star index="2"/></srai>
-	<srai>XEDUCATE WHO IS XSPLIT <star index="1"/> XSPLIT <star index="2"/></srai>
-  </template>
+ <pattern>* IS GOING *</pattern>
+ <template>
+<srai>xlearnfact</srai>
+     Ok I will add that fact about<person/>to my database.
+	<srai>XEDUCATE WHAT IS GOING XSPLIT <star index="1"/> XSPLIT <star index="2"/> </srai>
+	<srai>XEDUCATE WHERE IS XSPLIT <star index="1"/> XSPLIT GOING XSPLIT <star index="2"/> </srai>
+	<srai>XEDUCATE WHO IS GOING XSPLIT <star index="1"/> XSPLIT <star index="2"/> </srai>
+ </template>
 </category>
 
 <category>
-  <pattern>* WAS *</pattern>
-  <template>
-		  Ok I will add that fact about<person/>to my database.
-	<srai>XEDUCATE WHAT WAS XSPLIT <star index="1"/> XSPLIT <star index="2"/></srai>
-	<srai>XEDUCATE WHERE WAS XSPLIT <star index="1"/> XSPLIT <star index="2"/></srai>
-	<srai>XEDUCATE WHO WAS XSPLIT <star index="1"/> XSPLIT <star index="2"/></srai>
-	<srai>XEDUCATE WHAT IS XSPLIT <star index="1"/> XSPLIT <star index="2"/></srai>
-	<srai>XEDUCATE WHERE IS XSPLIT <star index="1"/> XSPLIT <star index="2"/></srai>
-	<srai>XEDUCATE WHO IS XSPLIT <star index="1"/> XSPLIT <star index="2"/></srai>
-  </template>
+ <pattern>* MEANS *</pattern>
+ <template>
+<srai>xlearnfact</srai>
+     Ok I will add that fact about<person/>to my database.
+	<srai>XEDUCATE WHAT IS XSPLIT <star index="1"/> XSPLIT <star index="2"/> </srai>
+	<srai>XEDUCATE WHERE IS XSPLIT <star index="1"/> XSPLIT <star index="2"/> </srai>
+	<srai>XEDUCATE WHO IS XSPLIT <star index="1"/> XSPLIT <star index="2"/> </srai>
+	<srai>XEDUCATE WHAT _ IS XSPLIT <star index="1"/> XSPLIT <star index="2"/> </srai>
+	<srai>XEDUCATELANG <star index="1"/> XSPLIT <star index="2"/> XSPLIT a language XSPLIT</srai>
+ </template>
 </category>
 
 <category>
-  <pattern>* HAS *</pattern>
-  <template>
-		  Ok I will add that fact about<person/>to my database.
-	<srai>XEDUCATE WHAT HAS XSPLIT <star index="1"/> XSPLIT <star index="2"/></srai>
-	<srai>XEDUCATE WHERE HAS XSPLIT <star index="1"/> XSPLIT <star index="2"/></srai>
-	<srai>XEDUCATE WHO HAS XSPLIT <star index="1"/> XSPLIT <star index="2"/></srai>
-  </template>
+ <pattern>* IS AN *</pattern>
+ <template>
+<srai>xlearnfact</srai>
+     Ok I will add that fact about<person/>to my database.
+	<srai>XEDUCATE WHAT IS XSPLIT <star index="1"/> XSPLIT <star index="2"/> </srai>
+	<srai>XEDUCATE WHERE IS XSPLIT <star index="1"/> XSPLIT <star index="2"/> </srai>
+	<srai>XEDUCATE WHO IS XSPLIT <star index="1"/> XSPLIT <star index="2"/> </srai>
+	<srai>XEDUCATE WHAT IS AN XSPLIT <star index="1"/> XSPLIT <star index="2"/> </srai>
+	<srai>XEDUCATE WHERE IS AN XSPLIT <star index="1"/> XSPLIT <star index="2"/> </srai>
+	<srai>XEDUCATE WHO IS AN XSPLIT <star index="1"/> XSPLIT <star index="2"/> </srai>
+	<srai>XEDUCATE WHAT _ IS XSPLIT <star index="1"/> XSPLIT <star index="2"/> </srai>
+ </template>
 </category>
 
 <category>
-  <pattern>* ARE *</pattern>
-  <template>
-		  Ok I will add that fact about<person/>to my database.
-	<srai>XEDUCATE WHAT ARE XSPLIT <star index="1"/> XSPLIT <star index="2"/></srai>
-	<srai>XEDUCATE WHERE ARE XSPLIT <star index="1"/> XSPLIT <star index="2"/></srai>
-	<srai>XEDUCATE WHO ARE XSPLIT <star index="1"/> XSPLIT <star index="2"/></srai>
-  </template>
+ <pattern>* IS A *</pattern>
+ <template>
+<srai>xlearnfact</srai>
+     Ok I will add that fact about<person/>to my database.
+	<srai>XEDUCATE WHAT IS XSPLIT <star index="1"/> XSPLIT <star index="2"/> </srai>
+	<srai>XEDUCATE WHERE IS XSPLIT <star index="1"/> XSPLIT <star index="2"/> </srai>
+	<srai>XEDUCATE WHO IS XSPLIT <star index="1"/> XSPLIT <star index="2"/> </srai>
+	<srai>XEDUCATE WHAT IS A XSPLIT <star index="1"/> XSPLIT <star index="2"/> </srai>
+	<srai>XEDUCATE WHERE IS A XSPLIT <star index="1"/> XSPLIT <star index="2"/> </srai>
+	<srai>XEDUCATE WHO IS A XSPLIT <star index="1"/> XSPLIT <star index="2"/> </srai>
+	<srai>XEDUCATE WHAT _ IS A XSPLIT <star index="1"/> XSPLIT <star index="2"/> </srai>
+ </template>
+</category>
+
+<category>
+ <pattern>* IS THE *</pattern>
+ <template>
+<srai>xlearnfact</srai>
+     Ok I will add that fact about<person/>to my database.
+	<srai>XEDUCATE WHAT IS THE XSPLIT <star index="1"/> XSPLIT <star index="2"/> </srai>
+	<srai>XEDUCATE WHERE IS THE XSPLIT <star index="1"/> XSPLIT <star index="2"/> </srai>
+	<srai>XEDUCATE WHO IS THE XSPLIT <star index="1"/> XSPLIT <star index="2"/> </srai>
+	<srai>XEDUCATE WHAT IS XSPLIT <star index="1"/> XSPLIT <star index="2"/> </srai>
+	<srai>XEDUCATE WHERE IS XSPLIT <star index="1"/> XSPLIT <star index="2"/> </srai>
+	<srai>XEDUCATE WHO IS XSPLIT <star index="1"/> XSPLIT <star index="2"/> </srai>
+	<srai>XEDUCATE WHAT _ IS XSPLIT <star index="1"/> XSPLIT <star index="2"/> </srai>
+ </template>
+</category>
+
+<category>
+ <pattern>AN * IS *</pattern>
+ <template>
+<srai>xlearnfact</srai>
+     Ok I will add that fact about<person/>to my database.
+	<srai>XEDUCATE WHAT IS XSPLIT <star index="1"/> XSPLIT <star index="2"/> </srai>
+	<srai>XEDUCATE WHERE IS XSPLIT <star index="1"/> XSPLIT <star index="2"/> </srai>
+	<srai>XEDUCATE WHO IS XSPLIT <star index="1"/> XSPLIT <star index="2"/> </srai>
+	<srai>XEDUCATE WHAT _ IS XSPLIT <star index="1"/> XSPLIT <star index="2"/> </srai>
+	<srai>XEDUCATE WHAT IS AN XSPLIT <star index="1"/> XSPLIT <star index="2"/> </srai>
+	<srai>XEDUCATE WHERE IS AN XSPLIT <star index="1"/> XSPLIT <star index="2"/> </srai>
+	<srai>XEDUCATE WHO IS AN XSPLIT <star index="1"/> XSPLIT <star index="2"/> </srai>
+	<srai>XEDUCATE WHAT _ IS AN XSPLIT <star index="1"/> XSPLIT <star index="2"/> </srai>
+ </template>
+</category>
+
+<category>
+ <pattern>A * IS *</pattern>
+ <template>
+<srai>xlearnfact</srai>
+     Ok I will add that fact about<person/>to my database.
+	<srai>XEDUCATE WHAT IS XSPLIT <star index="1"/> XSPLIT <star index="2"/> </srai>
+	<srai>XEDUCATE WHERE IS XSPLIT <star index="1"/> XSPLIT <star index="2"/> </srai>
+	<srai>XEDUCATE WHO IS XSPLIT <star index="1"/> XSPLIT <star index="2"/> </srai>
+	<srai>XEDUCATE WHAT IS A XSPLIT <star index="1"/> XSPLIT <star index="2"/> </srai>
+	<srai>XEDUCATE WHERE IS A XSPLIT <star index="1"/> XSPLIT <star index="2"/> </srai>
+	<srai>XEDUCATE WHO IS A XSPLIT <star index="1"/> XSPLIT <star index="2"/> </srai>
+	<srai>XEDUCATE WHAT _ IS A XSPLIT <star index="1"/> XSPLIT <star index="2"/> </srai>
+	<srai>XEDUCATE WHAT _ IS XSPLIT <star index="1"/> XSPLIT <star index="2"/> </srai>
+ </template>
+</category>
+
+<category>
+ <pattern>* IS *</pattern>
+ <template>
+<srai>xlearnfact</srai>
+     Ok I will add that fact about<person/>to my database.
+	<srai>XEDUCATE WHAT IS XSPLIT <star index="1"/> XSPLIT <star index="2"/> </srai>
+	<srai>XEDUCATE WHERE IS XSPLIT <star index="1"/> XSPLIT <star index="2"/> </srai>
+	<srai>XEDUCATE WHO IS XSPLIT <star index="1"/> XSPLIT <star index="2"/> </srai>
+	<srai>XEDUCATE WHAT _ IS XSPLIT <star index="1"/> XSPLIT <star index="2"/> </srai>
+	<srai>XEDUCATELANG <star index="1"/> XSPLIT <star index="2"/> XSPLIT a language XSPLIT</srai>
+ </template>
+</category>
+
+
+<category>
+ <pattern>* WAS *</pattern>
+ <template>
+<srai>xlearnfact</srai>
+     Ok I will add that fact about<person/>to my database.
+	<srai>XEDUCATE WHAT WAS XSPLIT <star index="1"/> XSPLIT <star index="2"/> </srai>
+	<srai>XEDUCATE WHERE WAS XSPLIT <star index="1"/> XSPLIT <star index="2"/> </srai>
+	<srai>XEDUCATE WHO WAS XSPLIT <star index="1"/> XSPLIT <star index="2"/> </srai>
+	<srai>XEDUCATE WHAT IS XSPLIT <star index="1"/> XSPLIT <star index="2"/> </srai>
+	<srai>XEDUCATE WHERE IS XSPLIT <star index="1"/> XSPLIT <star index="2"/> </srai>
+	<srai>XEDUCATE WHO IS XSPLIT <star index="1"/> XSPLIT <star index="2"/> </srai>
+	<srai>XEDUCATE WHAT _ IS XSPLIT <star index="1"/> XSPLIT <star index="2"/> </srai>
+	<srai>XEDUCATE WHAT _ WAS XSPLIT <star index="1"/> XSPLIT <star index="2"/> </srai>
+	<srai>XEDUCATELANG <star index="1"/> XSPLIT <star index="2"/> XSPLIT a language XSPLIT</srai>
+ </template>
+</category>
+
+<category>
+ <pattern>AN * HAS *</pattern>
+ <template>
+<srai>xlearnfact</srai>
+     Ok I will add that fact about<person/>to my database.
+	<srai>XEDUCATE WHAT HAS XSPLIT <star index="1"/> XSPLIT <star index="2"/> </srai>
+	<srai>XEDUCATE WHERE HAS XSPLIT <star index="1"/> XSPLIT <star index="2"/> </srai>
+	<srai>XEDUCATE WHO HAS XSPLIT <star index="1"/> XSPLIT <star index="2"/> </srai>
+	<srai>XEDUCATE WHAT DOES AN XSPLIT <star index="1"/> XSPLIT HAVE XSPLIT <star index="2"/> </srai>
+ </template>
+</category>
+
+<category>
+ <pattern>A * HAS *</pattern>
+ <template>
+<srai>xlearnfact</srai>
+     Ok I will add that fact about<person/>to my database.
+	<srai>XEDUCATE WHAT HAS XSPLIT <star index="1"/> XSPLIT <star index="2"/> </srai>
+	<srai>XEDUCATE WHERE HAS XSPLIT <star index="1"/> XSPLIT <star index="2"/> </srai>
+	<srai>XEDUCATE WHO HAS XSPLIT <star index="1"/> XSPLIT <star index="2"/> </srai>
+	<srai>XEDUCATE WHAT DOES A XSPLIT <star index="1"/> XSPLIT HAVE XSPLIT <star index="2"/> </srai>
+ </template>
+</category>
+
+<category>
+ <pattern>* HAS *</pattern>
+ <template>
+<srai>xlearnfact</srai>
+     Ok I will add that fact about<person/>to my database.
+	<srai>XEDUCATE WHAT HAS XSPLIT <star index="1"/> XSPLIT <star index="2"/> </srai>
+	<srai>XEDUCATE WHERE HAS XSPLIT <star index="1"/> XSPLIT <star index="2"/> </srai>
+	<srai>XEDUCATE WHO HAS XSPLIT <star index="1"/> XSPLIT <star index="2"/> </srai>
+	<srai>XEDUCATE WHAT DOES XSPLIT <star index="1"/> XSPLIT HAVE XSPLIT <star index="2"/> </srai>
+ </template>
+</category>
+
+<category>
+ <pattern>* ARE *</pattern>
+ <template>
+<srai>xlearnfact</srai>
+     Ok I will add that fact about<person/>to my database.
+	<srai>XEDUCATE WHAT ARE XSPLIT <star index="1"/> XSPLIT <star index="2"/> </srai>
+	<srai>XEDUCATE WHERE ARE XSPLIT <star index="1"/> XSPLIT <star index="2"/> </srai>
+	<srai>XEDUCATE WHO ARE XSPLIT <star index="1"/> XSPLIT <star index="2"/> </srai>
+	<srai>XEDUCATE WHAT IS XSPLIT <star index="1"/> XSPLIT <star index="2"/> </srai>
+	<srai>XEDUCATE WHO IS XSPLIT <star index="1"/> XSPLIT <star index="2"/> </srai>
+	<srai>XEDUCATE WHERE IS XSPLIT <star index="1"/> XSPLIT <star index="2"/> </srai>
+	<srai>XEDUCATE WHAT _ IS XSPLIT <star index="1"/> XSPLIT <star index="2"/> </srai>
+	<srai>XEDUCATELANG <star index="1"/> XSPLIT <star index="2"/> XSPLIT a language XSPLIT</srai>
+ </template>
+</category>
+
+<category>
+ <pattern>* WILL BE *</pattern>
+ <template>
+<srai>xlearnfact</srai>
+     Ok I will add that fact about<person/>to my database.
+	<srai>XEDUCATE WHAT WILL BE XSPLIT <star index="1"/> XSPLIT <star index="2"/> </srai>
+	<srai>XEDUCATE WHAT WILL XSPLIT <star index="1"/> XSPLIT BE XSPLIT <star index="2"/> </srai>
+	<srai>XEDUCATE WHERE WILL XSPLIT <star index="1"/> XSPLIT BE XSPLIT <star index="2"/> </srai>
+	<srai>XEDUCATE WHO WILL BE XSPLIT <star index="1"/> XSPLIT <star index="2"/> </srai>
+ </template>
+</category>
+
+<category>
+ <pattern>LEARN * WILL BE *</pattern>
+ <template>
+<srai>xlearnfact</srai>
+     Ok I will add that fact about<person/>to my database.
+	<srai>XEDUCATE WHAT WILL BE XSPLIT <star index="1"/> XSPLIT <star index="2"/> </srai>
+	<srai>XEDUCATE WHAT WILL XSPLIT <star index="1"/> XSPLIT BE XSPLIT <star index="2"/> </srai>
+	<srai>XEDUCATE WHERE WILL XSPLIT <star index="1"/> XSPLIT BE XSPLIT <star index="2"/> </srai>
+	<srai>XEDUCATE WHO WILL BE XSPLIT <star index="1"/> XSPLIT <star index="2"/> </srai>
+ </template>
+</category>
+
+<category>
+ <pattern>* SAID *</pattern>
+ <template>
+<srai>xlearnfact</srai>
+     Ok I will add that fact about<person/>to my database.
+	<srai>XEDUCATE WHAT DID XSPLIT <star index="1"/> XSPLIT SAY XSPLIT <star index="2"/> </srai>
+	<srai>XEDUCATE WHO SAID XSPLIT <star index="1"/> XSPLIT <star index="2"/> </srai>
+ </template>
+</category>
+
+<category>
+ <pattern>LEARN * SAID *</pattern>
+ <template>
+<srai>xlearnfact</srai>
+     Ok I will add that fact about<person/>to my database.
+	<srai>XEDUCATE WHAT DID XSPLIT <star index="1"/> XSPLIT SAY XSPLIT <star index="2"/> </srai>
+	<srai>XEDUCATE WHO SAID XSPLIT <star index="1"/> XSPLIT <star index="2"/> </srai>
+ </template>
+</category>
+
+<category>
+ <pattern>* IS FROM *</pattern>
+ <template>
+<srai>xlearnfact</srai>
+     Ok I will add that fact about<person/>to my database.
+	<srai>XEDUCATE WHERE IS XSPLIT <star index="1"/> XSPLIT FROM XSPLIT <star index="2"/> </srai>
+	<srai>XEDUCATE WHO IS FROM XSPLIT <star index="1"/> XSPLIT <star index="2"/> </srai>
+	<srai>XEDUCATE WHAT IS FROM XSPLIT <star index="1"/> XSPLIT <star index="2"/> </srai>
+ </template>
+</category>
+
+<category>
+ <pattern>LEARN * IS FROM *</pattern>
+ <template>
+<srai>xlearnfact</srai>
+     Ok I will add that fact about<person/>to my database.
+	<srai>XEDUCATE WHERE IS XSPLIT <star index="1"/> XSPLIT FROM XSPLIT <star index="2"/> </srai>
+	<srai>XEDUCATE WHO IS FROM XSPLIT <star index="1"/> XSPLIT <star index="2"/> </srai>
+ </template>
+</category>
+
+<category>
+ <pattern>A * LIVES IN *</pattern>
+ <template>
+<srai>xlearnfact</srai>
+     Ok I will add that fact about<person/>to my database.
+	<srai>XEDUCATE WHERE DOES A XSPLIT <star index="1"/> XSPLIT LIVE XSPLIT <star index="2"/> </srai>
+	<srai>XEDUCATE WHO LIVES IN XSPLIT <star index="1"/> XSPLIT <star index="2"/> </srai>
+	<srai>XEDUCATE WHAT LIVES IN XSPLIT <star index="1"/> XSPLIT <star index="2"/> </srai>
+ </template>
+</category>
+
+<category>
+ <pattern>AN * LIVES IN *</pattern>
+ <template>
+<srai>xlearnfact</srai>
+     Ok I will add that fact about<person/>to my database.
+	<srai>XEDUCATE WHERE DOES AN XSPLIT <star index="1"/> XSPLIT LIVE XSPLIT <star index="2"/> </srai>
+	<srai>XEDUCATE WHO LIVES IN XSPLIT <star index="1"/> XSPLIT <star index="2"/> </srai>
+	<srai>XEDUCATE WHAT LIVES IN XSPLIT <star index="1"/> XSPLIT <star index="2"/> </srai>
+	<srai>XEDUCATE WHAT _ LIVES IN XSPLIT <star index="1"/> XSPLIT <star index="2"/> </srai>
+ </template>
+</category> 
+
+
+<category>
+ <pattern>* LIVES IN *</pattern>
+ <template>
+<srai>xlearnfact</srai>
+     Ok I will add that fact about<person/>to my database.
+	<srai>XEDUCATE WHERE DOES XSPLIT <star index="1"/> XSPLIT LIVE XSPLIT <star index="2"/> </srai>
+	<srai>XEDUCATE WHO LIVES IN XSPLIT <star index="1"/> XSPLIT <star index="2"/> </srai>
+	<srai>XEDUCATE WHAT LIVES IN XSPLIT <star index="1"/> XSPLIT <star index="2"/> </srai>
+	<srai>XEDUCATE WHAT _ LIVES IN XSPLIT <star index="1"/> XSPLIT <star index="2"/> </srai>
+ </template>
+</category>
+
+<category>
+ <pattern>LEARN * LIVES IN *</pattern>
+ <template>
+<srai>xlearnfact</srai>
+     Ok I will add that fact about<person/>to my database.
+	<srai>XEDUCATE WHERE DOES XSPLIT <star index="1"/> XSPLIT LIVE XSPLIT <star index="2"/> </srai>
+	<srai>XEDUCATE WHO LIVES IN XSPLIT <star index="1"/> XSPLIT <star index="2"/> </srai>
+	<srai>XEDUCATE WHAT LIVES IN XSPLIT <star index="1"/> XSPLIT <star index="2"/> </srai>
+	<srai>XEDUCATE WHAT _ LIVES IN XSPLIT <star index="1"/> XSPLIT <star index="2"/> </srai>
+ </template>
+</category>
+
+<category>
+ <pattern>LEARN * MEANS _ IN *</pattern>
+ <template>
+<srai>xlearnfact</srai>
+     Ok I will add that fact about<person/>to my database.
+	<srai>XEDUCATE WHAT IS XSPLIT <star index="1"/> XSPLIT <star index="2"/> in <star index="3"/> </srai>
+	<srai>XEDUCATE WHERE IS XSPLIT <star index="1"/> XSPLIT <star index="2"/> in <star index="3"/> </srai>
+	<srai>XEDUCATE WHO IS XSPLIT <star index="1"/> XSPLIT <star index="2"/> in <star index="3"/> </srai>
+	<srai>XEDUCATE WHAT _ IS XSPLIT <star index="1"/> XSPLIT <star index="2"/> in <star index="3"/> </srai>
+	<srai>XEDUCATELANG <star index="1"/> XSPLIT <star index="2"/> XSPLIT <star index="3"/> XSPLIT</srai>
+ </template>
+</category>
+
+<category>
+ <pattern>* MEANS _ IN *</pattern>
+ <template>
+	<srai>learn<star/>means <star index="2"/> in <star index="3"/> </srai>
+ </template>
+</category>
+
+<category>
+ <pattern>_ IN * MEANS *</pattern>
+ <template>
+	<srai><star/>means <star index="3"/> in <star index="2"/> </srai>
+ </template>
+</category>
+
+
+
+<!-- <category>
+<pattern>XLEARNFACT</pattern>
+<template>
+xloadswf3.http://www.square-bear.co.uk/mitsuku/learnxloadswf3.
+</template>
+</category> -->
+
+<category>
+<pattern>XLEARNFACT</pattern>
+<template></template>
 </category>
 
 </aiml>
