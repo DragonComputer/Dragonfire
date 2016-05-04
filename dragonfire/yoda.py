@@ -21,7 +21,13 @@ class YodaQA():
 		response = urllib2.urlopen(url, params)
 		json_response = json.loads(response.read())
 
-		print json_response['id']
+		#print json_response['id']
+
+		# setup toolbar
+		toolbar_width = 180 / 3
+		sys.stdout.write("|%s|" % (" " * toolbar_width))
+		sys.stdout.flush()
+		sys.stdout.write("\b" * (toolbar_width+1)) # return to start of line, after '['
 
 		seconds = 0
 		while seconds < 180:
@@ -30,14 +36,18 @@ class YodaQA():
 
 			url2 = url + '/' + json_response['id']
 
-			print url2
+			#print url2
 			response2 = urllib2.urlopen(url2)
 			data = json.load(response2)
 			#print data
-			print data['answers']
+			#print data['answers']
+			sys.stdout.write(unichr(0x2588))
+			sys.stdout.flush()
 			if data['answers']:
 				if float(data['answers'][0]['confidence']) > 0.5:
+					sys.stdout.write("\n\n")
 					return data['answers'][0]['text']
+		sys.stdout.write("\n\n")
 		return noanswer(user_prefix)
 
 
