@@ -4,9 +4,9 @@ Dragonfire is an open source virtual assistant project for Ubuntu based Linux di
 
 ![Dragonfire](https://raw.githubusercontent.com/mertyildiran/Dragonfire/master/docs/img/dragonfire.gif)
 
-<center>*Dragonfire will never leave your questions unanswered.*</center>
+<p align="center"><i>Dragonfire will never leave your questions unanswered.</i></p>
 
-**Dragonfire is not The Next Big Thing but a spectacular combination of freely available technologies.**
+<p align="center"><b>Dragonfire is not The Next Big Thing but a spectacular combination of freely available technologies.</b></p>
 
 Dragonfire does following tasks for each separate command, respectively:
 
@@ -16,7 +16,7 @@ Dragonfire does following tasks for each separate command, respectively:
 
 ### Version
 
-0.7.1
+0.7.2
 
 ### Installation
 
@@ -67,6 +67,8 @@ OPEN WRITER
 OPEN MATH
 OPEN IMPRESS
 OPEN DRAW
+KEYBOARD *
+ENTER
 SHUT DOWN THE COMPUTER
 GOODBYE / BYE BYE / SEE YOU LATER
 SEARCH * (IN/USING) WIKIPEDA
