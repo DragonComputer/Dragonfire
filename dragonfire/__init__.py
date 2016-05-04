@@ -300,7 +300,7 @@ def command(speech):
 				#dragonfire_respond = kernel.respond(com)
 				teachable_respond = Teachable.respond("http://teach.dragon.computer/", CONVO_ID, original_com)
 				userin = Data([" "]," ")
-				if teachable_respond and "WHAT" not in teachable_respond and "WHERE" not in teachable_respond and "WHO" not in teachable_respond:
+				if teachable_respond and "WHAT" not in teachable_respond and "WHERE" not in teachable_respond and "WHO" not in teachable_respond and "WHEN" not in teachable_respond:
 					userin.say(teachable_respond)
 				else:
 					userin.say("I need to do a brief research on the internet. It may take up to 3 minutes, so please be patient.")
