@@ -59,6 +59,8 @@ def command(speech):
 		line = speech.readline()
 		if line.startswith("sentence1: ") or line.startswith("<search failed>"):
 			com = google_speech_api()
+			if com == "\n" or com == " ":
+				com = "Enter"
 			original_com = com
 
 			if (com == 0):
@@ -213,6 +215,20 @@ def command(speech):
 				userin.say("Draw")
 				userin.interact(0)
 				previous_command = com
+			elif com.startswith("KEYBOARD "):
+				tts_kill()
+				with nostdout():
+					with nostderr():
+						k = PyKeyboard()
+						for character in original_com[9:]:
+							k.tap_key(character)
+						k.tap_key(" ")
+			elif com == "ENTER":
+				tts_kill()
+				with nostdout():
+					with nostderr():
+						k = PyKeyboard()
+						k.tap_key(k.enter_key)
 			elif "SHUT DOWN THE COMPUTER" in com:
 				tts_kill()
 				userin = Data(["sudo","poweroff"],"Shutting down")
