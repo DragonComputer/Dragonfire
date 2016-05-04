@@ -4,17 +4,19 @@ Dragonfire is an open source virtual assistant project for Ubuntu based Linux di
 
 ![Dragonfire](https://raw.githubusercontent.com/mertyildiran/Dragonfire/master/docs/img/dragonfire.gif)
 
-*Dragonfire will never leave your questions unanswered.*
+<center>*Dragonfire will never leave your questions unanswered.*</center>
+
+**Dragonfire is not The Next Big Thing but a spectacular combination of freely available technologies.**
 
 Dragonfire does following tasks for each separate command, respectively:
 
  - Search across the built-in commands of Dragonfire
- - Explore A.L.I.C.E. AIML
- - Run Wikipedia Answering Machine
+ - Try [Teachable AI](http://teach.dragon.computer/gui/jquery/multibot_gui_with_chatlog.php)
+ - Ask to [YodaQA](https://github.com/brmson/yodaqa)
 
 ### Version
 
-0.7.0
+0.7.1
 
 ### Installation
 
@@ -69,6 +71,185 @@ SHUT DOWN THE COMPUTER
 GOODBYE / BYE BYE / SEE YOU LATER
 SEARCH * (IN/USING) WIKIPEDA
 SEARCH * (IN/USING) YOUTUBE
+```
+
+#### Teachable AI examples
+
+```
+_______________________________________________________________
+
+You: THE EARTH IS OUR HOME PLANET
+Dragonfire: OK I WILL ADD THAT FACT ABOUT THE EARTH TO MY DATABASE.
+_______________________________________________________________
+
+You: WHAT IS THE EARTH
+Dragonfire: OUR HOME PLANET
+_______________________________________________________________
+
+You: HUMAN IS THE MOST ADVANCED LIFE FORM ON EARTH
+Dragonfire: OK I WILL ADD THAT FACT ABOUT HUMAN TO MY DATABASE.
+_______________________________________________________________
+
+You: WHAT IS HUMAN
+Dragonfire: MOST ADVANCED LIFE FORM ON EARTH
+_______________________________________________________________
+
+You: MY AGE IS 24
+Dragonfire: OK I WILL LEARN THAT YOUR AGE IS 24.
+_______________________________________________________________
+
+You: WHAT IS MY AGE
+Dragonfire: 24
+_______________________________________________________________
+
+You: MY PLACE OF BIRTH IS TURKEY
+Dragonfire: OK I WILL LEARN THAT YOUR PLACE OF BIRTH IS TURKEY.
+_______________________________________________________________
+
+You: WHAT IS MY PLACE OF BIRTH
+Dragonfire: TURKEY
+_______________________________________________________________
+
+You: YOU ARE JUST A COMPUTER PROGRAM
+Dragonfire: OK I WILL ADD THAT FACT ABOUT YOU TO MY DATABASE.
+_______________________________________________________________
+
+You: WHAT ARE YOU
+Dragonfire: JUST A COMPUTER PROGRAM
+_______________________________________________________________
+
+You: ATOMIC NUMBER OF GOLD IS 79
+Dragonfire: OK I WILL ADD THAT FACT ABOUT ATOMIC NUMBER OF GOLD TO MY DATABASE.
+_______________________________________________________________
+
+You: WHAT IS ATOMIC NUMBER OF GOLD
+Dragonfire: 79
+_______________________________________________________________
+
+```
+
+#### YodaQA examples
+
+```
+_______________________________________________________________
+
+You: WHERE IS THE TIMES SQUARE
+Dragonfire: I NEED TO DO A BRIEF RESEARCH ON THE INTERNET. IT MAY TAKE UP TO 3 MINUTES, SO PLEASE BE PATIENT.
+_______________________________________________________________
+
+|█████                                                       |
+
+Dragonfire: NEW YORK CITY
+_______________________________________________________________
+
+You: WHAT IS THE HEIGHT OF BURJ KHALIFA
+Dragonfire: I NEED TO DO A BRIEF RESEARCH ON THE INTERNET. IT MAY TAKE UP TO 3 MINUTES, SO PLEASE BE PATIENT.
+_______________________________________________________________
+
+|███████                                                     |
+
+Dragonfire: 829.8
+_______________________________________________________________
+
+You: WHERE IS BURJ KHALIFA
+Dragonfire: I NEED TO DO A BRIEF RESEARCH ON THE INTERNET. IT MAY TAKE UP TO 3 MINUTES, SO PLEASE BE PATIENT.
+_______________________________________________________________
+
+|███████                                                     |
+
+Dragonfire: DUBAI
+_______________________________________________________________
+
+You: WHAT IS THE HEIGHT OF GREAT PYRAMID OF GIZA
+Dragonfire: I NEED TO DO A BRIEF RESEARCH ON THE INTERNET. IT MAY TAKE UP TO 3 MINUTES, SO PLEASE BE PATIENT.
+_______________________________________________________________
+
+|███████                                                     |
+
+Dragonfire: 138.8
+_______________________________________________________________
+
+You: WHO IS PLAYING JON SNOW IN GAME OF THRONES
+Dragonfire: I NEED TO DO A BRIEF RESEARCH ON THE INTERNET. IT MAY TAKE UP TO 3 MINUTES, SO PLEASE BE PATIENT.
+_______________________________________________________________
+
+|███████████                                                 |
+
+Dragonfire: KIT HARINGTON
+_______________________________________________________________
+
+You: WHAT IS THE ATOMIC NUMBER OF OXYGEN
+Dragonfire: I NEED TO DO A BRIEF RESEARCH ON THE INTERNET. IT MAY TAKE UP TO 3 MINUTES, SO PLEASE BE PATIENT.
+_______________________________________________________________
+
+|███████                                                     |
+
+Dragonfire: 8
+_______________________________________________________________
+
+You: WHAT IS THE POPULATION OF CHINA
+Dragonfire: I NEED TO DO A BRIEF RESEARCH ON THE INTERNET. IT MAY TAKE UP TO 3 MINUTES, SO PLEASE BE PATIENT.
+_______________________________________________________________
+
+|████                                                        |
+
+Dragonfire: ALMOST A QUARTER OF WORLD POPULATION
+_______________________________________________________________
+
+You: WHAT IS THE OFFICIAL LANGUAGE OF JAPAN
+Dragonfire: I NEED TO DO A BRIEF RESEARCH ON THE INTERNET. IT MAY TAKE UP TO 3 MINUTES, SO PLEASE BE PATIENT.
+_______________________________________________________________
+
+|█████████                                                   |
+
+Dragonfire: JAPANESE LANGUAGE
+_______________________________________________________________
+
+You: WHAT IS THE REAL NAME OF IRON MAN
+Dragonfire: I NEED TO DO A BRIEF RESEARCH ON THE INTERNET. IT MAY TAKE UP TO 3 MINUTES, SO PLEASE BE PATIENT.
+_______________________________________________________________
+
+|███████████████                                             |
+
+Dragonfire: TONY STARK
+_______________________________________________________________
+
+You: WHO IS THE CONQUEROR OF CONSTANTINOPLE
+Dragonfire: I NEED TO DO A BRIEF RESEARCH ON THE INTERNET. IT MAY TAKE UP TO 3 MINUTES, SO PLEASE BE PATIENT.
+_______________________________________________________________
+
+|████████                                                    |
+
+Dragonfire: MEHMED THE CONQUEROR
+_______________________________________________________________
+
+You: WHEN CONSTANTINOPLE WAS CONQUERED
+Dragonfire: I NEED TO DO A BRIEF RESEARCH ON THE INTERNET. IT MAY TAKE UP TO 3 MINUTES, SO PLEASE BE PATIENT.
+_______________________________________________________________
+
+|███████                                                     |
+
+Dragonfire: 1453
+_______________________________________________________________
+
+You: WHAT IS THE CAPITAL OF TURKEY
+Dragonfire: I NEED TO DO A BRIEF RESEARCH ON THE INTERNET. IT MAY TAKE UP TO 3 MINUTES, SO PLEASE BE PATIENT.
+_______________________________________________________________
+
+|██████                                                      |
+
+Dragonfire: ANKARA
+_______________________________________________________________
+
+You: WHAT IS THE LARGEST CITY OF TURKEY
+Dragonfire: I NEED TO DO A BRIEF RESEARCH ON THE INTERNET. IT MAY TAKE UP TO 3 MINUTES, SO PLEASE BE PATIENT.
+_______________________________________________________________
+
+|███████████                                                 |
+
+Dragonfire: ISTANBUL
+_______________________________________________________________
+
 ```
 
 #####For generating .dict and .dfa files from .grammer and .voca files(for developers only), use:
