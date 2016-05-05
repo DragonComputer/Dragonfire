@@ -401,10 +401,12 @@ def initiate():
 		#command(sys.stdin)
 	except KeyboardInterrupt:
 		julius_proc.terminate()
-		try:
-			os.system('rm /tmp/' + str(datetime.date.today().year) + '*.[Ww][Aa][Vv]')
-		except:
-			pass
+		with nostdout():
+			with nostderr():
+				try:
+					os.system('rm /tmp/' + str(datetime.date.today().year) + '*.[Ww][Aa][Vv]')
+				except:
+					pass
 		sys.exit(1)
 
 if __name__ == '__main__':
