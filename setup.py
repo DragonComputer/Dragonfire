@@ -13,7 +13,7 @@ from os import path
 import os
 from setuptools.command.develop import develop
 from setuptools.command.install import install
-from setuptools.command.bdist_egg import sdist
+from setuptools.command.sdist import sdist
 from wheel.bdist_wheel import bdist_wheel
 #import getpass
 
@@ -82,7 +82,7 @@ setup(
 	# Versions should comply with PEP440.  For a discussion on single-sourcing
 	# the version across setup.py and the project code, see
 	# https://packaging.python.org/en/latest/single_source_version.html
-	version='0.7.9',
+	version='0.8.0',
 
 	description='Dragonfire is an open source virtual assistant project for Ubuntu based Linux distributions',
 	long_description=long_description,
@@ -171,8 +171,8 @@ setup(
 	cmdclass={
 		'develop': PostDevelopCommand,
 		'install': PostInstallCommand,
-		'_sdist': sdist,
-		'_bdist_wheel': bdist_wheel,
+		'sdist': _sdist,
+		'bdist_wheel': _bdist_wheel,
 	},
 
 	# To provide executable scripts, use entry points in preference to the
