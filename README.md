@@ -8,22 +8,24 @@ Dragonfire is an open source virtual assistant project for Ubuntu based Linux di
 
 <p align="center"><b>Dragonfire is not The Next Big Thing but a spectacular combination of freely available technologies.</b></p>
 
+<br>
+
 Dragonfire does following tasks for each separate command, respectively:
 
  - Search across the built-in commands of Dragonfire
  - Try [Teachable AI](http://teach.dragon.computer/gui/jquery/multibot_gui_with_chatlog.php)
  - Ask to [YodaQA](https://github.com/brmson/yodaqa)
 
+<br>
+
 ### Version
 
-0.7.2
+0.7.3
 
 ### Installation
 
 ```Shell
-sudo apt-get -y install openjdk-7-jdk git # Install OpenJDK 7 & GIT
-cd ~ && git clone https://github.com/brmson/yodaqa.git ; cd yodaqa/ && git pull && ./gradlew check && echo | ./gradlew run # Install YodaQA
-sudo pip install dragonfire --verbose # Install Dragonfire
+sudo pip install dragonfire
 ```
 
 ### Usage
@@ -40,7 +42,11 @@ To silence her say *ENOUGH*.
 
 To kill her say *GOODBYE* or *BYE BYE* or *SEE YOU LATER*.
 
+<br>
+
 #### Built-in Commands
+
+<p align="center"><iframe width="560" height="315" src="https://www.youtube.com/embed/krHUzY2DylI" frameborder="0" allowfullscreen></iframe></p>
 
 ```
 DRAGONFIRE / WAKE UP / HEY
@@ -75,7 +81,11 @@ SEARCH * (IN/USING) WIKIPEDA
 SEARCH * (IN/USING) YOUTUBE
 ```
 
+<br>
+
 #### Teachable AI examples
+
+<p align="center"><iframe width="560" height="315" src="https://www.youtube.com/embed/ujmRtqf2nxQ" frameborder="0" allowfullscreen></iframe></p>
 
 ```
 _______________________________________________________________
@@ -108,7 +118,7 @@ You: MY PLACE OF BIRTH IS TURKEY
 Dragonfire: OK I WILL LEARN THAT YOUR PLACE OF BIRTH IS TURKEY.
 _______________________________________________________________
 
-You: WHAT IS MY PLACE OF BIRTH
+You: WHERE IS MY PLACE OF BIRTH
 Dragonfire: TURKEY
 _______________________________________________________________
 
@@ -130,7 +140,11 @@ _______________________________________________________________
 
 ```
 
+<br>
+
 #### YodaQA examples
+
+<p align="center"><iframe width="560" height="315" src="https://www.youtube.com/embed/FafUcxC0puM" frameborder="0" allowfullscreen></iframe></p>
 
 ```
 _______________________________________________________________
