@@ -13,7 +13,8 @@ from os import path
 import os
 from setuptools.command.develop import develop
 from setuptools.command.install import install
-from setuptools.command.bdist_egg import bdist_egg as _bdist_egg
+from setuptools.command.bdist_egg import sdist
+from wheel.bdist_wheel import bdist_wheel
 #import getpass
 
 here = path.abspath(path.dirname(__file__))
@@ -53,8 +54,8 @@ class PostInstallCommand(install):
 
 		install.run(self)
 
-class bdist_egg(_bdist_egg):
-	"""Post-installation for egg distribution."""
+class _sdist(sdist):
+	"""Post-installation for sdist."""
 	def run(self):
 		import nltk
 		nltk.download("brown")
@@ -62,7 +63,18 @@ class bdist_egg(_bdist_egg):
 		os.system("apt-get -y install julius festival festlex-cmu python-xlib")
 		os.system("cd /usr/share/festival/voices/english/ && wget -c http://www.speech.cs.cmu.edu/cmu_arctic/packed/cmu_us_clb_arctic-0.95-release.tar.bz2 && tar jxf cmu_us_clb_arctic-0.95-release.tar.bz2 && ln -s cmu_us_clb_arctic cmu_us_clb_arctic_clunits && cp /etc/festival.scm /etc/festival.scm.backup && chmod o+w /etc/festival.scm && echo \"(set! voice_default 'voice_cmu_us_clb_arctic_clunits)\" >> /etc/festival.scm")
 
-		_bdist_egg.run(self)
+		sdist.run(self)
+
+class _bdist_wheel(bdist_wheel):
+	"""Post-installation for bdist_wheel."""
+	def run(self):
+		import nltk
+		nltk.download("brown")
+		nltk.download("names")
+		os.system("apt-get -y install julius festival festlex-cmu python-xlib")
+		os.system("cd /usr/share/festival/voices/english/ && wget -c http://www.speech.cs.cmu.edu/cmu_arctic/packed/cmu_us_clb_arctic-0.95-release.tar.bz2 && tar jxf cmu_us_clb_arctic-0.95-release.tar.bz2 && ln -s cmu_us_clb_arctic cmu_us_clb_arctic_clunits && cp /etc/festival.scm /etc/festival.scm.backup && chmod o+w /etc/festival.scm && echo \"(set! voice_default 'voice_cmu_us_clb_arctic_clunits)\" >> /etc/festival.scm")
+
+		bdist_wheel.run(self)
 
 setup(
 	name='dragonfire',
@@ -126,7 +138,7 @@ setup(
 	# your project is installed. For an analysis of "install_requires" vs pip's
 	# requirements files see:
 	# https://packaging.python.org/en/latest/requirements.html
-	install_requires=['wikipedia','PyUserInput','google-api-python-client','SpeechRecognition','nltk','egenix-mx-base'],
+	install_requires=['wikipedia','PyUserInput','google-api-python-client','SpeechRecognition','nltk','egenix-mx-base','httplib2>=0.9.1'],
 
 	# List additional groups of dependencies here (e.g. development
 	# dependencies). You can install these using the following syntax,
@@ -159,7 +171,8 @@ setup(
 	cmdclass={
 		'develop': PostDevelopCommand,
 		'install': PostInstallCommand,
-		'bdist_egg': bdist_egg,
+		'_sdist': sdist,
+		'_bdist_wheel': bdist_wheel,
 	},
 
 	# To provide executable scripts, use entry points in preference to the
