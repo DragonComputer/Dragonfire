@@ -20,7 +20,7 @@ Dragonfire does following tasks for each separate command, respectively:
 
 ### Version
 
-0.7.4
+0.7.5
 
 ### Installation
 
@@ -267,6 +267,8 @@ Dragonfire: ISTANBUL
 _______________________________________________________________
 
 ```
+
+<br>
 
 #####For generating .dict and .dfa files from .grammer and .voca files(for developers only), use:
 
