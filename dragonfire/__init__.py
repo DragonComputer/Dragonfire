@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 
 import sys
-import api
 from lxml import etree
 from dragonfire.utilities import Data
 from dragonfire.nlplib import Classifiers
