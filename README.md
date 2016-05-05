@@ -20,7 +20,7 @@ Dragonfire does following tasks for each separate command, respectively:
 
 ### Version
 
-0.7.3
+0.7.4
 
 ### Installation
 
@@ -46,7 +46,7 @@ To kill her say *GOODBYE* or *BYE BYE* or *SEE YOU LATER*.
 
 #### Built-in Commands
 
-<p align="center"><iframe width="560" height="315" src="https://www.youtube.com/embed/krHUzY2DylI" frameborder="0" allowfullscreen></iframe></p>
+[Dragonfire DEVLOG #3 - Built-in Commands](https://youtu.be/krHUzY2DylI)
 
 ```
 DRAGONFIRE / WAKE UP / HEY
@@ -85,7 +85,7 @@ SEARCH * (IN/USING) YOUTUBE
 
 #### Teachable AI examples
 
-<p align="center"><iframe width="560" height="315" src="https://www.youtube.com/embed/ujmRtqf2nxQ" frameborder="0" allowfullscreen></iframe></p>
+[Dragonfire DEVLOG #4 - Teachable AI](https://youtu.be/ujmRtqf2nxQ)
 
 ```
 _______________________________________________________________
@@ -144,7 +144,7 @@ _______________________________________________________________
 
 #### YodaQA examples
 
-<p align="center"><iframe width="560" height="315" src="https://www.youtube.com/embed/FafUcxC0puM" frameborder="0" allowfullscreen></iframe></p>
+[Dragonfire DEVLOG #5 - YodaQA ](https://youtu.be/FafUcxC0puM)
 
 ```
 _______________________________________________________________
