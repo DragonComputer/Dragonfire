@@ -14,7 +14,6 @@ import os
 from setuptools.command.develop import develop
 from setuptools.command.install import install
 from setuptools.command.sdist import sdist
-from wheel.bdist_wheel import bdist_wheel
 #import getpass
 
 here = path.abspath(path.dirname(__file__))
@@ -65,24 +64,13 @@ class _sdist(sdist):
 
 		sdist.run(self)
 
-class _bdist_wheel(bdist_wheel):
-	"""Post-installation for bdist_wheel."""
-	def run(self):
-		import nltk
-		nltk.download("brown")
-		nltk.download("names")
-		os.system("apt-get -y install julius festival festlex-cmu python-xlib")
-		os.system("cd /usr/share/festival/voices/english/ && wget -c http://www.speech.cs.cmu.edu/cmu_arctic/packed/cmu_us_clb_arctic-0.95-release.tar.bz2 && tar jxf cmu_us_clb_arctic-0.95-release.tar.bz2 && ln -s cmu_us_clb_arctic cmu_us_clb_arctic_clunits && cp /etc/festival.scm /etc/festival.scm.backup && chmod o+w /etc/festival.scm && echo \"(set! voice_default 'voice_cmu_us_clb_arctic_clunits)\" >> /etc/festival.scm")
-
-		bdist_wheel.run(self)
-
 setup(
 	name='dragonfire',
 
 	# Versions should comply with PEP440.  For a discussion on single-sourcing
 	# the version across setup.py and the project code, see
 	# https://packaging.python.org/en/latest/single_source_version.html
-	version='0.8.1',
+	version='0.8.2',
 
 	description='Dragonfire is an open source virtual assistant project for Ubuntu based Linux distributions',
 	long_description=long_description,
@@ -172,7 +160,6 @@ setup(
 		'develop': PostDevelopCommand,
 		'install': PostInstallCommand,
 		'sdist': _sdist,
-		'bdist_wheel': _bdist_wheel,
 	},
 
 	# To provide executable scripts, use entry points in preference to the
