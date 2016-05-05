@@ -20,7 +20,7 @@ Dragonfire does following tasks for each separate command, respectively:
 
 ### Version
 
-0.7.5
+0.7.6
 
 ### Installation
 
