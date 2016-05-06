@@ -14,10 +14,16 @@ class Data:
 		self.message = msg
 		self.speak = sp
 	def interact(self,duration):
-		subprocess.Popen(["notify-send","Dragonfire", self.message])
+		try:
+			subprocess.Popen(["notify-send","Dragonfire", self.message])
+		except:
+			pass
 		if self.command != "":
 			time.sleep(duration)
-			subprocess.Popen(self.command, stdout=FNULL, stderr=FNULL)
+			try:
+				subprocess.Popen(self.command, stdout=FNULL, stderr=FNULL)
+			except:
+				pass
 		#if self.speak == True:
 		#	self.say(self.message)
 		#else:
