@@ -19,13 +19,14 @@ Dragonfire does following tasks for each separate command, respectively:
 Version
 ~~~~~~~
 
-0.8.4
+0.8.5
 
 Installation
 ~~~~~~~~~~~~
 
 .. code:: Shell
 
+	wget https://raw.githubusercontent.com/mertyildiran/Dragonfire/master/install.sh && chmod +x install.sh && sudo ./install.sh
 	sudo pip install dragonfire
 
 Usage
