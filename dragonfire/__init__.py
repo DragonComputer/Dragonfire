@@ -121,6 +121,7 @@ def command(speech):
 			elif "FILE MANAGER" in com or "OPEN FILES" in com:
 				tts_kill()
 				userin = Data(["pantheon-files"],"File Manager")
+				userin = Data(["nautilus --browser"],"File Manager")
 				userin.say("File Manager")
 				userin.interact(0)
 				previous_command = com
@@ -157,18 +158,21 @@ def command(speech):
 			elif "OPEN CAMERA" in com:
 				tts_kill()
 				userin = Data(["snap-photobooth"],"Camera")
+				userin = Data(["cheese"],"Camera")
 				userin.say("Camera")
 				userin.interact(0)
 				previous_command = com
 			elif "OPEN CALENDAR" in com:
 				tts_kill()
 				userin = Data(["maya-calendar"],"Calendar")
+				userin = Data(["orage"],"Calendar")
 				userin.say("Calendar")
 				userin.interact(0)
 				previous_command = com
 			elif "OPEN CALCULATOR" in com:
 				tts_kill()
 				userin = Data(["pantheon-calculator"],"Calculator")
+				userin = Data(["gnome-calculator"],"Calculator")
 				userin.say("Calculator")
 				userin.interact(0)
 				previous_command = com
