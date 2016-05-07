@@ -121,6 +121,7 @@ def command(speech):
 			elif "FILE MANAGER" in com or "OPEN FILES" in com:
 				tts_kill()
 				userin = Data(["pantheon-files"],"File Manager")
+				userin.interact(0)
 				userin = Data(["nautilus","--browser"],"File Manager")
 				userin.say("File Manager")
 				userin.interact(0)
@@ -158,6 +159,7 @@ def command(speech):
 			elif "OPEN CAMERA" in com:
 				tts_kill()
 				userin = Data(["snap-photobooth"],"Camera")
+				userin.interact(0)
 				userin = Data(["cheese"],"Camera")
 				userin.say("Camera")
 				userin.interact(0)
@@ -165,6 +167,7 @@ def command(speech):
 			elif "OPEN CALENDAR" in com:
 				tts_kill()
 				userin = Data(["maya-calendar"],"Calendar")
+				userin.interact(0)
 				userin = Data(["orage"],"Calendar")
 				userin.say("Calendar")
 				userin.interact(0)
@@ -172,6 +175,7 @@ def command(speech):
 			elif "OPEN CALCULATOR" in com:
 				tts_kill()
 				userin = Data(["pantheon-calculator"],"Calculator")
+				userin.interact(0)
 				userin = Data(["gnome-calculator"],"Calculator")
 				userin.say("Calculator")
 				userin.interact(0)
@@ -232,7 +236,7 @@ def command(speech):
 					with nostderr():
 						k = PyKeyboard()
 						k.tap_key(k.enter_key)
-			elif "SHUT DOWN THE COMPUTER" in com:
+			elif "SHUTDOWN THE COMPUTER" in com:
 				tts_kill()
 				userin = Data(["sudo","poweroff"],"Shutting down")
 				userin.say("Shutting down")
