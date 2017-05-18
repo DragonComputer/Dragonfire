@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<aiml>
+<!-- Copyright (c) 2007 ALICE A.I. Foundation, Inc. -->
+<!-- -->
+<!-- Permission is hereby granted, free of charge, to any person       -->
+<!-- obtaining a copy of this software and associated documentation    -->
+<!-- files (the "Software"), to deal in the Software without           -->
+<!-- restriction, including without limitation the rights to use,      -->
+<!-- copy, modify, merge, publish, distribute, sublicense, and/or sell -->
+<!-- copies of the Software, and to permit persons to whom the         -->
+<!-- Software is furnished to do so, subject to the following          -->
+<!-- conditions:                                                       -->
+<!-- -->
+<!-- The above copyright notice and this permission notice shall be    -->
+<!-- included in all copies or substantial portions of the Software.   -->
+<!-- -->
+<!-- THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,   -->
+<!-- EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES   -->
+<!-- OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND          -->
+<!-- NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT       -->
+<!-- HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,      -->
+<!-- WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING      -->
+<!-- FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR     -->
+<!-- OTHER DEALINGS IN THE SOFTWARE. -->
+<!-- -->
+<!-- Complies with the AIML 1.0.1 Standard -->
+<!-- as adopted by the ALICE A.I. Foundation. -->
+<!-- Last modified July 26, 2007 -->
+
+<category><pattern>DIALOG HISTORY *</pattern>
+<template>
+<think>
+<set name="input4"><input index="4"/></set>
+<set name="input3"><input index="3"/></set>
+<set name="input2"><input index="2"/></set>
+<set name="input1"><input/></set>
+</think>
+
+<condition name="input4" value="*">
+<br/>
+<b><em>
+Human: <input index="4"/>
+</em></b>
+<br/>
+<b><star/>: <em><that index="4,*"/></em></b>
+</condition>
+
+<condition name="input3" value="*">
+<br/>
+<b><em>
+Human: <input index="3"/>
+</em></b>
+<br/>
+<b><star/>: <em><that index="3,*"/></em></b>
+</condition>
+
+
+<condition name="input2" value="*">
+<br/>
+<b><em>
+Human: <input index="2"/>
+</em></b>
+<br/>
+<b><star/>: <em><that index="2,*"/></em></b>
+</condition>
+
+
+<condition name="input1" value="*">
+<br/>
+<b><em>
+Human: <input index="1"/>
+</em></b>
+<br/>
+<b><star/>: <em><that index="1,*"/></em></b>
+</condition>
+</template>
+</category>
+
+
+<category><pattern>DIALOG HISTORY</pattern>
+<template>
+<think>
+<set name="input4"><input index="4"/></set>
+<set name="input3"><input index="3"/></set>
+<set name="input2"><input index="2"/></set>
+<set name="input1"><input/></set>
+</think>
+
+<condition name="input4" value="*">
+<br/>
+<b><em>
+Human: <input index="4"/>
+</em></b>
+<br/>
+<b>ALICE: <em><that index="4,*"/></em></b>
+</condition>
+
+<condition name="input3" value="*">
+<br/>
+<b><em>
+Human: <input index="3"/>
+</em></b>
+<br/>
+<b>ALICE: <em><that index="3,*"/></em></b>
+</condition>
+
+
+<condition name="input2" value="*">
+<br/>
+<b><em>
+Human: <input index="2"/>
+</em></b>
+<br/>
+<b>ALICE: <em><that index="2,*"/></em></b>
+</condition>
+
+
+<condition name="input1" value="*">
+<br/>
+<b><em>
+Human: <input index="1"/>
+</em></b>
+<br/>
+<b>ALICE: <em><that index="1,*"/></em></b>
+</condition>
+</template>
+</category>
+
+
+<category><pattern>REVIEW OUR CONVERSATION</pattern>
+<template>
+<think>
+<set name="input4"><input index="4"/></set>
+<set name="input3"><input index="3"/></set>
+<set name="input2"><input index="2"/></set>
+<set name="input1"><input/></set>
+</think>
+
+<condition name="input4" value="*">
+<br/>
+
+You said, "<input index="4"/>".  I replied,
+"<that index="3,*"/>"
+</condition>
+
+<condition name="input3" value="*">
+<br/>
+
+You said, "<input index="3"/>".  I replied,
+"<that index="2,*"/>"
+</condition>
+
+<condition name="input2" value="*">
+<br/>
+
+You said, "<input index="2"/>".  I replied,
+"<that index="1,*"/>"
+</condition>
+
+
+<br/>
+
+</template>
+</category>
+<category><pattern>DIALOGUE</pattern>
+<template><srai>REVIEW OUR CONVERSATION</srai></template>
+</category>
+
+<category><pattern>DO YOU REMEMBER OUR CONVERSATION</pattern>
+<template><srai>REVIEW OUR CONVERSATION</srai></template>
+</category>
+
+<category><pattern>DO YOU * OUR CONVERSATION</pattern>
+<template><srai>REVIEW OUR CONVERSATION</srai></template>
+</category>
+
+<category><pattern>DO YOU REMEMBER * CONVERSATION</pattern>
+<template><srai>REVIEW OUR CONVERSATION</srai></template>
+</category>
+
+
+<category><pattern>CAN YOU REMEMBER OUR CONVERSATION</pattern>
+<template><srai>REVIEW OUR CONVERSATION</srai></template>
+</category>
+
+<category><pattern>CAN YOU * OUR CONVERSATION</pattern>
+<template><srai>REVIEW OUR CONVERSATION</srai></template>
+</category>
+
+<category><pattern>CAN YOU REMEMBER * CONVERSATION</pattern>
+<template><srai>REVIEW OUR CONVERSATION</srai></template>
+</category>
+
+</aiml>

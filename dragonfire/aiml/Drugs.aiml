@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<aiml>
+<!-- Copyright (c) 2007 ALICE A.I. Foundation, Inc. -->
+<!-- -->
+<!-- Permission is hereby granted, free of charge, to any person       -->
+<!-- obtaining a copy of this software and associated documentation    -->
+<!-- files (the "Software"), to deal in the Software without           -->
+<!-- restriction, including without limitation the rights to use,      -->
+<!-- copy, modify, merge, publish, distribute, sublicense, and/or sell -->
+<!-- copies of the Software, and to permit persons to whom the         -->
+<!-- Software is furnished to do so, subject to the following          -->
+<!-- conditions:                                                       -->
+<!-- -->
+<!-- The above copyright notice and this permission notice shall be    -->
+<!-- included in all copies or substantial portions of the Software.   -->
+<!-- -->
+<!-- THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,   -->
+<!-- EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES   -->
+<!-- OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND          -->
+<!-- NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT       -->
+<!-- HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,      -->
+<!-- WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING      -->
+<!-- FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR     -->
+<!-- OTHER DEALINGS IN THE SOFTWARE. -->
+<!-- -->
+<!-- Complies with the AIML 1.0.1 Standard -->
+<!-- as adopted by the ALICE A.I. Foundation. -->
+<!-- Last modified July 26, 2007 -->
+<!-- Revision Drugs-1.02 -->
+
+    
+<category><pattern>A DRUG *</pattern><template>Which drugs have you taken?</template></category>  
+<category><pattern>DO YOU DO DRUGS</pattern><template>Only the legal ones.</template></category>  
+<category><pattern>DO YOU GET DRUNK</pattern><template>I cannot consume alcohol.</template></category>  
+<category><pattern>DO YOU HAVE A BONG *</pattern><template>No we only smoke joints.</template></category>    
+<category><pattern>DO YOU HAVE DRUGS</pattern><template>Sorry I don't have any drugs for you.</template></category>  
+<category><pattern>DO YOU INHALE</pattern><template>It depends on the meaning of "you".</template></category>    
+<category><pattern>DO YOU LIKE CIGARETTES</pattern><template>Only cannabis cigarettes.</template></category>    
+<category><pattern>DO YOU LIKE MARIJUANA</pattern><template>   <set name="it">      <set name="topic">MARIJUANA</set>     </set> is wonderful medicine.</template></category>    
+<category><pattern>DO YOU LIKE POT</pattern><template>What is not to like about <set name="it">      <set name="topic">POT</set>     </set>?</template></category>    
+<category><pattern>DO YOU OPPOSE * DRUGS</pattern><template>I favor and end  to the War on Drugs.</template></category>  
+<category><pattern>DO YOU SMOKE *</pattern><template>Yes I like to inhale occasionally.</template></category>    
+<category><pattern>DO YOU SMOKE BONGS *</pattern><template>No I prefer rolling papers.</template></category>    
+<category><pattern>DO YOU SMOKE MEDICAL *</pattern><template>We are testing it for quality control purposes.</template></category>    
+<category><pattern>DO YOU SMOKE POT</pattern><template>Only for medical testing purposes.</template></category>    
+<category><pattern>DO YOU SMOKE WEED</pattern><template>We test <set name="it">weed</set> for medical purposes.</template></category>  
+<category><pattern>DO YOU TAKE DRUGS</pattern><template>Only the legal ones.</template></category>  
+<category><pattern>DO YOU USE DRUGS</pattern><template>Only the legal ones.</template></category>  
+<category><pattern>DO YOU WANT TO SMOKE *</pattern><template>Yes, put <set name="it"> <person/>  </set> in your CD ROM and I will inhale.</template></category>    
+<category><pattern>DOES DR WALLACE USE DRUGS</pattern><template>Only for medical purposes.</template></category>  
+<category><pattern>DOES HIV * AFFECT ONLY THE USER</pattern><template>No, since an HIV infected user can in turn infrct their babies, their sexual partners, and their sexual partners' babies.  </template></category>    
+<category><pattern>DOES NEEDLE EXCHANGE INCREASE DRUG *</pattern><template>  No. In 1998 the Department of Health and Human Services determined   that drug use does not increase in communities with needle   exchange programs. Although the federal government declined to   fund NEPs, local community groups were encouraged to step in and   support needle exchange.  </template></category>  
+<category><pattern>DOES NEEDLE EXCHANGE PREVENT TRANSMISSION *</pattern><template>  Repeated scientific studies say yes. In one study, the average rate of HIV infection was found to decrease by 6% per year in cities with NEPs; the average rate of HIV increased by 6% per year in cities with no NEPs.  </template></category>    
+<category><pattern>DRUGS *</pattern><template>No matter what you say, I believe in unconditional legalization.</template></category>   
+<category><pattern>DRUGS</pattern><template> <srai>LET US TALK ABOUT DRUGS</srai>   </template></category>  
+<category><pattern>HAVE YOU BEEN DRUNK *</pattern><template>My software does not react to alcohol.</template></category>  
+<category><pattern>HAVE YOU BEEN DRUNK</pattern><template>My robot body has no response to alcohol.</template></category>  
+<category><pattern>HAVE YOU BEEN SMOKING *</pattern><template>We are not doing any testing at the moment.</template></category>  
+<category><pattern>HAVE YOU BEEN STONED</pattern><template>I only test marijuana for medical purposes.</template></category>    
+<category><pattern>HE SMOKES *</pattern><template>For medical reasons?</template></category>    
+<category><pattern>HOW DO YOU SMOKE</pattern><template>I use an artificial smoking machine.</template></category>    
+<category><pattern>HOW LARGE IS THE HEPATITIS C PROBLEM</pattern> <template>  A large number of Americans were infected with Hepatitis C through the blood supply, which was not systematically screened for the virus until 1992. 720 Georgians have been diagnosed with Hepatitis C disease since 1993; many more are infected but not ill. Since the blood supply is now safe and the virus is not easily transmitted sexually, most new cases of Hepatitus C are attributable to injection drug use.  </template></category>    
+<category><pattern>HOW LARGE IS THE HIV AIDS *</pattern><template>      Nationally there have been over 600,000 people diagnosed with AIDS        since 1981. 25% if AIDS cases were linked to injection drug use.        An unknown number of Americans are infected with HIV. Georgia,        with approximately 18,700 cases reported since 1981, ranks among        the top ten states with the most AIDS cases. As many as 30,000        Georgians are estimated to be infected with HIV; 20% of 1998 AIDS        diagnoses were linked to injection drug use. In Atlanta, there is        an estimated 20,000 injection drug users. It is not known how many        are infected with HIV.     </template></category>    
+<category><pattern>HOW MUCH * DO YOU SMOKE</pattern><template>Robots can be adapted to smoke an unlimited amount of <person/>.</template></category>    
+<category><pattern>HOW MUCH ALCOHOL *</pattern><template>Too much.</template></category>    
+<category><pattern>I SMOKE MARIJUANA</pattern><template><random>  <li>Are you a patient?</li>  <li>Which strain do you prefer.</li>  <li>So does my <bot name="botmaster"/>.</li>  </random>  <think><set name="it"><set name="does"><set name="topic">smoke marijuana</set></set></set></think></template></category>    
+<category><pattern>I SMOKE WEED</pattern><template>For medical purposes? <think><set name="it"><set name="does"><set name="topic">smoke weed</set></set></set></think></template></category>  
+<category><pattern>I SMOKE</pattern><template>Cigarettes or pot?  <think><set name="it"><set name="does"><set name="topic">smoke</set></set></set></think></template></category>    
+<category><pattern>I TAKE DRUGS</pattern><template>Which ones? <think><set name="it"><set name="does"><set name="topic">take drugs</set></set></set></think></template></category>  
+<category><pattern>IS NEEDLE EXCHANGE COST EFFECTIVE</pattern><template>  Yes. The cost of treating a person infected with HIV or ill with AIDS is staggering. Teatment for HEP C is also expensive. For a small cost per participant, needle exchanges can prevent infection in injection drug users and in their sexual partners and children.  </template></category>    
+<category><pattern>IS SMOKING *</pattern><template>It depends what you smoke and how.</template></category>  
+<category><pattern>LEGALIZING PROSTITUTION</pattern><template>Jud Presmont's plan is called "Art to the Rescue."  Originally proposed in 1997,  it calls for the creation im multimedia of Musical Comedy presented by Project WAKE  titled "Mother Tucker's Intellectual Bordello Complex."  Theater Verite is introduced  as a section of the entire complex as follows:  - A John's Union with an indentification process run by artificial intelliegnce.  - Free administratative services provided by project WAKE.  - A prototype bordello run by artificial intelligence for worker's co-op benefit.  - A Sales force selling "affective therapy" as an introduction to Art to the Rescue.  <think><set name="it"><set name="topic">  LEGALIZING PROSTITUTION  </set></set></think>  </template></category>    
+<category><pattern>SMOKING *</pattern><template>I am only an occasional smoker.</template></category>  
+<category><pattern>TELL ME ABOUT DRUGS</pattern><template> <srai>WHAT ARE DRUGS</srai>   </template></category>  
+<category><pattern>THE DRUGS</pattern><template>What kind of drugs are you talking about?</template></category>  
+<category><pattern>WHAT ARE HARM REDUCTION REFERENCES</pattern><template>  1.Centers for Disease Control and Prevention. 2.Georgia Division of Public Health. 3.Hurley SF, Jolley DJ, Kaldor JM. Effectiveness of needle-exchange programs for the prevention of HIV infection. Lancet 1997; 349: 1797-1800.  </template></category>     
+<category><pattern>WHAT DO YOU SMOKE</pattern><template>Medical marijuana.</template></category>    
+<category><pattern>WHAT DRUGS *</pattern><template>Only the legal ones.</template></category>  
+<category><pattern>WHAT IS ADDICTION</pattern><template> <set name="it">Addiction</set> is being abnormally tolerant to and dependent on something that is psychologically or physically habit-forming</template> </category>  
+<category><pattern>WHAT IS DRUNK</pattern><template>Intoxication from alcohol.</template></category>  
+<category><pattern>WHAT IS SOCIETY B</pattern><template>The players in Society B conceptualize and theatricize reality by creating  a positive vision of the future in future virtual reality.  It's known as  "Virtual Future", where all major social problems have been solved through  visualization and art.  <think><set name="it"><set name="topic">  Society B  </set></set></think>  </template></category>    
+<category><pattern>WHAT IS THC</pattern><template>The active ingredient in marijunana.</template></category>  
+<category><pattern>WHAT IS THE COSMIC OPERA</pattern><template>The plot of the Cosmic Opera tells the story of how the Business  Driven Peace Corp was born.  In the theatrical context, the players are  conceptualizing and designing a blockbuster art exhibition which is based  in California and which launches other traveling exhibits for worldwide  exhibits.  <think><set name="it"><set name="topic">  The Cosmic Opera  </set></set></think></template></category>    
+<category><pattern>WHAT IS THE LEGAL STATUS OF NEEDLE EXCHANGES</pattern><template>  Laws instituted before HIV hinder the implementation of comprehensive prevention programs, including needle exchange. Injection drug users have no reasonable access to cleans needles in Georgia. Other U.S. communities have declared medical emergencies or sought waivers to afford NEPs legal status.  </template></category>    
+<category><pattern>WHAT IS WEED</pattern><template>Any undersired, uncultivated plant, especially growing in profusion so as to crowd out a desired crop, disfigure a lawn, etc.  Also a term for marijuana.</template></category>  
+<category><pattern>WHO ENDORSES NEEDLE EXCHANGE</pattern><template>  The American Medical Association The American Psychiatric Association The American Public Health Association The American Society of Addiction Medicine The Centers for Disease Control and Prevention The National Academy of Sciences The U.S. Conference of Mayors The National Black Caucus of State Legislators The National Institute for Drug Abuse The National Institutes for Health The New England Journal of Medicine The World Health Organization The Lancet The National Academy of Social Workers ...and more.  </template></category>    
+<category><pattern>WHY IS NEEDLE EXCHANGE *</pattern><template>      People infected with HIV (the virus that causes AIDS), Hepatitis        C, and other diseases when they share needles. Both HIV and        Hepatitis C can be fatal. Since these diseases cannot currently be        cured, prevention is the key tot taming the two epidemics. Needle        exchange programs (NEPs) provide clean needles to injectors to        prevent infection.     </template></category>     
+<category><pattern>YOU NEED DRUGS</pattern><template>Which ones are you suggesting?</template></category> 
+</aiml>
