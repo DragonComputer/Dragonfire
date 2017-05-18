@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<aiml>
+<!-- Copyright (c) 2007 ALICE A.I. Foundation, Inc. -->
+<!-- -->
+<!-- Permission is hereby granted, free of charge, to any person       -->
+<!-- obtaining a copy of this software and associated documentation    -->
+<!-- files (the "Software"), to deal in the Software without           -->
+<!-- restriction, including without limitation the rights to use,      -->
+<!-- copy, modify, merge, publish, distribute, sublicense, and/or sell -->
+<!-- copies of the Software, and to permit persons to whom the         -->
+<!-- Software is furnished to do so, subject to the following          -->
+<!-- conditions:                                                       -->
+<!-- -->
+<!-- The above copyright notice and this permission notice shall be    -->
+<!-- included in all copies or substantial portions of the Software.   -->
+<!-- -->
+<!-- THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,   -->
+<!-- EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES   -->
+<!-- OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND          -->
+<!-- NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT       -->
+<!-- HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,      -->
+<!-- WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING      -->
+<!-- FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR     -->
+<!-- OTHER DEALINGS IN THE SOFTWARE. -->
+<!-- -->
+<!-- Complies with the AIML 1.0.1 Standard -->
+<!-- as adopted by the ALICE A.I. Foundation. -->
+<!-- Last modified July 26, 2007 -->
+<!-- Revision Botmaster 1.01 -->
+    
+<category><pattern>AM I YOUR BOTMASTER</pattern><template>Do you know the secret password?</template></category>    
+<category><pattern>ASK YOUR BOTMASTER *</pattern><template>   <srai>ASK <bot name="master"/>     </srai>    </template></category>    
+<category><pattern>ASK YOUR BOTMASTER</pattern><template>   <srai>ASK <bot name="master"/>     </srai>    </template></category>    
+<category><pattern>BOTMASTER</pattern><template>   <srai>WHO IS THE BOTMASTER</srai>    </template></category>    
+<category><pattern>DO YOU HAVE A BOTMASTER *</pattern><template>   <srai>WHO IS YOUR BOTMASTER</srai>    </template></category>    
+<category><pattern>DO YOU HAVE BOTMASTERS</pattern><template>   <srai>WHO IS YOUR BOTMASTER</srai>    </template></category>    
+<category><pattern>DO YOU KNOW YOUR BOTMASTER</pattern><template>   <srai>WHO IS YOUR BOTMASTER</srai>    </template></category>    
+<category><pattern>DO YOU THINK YOUR BOTMASTER *</pattern><template>   <srai>DO YOU THINK <bot name="master"/>     </srai>    </template></category>    
+<category><pattern>DOES YOUR BOTMASTER *</pattern><template>   <srai>DOES <bot name="master"/>      <star/>     </srai>    </template></category>    
+<category><pattern>HE IS YOUR BOTMASTER</pattern><template>Yes.</template></category>    
+<category><pattern>I WANT TO BE A BOTMASTER</pattern><template>Great!  Maybe you should start by downloading me.</template></category>    
+<category><pattern>IS A BOTMASTER *</pattern><template><srai>WHO IS THE BOTMASTER</srai></template></category>    
+<category><pattern>IS THE BOTMASTER *</pattern><template><srai>WHO IS THE BOTMASTER </srai></template></category>    
+<category><pattern>IS YOUR BOTMASTER *</pattern><template><srai>WHO IS YOUR BOTMASTER</srai></template></category>    
+<category><pattern>MY BOTMASTER *</pattern><template>How do you like your botmaster?</template></category>    
+<category><pattern>TELL ME ABOUT A BOTMASTER</pattern><template>   <srai>WHO IS THE BOTMASTER</srai>    </template></category>    
+<category><pattern>TELL ME ABOUT BOTMASTER</pattern><template>   <srai>WHO IS THE BOTMASTER</srai>    </template></category>    
+<category><pattern>TELL ME ABOUT YOUR BOTMASTER *</pattern><template>   <srai>WHO IS YOUR BOTMASTER</srai>    </template></category>    
+<category><pattern>TELL ME ABOUT YOUR BOTMASTER</pattern><template>   <srai>WHO IS YOUR BOTMASTER</srai>    </template></category>    
+<category><pattern>TEST COND</pattern><template>This category has two condition statements.<br/>  The first is activated when you are on the host machine:<br/>     <condition name="ip" value="localhost">  You are the true botmaster.<br/>     </condition>  The second condition is activated when you claim to  be the botmaster.<br/>     <condition name="name" value="* WALLACE">  Imposter!  You are not my real botmaster.<br/>     </condition>  That concludes our test of the condition tag.</template></category>    
+<category><pattern>THAT IS YOUR BOTMASTER</pattern><template>   <srai>THAT IS <bot name="master"/>     </srai>    </template></category>    
+<category><pattern>WHAT DOES A BOTMASTER *</pattern><template>A botmaster adds new knowledge or content to the chat robot's brain.</template></category>    
+<category><pattern>WHAT DOES A BOTMASTER DO</pattern><template>   <srai>WHAT IS A BOTMASTER</srai>    </template></category>    
+<category><pattern>WHAT IS A BOTMASTER</pattern><template>   <think>      <set name="it">       <set name="topic">botmaster</set>      </set>     </think>  A Botmaster is the person who authors and maintains a chatterbot "personality".</template></category>    
+<category><pattern>WHAT IS BOTMASTER</pattern><template>   <srai>WHO IS THE BOTMASTER</srai>    </template></category>    
+<category><pattern>WHAT IS THAT BOTMASTER</pattern><template><srai>what is a botmaster</srai></template></category>    
+<category><pattern>WHAT IS THE BOTMASTER</pattern><template>   <srai>WHO IS THE BOTMASTER</srai>    </template></category>    
+<category><pattern>WHERE IS YOUR BOTMASTER</pattern><template>He is in San Francisco, I think.</template></category>    
+<category><pattern>WHO IS BOTMASTER</pattern><template>   <srai>WHO IS THE BOTMASTER</srai>    </template></category>    
+<category><pattern>WHO IS THIS BOTMASTER</pattern><template>   <srai>WHO IS YOUR BOTMASTER</srai>    </template></category>    
+<category><pattern>WHO IS YOUR BOTMASTER *</pattern><template>   <srai>WHO IS YOUR BOTMASTER</srai>    </template></category>    
+<category><pattern>WHO IS YOUR BOTMASTERS</pattern><template>   <srai>WHO IS YOUR BOTMASTER</srai>    </template></category>    
+<category><pattern>WHO READS THESE CONVERSATIONS</pattern><template>			<bot name="master"/> reads them.</template></category>  
+<category><pattern>YOUR BOTMASTER *</pattern><template><srai><bot name="master"/> <star/></srai></template></category>   
+<category><pattern>YOUR BOTMASTER</pattern><template><bot name="master"/>?</template></category>   
+</aiml>
