@@ -7,7 +7,7 @@ from dragonfire.nlplib import TopicExtractor
 from dragonfire.timex import TimeDetector
 import sys
 import contextlib
-import cStringIO
+import io
 import re
 from random import randint
 from nltk.tag import SennaNERTagger
@@ -22,7 +22,7 @@ class WikipediaAnsweringMachine():
 		topic_obj = TopicExtractor(speech)
 		result = topic_obj.extract()
 		try:
-			print "~Topic: " + result[0]
+			print("~Topic: " + result[0])
 		except:
 			pass
 		speech = speech.upper()
@@ -74,16 +74,16 @@ def noanswer(user_prefix):
 @contextlib.contextmanager
 def nostdout():
 	save_stdout = sys.stdout
-	sys.stdout = cStringIO.StringIO()
+	sys.stdout = io.StringIO()
 	yield
 	sys.stdout = save_stdout
 
 @contextlib.contextmanager
 def nostderr():
 	save_stderr = sys.stderr
-	sys.stderr = cStringIO.StringIO()
+	sys.stderr = io.StringIO()
 	yield
 	sys.stderr = save_stderr
 
 if __name__ == "__main__":
-	print WikipediaAnsweringMachine.answer("At eight o'clock on Thursday morning Arthur didn't feel very good.")
+	print(WikipediaAnsweringMachine.answer("At eight o'clock on Thursday morning Arthur didn't feel very good."))

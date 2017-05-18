@@ -9,7 +9,7 @@ from dragonfire.yoda import YodaQA
 from subprocess import call, Popen
 import time
 import subprocess
-import urllib2
+import urllib.request, urllib.error, urllib.parse
 import wikipedia
 from random import randint
 import getpass
@@ -25,7 +25,7 @@ import speech_recognition as sr
 import inspect
 #import aiml
 import contextlib
-import cStringIO
+import io
 from dragonfire.learn import Teachable
 import uuid
 
@@ -67,7 +67,7 @@ def command(speech):
 				continue
 
 			com = com.upper()
-			print "You: " + com
+			print("You: " + com)
 
 			if inactive == 1 and "DRAGON FIRE" not in com and "WAKE UP" not in com and com != "HEY":
 				continue
@@ -90,7 +90,7 @@ def command(speech):
 				userin.interact(0)
 				previous_command = com
 			elif "ENOUGH" in com:
-				print "Dragonfire quiets."
+				print("Dragonfire quiets.")
 				tts_kill()
 			elif "WHO AM I" in com or "SAY MY NAME" in com:
 				tts_kill()
@@ -340,7 +340,7 @@ def tts_kill():
 
 def dragon_greet():
 	tts_kill()
-	print "_______________________________________________________________\n"
+	print("_______________________________________________________________\n")
 	time = datetime.datetime.now().time()
 
 	global user_full_name
@@ -385,14 +385,14 @@ def speech_error():
 @contextlib.contextmanager
 def nostdout():
 	save_stdout = sys.stdout
-	sys.stdout = cStringIO.StringIO()
+	sys.stdout = io.StringIO()
 	yield
 	sys.stdout = save_stdout
 
 @contextlib.contextmanager
 def nostderr():
 	save_stderr = sys.stderr
-	sys.stderr = cStringIO.StringIO()
+	sys.stderr = io.StringIO()
 	yield
 	sys.stderr = save_stderr
 

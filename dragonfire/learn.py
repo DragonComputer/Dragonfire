@@ -1,10 +1,10 @@
 import json
-import urllib
-import urllib2
+import urllib.request, urllib.parse, urllib.error
+import urllib.request, urllib.error, urllib.parse
 import time
 import sys
 import contextlib
-import cStringIO
+import io
 from random import randint
 import uuid
 
@@ -19,8 +19,8 @@ class Teachable():
 			'convo_id' : convo_id
 		}
 
-		params = urllib.urlencode(post_params)
-		response = urllib2.urlopen(url, params)
+		params = urllib.parse.urlencode(post_params)
+		response = urllib.request.urlopen(url, params)
 		json_response = json.loads(response.read())
 
 		return json_response['botsay']
@@ -37,18 +37,18 @@ def noanswer(user_prefix):
 @contextlib.contextmanager
 def nostdout():
 	save_stdout = sys.stdout
-	sys.stdout = cStringIO.StringIO()
+	sys.stdout = io.StringIO()
 	yield
 	sys.stdout = save_stdout
 
 @contextlib.contextmanager
 def nostderr():
 	save_stderr = sys.stderr
-	sys.stderr = cStringIO.StringIO()
+	sys.stderr = io.StringIO()
 	yield
 	sys.stderr = save_stderr
 
 if __name__ == "__main__":
 	convo_id = uuid.uuid4()
-	print Teachable.respond("http://teach.dragon.computer/", convo_id, "Learn the sun is hot")
-	print Teachable.respond("http://teach.dragon.computer/", convo_id, "What is the sun")
+	print(Teachable.respond("http://teach.dragon.computer/", convo_id, "Learn the sun is hot"))
+	print(Teachable.respond("http://teach.dragon.computer/", convo_id, "What is the sun"))

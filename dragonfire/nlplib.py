@@ -3,19 +3,19 @@
 
 import sys
 import contextlib
-import cStringIO
+import io
 
 @contextlib.contextmanager
 def nostdout():
 	save_stdout = sys.stdout
-	sys.stdout = cStringIO.StringIO()
+	sys.stdout = io.StringIO()
 	yield
 	sys.stdout = save_stdout
 
 @contextlib.contextmanager
 def nostderr():
 	save_stderr = sys.stderr
-	sys.stderr = cStringIO.StringIO()
+	sys.stderr = io.StringIO()
 	yield
 	sys.stderr = save_stderr
 
@@ -138,12 +138,12 @@ class TopicExtractor(object):
 
 
 if __name__ == "__main__":
-	print Classifiers.gender("Mehmet")
-	print Classifiers.gender("Ayşe")
-	print Classifiers.gender("İsmail")
-	print Classifiers.gender("Berna")
+	print(Classifiers.gender("Mehmet"))
+	print(Classifiers.gender("Ayşe"))
+	print(Classifiers.gender("İsmail"))
+	print(Classifiers.gender("Berna"))
 
 	sentence = "Do you know the birthdate of Barrack Obama"
 	topic_obj = TopicExtractor(sentence)
 	result = topic_obj.extract()
-	print "This sentence is about: %s" % ", ".join(result)
+	print("This sentence is about: %s" % ", ".join(result))

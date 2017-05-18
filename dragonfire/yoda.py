@@ -1,10 +1,10 @@
 import json
-import urllib
-import urllib2
+import urllib.request, urllib.parse, urllib.error
+import urllib.request, urllib.error, urllib.parse
 import time
 import sys
 import contextlib
-import cStringIO
+import io
 from random import randint
 
 class YodaQA():
@@ -17,8 +17,8 @@ class YodaQA():
 			'text' : query
 		}
 
-		params = urllib.urlencode(post_params)
-		response = urllib2.urlopen(url, params)
+		params = urllib.parse.urlencode(post_params)
+		response = urllib.request.urlopen(url, params)
 		json_response = json.loads(response.read())
 
 		#print json_response['id']
@@ -37,11 +37,11 @@ class YodaQA():
 			url2 = url + '/' + json_response['id']
 
 			#print url2
-			response2 = urllib2.urlopen(url2)
+			response2 = urllib.request.urlopen(url2)
 			data = json.load(response2)
 			#print data
 			#print data['answers']
-			sys.stdout.write(unichr(0x2588))
+			sys.stdout.write(chr(0x2588))
 			sys.stdout.flush()
 			if data['answers']:
 				if float(data['answers'][0]['confidence']) > 0.5:
@@ -64,16 +64,16 @@ def noanswer(user_prefix):
 @contextlib.contextmanager
 def nostdout():
 	save_stdout = sys.stdout
-	sys.stdout = cStringIO.StringIO()
+	sys.stdout = io.StringIO()
 	yield
 	sys.stdout = save_stdout
 
 @contextlib.contextmanager
 def nostderr():
 	save_stderr = sys.stderr
-	sys.stderr = cStringIO.StringIO()
+	sys.stderr = io.StringIO()
 	yield
 	sys.stderr = save_stderr
 
 if __name__ == "__main__":
-	print YodaQA.answer("http://localhost:4567", "When was Albert Einstein born", "sir")
+	print(YodaQA.answer("http://localhost:4567", "When was Albert Einstein born", "sir"))
