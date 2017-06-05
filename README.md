@@ -13,7 +13,7 @@ Dragonfire is an open source virtual assistant project for Ubuntu based Linux di
 Dragonfire does following tasks for each separate command, respectively:
 
  - Search across the built-in commands of Dragonfire
- - Try [Teachable AI](http://teach.dragon.computer/gui/jquery/multibot_gui_with_chatlog.php)
+ - Try [AIML](http://teach.dragon.computer/gui/jquery/multibot_gui_with_chatlog.php)
  - Ask to [YodaQA](https://github.com/brmson/yodaqa)
 
 <br>
@@ -86,7 +86,7 @@ SEARCH * (IN/USING) YOUTUBE
 
 #### Teachable AI examples
 
-[Dragonfire DEVLOG #4 - Teachable AI](https://youtu.be/ujmRtqf2nxQ)
+[Dragonfire DEVLOG #4 - AIML](https://youtu.be/ujmRtqf2nxQ)
 
 ```
 _______________________________________________________________
@@ -271,7 +271,7 @@ _______________________________________________________________
 
 <br>
 
-#####For generating .dict and .dfa files from .grammer and .voca files(for developers only), use:
+**For generating .dict and .dfa files from .grammer and .voca files(for developers only), use:**
 
 ```Shell
 cd Dragonfire/dragonfire/
