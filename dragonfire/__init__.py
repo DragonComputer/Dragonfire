@@ -120,9 +120,11 @@ def command(speech):
 				previous_command = com
 			elif "FILE MANAGER" in com or "OPEN FILES" in com:
 				tts_kill()
-				userin = Data(["pantheon-files"],"File Manager")
+				userin = Data(["dolphin"],"File Manager") # KDE neon
 				userin.interact(0)
-				userin = Data(["nautilus","--browser"],"File Manager")
+				userin = Data(["pantheon-files"],"File Manager") # elementary OS
+				userin.interact(0)
+				userin = Data(["nautilus","--browser"],"File Manager") # Ubuntu
 				userin.say("File Manager")
 				userin.interact(0)
 				previous_command = com
@@ -152,31 +154,41 @@ def command(speech):
 				previous_command = com
 			elif "VIDEO EDITOR" in com:
 				tts_kill()
+				#userin = Data(["openshot"],"Openshot")
+				#userin.interact(0)
+				#userin = Data(["lightworks"],"Lightworks")
+				#userin.interact(0)
 				userin = Data(["kdenlive"],"Kdenlive")
 				userin.say("Video editor")
 				userin.interact(0)
 				previous_command = com
 			elif "OPEN CAMERA" in com:
 				tts_kill()
-				userin = Data(["snap-photobooth"],"Camera")
+				userin = Data(["kamoso"],"Camera") # KDE neon
 				userin.interact(0)
-				userin = Data(["cheese"],"Camera")
+				userin = Data(["snap-photobooth"],"Camera") # elementary OS
+				userin.interact(0)
+				userin = Data(["cheese"],"Camera") # Ubuntu
 				userin.say("Camera")
 				userin.interact(0)
 				previous_command = com
 			elif "OPEN CALENDAR" in com:
 				tts_kill()
-				userin = Data(["maya-calendar"],"Calendar")
+				userin = Data(["korganizer"],"Calendar") # KDE neon
 				userin.interact(0)
-				userin = Data(["orage"],"Calendar")
+				userin = Data(["maya-calendar"],"Calendar") # elementary OS
+				userin.interact(0)
+				userin = Data(["orage"],"Calendar") # Ubuntu
 				userin.say("Calendar")
 				userin.interact(0)
 				previous_command = com
 			elif "OPEN CALCULATOR" in com:
 				tts_kill()
-				userin = Data(["pantheon-calculator"],"Calculator")
+				userin = Data(["kcalc"],"Calculator") # KDE neon
 				userin.interact(0)
-				userin = Data(["gnome-calculator"],"Calculator")
+				userin = Data(["pantheon-calculator"],"Calculator") # elementary OS
+				userin.interact(0)
+				userin = Data(["gnome-calculator"],"Calculator") # Ubuntu
 				userin.say("Calculator")
 				userin.interact(0)
 				previous_command = com
@@ -188,7 +200,9 @@ def command(speech):
 				previous_command = com
 			elif "SOFTWARE CENTER" in com:
 				tts_kill()
-				userin = Data(["software-center"],"Software Center")
+				userin = Data(["plasma-discover"],"Software Center") # KDE neon
+				userin.interact(0)
+				userin = Data(["software-center"],"Software Center") # elementary OS & Ubuntu
 				userin.say("Software Center")
 				userin.interact(0)
 				previous_command = com
