@@ -83,10 +83,10 @@ Commands <https://youtu.be/krHUzY2DylI>`__
 	SEARCH * (IN/USING) WIKIPEDA
 	SEARCH * (IN/USING) YOUTUBE
 
-Teachable AI examples
+AIML examples
 ^^^^^^^^^^^^^^^^^^^^^
 
-`Dragonfire DEVLOG #4 - Teachable AI <https://youtu.be/ujmRtqf2nxQ>`__
+`Dragonfire DEVLOG #4 - AIML <https://youtu.be/ujmRtqf2nxQ>`__
 
 ::
 
