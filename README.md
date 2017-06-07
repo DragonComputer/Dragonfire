@@ -84,7 +84,7 @@ SEARCH * (IN/USING) YOUTUBE
 
 <br>
 
-#### Teachable AI examples
+#### AIML examples
 
 [Dragonfire DEVLOG #4 - AIML](https://youtu.be/ujmRtqf2nxQ)
 
@@ -271,7 +271,15 @@ _______________________________________________________________
 
 <br>
 
-**For generating .dict and .dfa files from .grammer and .voca files(for developers only), use:**
+#### Supported Distributions
+
+ - KDE neon
+ - elementary OS
+ - Ubuntu
+
+All modern releases (Ubuntu 12.04 LTS and above) of these distributions are fully supported. Any other Ubuntu based distributions are partially supported.
+
+#### For generating .dict and .dfa files from .grammer and .voca files(for developers only), use:
 
 ```Shell
 cd Dragonfire/dragonfire/
