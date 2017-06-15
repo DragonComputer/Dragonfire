@@ -8,7 +8,7 @@ import cStringIO
 from random import randint
 import uuid
 
-class Teachable():
+class Aiml():
 
 	@staticmethod
 	def respond(address, convo_id, query):
@@ -50,5 +50,5 @@ def nostderr():
 
 if __name__ == "__main__":
 	convo_id = uuid.uuid4()
-	print Teachable.respond("http://teach.dragon.computer/", convo_id, "Learn the sun is hot")
-	print Teachable.respond("http://teach.dragon.computer/", convo_id, "What is the sun")
+	print Aiml.respond("http://teach.dragon.computer/", convo_id, "Learn the sun is hot")
+	print Aiml.respond("http://teach.dragon.computer/", convo_id, "What is the sun")
