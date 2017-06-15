@@ -26,7 +26,7 @@ import inspect
 #import aiml
 import contextlib
 import cStringIO
-from dragonfire.learn import Teachable
+from dragonfire.learn import Aiml
 import uuid
 
 DRAGONFIRE_PATH = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
@@ -335,10 +335,10 @@ def command(speech):
 			else:
 				tts_kill()
 				#dragonfire_respond = kernel.respond(com)
-				teachable_respond = Teachable.respond("http://teach.dragon.computer/", CONVO_ID, original_com)
+				aiml_respond = Aiml.respond("http://teach.dragon.computer/", CONVO_ID, original_com)
 				userin = Data([" "]," ")
-				if teachable_respond and "WHAT" not in teachable_respond and "WHERE" not in teachable_respond and "WHO" not in teachable_respond and "WHEN" not in teachable_respond and "WHICH" not in teachable_respond and "HOW" not in teachable_respond:
-					userin.say(teachable_respond)
+				if aiml_respond and "WHAT" not in aiml_respond and "WHERE" not in aiml_respond and "WHO" not in aiml_respond and "WHEN" not in aiml_respond and "WHICH" not in aiml_respond and "HOW" not in aiml_respond:
+					userin.say(aiml_respond)
 				else:
 					userin.say("I need to do a brief research on the internet. It may take up to 3 minutes, so please be patient.")
 					userin.say(YodaQA.answer("http://qa.ailao.eu", original_com, user_prefix))
