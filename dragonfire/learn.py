@@ -1,7 +1,3 @@
-import json
-import urllib
-import urllib2
-import time
 import sys
 import contextlib
 import cStringIO
@@ -14,37 +10,37 @@ import re
 class Aiml():
 
 	def __init__(self):
+		self.replacements = {"I'M": "YOU", "YOU ARE": "I'M", "YOU": "I'M", "MY ": "YOUR ", "YOUR ": "MY "}
 		self.dictionary = collections.OrderedDict()
-		root = etree.parse(pkg_resources.resource_filename('dragonfire', 'aiml/computers.aiml'))
+		root = etree.parse(pkg_resources.resource_filename('dragonfire', 'aiml/dragonfire.aiml'))
 		categories = root.findall("category")
 		for category in categories:
-			key = self.patternParser(category)
-			value = self.templateParser(category)
-			self.dictionary[key] = value
+			statement = category.find("statement").text
+			question = category.find("question").text
+			self.dictionary[statement] = question
 
 	def respond(self,com):
-		for key,value in self.dictionary.iteritems():
-			print key
-			matches = re.findall(key, com)
+		for statement,question in self.dictionary.iteritems():
+			result = []
+
+			matches = re.findall(question, com)
 			if matches:
-				i = 1
-				for match in matches:
-					value = value.replace('$'+str(i), match)
-					i += 1
-				return value.upper()
+				for match in matches[0]:
+					result.append(match)
+				return ' '.join(result).upper()
 
-	def patternParser(self,category):
-		return category.find("pattern").text.replace('*','(.*)')
+			matches = re.findall(statement, com)
+			if matches:
+				for match in matches[0]:
+					result.append(match)
+				result = ' '.join(result).upper()
+				for key,value in self.replacements.iteritems():
+					if key in result:
+						result = result.replace(key,value)
+						break
+				return "OK, I GET IT. " + result
 
-	def templateParser(self,category):
-		i = 1
-		for child in category.find("template").iterchildren():
-			if child.tag == 'set':
-				child.text = '$' + str(i)
-				i += 1
-
-		etree.strip_tags(category.find("template"),'set')
-		return category.find("template").text
+		return None
 
 
 def noanswer(user_prefix):
@@ -71,4 +67,4 @@ def nostderr():
 
 if __name__ == "__main__":
 	AimlObj = Aiml()
-	print AimlObj.respond("MY COMPUTER IS AN ASSHOLE")
+	print AimlObj.respond("MY AGE IS 24")

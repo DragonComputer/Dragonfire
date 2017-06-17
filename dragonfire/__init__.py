@@ -336,9 +336,10 @@ def command(speech):
 			else:
 				tts_kill()
 				#dragonfire_respond = kernel.respond(com)
-				aiml_respond = Aiml.respond(com)
-				userin = Data([" "]," ")
-				userin.say(aiml_respond)
+				aiml_respond = LEARN.respond(com)
+				if aiml_respond:
+					userin = Data([" "]," ")
+					userin.say(aiml_respond)
 				#if aiml_respond and "WHAT" not in aiml_respond and "WHERE" not in aiml_respond and "WHO" not in aiml_respond and "WHEN" not in aiml_respond and "WHICH" not in aiml_respond and "HOW" not in aiml_respond:
 				#	userin.say(aiml_respond)
 				#else:
