@@ -8,43 +8,43 @@ import cStringIO
 from random import randint
 import collections
 import pkg_resources
-import xml.etree.ElementTree as ET
+from lxml import etree
 import re
 
 class Aiml():
 
 	def __init__(self):
 		self.dictionary = collections.OrderedDict()
-		tree = ET.parse(pkg_resources.resource_filename('dragonfire', 'aiml/computers.aiml'))
-		root = tree.getroot()
-		#print collection.toxml()
+		root = etree.parse(pkg_resources.resource_filename('dragonfire', 'aiml/computers.aiml'))
 		categories = root.findall("category")
 		for category in categories:
-			key = self.patternParser(category.find("pattern"))
-			value = self.templateParser(category.find("template"))
+			key = self.patternParser(category)
+			value = self.templateParser(category)
 			self.dictionary[key] = value
 
 	def respond(self,com):
 		for key,value in self.dictionary.iteritems():
 			print key
 			matches = re.findall(key, com)
-			print matches
 			if matches:
+				i = 1
 				for match in matches:
-					print match
-				return value
+					value = value.replace('$'+str(i), match)
+					i += 1
+				return value.upper()
 
-	def patternParser(self,this_node):
-	    return this_node.text.replace('*','(.*)')
+	def patternParser(self,category):
+		return category.find("pattern").text.replace('*','(.*)')
 
-	def templateParser(self,this_node):
-		i = 0
-		for child in this_node.iter():
+	def templateParser(self,category):
+		i = 1
+		for child in category.find("template").iterchildren():
 			if child.tag == 'set':
-				this_node.remove(child)
-				this_node.insert(i, 'asdas')
-			i += 1
-		return this_node.text
+				child.text = '$' + str(i)
+				i += 1
+
+		etree.strip_tags(category.find("template"),'set')
+		return category.find("template").text
 
 
 def noanswer(user_prefix):
