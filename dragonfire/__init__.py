@@ -28,6 +28,7 @@ import contextlib
 import cStringIO
 from dragonfire.learn import Aiml
 import uuid
+import string
 
 DRAGONFIRE_PATH = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 FNULL = open(os.devnull, 'w')
@@ -70,10 +71,10 @@ def command(speech):
 			com = com.upper()
 			print "You: " + com
 
-			if inactive == 1 and "DRAGON FIRE" not in com and "WAKE UP" not in com and com != "HEY":
+			if inactive == 1 and "DRAGONFIRE" != com and "DRAGON FIRE" != com and "WAKE UP" != com and com != "HEY":
 				continue
 
-			if "DRAGON FIRE" in com or "WAKE UP" in com or com == "HEY":
+			if "DRAGONFIRE" == com or "DRAGON FIRE" == com or "WAKE UP" == com or com == "HEY":
 				tts_kill()
 				inactive = 0
 				userin = Data([" "]," ")
@@ -83,43 +84,44 @@ def command(speech):
 					2 : "What is your orders?"
 				}
 				userin.say(words_dragonfire[randint(0,2)])
-			elif "GO TO SLEEP" in com:
+			elif "GO TO SLEEP" == com:
 				tts_kill()
 				inactive = 1
 				userin = Data(["echo"],"Dragonfire deactivated. To reactivate say 'Dragonfire!' or 'Wake Up!'")
 				userin.say("I'm going to sleep")
 				userin.interact(0)
 				previous_command = com
-			elif "ENOUGH" in com:
+			elif "ENOUGH" == com or "SHUT UP" == com:
 				print "Dragonfire quiets."
 				tts_kill()
-			elif "WHO AM I" in com or "SAY MY NAME" in com:
+			elif "WHO AM I" == com or "SAY MY NAME" == com:
 				tts_kill()
 				userin = Data(["echo"], user_full_name)
-				userin.say("Your name is " + user_full_name + "," + user_prefix + ".")
+				userin.say("Your name is " + user_full_name + ", " + user_prefix + ".")
 				userin.interact(0)
 				previous_command = com
-			elif "MY TITLE IS LADY" in com or "I'M A LADY" in com or "I'M A WOMAN" in com or "I'M A GIRL" in com:
+			elif "MY TITLE IS LADY" == com or "I'M A LADY" == com or "I'M A WOMAN" == com or "I'M A GIRL" == com:
 				tts_kill()
 				user_prefix = "My Lady"
 				userin = Data([" "]," ")
 				userin.say("Pardon, " + user_prefix + ".")
-			elif "MY TITLE IS SIR" in com or "I'M A MAN" in com or "I'M A BOY" in com:
+			elif "MY TITLE IS SIR" == com or "I'M A MAN" == com or "I'M A BOY" == com:
 				tts_kill()
 				user_prefix = "Sir"
 				userin = Data([" "]," ")
 				userin.say("Pardon, " + user_prefix + ".")
-			elif "WHAT IS YOUR NAME" in com:
+			elif "WHAT IS YOUR NAME" == com:
 				tts_kill()
-				userin = Data([" "]," ")
+				userin = Data([" "],"My name is Dragonfire.")
 				userin.say("My name is Dragon Fire.")
+				userin.interact(0)
 				previous_command = com
-			elif "WHAT IS YOUR GENDER" in com:
+			elif "WHAT IS YOUR GENDER" == com:
 				tts_kill()
 				userin = Data([" "]," ")
 				userin.say("I have a female voice but I don't have a gender identity. I'm a computer program, " + user_prefix + ".")
 				previous_command = com
-			elif "FILE MANAGER" in com or "OPEN FILES" in com:
+			elif "FILE MANAGER" in com or "OPEN FILES" == com:
 				tts_kill()
 				userin = Data(["dolphin"],"File Manager") # KDE neon
 				userin.interact(0)
@@ -135,19 +137,19 @@ def command(speech):
 				userin.say("Web Browser")
 				userin.interact(0)
 				previous_command = com
-			elif "OPEN BLENDER" in com:
+			elif "OPEN BLENDER" == com:
 				tts_kill()
 				userin = Data(["blender"],"Blender")
 				userin.say("Blender 3D computer graphics software")
 				userin.interact(0)
 				previous_command = com
-			elif "PHOTO SHOP" in com or "PHOTO EDITOR" in com:
+			elif "PHOTO SHOP" in com or "PHOTO EDITOR" in com or "GIMP" in com:
 				tts_kill()
 				userin = Data(["gimp"],"GIMP")
 				userin.say("Photo editor")
 				userin.interact(0)
 				previous_command = com
-			elif "INKSCAPE" in com:
+			elif "INKSCAPE" in com or "VECTOR GRAPHICS" in com or "VECTORIAL DRAWING" in com:
 				tts_kill()
 				userin = Data(["inkscape"],"Inkscape")
 				userin.say("Inkscape")
@@ -163,7 +165,7 @@ def command(speech):
 				userin.say("Video editor")
 				userin.interact(0)
 				previous_command = com
-			elif "OPEN CAMERA" in com:
+			elif "OPEN CAMERA" == com:
 				tts_kill()
 				userin = Data(["kamoso"],"Camera") # KDE neon
 				userin.interact(0)
@@ -173,7 +175,7 @@ def command(speech):
 				userin.say("Camera")
 				userin.interact(0)
 				previous_command = com
-			elif "OPEN CALENDAR" in com:
+			elif "OPEN CALENDAR" == com:
 				tts_kill()
 				userin = Data(["korganizer"],"Calendar") # KDE neon
 				userin.interact(0)
@@ -183,7 +185,7 @@ def command(speech):
 				userin.say("Calendar")
 				userin.interact(0)
 				previous_command = com
-			elif "OPEN CALCULATOR" in com:
+			elif "OPEN CALCULATOR" == com:
 				tts_kill()
 				userin = Data(["kcalc"],"Calculator") # KDE neon
 				userin.interact(0)
@@ -193,7 +195,7 @@ def command(speech):
 				userin.say("Calculator")
 				userin.interact(0)
 				previous_command = com
-			elif "OPEN STEAM" in com:
+			elif "OPEN STEAM" == com:
 				tts_kill()
 				userin = Data(["steam"],"Steam")
 				userin.say("Steam Game Store")
@@ -213,25 +215,25 @@ def command(speech):
 				userin.say("Office Suite")
 				userin.interact(0)
 				previous_command = com
-			elif "OPEN WRITER" in com:
+			elif "OPEN WRITER" == com:
 				tts_kill()
 				userin = Data(["libreoffice","--writer"],"LibreOffice Writer")
 				userin.say("Writer")
 				userin.interact(0)
 				previous_command = com
-			elif "OPEN MATH" in com:
+			elif "OPEN MATH" == com:
 				tts_kill()
 				userin = Data(["libreoffice","--math"],"LibreOffice Math")
 				userin.say("Math")
 				userin.interact(0)
 				previous_command = com
-			elif "OPEN IMPRESS" in com:
+			elif "OPEN IMPRESS" == com:
 				tts_kill()
 				userin = Data(["libreoffice","--impress"],"LibreOffice Impress")
 				userin.say("Impress")
 				userin.interact(0)
 				previous_command = com
-			elif "OPEN DRAW" in com:
+			elif "OPEN DRAW" == com:
 				tts_kill()
 				userin = Data(["libreoffice","--draw"],"LibreOffice Draw")
 				userin.say("Draw")
@@ -251,7 +253,7 @@ def command(speech):
 					with nostderr():
 						k = PyKeyboard()
 						k.tap_key(k.enter_key)
-			elif "SHUTDOWN THE COMPUTER" in com:
+			elif "SHUTDOWN THE COMPUTER" == com:
 				tts_kill()
 				userin = Data(["sudo","poweroff"],"Shutting down")
 				userin.say("Shutting down")
