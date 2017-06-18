@@ -11,34 +11,33 @@ class Aiml():
 
 	def __init__(self):
 		self.replacements = {"I'M": "YOU", "YOU ARE": "I'M", "YOU": "I'M", "MY ": "YOUR ", "YOUR ": "MY "}
-		self.dictionary = collections.OrderedDict()
-		root = etree.parse(pkg_resources.resource_filename('dragonfire', 'aiml/dragonfire.aiml'))
-		categories = root.findall("category")
-		for category in categories:
-			statement = category.find("statement").text
-			question = category.find("question").text
-			self.dictionary[statement] = question
+		self.grammar_model = collections.OrderedDict()
+		self.grammar_model = {
+			"(?P<col1>.*) (?P<col2>IS|ARE|WAS|WERE|WILL BE) (?P<col3>.*)": "(?:WHO|WHERE|WHEN|WHY|WHAT|WHICH|HOW)(?:.*)(?P<col2>IS|ARE|WAS|WERE|WILL BE) (?P<col1>.*)",
+			"(?P<col1>.*) (?P<col2>MEANS?|HAS|HAVE|LIVES?) (?P<col3>.*)": "(?:WHO|WHERE|WHEN|WHY|WHAT|WHICH|HOW)(?:.*)(?:DOES|DO) (?P<col1>.*) (?P<col2>MEAN|HAVE|LIVE)",
+			"(?P<col1>.*) (?P<col2>SAID) (?P<col3>.*)": "(?:WHO|WHERE|WHEN|WHY|WHAT|WHICH|HOW)(?:.*)(?:DID) (?P<col1>.*) (?P<col2>SAY)"
+		}
 
 	def respond(self,com):
-		for statement,question in self.dictionary.iteritems():
-			result = []
+		for statement,question in self.grammar_model.iteritems():
 
-			matches = re.findall(question, com)
-			if matches:
-				for match in matches[0]:
-					result.append(match)
-				return ' '.join(result).upper()
+			capture = re.search(question, com)
+			if capture:
+				answer = capture.group()
+				return answer.upper()
 
-			matches = re.findall(statement, com)
-			if matches:
-				for match in matches[0]:
-					result.append(match)
-				result = ' '.join(result).upper()
+			capture = re.search(statement, com)
+			if capture:
+				#print capture.group('col2')
+				#print capture.group('col3')
+				#print capture.group('col1')
+				answer = capture.group()
+				answer = answer.upper()
 				for key,value in self.replacements.iteritems():
-					if key in result:
-						result = result.replace(key,value)
+					if key in answer:
+						answer = answer.replace(key,value)
 						break
-				return "OK, I GET IT. " + result
+				return "OK, I GET IT. " + answer
 
 		return None
 
