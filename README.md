@@ -39,7 +39,7 @@ To activate Dragonfire say *DRAGONFIRE* or *HEY* or *WAKE UP*.
 
 To deactivate her say *GO TO SLEEP*.
 
-To silence her say *ENOUGH*.
+To silence her say *ENOUGH* or *SHUT UP*.
 
 To kill her say *GOODBYE* or *BYE BYE* or *SEE YOU LATER*.
 
@@ -50,19 +50,19 @@ To kill her say *GOODBYE* or *BYE BYE* or *SEE YOU LATER*.
 [Dragonfire DEVLOG #3 - Built-in Commands](https://youtu.be/krHUzY2DylI)
 
 ```
-DRAGONFIRE / WAKE UP / HEY
+DRAGONFIRE | WAKE UP | HEY
 GO TO SLEEP
-ENOUGH
-WHO AM I / SAY MY NAME
-MY TITLE IS LADY / I'M A LADY / I'M A WOMAN / I'M A GIRL
-MY TITLE IS SIR / I'M A MAN / I'M A BOY
+ENOUGH | SHUT UP
+WHO AM I | SAY MY NAME
+MY TITLE IS LADY | I'M A LADY | I'M A WOMAN | I'M A GIRL
+MY TITLE IS SIR | I'M A MAN | I'M A BOY
 WHAT IS YOUR NAME
 WHAT IS YOUR GENDER
-FILE MANAGER / OPEN FILES
+FILE MANAGER | OPEN FILES
 WEB BROWSER
 OPEN BLENDER
-PHOTOSHOP / PHOTO EDITOR
-INKSCAPE
+PHOTOSHOP | PHOTO EDITOR
+INKSCAPE | VECTOR GRAPHICS
 VIDEO EDITOR
 OPEN CAMERA
 OPEN CALENDAR
@@ -75,11 +75,12 @@ OPEN MATH
 OPEN IMPRESS
 OPEN DRAW
 KEYBOARD *
-ENTER
+ENTER | NEW TAB | CLOSE | GO BACK | GO FORWARD
+SCROLL LEFT | SCROLL RIGHT | SCROLL UP | SCROLL DOWN
 SHUT DOWN THE COMPUTER
-GOODBYE / BYE BYE / SEE YOU LATER
-SEARCH * (IN/USING) WIKIPEDA
-SEARCH * (IN/USING) YOUTUBE
+GOODBYE | BYE BYE | SEE YOU LATER
+SEARCH * (IN|USING) WIKIPEDA
+SEARCH * (IN|USING) YOUTUBE
 ```
 
 <br>
@@ -91,52 +92,48 @@ SEARCH * (IN/USING) YOUTUBE
 ```
 _______________________________________________________________
 
-You: THE EARTH IS OUR HOME PLANET
-Dragonfire: OK I WILL ADD THAT FACT ABOUT THE EARTH TO MY DATABASE.
+You: THE SUN IS HOT
+Dragonfire: OK, I GET IT. THE SUN IS HOT
 _______________________________________________________________
 
-You: WHAT IS THE EARTH
-Dragonfire: OUR HOME PLANET
+You: THE SUN IS YELLOW
+Dragonfire: OK, I GET IT. THE SUN IS YELLOW
 _______________________________________________________________
 
-You: HUMAN IS THE MOST ADVANCED LIFE FORM ON EARTH
-Dragonfire: OK I WILL ADD THAT FACT ABOUT HUMAN TO MY DATABASE.
+You: DESCRIBE THE SUN
+Dragonfire: THE SUN IS HOT AND YELLOW
 _______________________________________________________________
 
-You: WHAT IS HUMAN
-Dragonfire: MOST ADVANCED LIFE FORM ON EARTH
-_______________________________________________________________
-
-You: MY AGE IS 24
-Dragonfire: OK I WILL LEARN THAT YOUR AGE IS 24.
+You: MY AGE IS 25
+Dragonfire: OK, I GET IT. YOUR AGE IS 25
 _______________________________________________________________
 
 You: WHAT IS MY AGE
-Dragonfire: 24
+Dragonfire: YOUR AGE IS 25
 _______________________________________________________________
 
 You: MY PLACE OF BIRTH IS TURKEY
-Dragonfire: OK I WILL LEARN THAT YOUR PLACE OF BIRTH IS TURKEY.
+Dragonfire: OK, I GET IT. YOUR PLACE OF BIRTH IS TURKEY
 _______________________________________________________________
 
 You: WHERE IS MY PLACE OF BIRTH
-Dragonfire: TURKEY
+Dragonfire: YOUR PLACE OF BIRTH IS TURKEY
 _______________________________________________________________
 
 You: YOU ARE JUST A COMPUTER PROGRAM
-Dragonfire: OK I WILL ADD THAT FACT ABOUT YOU TO MY DATABASE.
+Dragonfire: OK, I GET IT. I'M JUST A COMPUTER PROGRAM
 _______________________________________________________________
 
 You: WHAT ARE YOU
-Dragonfire: JUST A COMPUTER PROGRAM
+Dragonfire: I'M JUST A COMPUTER PROGRAM
 _______________________________________________________________
 
-You: ATOMIC NUMBER OF GOLD IS 79
-Dragonfire: OK I WILL ADD THAT FACT ABOUT ATOMIC NUMBER OF GOLD TO MY DATABASE.
+You: THE ATOMIC NUMBER OF GOLD IS 79
+Dragonfire: OK, I GET IT. THE ATOMIC NUMBER OF GOLD IS 79
 _______________________________________________________________
 
-You: WHAT IS ATOMIC NUMBER OF GOLD
-Dragonfire: 79
+You: WHAT IS THE ATOMIC NUMBER OF GOLD
+Dragonfire: THE ATOMIC NUMBER OF GOLD IS 79
 _______________________________________________________________
 
 ```
