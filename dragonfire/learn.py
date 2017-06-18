@@ -21,7 +21,7 @@ class Aiml():
 		self.grammar_model["(?P<subject>.*) (?P<verbtense>IS|ARE|WAS|WERE|WILL BE) (?P<clause>.*)"] = "(?:WHO|WHERE|WHEN|WHY|WHAT|WHICH|HOW)(?:.*)(?P<verbtense>IS|ARE|WAS|WERE|WILL BE) (?P<subject>.*)"
 		self.grammar_model["(?P<subject>.*) (?P<verbtense>MEANS?|HAS|HAVE|LIVES?) (?P<clause>.*)"] = "(?:WHO|WHERE|WHEN|WHY|WHAT|WHICH|HOW)(?:.*)(?:DOES|DO) (?P<subject>.*) (?P<verbtense>MEAN|HAVE|LIVE)"
 		self.grammar_model["(?P<subject>.*) (?P<verbtense>SAID) (?P<clause>.*)"] = "(?:WHO|WHERE|WHEN|WHY|WHAT|WHICH|HOW)(?:.*)(?:DID) (?P<subject>.*) (?P<verbtense>SAY)"
-		self.grammar_model["\b\B"] = "(?:DEFINE|EXPLAIN|TELL ME ABOUT) (?P<subject>.*)"
+		self.grammar_model["\b\B"] = "(?:DEFINE|EXPLAIN|TELL ME ABOUT|DESCRIBE) (?P<subject>.*)"
 		home = expanduser("~")
 		self.db = TinyDB(home + '/.dragonfire.json')
 
