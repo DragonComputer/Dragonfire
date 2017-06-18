@@ -17,6 +17,7 @@ import os
 import re
 import xml.etree.ElementTree as ET
 from pykeyboard import PyKeyboard
+from pymouse import PyMouse
 import datetime
 from apiclient.discovery import build
 from apiclient.errors import HttpError
@@ -253,6 +254,55 @@ def command(speech):
 					with nostderr():
 						k = PyKeyboard()
 						k.tap_key(k.enter_key)
+			elif com == "NEW TAB":
+				tts_kill()
+				with nostdout():
+					with nostderr():
+						k = PyKeyboard()
+						k.press_keys([k.control_l_key,'t'])
+			elif com == "CLOSE" or com == "ESCAPE":
+				tts_kill()
+				with nostdout():
+					with nostderr():
+						k = PyKeyboard()
+						k.press_keys([k.control_l_key,'w'])
+						k.tap_key(k.escape_key)
+			elif com == "GO BACK":
+				tts_kill()
+				with nostdout():
+					with nostderr():
+						k = PyKeyboard()
+						k.press_keys([k.alt_l_key,k.left_key])
+			elif com == "GO FORWARD":
+				tts_kill()
+				with nostdout():
+					with nostderr():
+						k = PyKeyboard()
+						k.press_keys([k.alt_l_key,k.right_key])
+			elif com == "SCROLL LEFT":
+				tts_kill()
+				with nostdout():
+					with nostderr():
+						m = PyMouse()
+						m.scroll(0,-5)
+			elif com == "SCROLL RIGHT":
+				tts_kill()
+				with nostdout():
+					with nostderr():
+						m = PyMouse()
+						m.scroll(0,5)
+			elif com == "SCROLL UP":
+				tts_kill()
+				with nostdout():
+					with nostderr():
+						m = PyMouse()
+						m.scroll(5,0)
+			elif com == "SCROLL DOWN":
+				tts_kill()
+				with nostdout():
+					with nostderr():
+						m = PyMouse()
+						m.scroll(-5,0)
 			elif "SHUTDOWN THE COMPUTER" == com:
 				tts_kill()
 				userin = Data(["sudo","poweroff"],"Shutting down")
