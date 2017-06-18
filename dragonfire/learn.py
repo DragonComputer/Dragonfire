@@ -12,22 +12,26 @@ from os.path import expanduser
 class Aiml():
 
 	def __init__(self):
-		self.replacements = {"I'M": "YOU", "YOU ARE": "I'M", "YOU": "I'M", "MY ": "YOUR ", "YOUR ": "MY "}
+		self.replacements = collections.OrderedDict()
+		self.replacements["I'M"] = "YOU ARE"
+		self.replacements["I WAS"] = "YOU WERE"
+		self.replacements["I "] = "YOU "
+		self.replacements["MY"] = "YOUR"
 		self.grammar_model = collections.OrderedDict()
-		self.grammar_model = {
-			"(?P<subject>.*) (?P<verbtense>IS|ARE|WAS|WERE|WILL BE) (?P<clause>.*)": "(?:WHO|WHERE|WHEN|WHY|WHAT|WHICH|HOW)(?:.*)(?P<verbtense>IS|ARE|WAS|WERE|WILL BE) (?P<subject>.*)",
-			"(?P<subject>.*) (?P<verbtense>MEANS?|HAS|HAVE|LIVES?) (?P<clause>.*)": "(?:WHO|WHERE|WHEN|WHY|WHAT|WHICH|HOW)(?:.*)(?:DOES|DO) (?P<subject>.*) (?P<verbtense>MEAN|HAVE|LIVE)",
-			"(?P<subject>.*) (?P<verbtense>SAID) (?P<clause>.*)": "(?:WHO|WHERE|WHEN|WHY|WHAT|WHICH|HOW)(?:.*)(?:DID) (?P<subject>.*) (?P<verbtense>SAY)"
-		}
+		self.grammar_model["(?P<subject>.*) (?P<verbtense>IS|ARE|WAS|WERE|WILL BE) (?P<clause>.*)"] = "(?:WHO|WHERE|WHEN|WHY|WHAT|WHICH|HOW)(?:.*)(?P<verbtense>IS|ARE|WAS|WERE|WILL BE) (?P<subject>.*)"
+		self.grammar_model["(?P<subject>.*) (?P<verbtense>MEANS?|HAS|HAVE|LIVES?) (?P<clause>.*)"] = "(?:WHO|WHERE|WHEN|WHY|WHAT|WHICH|HOW)(?:.*)(?:DOES|DO) (?P<subject>.*) (?P<verbtense>MEAN|HAVE|LIVE)"
+		self.grammar_model["(?P<subject>.*) (?P<verbtense>SAID) (?P<clause>.*)"] = "(?:WHO|WHERE|WHEN|WHY|WHAT|WHICH|HOW)(?:.*)(?:DID) (?P<subject>.*) (?P<verbtense>SAY)"
 		home = expanduser("~")
 		self.db = TinyDB(home + '/.dragonfire.json')
 
 	def respond(self,com):
-		forget = "^FORGET (?:ABOUT )(?P<subject>.*)"
+		forget = "^(?:FORGET|UPDATE) (?:ABOUT )?(?P<subject>.*)"
 		capture = re.search(forget, com)
 		if capture:
-			self.db.remove(Query().subject == capture.group('subject'))
-			return "OK, I FORGOT EVERYTHING ABOUT " + capture.group('subject').upper()
+			if self.db.remove(Query().subject == capture.group('subject')):
+				return "OK, I FORGOT EVERYTHING I KNOW ABOUT " + capture.group('subject').upper()
+			else:
+				return "I WASN'T EVEN KNOW ANYTHING ABOUT " + capture.group('subject').upper()
 
 		for statement,question in self.grammar_model.iteritems():
 
@@ -64,7 +68,11 @@ class Aiml():
 		for key,value in self.replacements.iteritems():
 			if key in answer:
 				answer = answer.replace(key,value)
-				break
+				return answer
+		for value,key in self.replacements.iteritems():
+			if key in answer:
+				answer = answer.replace(key,value)
+				return answer
 		return answer
 
 def noanswer(user_prefix):
