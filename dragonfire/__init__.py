@@ -1,6 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
+#from __future__ import unicode_literals
 import sys
 from lxml import etree
 from dragonfire.utilities import Data
@@ -30,6 +31,7 @@ import cStringIO
 from dragonfire.learn import Aiml
 import uuid
 import string
+import youtube_dl
 
 DRAGONFIRE_PATH = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 FNULL = open(os.devnull, 'w')
@@ -330,7 +332,7 @@ def command(speech):
 				with nostdout():
 					with nostderr():
 						try:
-							os.system('rm /tmp/' + str(datetime.date.today().year) + '*.[Ww][Aa][Vv]')
+							os.system('rm -f /tmp/' + str(datetime.date.today().year) + '*.[Ww][Aa][Vv]')
 						except:
 							pass
 				sys.exit(1)
@@ -353,54 +355,31 @@ def command(speech):
 								pass
 				userin.say(wikicontent)
 				previous_command = com
-			elif "YOUTUBE" in com and "SEARCH" in com:
+			elif "YOUTUBE" in com and ("SEARCH" in com or "FIND" in com):
 				tts_kill()
 				with nostdout():
 					with nostderr():
-						search_query = com.replace("SEARCH ", "").replace(" SEARCH", "").replace(" IN YOUTUBE", "").replace("IN YOUTUBE ", "").replace(" ON YOUTUBE", "").replace("ON YOUTUBE ", "").replace(" USING YOUTUBE", "").replace("USING YOUTUBE ", "").replace(" YOUTUBE", "").replace("YOUTUBE ", "")
-
-						DEVELOPER_KEY = "AIzaSyAcwHj2qzI7KWDUN4RkBTX8Y4lrU78lncA"
-						YOUTUBE_API_SERVICE_NAME = "youtube"
-						YOUTUBE_API_VERSION = "v3"
-
-						youtube = build(YOUTUBE_API_SERVICE_NAME, YOUTUBE_API_VERSION, developerKey=DEVELOPER_KEY)
-
-						search_response = youtube.search().list(q=search_query, part="id,snippet", maxResults=1).execute()
-
-						videos = []
-						channels = []
-						playlists = []
-
-						# Add each result to the appropriate list, and then display the lists of
-						# matching videos, channels, and playlists.
-						for search_result in search_response.get("items", []):
-							if search_result["id"]["kind"] == "youtube#video":
-								  #videos.append("%s (%s)" % (search_result["snippet"]["title"], search_result["id"]["videoId"]))
-								videos.append(search_result["snippet"]["title"])
-								videos.append(search_result["id"]["videoId"])
-							elif search_result["id"]["kind"] == "youtube#channel":
-								channels.append("%s (%s)" % (search_result["snippet"]["title"], search_result["id"]["channelId"]))
-							elif search_result["id"]["kind"] == "youtube#playlist":
-								playlists.append("%s (%s)" % (search_result["snippet"]["title"], search_result["id"]["playlistId"]))
-
-						if len(videos) > 1:
-							youtube_title = videos[0]
-							youtube_url = "https://www.youtube.com/watch?v=%s" % (videos[1])
-							userin = Data(["sensible-browser",youtube_url],youtube_title)
-							youtube_title = "".join([i if ord(i) < 128 else ' ' for i in youtube_title])
-						else:
-							youtube_title = "No video found, " + user_prefix + "."
-							userin = Data("",youtube_title)
-						k = PyKeyboard()
-						k.tap_key('space')
-				userin.say(youtube_title)
-				userin.interact(0)
-				time.sleep(3)
-				k.tap_key(k.tab_key)
-				k.tap_key(k.tab_key)
-				k.tap_key(k.tab_key)
-				k.tap_key(k.tab_key)
-				k.tap_key('f')
+						capture = re.search("(?:SEARCH|FIND) (?P<query>.*) (?:IN|ON|AT|USING)? YOUTUBE", com)
+						if capture:
+							search_query = capture.group('query')
+							info = youtube_dl.YoutubeDL({}).extract_info('ytsearch:' + search_query, download=False, ie_key='YoutubeSearch')
+							if len(info['entries']) > 0:
+								youtube_title = info['entries'][0]['title']
+								youtube_url = "https://www.youtube.com/watch?v=%s" % (info['entries'][0]['id'])
+								userin = Data(["sensible-browser",youtube_url],youtube_title)
+								youtube_title = "".join([i if ord(i) < 128 else ' ' for i in youtube_title])
+							else:
+								youtube_title = "No video found, " + user_prefix + "."
+								userin = Data(" "," ")
+							userin.say(youtube_title)
+							userin.interact(0)
+							time.sleep(5)
+							k = PyKeyboard()
+							k.tap_key(k.tab_key)
+							k.tap_key(k.tab_key)
+							k.tap_key(k.tab_key)
+							k.tap_key(k.tab_key)
+							k.tap_key('f')
 			else:
 				tts_kill()
 				#dragonfire_respond = kernel.respond(com)
@@ -497,7 +476,7 @@ def initiate():
 		with nostdout():
 			with nostderr():
 				try:
-					os.system('rm /tmp/' + str(datetime.date.today().year) + '*.[Ww][Aa][Vv]')
+					os.system('rm -f /tmp/' + str(datetime.date.today().year) + '*.[Ww][Aa][Vv]')
 				except:
 					pass
 		sys.exit(1)
