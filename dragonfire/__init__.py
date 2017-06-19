@@ -260,6 +260,12 @@ def command(speech):
 					with nostderr():
 						k = PyKeyboard()
 						k.press_keys([k.control_l_key,'t'])
+			elif com == "SWITCH TAB":
+				tts_kill()
+				with nostdout():
+					with nostderr():
+						k = PyKeyboard()
+						k.press_keys([k.control_l_key,k.tab_key])
 			elif com == "CLOSE" or com == "ESCAPE":
 				tts_kill()
 				with nostdout():
@@ -303,6 +309,12 @@ def command(speech):
 					with nostderr():
 						m = PyMouse()
 						m.scroll(-5,0)
+			elif com == "PLAY" or com == "PAUSE" or com == "SPACEBAR":
+				tts_kill()
+				with nostdout():
+					with nostderr():
+						k = PyKeyboard()
+						k.tap_key(" ")
 			elif "SHUTDOWN THE COMPUTER" == com:
 				tts_kill()
 				userin = Data(["sudo","poweroff"],"Shutting down")
@@ -315,26 +327,30 @@ def command(speech):
 				userin.say("Goodbye, " + user_prefix)
 				previous_command = com
 				julius_proc.terminate()
-				try:
-					os.system('rm /tmp/' + str(datetime.date.today().year) + '*.[Ww][Aa][Vv]')
-				except:
-					pass
-				sys.exit(1)
-			elif "WIKIPEDIA" in com and "SEARCH" in com:
-				tts_kill()
 				with nostdout():
 					with nostderr():
-						search_query = com.replace("SEARCH ", "").replace(" SEARCH", "").replace(" IN WIKIPEDIA", "").replace("IN WIKIPEDIA ", "").replace(" ON WIKIPEDIA", "").replace("ON WIKIPEDIA ", "").replace(" USING WIKIPEDIA", "").replace("USING WIKIPEDIA ", "").replace(" WIKIPEDIA", "").replace("WIKIPEDIA ", "")
-
-						userin = Data(["sensible-browser","http://en.wikipedia.org/wiki/"+search_query.lower()],search_query)
-						userin.interact(0)
-						wikicontent = ""
 						try:
-							wikipage = wikipedia.page(search_query)
-							wikicontent = "".join([i if ord(i) < 128 else ' ' for i in wikipage.content])
-							wikicontent = re.sub(r'\([^)]*\)', '', wikicontent)
+							os.system('rm /tmp/' + str(datetime.date.today().year) + '*.[Ww][Aa][Vv]')
 						except:
 							pass
+				sys.exit(1)
+			elif "WIKIPEDIA" in com and ("SEARCH" in com or "FIND" in com):
+				tts_kill()
+				wikicontent = ""
+				with nostdout():
+					with nostderr():
+						capture = re.search("(?:SEARCH|FIND) (?P<query>.*) (?:IN|ON|AT|USING)? WIKIPEDIA", com)
+						if capture:
+							search_query = capture.group('query')
+
+							userin = Data(["sensible-browser","http://en.wikipedia.org/wiki/"+search_query.lower()],search_query)
+							userin.interact(0)
+							try:
+								wikipage = wikipedia.page(search_query)
+								wikicontent = "".join([i if ord(i) < 128 else ' ' for i in wikipage.content])
+								wikicontent = re.sub(r'\([^)]*\)', '', wikicontent)
+							except:
+								pass
 				userin.say(wikicontent)
 				previous_command = com
 			elif "YOUTUBE" in com and "SEARCH" in com:
@@ -476,7 +492,7 @@ def initiate():
 		speech = julius_proc.stdout
 		command(speech)
 		#command(sys.stdin)
-	except KeyboardInterrupt:
+	except:
 		julius_proc.terminate()
 		with nostdout():
 			with nostderr():
@@ -493,5 +509,5 @@ if __name__ == '__main__':
 		# padsp julius -input mic -C julian.jconf | ./getcommand.py
 		sys.stdin = subprocess.Popen(["padsp", "julius", "-input", "mic", "-C", DRAGONFIRE_PATH + "julian.jconf"], stdout=subprocess.PIPE).stdout
 		command(sys.stdin)
-	except KeyboardInterrupt:
+	except:
 		sys.exit(1)
