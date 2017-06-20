@@ -353,23 +353,21 @@ def command(speech):
 				sys.exit(1)
 			elif "WIKIPEDIA" in com and ("SEARCH" in com or "FIND" in com):
 				tts_kill()
-				wikicontent = ""
 				with nostdout():
 					with nostderr():
 						capture = re.search("(?:SEARCH|FIND) (?P<query>.*) (?:IN|ON|AT|USING)? WIKIPEDIA", com)
 						if capture:
 							search_query = capture.group('query')
-
-							userin = Data(["sensible-browser","http://en.wikipedia.org/wiki/"+search_query.lower()],search_query)
-							userin.interact(0)
 							try:
-								wikipage = wikipedia.page(search_query)
+								wikipage = wikipedia.page(wikipedia.search(search_query)[0])
 								wikicontent = "".join([i if ord(i) < 128 else ' ' for i in wikipage.content])
 								wikicontent = re.sub(r'\([^)]*\)', '', wikicontent)
+								userin = Data(["sensible-browser",wikipage.url],search_query)
+								userin.interact(0)
+								userin.say(wikicontent)
+								previous_command = com
 							except:
 								pass
-				userin.say(wikicontent)
-				previous_command = com
 			elif "YOUTUBE" in com and ("SEARCH" in com or "FIND" in com):
 				tts_kill()
 				with nostdout():
