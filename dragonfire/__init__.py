@@ -32,6 +32,8 @@ from dragonfire.learn import Aiml
 import uuid
 import string
 import youtube_dl
+from tinydb import TinyDB, Query
+from os.path import expanduser
 
 DRAGONFIRE_PATH = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 FNULL = open(os.devnull, 'w')
@@ -57,6 +59,7 @@ def command(speech):
 
 	global user_full_name
 	global user_prefix
+	global config_file
 
 	while(True):
 
@@ -99,18 +102,30 @@ def command(speech):
 				tts_kill()
 			elif "WHO AM I" == com or "SAY MY NAME" == com:
 				tts_kill()
-				userin = Data(["echo"], user_full_name)
+				userin = Data([" "], user_full_name)
 				userin.say("Your name is " + user_full_name + ", " + user_prefix + ".")
 				userin.interact(0)
 				previous_command = com
 			elif "MY TITLE IS LADY" == com or "I'M A LADY" == com or "I'M A WOMAN" == com or "I'M A GIRL" == com:
 				tts_kill()
+				config_file.update({'gender': 'female'}, Query().datatype == 'gender')
 				user_prefix = "My Lady"
 				userin = Data([" "]," ")
 				userin.say("Pardon, " + user_prefix + ".")
 			elif "MY TITLE IS SIR" == com or "I'M A MAN" == com or "I'M A BOY" == com:
 				tts_kill()
+				config_file.update({'gender': 'male'}, Query().datatype == 'gender')
 				user_prefix = "Sir"
+				userin = Data([" "]," ")
+				userin.say("Pardon, " + user_prefix + ".")
+			elif com.startswith("CALL ME "):
+				tts_kill()
+				callme_config = config_file.search(Query().datatype == 'callme')
+				if callme_config:
+					config_file.update({'title': original_com[8:].lower()}, Query().datatype == 'callme')
+				else:
+					config_file.insert({'datatype': 'callme', 'title': original_com[8:].lower()})
+				user_prefix = original_com[8:].lower().encode("utf8")
 				userin = Data([" "]," ")
 				userin.say("Pardon, " + user_prefix + ".")
 			elif "WHAT IS YOUR NAME" == com:
@@ -409,10 +424,23 @@ def dragon_greet():
 
 	global user_full_name
 	global user_prefix
+	global config_file
 
 	user_full_name = os.popen("getent passwd $LOGNAME | cut -d: -f5 | cut -d, -f1").read()
-	user_full_name = user_full_name[:-1]
-	user_prefix = GENDER_PREFIX[Classifiers.gender(user_full_name.split(' ', 1)[0])]
+	user_full_name = user_full_name[:-1].decode("utf8")
+	home = expanduser("~")
+	config_file = TinyDB(home + '/.dragonfire_config.json')
+	callme_config = config_file.search(Query().datatype == 'callme')
+	if callme_config:
+		user_prefix = callme_config[0]['title'].encode("utf8")
+	else:
+		gender_config = config_file.search(Query().datatype == 'gender')
+		if gender_config:
+			user_prefix = GENDER_PREFIX[gender_config[0]['gender']]
+		else:
+			gender = Classifiers.gender(user_full_name.split(' ', 1)[0])
+			config_file.insert({'datatype': 'gender', 'gender': gender})
+			user_prefix = GENDER_PREFIX[gender]
 
 	if time < datetime.time(12):
 		userin = Data(["echo"],"To activate say 'Dragonfire!' or 'Wake Up!'")
@@ -471,7 +499,7 @@ def initiate():
 		speech = julius_proc.stdout
 		command(speech)
 		#command(sys.stdin)
-	except:
+	except KeyboardInterrupt:
 		julius_proc.terminate()
 		with nostdout():
 			with nostderr():
