@@ -23,7 +23,7 @@ class Aiml():
 		self.grammar_model["(?P<subject>.*) (?P<verbtense>SAID) (?P<clause>.*)"] = "(?:WHO|WHERE|WHEN|WHY|WHAT|WHICH|HOW)(?:.*)(?:DID) (?P<subject>.*) (?P<verbtense>SAY)"
 		self.grammar_model["\b\B"] = "(?:DEFINE|EXPLAIN|TELL ME ABOUT|DESCRIBE) (?P<subject>.*)"
 		home = expanduser("~")
-		self.db = TinyDB(home + '/.dragonfire.json')
+		self.db = TinyDB(home + '/.dragonfire_db.json')
 
 	def respond(self,com):
 		forget = "^(?:FORGET|UPDATE) (?:ABOUT )?(?P<subject>.*)"
