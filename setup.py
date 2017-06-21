@@ -7,12 +7,43 @@ https://github.com/pypa/sampleproject
 
 # Always prefer setuptools over distutils
 from setuptools import setup, find_packages
+from setuptools.command.develop import develop
+from setuptools.command.install import install
 # To use a consistent encoding
 from codecs import open
 from os import path
 import os
+from subprocess import check_call
+
 
 here = path.abspath(path.dirname(__file__))
+
+class PostDevelopCommand(develop):
+    """Post-installation for development mode."""
+    def run(self):
+        check_call("apt-get -y install julius festival festlex-cmu python-xlib portaudio19-dev python-all-dev flac libnotify-bin".split())
+        check_call("wget -c http://www.speech.cs.cmu.edu/cmu_arctic/packed/cmu_us_clb_arctic-0.95-release.tar.bz2 -P /usr/share/festival/voices/english/".split())
+        check_call("tar jxf /usr/share/festival/voices/english/cmu_us_clb_arctic-0.95-release.tar.bz2 -C /usr/share/festival/voices/english/".split())
+        check_call("ln -fs /usr/share/festival/voices/english/cmu_us_clb_arctic /usr/share/festival/voices/english/cmu_us_clb_arctic_clunits".split())
+        check_call("cp /etc/festival.scm /etc/festival.scm.backup".split())
+        check_call("chmod o+w /etc/festival.scm".split())
+        with open("/etc/festival.scm", "a") as myfile:
+            myfile.write("(set! voice_default 'voice_cmu_us_clb_arctic_clunits)")
+        develop.run(self)
+
+class PostInstallCommand(install):
+    """Post-installation for installation mode."""
+    def run(self):
+        check_call("apt-get -y install julius festival festlex-cmu python-xlib portaudio19-dev python-all-dev flac libnotify-bin".split())
+        check_call("wget -c http://www.speech.cs.cmu.edu/cmu_arctic/packed/cmu_us_clb_arctic-0.95-release.tar.bz2 -P /usr/share/festival/voices/english/".split())
+        check_call("tar jxf /usr/share/festival/voices/english/cmu_us_clb_arctic-0.95-release.tar.bz2 -C /usr/share/festival/voices/english/".split())
+        check_call("ln -fs /usr/share/festival/voices/english/cmu_us_clb_arctic /usr/share/festival/voices/english/cmu_us_clb_arctic_clunits".split())
+        check_call("cp /etc/festival.scm /etc/festival.scm.backup".split())
+        check_call("chmod o+w /etc/festival.scm".split())
+        with open("/etc/festival.scm", "a") as myfile:
+            myfile.write("(set! voice_default 'voice_cmu_us_clb_arctic_clunits)")
+        install.run(self)
+
 
 # Get the long description from the README file
 with open(path.join(here, 'README.rst'), encoding='utf-8') as f:
@@ -24,7 +55,7 @@ setup(
 	# Versions should comply with PEP440.  For a discussion on single-sourcing
 	# the version across setup.py and the project code, see
 	# https://packaging.python.org/en/latest/single_source_version.html
-	version='0.9.2',
+	version='0.9.3',
 
 	description='Dragonfire is an open source virtual assistant project for Ubuntu based Linux distributions',
 	long_description=long_description,
@@ -118,4 +149,9 @@ setup(
 			'dragonfire=dragonfire:initiate',
 		],
 	},
+
+	cmdclass={
+        'develop': PostDevelopCommand,
+        'install': PostInstallCommand,
+    }
 )
