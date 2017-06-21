@@ -16,12 +16,10 @@ import os
 from subprocess import check_call
 
 
-here = path.abspath(path.dirname(__file__))
-
 class PostDevelopCommand(develop):
     """Post-installation for development mode."""
     def run(self):
-        check_call("apt-get -y install julius festival festlex-cmu python-xlib portaudio19-dev python-all-dev flac libnotify-bin".split())
+        check_call("apt-get -y install julius festival festlex-cmu python-xlib portaudio19-dev python-all-dev flac libnotify-bin python-egenix-mx-base-dev python-lxml python-nltk python-pyaudio python-httplib2".split())
         check_call("wget -c http://www.speech.cs.cmu.edu/cmu_arctic/packed/cmu_us_clb_arctic-0.95-release.tar.bz2 -P /usr/share/festival/voices/english/".split())
         check_call("tar jxf /usr/share/festival/voices/english/cmu_us_clb_arctic-0.95-release.tar.bz2 -C /usr/share/festival/voices/english/".split())
         check_call("ln -fs /usr/share/festival/voices/english/cmu_us_clb_arctic /usr/share/festival/voices/english/cmu_us_clb_arctic_clunits".split())
@@ -29,12 +27,15 @@ class PostDevelopCommand(develop):
         check_call("chmod o+w /etc/festival.scm".split())
         with open("/etc/festival.scm", "a") as myfile:
             myfile.write("(set! voice_default 'voice_cmu_us_clb_arctic_clunits)")
+        import nltk
+        nltk.download('punkt')
+        nltk.download('averaged_perceptron_tagger')
         develop.run(self)
 
 class PostInstallCommand(install):
     """Post-installation for installation mode."""
     def run(self):
-        check_call("apt-get -y install julius festival festlex-cmu python-xlib portaudio19-dev python-all-dev flac libnotify-bin".split())
+        check_call("apt-get -y install julius festival festlex-cmu python-xlib portaudio19-dev python-all-dev flac libnotify-bin python-egenix-mx-base-dev python-lxml python-nltk python-pyaudio python-httplib2".split())
         check_call("wget -c http://www.speech.cs.cmu.edu/cmu_arctic/packed/cmu_us_clb_arctic-0.95-release.tar.bz2 -P /usr/share/festival/voices/english/".split())
         check_call("tar jxf /usr/share/festival/voices/english/cmu_us_clb_arctic-0.95-release.tar.bz2 -C /usr/share/festival/voices/english/".split())
         check_call("ln -fs /usr/share/festival/voices/english/cmu_us_clb_arctic /usr/share/festival/voices/english/cmu_us_clb_arctic_clunits".split())
@@ -42,8 +43,13 @@ class PostInstallCommand(install):
         check_call("chmod o+w /etc/festival.scm".split())
         with open("/etc/festival.scm", "a") as myfile:
             myfile.write("(set! voice_default 'voice_cmu_us_clb_arctic_clunits)")
+        import nltk
+        nltk.download('punkt')
+        nltk.download('averaged_perceptron_tagger')
         install.run(self)
 
+
+here = path.abspath(path.dirname(__file__))
 
 # Get the long description from the README file
 with open(path.join(here, 'README.rst'), encoding='utf-8') as f:
@@ -111,13 +117,15 @@ setup(
 	# your project is installed. For an analysis of "install_requires" vs pip's
 	# requirements files see:
 	# https://packaging.python.org/en/latest/requirements.html
-	install_requires=['wikipedia','PyUserInput','google-api-python-client','SpeechRecognition','nltk','egenix-mx-base','httplib2>=0.9.1','pyaudio','tinydb','youtube_dl','lxml'],
+	install_requires=['wikipedia','PyUserInput','google-api-python-client','SpeechRecognition','tinydb','youtube_dl'],
 
 	# List additional groups of dependencies here (e.g. development
 	# dependencies). You can install these using the following syntax,
 	# for example:
 	# $ pip install -e .[dev,test]
-	extras_require={},
+	extras_require={
+        'optionals': ['egenix-mx-base','lxml','nltk','pyaudio','httplib2>=0.9.1']
+    },
 
 	# If there are data files included in your packages that need to be
 	# installed, specify them here.  If using Python 2.6 or less, then these
