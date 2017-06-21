@@ -13,14 +13,12 @@ Dragonfire is an open source virtual assistant project for Ubuntu based Linux di
 Dragonfire does following tasks for each separate command, respectively:
 
  - Search across the built-in commands of Dragonfire
- - Try [AIML](http://teach.dragon.computer/gui/jquery/multibot_gui_with_chatlog.php)
+ - Try [Enhanced AIML (Complex Regex Grammar Model)](https://github.com/DragonComputer/Dragonfire/blob/master/dragonfire/learn.py)
  - Ask to [YodaQA](https://github.com/brmson/yodaqa)
 
 <br>
 
-### Version
-
-0.9.2
+Feel free to join [our Gitter chat room](https://gitter.im/DragonComputer/Lobby).
 
 ### Installation
 
@@ -86,9 +84,9 @@ GOODBYE | BYE BYE | SEE YOU LATER
 
 <br>
 
-#### AIML examples
+#### Enhanced AIML examples
 
-[Dragonfire DEVLOG #4 - AIML](https://youtu.be/ujmRtqf2nxQ)
+[Dragonfire DEVLOG #4 - Enhanced AIML](https://youtu.be/ujmRtqf2nxQ)
 
 ```
 _______________________________________________________________
