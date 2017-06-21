@@ -23,7 +23,6 @@ Feel free to join [our Gitter chat room](https://gitter.im/DragonComputer/Lobby)
 ### Installation
 
 ```Shell
-wget https://raw.githubusercontent.com/mertyildiran/Dragonfire/master/install.sh && chmod +x install.sh && sudo ./install.sh
 sudo pip install dragonfire
 ```
 
