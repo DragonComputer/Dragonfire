@@ -28,7 +28,7 @@ import inspect
 #import aiml
 import contextlib
 import cStringIO
-from dragonfire.learn import Aiml
+from dragonfire.learn import Learn
 import uuid
 import string
 import youtube_dl
@@ -39,7 +39,7 @@ DRAGONFIRE_PATH = os.path.dirname(os.path.abspath(inspect.getfile(inspect.curren
 FNULL = open(os.devnull, 'w')
 GENDER_PREFIX = {'male': 'Sir', 'female': 'My Lady'}
 CONVO_ID = uuid.uuid4()
-LEARN = Aiml()
+learn_ = Learn()
 
 def command(speech):
 	#here = os.path.dirname(os.path.realpath(__file__))
@@ -396,7 +396,7 @@ def command(speech):
 			else:
 				tts_kill()
 				#dragonfire_respond = kernel.respond(com)
-				aiml_respond = LEARN.respond(com)
+				aiml_respond = learn_.respond(com)
 				if aiml_respond:
 					userin = Data([" "]," ")
 					userin.say(aiml_respond)

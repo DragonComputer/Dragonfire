@@ -13,7 +13,7 @@ Dragonfire is an open source virtual assistant project for Ubuntu based Linux di
 Dragonfire does following tasks for each separate command, respectively:
 
  - Search across the built-in commands of Dragonfire
- - Try [Enhanced AIML (Complex Regex Grammar Model)](https://github.com/DragonComputer/Dragonfire/blob/master/dragonfire/learn.py)
+ - Try to [Learn using Advanced NLP and Database Management Techniques](https://github.com/DragonComputer/Dragonfire/blob/master/dragonfire/learn.py)
  - Ask to [YodaQA](https://github.com/brmson/yodaqa)
 
 <br>
@@ -83,9 +83,9 @@ GOODBYE | BYE BYE | SEE YOU LATER
 
 <br>
 
-#### Enhanced AIML examples
+#### Learning examples
 
-[Dragonfire DEVLOG #4 - Enhanced AIML](https://youtu.be/ujmRtqf2nxQ)
+[Dragonfire DEVLOG #4 - Learning](https://youtu.be/ujmRtqf2nxQ)
 
 ```
 _______________________________________________________________
@@ -126,12 +126,12 @@ You: WHAT ARE YOU
 Dragonfire: I'M JUST A COMPUTER PROGRAM
 _______________________________________________________________
 
-You: THE ATOMIC NUMBER OF GOLD IS 79
-Dragonfire: OK, I GET IT. THE ATOMIC NUMBER OF GOLD IS 79
+You: FORGET MY AGE
+Dragonfire: OK, I FORGOT EVERYTHING I KNOW ABOUT YOUR AGE
 _______________________________________________________________
 
-You: WHAT IS THE ATOMIC NUMBER OF GOLD
-Dragonfire: THE ATOMIC NUMBER OF GOLD IS 79
+You: UPDATE MY AGE
+Dragonfire: I WASN'T EVEN KNOW ANYTHING ABOUT YOUR AGE
 _______________________________________________________________
 
 ```
