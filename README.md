@@ -14,7 +14,7 @@ Dragonfire does following tasks for each separate command, respectively:
 
  - Search across the built-in commands of Dragonfire
  - Try to [Learn using Advanced NLP and Database Management Techniques](https://github.com/DragonComputer/Dragonfire/blob/master/dragonfire/learn.py)
- - Ask to [YodaQA](https://github.com/brmson/yodaqa)
+ - Ask to [YodaQA](https://github.com/brmson/yodaqa) (This is a [3rd party service](http://live.ailao.eu/) and it's currently unavailable, we are planning to replace it with a native solution soon)
 
 <br>
 
@@ -139,6 +139,8 @@ _______________________________________________________________
 <br>
 
 #### YodaQA examples
+
+(This is a [3rd party service](http://live.ailao.eu/) and it's currently unavailable, we are planning to replace it with a native solution soon)
 
 [Dragonfire DEVLOG #5 - YodaQA ](https://youtu.be/FafUcxC0puM)
 
