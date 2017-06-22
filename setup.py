@@ -27,6 +27,7 @@ class PostDevelopCommand(develop):
         check_call("chmod o+w /etc/festival.scm".split())
         with open("/etc/festival.scm", "a") as myfile:
             myfile.write("(set! voice_default 'voice_cmu_us_clb_arctic_clunits)")
+        check_call("python -m spacy download en".split())
         import nltk
         nltk.download('punkt')
         nltk.download('averaged_perceptron_tagger')
@@ -43,6 +44,7 @@ class PostInstallCommand(install):
         check_call("chmod o+w /etc/festival.scm".split())
         with open("/etc/festival.scm", "a") as myfile:
             myfile.write("(set! voice_default 'voice_cmu_us_clb_arctic_clunits)")
+        check_call("python -m spacy download en".split())
         import nltk
         nltk.download('punkt')
         nltk.download('averaged_perceptron_tagger')
@@ -117,7 +119,7 @@ setup(
 	# your project is installed. For an analysis of "install_requires" vs pip's
 	# requirements files see:
 	# https://packaging.python.org/en/latest/requirements.html
-	install_requires=['wikipedia','PyUserInput','google-api-python-client','SpeechRecognition','tinydb','youtube_dl'],
+	install_requires=['wikipedia','PyUserInput','google-api-python-client','SpeechRecognition','tinydb','youtube_dl','spacy'],
 
 	# List additional groups of dependencies here (e.g. development
 	# dependencies). You can install these using the following syntax,
