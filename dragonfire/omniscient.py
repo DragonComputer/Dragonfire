@@ -12,7 +12,7 @@ class Engine():
                 'WHEN': ['DATE','TIME','EVENT'],
                 'WHERE': ['FACILITY','GPE','LOC']
         }
-        self.coefficient = {'frequency': 0.3, 'precedence': 0.2, 'proximity': 0.5}
+        self.coefficient = {'frequency': 0.3, 'precedence': 0.1, 'proximity': 0.5}
 
     def respond(self,com):
         doc = self.nlp(com.decode('utf-8'))
@@ -65,8 +65,10 @@ class Engine():
             proximity = {}
             subject_indices = []
             for i in range(len(findings)):
-                if findings[i] in subjects:
-                    subject_indices.append(i)
+                for subject in subjects:
+                    for word in subject.split():
+                        if word in findings[i]:
+                            subject_indices.append(i)
             for i in range(len(findings)):
                 for index in subject_indices:
                     inverse_distance = float((len(findings) - 1) - abs(i - index)) / (len(findings) - 1)
@@ -79,7 +81,8 @@ class Engine():
 
             ranked = {}
             for key, value in frequency.iteritems():
-                ranked[key] = value * self.coefficient['frequency'] + precedence[key] * self.coefficient['precedence'] + proximity[key] * self.coefficient['proximity']
+                if key not in query:
+                    ranked[key] = value * self.coefficient['frequency'] + precedence[key] * self.coefficient['precedence'] + proximity[key] * self.coefficient['proximity']
             return sorted(ranked.items(), key=lambda x:x[1])[::-1][:5]
 
 if __name__ == "__main__":
