@@ -6,7 +6,7 @@ import sys
 from lxml import etree
 from dragonfire.utilities import Data
 from dragonfire.nlplib import Classifiers
-from dragonfire.yoda import YodaQA
+from dragonfire.omniscient import Engine
 from subprocess import call, Popen
 import time
 import subprocess
@@ -40,10 +40,10 @@ FNULL = open(os.devnull, 'w')
 GENDER_PREFIX = {'male': 'Sir', 'female': 'My Lady'}
 CONVO_ID = uuid.uuid4()
 learn_ = Learn()
+omniscient_ = Engine()
 
 def command(speech):
 	#here = os.path.dirname(os.path.realpath(__file__))
-	#os.chdir(os.path.expanduser("~/yodaqa/"))
 	#Popen(["./gradlew","web","-q"], stdout=FNULL, stderr=FNULL)
 	#os.chdir(here)
 
@@ -400,11 +400,8 @@ def command(speech):
 				if aiml_respond:
 					userin = Data([" "]," ")
 					userin.say(aiml_respond)
-				#if aiml_respond and "WHAT" not in aiml_respond and "WHERE" not in aiml_respond and "WHO" not in aiml_respond and "WHEN" not in aiml_respond and "WHICH" not in aiml_respond and "HOW" not in aiml_respond:
-				#	userin.say(aiml_respond)
-				#else:
-				#	userin.say("I need to do a brief research on the internet. It may take up to 3 minutes, so please be patient.")
-				#	userin.say(YodaQA.answer("http://qa.ailao.eu", original_com, user_prefix))
+				else:
+					omniscient_.respond(original_com)
 				previous_command = com
 
 			#newest = max(glob.iglob('/tmp/' + str(datetime.date.today().year) + '*.[Ww][Aa][Vv]'), key=os.path.getctime)
