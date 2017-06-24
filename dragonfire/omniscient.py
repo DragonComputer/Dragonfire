@@ -23,7 +23,7 @@ class Engine():
         for np in doc.noun_chunks:
             #print(np.text, np.root.text, np.root.dep_, np.root.head.text)
             #result.append((np.text,np.root.dep_))
-            if np.root.dep_ == 'nsubj' and np.root.tag_ != 'WP':
+            if (np.root.dep_ == 'nsubj' or np.root.dep_ == 'nsubjpass') and np.root.tag_ != 'WP':
                 subjects.append(np.text.encode('utf-8'))
             if np.root.dep_ == 'pobj':
                 objects.append(np.text.encode('utf-8'))
@@ -66,20 +66,20 @@ class Engine():
 
             proximity = {}
             subject_indices = []
-            for i in range(len(findings)):
+            for i in range(len(all_entities)):
                 for subject in subjects:
                     for word in subject.split():
-                        if word in findings[i]:
+                        if word in all_entities[i]:
                             subject_indices.append(i)
-            for i in range(len(findings)):
+            for i in range(len(all_entities)):
                 for index in subject_indices:
-                    inverse_distance = float((len(findings) - 1) - abs(i - index)) / (len(findings) - 1)
-                    if proximity.has_key(findings[i]):
-                        proximity[findings[i]] = (proximity[findings[i]] + inverse_distance) / 2
+                    inverse_distance = float((len(all_entities) - 1) - abs(i - index)) / (len(all_entities) - 1)
+                    if proximity.has_key(all_entities[i]):
+                        proximity[all_entities[i]] = (proximity[all_entities[i]] + inverse_distance) / 2
                     else:
-                        proximity[findings[i]] = inverse_distance
-                if not proximity.has_key(findings[i]):
-                        proximity[findings[i]] = 0
+                        proximity[all_entities[i]] = inverse_distance
+                if not proximity.has_key(all_entities[i]):
+                        proximity[all_entities[i]] = 0
 
             ranked = {}
             for key, value in frequency.iteritems():
