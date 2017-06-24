@@ -1,6 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
+from sys import stdout
 import subprocess
 import time
 import os
@@ -27,12 +28,20 @@ class Data:
 		#if self.speak == True:
 		#	self.say(self.message)
 		#else:
-	def say(self,message):
+	def say(self,message,dynamic=False,end=False):
 		#if songRunning == True:
 		#	subprocess.Popen(["rhythmbox-client","--pause"])
 		if len(message) < 10000:
-			print "Dragonfire: " + message.upper()
-		print "_______________________________________________________________\n"
+			if dynamic:
+				if end:
+					print message.upper()
+					print "_______________________________________________________________\n"
+				else:
+					print "Dragonfire: " + message.upper(),
+					stdout.flush()
+			else:
+				print "Dragonfire: " + message.upper()
+				print "_______________________________________________________________\n"
 		proc = subprocess.Popen(["festival","--tts"], stdin=subprocess.PIPE, stdout=FNULL, stderr=FNULL)
 		message = "".join([i if ord(i) < 128 else ' ' for i in message])
 		proc.stdin.write(message)
