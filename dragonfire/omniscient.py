@@ -43,14 +43,16 @@ class Engine():
             wiki_doc = self.nlp(page.content)
             sentences = [sent.string.strip() for sent in wiki_doc.sents]
             #return [' '.join(subjects),' '.join(objects)]
+            all_entities = []
             findings = []
             for sentence in reversed(sentences):
                 sentence = self.nlp(sentence)
                 for ent in sentence.ents:
+                    all_entities.append(ent.text)
                     for wh in wh_question:
-                        if self.entity_map.has_key(wh):
-                            if ent.label_ in self.entity_map[wh]:
-                                findings.append(ent.text.upper())
+                        if self.entity_map.has_key(wh.upper()):
+                            if ent.label_ in self.entity_map[wh.upper()]:
+                                findings.append(ent.text)
 
             frequency = collections.Counter(findings)
             max_freq = max(frequency.values())
@@ -82,43 +84,43 @@ class Engine():
             ranked = {}
             for key, value in frequency.iteritems():
                 if key not in query:
-                    ranked[key] = value * self.coefficient['frequency'] + precedence[key] * self.coefficient['precedence'] + proximity[key] * self.coefficient['proximity']
+                    ranked[key.upper()] = value * self.coefficient['frequency'] + precedence[key] * self.coefficient['precedence'] + proximity[key] * self.coefficient['proximity']
             return sorted(ranked.items(), key=lambda x:x[1])[::-1][:5]
 
 if __name__ == "__main__":
     EngineObj = Engine()
-    print "WHERE IS THE TIMES SQUARE"
-    print EngineObj.respond("WHERE IS THE TIMES SQUARE")
+    print "Where is the Times Square"
+    print EngineObj.respond("Where is the Times Square")
 
-    print "WHAT IS THE HEIGHT OF BURJ KHALIFA"
-    print EngineObj.respond("WHAT IS THE HEIGHT OF BURJ KHALIFA")
+    print "What is the height of Burj Khalifa"
+    print EngineObj.respond("What is the height of Burj Khalifa")
 
-    print "WHERE IS BURJ KHALIFA"
-    print EngineObj.respond("WHERE IS BURJ KHALIFA")
+    print "Where is Burj Khalifa"
+    print EngineObj.respond("Where is Burj Khalifa")
 
-    print "WHAT IS THE HEIGHT OF GREAT PYRAMID OF GIZA"
-    print EngineObj.respond("WHAT IS THE HEIGHT OF GREAT PYRAMID OF GIZA")
+    print "What is the height of Great Pyramid of Giza"
+    print EngineObj.respond("What is the height of Great Pyramid of Giza")
 
-    print "WHO IS PLAYING JON SNOW IN GAME OF THRONES"
-    print EngineObj.respond("WHO IS PLAYING JON SNOW IN GAME OF THRONES")
+    print "Who is playing Jon Snow in Game of Thrones"
+    print EngineObj.respond("Who is playing Jon Snow in Game of Thrones")
 
-    print "WHAT IS THE ATOMIC NUMBER OF OXYGEN"
-    print EngineObj.respond("WHAT IS THE ATOMIC NUMBER OF OXYGEN")
+    print "What is the atomic number of oxygen"
+    print EngineObj.respond("What is the atomic number of oxygen")
 
-    print "WHAT IS THE POPULATION OF CHINA"
-    print EngineObj.respond("WHAT IS THE POPULATION OF CHINA")
+    print "What is the population of China"
+    print EngineObj.respond("What is the population of China")
 
-    print "WHAT IS THE REAL NAME OF IRON MAN"
-    print EngineObj.respond("WHAT IS THE REAL NAME OF IRON MAN")
+    print "What is the real name of Iron Man"
+    print EngineObj.respond("What is the real name of Iron Man")
 
-    print "WHO IS THE CONQUEROR OF CONSTANTINOPLE"
-    print EngineObj.respond("WHO IS THE CONQUEROR OF CONSTANTINOPLE")
+    print "Who is the conqueror of Constantinople"
+    print EngineObj.respond("Who is the conqueror of Constantinople")
 
-    print "WHEN CONSTANTINOPLE WAS CONQUERED"
-    print EngineObj.respond("WHEN CONSTANTINOPLE WAS CONQUERED")
+    print "When Constantinople was conquered"
+    print EngineObj.respond("When Constantinople was conquered")
 
-    print "WHAT IS THE CAPITAL OF TURKEY"
-    print EngineObj.respond("WHAT IS THE CAPITAL OF TURKEY")
+    print "What is the capital of Turkey"
+    print EngineObj.respond("What is the capital of Turkey")
 
-    print "WHAT IS THE LARGEST CITY OF TURKEY"
-    print EngineObj.respond("WHAT IS THE LARGEST CITY OF TURKEY")
+    print "What is the largest city of Turkey"
+    print EngineObj.respond("What is the largest city of Turkey")
