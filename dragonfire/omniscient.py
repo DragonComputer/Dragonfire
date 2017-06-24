@@ -1,3 +1,4 @@
+from dragonfire.utilities import Data
 import wikipedia
 import spacy
 import collections
@@ -15,6 +16,7 @@ class Engine():
         self.coefficient = {'frequency': 0.3, 'precedence': 0.1, 'proximity': 0.5}
 
     def respond(self,com):
+        userin = Data([" "]," ")
         doc = self.nlp(com.decode('utf-8'))
         query = None
         result = []
@@ -32,9 +34,11 @@ class Engine():
         elif subjects:
             query = ' '.join(subjects)
         else:
-            return "SORRY, I DON'T UNDERSTAND YOUR QUESTION"
+            userin.say("Sorry, I don't understand your question.")
+            return False
 
         if query:
+            userin.say("Please wait...", True, False)
             wh_question = []
             for word in doc:
 				if word.tag_ in ['WDT','WP','WP$','WRB']:
@@ -84,43 +88,63 @@ class Engine():
             ranked = {}
             for key, value in frequency.iteritems():
                 if key not in query:
-                    ranked[key.upper()] = value * self.coefficient['frequency'] + precedence[key] * self.coefficient['precedence'] + proximity[key] * self.coefficient['proximity']
-            return sorted(ranked.items(), key=lambda x:x[1])[::-1][:5]
+                    ranked[key] = value * self.coefficient['frequency'] + precedence[key] * self.coefficient['precedence'] + proximity[key] * self.coefficient['proximity']
+            #print sorted(ranked.items(), key=lambda x:x[1])[::-1][:5]
+            userin.say(sorted(ranked.items(), key=lambda x:x[1])[::-1][0][0], True, True)
+            return True
 
 if __name__ == "__main__":
+    import time
+
     EngineObj = Engine()
-    print "Where is the Times Square"
-    print EngineObj.respond("Where is the Times Square")
+    print "Where is the Times Square\n"
+    EngineObj.respond("Where is the Times Square")
+    time.sleep(2)
 
-    print "What is the height of Burj Khalifa"
-    print EngineObj.respond("What is the height of Burj Khalifa")
+    print "What is the height of Burj Khalifa\n"
+    EngineObj.respond("What is the height of Burj Khalifa")
+    time.sleep(2)
 
-    print "Where is Burj Khalifa"
-    print EngineObj.respond("Where is Burj Khalifa")
+    print "Where is Burj Khalifa\n"
+    EngineObj.respond("Where is Burj Khalifa")
+    time.sleep(2)
 
-    print "What is the height of Great Pyramid of Giza"
-    print EngineObj.respond("What is the height of Great Pyramid of Giza")
+    print "What is the height of Great Pyramid of Giza\n"
+    EngineObj.respond("What is the height of Great Pyramid of Giza")
+    time.sleep(2)
 
-    print "Who is playing Jon Snow in Game of Thrones"
-    print EngineObj.respond("Who is playing Jon Snow in Game of Thrones")
+    print "Who is playing Jon Snow in Game of Thrones\n"
+    EngineObj.respond("Who is playing Jon Snow in Game of Thrones")
+    time.sleep(2)
 
-    print "What is the atomic number of oxygen"
-    print EngineObj.respond("What is the atomic number of oxygen")
+    print "What is the atomic number of oxygen\n"
+    EngineObj.respond("What is the atomic number of oxygen")
+    time.sleep(2)
 
-    print "What is the population of China"
-    print EngineObj.respond("What is the population of China")
+    print "What is the population of China\n"
+    EngineObj.respond("What is the population of China")
+    time.sleep(2)
 
-    print "What is the real name of Iron Man"
-    print EngineObj.respond("What is the real name of Iron Man")
+    print "What is the official language of Japan\n"
+    EngineObj.respond("What is the official language of Japan")
+    time.sleep(2)
 
-    print "Who is the conqueror of Constantinople"
-    print EngineObj.respond("Who is the conqueror of Constantinople")
+    print "What is the real name of Iron Man\n"
+    EngineObj.respond("What is the real name of Iron Man")
+    time.sleep(2)
 
-    print "When Constantinople was conquered"
-    print EngineObj.respond("When Constantinople was conquered")
+    print "Who is the conqueror of Constantinople\n"
+    EngineObj.respond("Who is the conqueror of Constantinople")
+    time.sleep(2)
 
-    print "What is the capital of Turkey"
-    print EngineObj.respond("What is the capital of Turkey")
+    print "When Constantinople was conquered\n"
+    EngineObj.respond("When Constantinople was conquered")
+    time.sleep(2)
 
-    print "What is the largest city of Turkey"
-    print EngineObj.respond("What is the largest city of Turkey")
+    print "What is the capital of Turkey\n"
+    EngineObj.respond("What is the capital of Turkey")
+    time.sleep(2)
+
+    print "What is the largest city of Turkey\n"
+    EngineObj.respond("What is the largest city of Turkey")
+    time.sleep(2)
