@@ -4,29 +4,7 @@
 import sys
 import contextlib
 import cStringIO
-
-@contextlib.contextmanager
-def nostdout():
-	save_stdout = sys.stdout
-	sys.stdout = cStringIO.StringIO()
-	yield
-	sys.stdout = save_stdout
-
-@contextlib.contextmanager
-def nostderr():
-	save_stderr = sys.stderr
-	sys.stderr = cStringIO.StringIO()
-	yield
-	sys.stderr = save_stderr
-
 import nltk
-with nostdout():
-	with nostderr():
-		try:
-			nltk.download("names")
-			nltk.download("brown")
-		except:
-			pass
 from nltk.corpus import names
 from nltk.corpus import brown
 import random

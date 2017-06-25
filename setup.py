@@ -29,8 +29,9 @@ class PostDevelopCommand(develop):
             myfile.write("(set! voice_default 'voice_cmu_us_clb_arctic_clunits)")
         check_call("python -m spacy download en".split())
         import nltk
-        nltk.download('punkt')
-        nltk.download('averaged_perceptron_tagger')
+        nltk.download("names")
+        nltk.download("brown")
+        nltk.download('wordnet')
         develop.run(self)
 
 class PostInstallCommand(install):
@@ -46,8 +47,9 @@ class PostInstallCommand(install):
             myfile.write("(set! voice_default 'voice_cmu_us_clb_arctic_clunits)")
         check_call("python -m spacy download en".split())
         import nltk
-        nltk.download('punkt')
-        nltk.download('averaged_perceptron_tagger')
+        nltk.download("names")
+        nltk.download("brown")
+        nltk.download('wordnet')
         install.run(self)
 
 
