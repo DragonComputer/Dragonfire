@@ -2,6 +2,7 @@ from dragonfire.utilities import Data
 import wikipedia
 import spacy
 import collections
+from nltk.corpus import wordnet as wn
 
 class Engine():
 
@@ -9,7 +10,7 @@ class Engine():
         self.nlp = spacy.load('en')
         self.entity_map = {
                 'WHO': ['PERSON'],
-                'WHAT': ['NORP','FACILITY','ORG','GPE','LOC','PRODUCT','EVENT','WORK_OF_ART','LANGUAGE','DATE','TIME','PERCENT','MONEY','QUANTITY','ORDINAL','CARDINAL'],
+                'WHAT': ['PERSON','NORP','FACILITY','ORG','GPE','LOC','PRODUCT','EVENT','WORK_OF_ART','LANGUAGE','DATE','TIME','PERCENT','MONEY','QUANTITY','ORDINAL','CARDINAL'],
                 'WHEN': ['DATE','TIME','EVENT'],
                 'WHERE': ['FACILITY','GPE','LOC']
         }
@@ -55,7 +56,11 @@ class Engine():
                     all_entities.append(ent.text)
                     for wh in wh_question:
                         if self.entity_map.has_key(wh.upper()):
-                            if ent.label_ in self.entity_map[wh.upper()]:
+                            target_entities = self.entity_map[wh.upper()]
+                            if wh.upper() == 'WHAT':
+                                target_entities = []
+                                target_entities.append(self.wordnet_entity_determiner(' '.join(subjects)))
+                            if ent.label_ in target_entities:
                                 findings.append(ent.text)
 
             frequency = collections.Counter(findings)
@@ -93,10 +98,34 @@ class Engine():
             userin.say(sorted(ranked.items(), key=lambda x:x[1])[::-1][0][0], True, True)
             return True
 
+    def wordnet_entity_determiner(self,subject):
+        entity_list = ['person','politics','facility','organization','country','location','product','event','art','language','date','time','percent','money','quantity','ordinal','cardinal']
+        entity_list_map = {'person':'PERSON', 'politics':'NORP', 'facility':'FACILITY', 'organization':'ORG',
+                           'country':'GPE', 'location':'LOC', 'product':'PRODUCT', 'event':'EVENT',
+                           'art':'WORK_OF_ART', 'language':'LANGUAGE', 'date':'DATE', 'time':'TIME',
+                           'percent':'PERCENT', 'money':'MONEY', 'quantity':'QUANTITY', 'ordinal': 'ORDINAL', 'cardinal': 'CARDINAL'}
+        doc = self.nlp(subject.decode('utf-8'))
+        subject = []
+        for word in doc:
+            #if word.pos_ not in ['PUNCT','SYM','X','CONJ','DET','ADP','SPACE']:
+            if word.pos_ == 'NOUN':
+                subject.append(word.text.lower())
+        entity_scores = {}
+        for entity in entity_list:
+            entity_scores[entity] = 0
+            entity_wn = wn.synset(entity + '.n.01')
+            for word in subject:
+                word_wn = wn.synset(word + '.n.01')
+                entity_scores[entity] += word_wn.path_similarity(entity_wn)
+        return entity_list_map[sorted(entity_scores.items(), key=lambda x:x[1])[::-1][0][0]]
+
+
+
 if __name__ == "__main__":
     import time
 
     EngineObj = Engine()
+    #print EngineObj.wordnet_entity_determiner('the largest city')
     print "Where is the Times Square\n"
     EngineObj.respond("Where is the Times Square")
     time.sleep(2)
