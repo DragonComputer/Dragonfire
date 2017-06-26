@@ -14,18 +14,16 @@ class Engine():
                 'WHEN': ['DATE','TIME','EVENT'],
                 'WHERE': ['FACILITY','GPE','LOC']
         }
-        self.coefficient = {'frequency': 0.6, 'precedence': 0.6, 'proximity': 0.5}
+        self.coefficient = {'frequency': 0.35, 'precedence': 0.35, 'proximity': 0.30}
 
     def respond(self,com,tts_output=False):
         userin = Data([" "]," ")
         doc = self.nlp(com.decode('utf-8'))
         query = None
-        result = []
         subjects = []
         objects = []
         for np in doc.noun_chunks:
             #print(np.text, np.root.text, np.root.dep_, np.root.head.text)
-            #result.append((np.text,np.root.dep_))
             if (np.root.dep_ == 'nsubj' or np.root.dep_ == 'nsubjpass') and np.root.tag_ != 'WP':
                 subjects.append(np.text.encode('utf-8'))
             if np.root.dep_ == 'pobj':
@@ -35,6 +33,7 @@ class Engine():
         elif subjects:
             query = ' '.join(subjects)
         else:
+            if not tts_output: print "Sorry, I don't understand the subject of your question."
             if tts_output: userin.say("Sorry, I don't understand the subject of your question.")
             return False
 
@@ -50,9 +49,9 @@ class Engine():
             #return [' '.join(subjects),' '.join(objects)]
             all_entities = []
             findings = []
-            subject_entity_by_wordnet = None
+            subject_entities_by_wordnet = None
             if 'WHAT' in wh_question:
-                subject_entity_by_wordnet = self.wordnet_entity_determiner(' '.join(subjects),tts_output)
+                subject_entities_by_wordnet = self.wordnet_entity_determiner(' '.join(subjects),tts_output)
             for sentence in reversed(sentences):
                 sentence = self.nlp(sentence)
                 for ent in sentence.ents:
@@ -62,7 +61,8 @@ class Engine():
                             target_entities = self.entity_map[wh.upper()]
                             if wh.upper() == 'WHAT':
                                 target_entities = []
-                                target_entities.append(subject_entity_by_wordnet)
+                                for subject_entity_by_wordnet in subject_entities_by_wordnet:
+                                    target_entities.append(subject_entity_by_wordnet)
                             if ent.label_ in target_entities:
                                 findings.append(ent.text)
 
@@ -102,7 +102,8 @@ class Engine():
                 if tts_output: userin.say(sorted(ranked.items(), key=lambda x:x[1])[::-1][0][0], True, True)
                 return True
             else:
-                if tts_output: userin.say("Sorry, I couldn't find anything worthy to answer your question.")
+                if not tts_output: print "Sorry, I couldn't find anything worthy to answer your question."
+                if tts_output: userin.say("Sorry, I couldn't find anything worthy to answer your question.", True, True)
                 return False
 
     def wordnet_entity_determiner(self,subject,tts_output):
@@ -110,9 +111,9 @@ class Engine():
         entity_samples_map = {
                 'PERSON': ['person','character','human','individual','name'],
                 'NORP': ['nationality','religion','politics'],
-                'FACILITY': ['building','airport','highway','bridge'],
+                'FACILITY': ['building','airport','highway','bridge','port'],
                 'ORG': ['company','agency','institution'],
-                'GPE': ['country','city','state','address'],
+                'GPE': ['country','city','state','address','capital'],
                 'LOC': ['geography','mountain','ocean','river'],
                 'PRODUCT': ['product','object','vehicle','food'],
                 'EVENT': ['hurricane','battle','war','sport'],
@@ -142,63 +143,71 @@ class Engine():
                     entity_scores[entity] += word_wn.path_similarity(sample_wn)
             entity_scores[entity] = entity_scores[entity] / len(samples)
         if not tts_output: print sorted(entity_scores.items(), key=lambda x:x[1])[::-1][:3]
-        return sorted(entity_scores.items(), key=lambda x:x[1])[::-1][0][0]
+        result = sorted(entity_scores.items(), key=lambda x:x[1])[::-1][0][0]
+        if result == 'FACILITY': return [result,'ORG']
+        return [result]
 
 
 
 if __name__ == "__main__":
-    import time
-
     EngineObj = Engine()
 
+    # New York City
     print "\nWhere is the Times Square"
     EngineObj.respond("Where is the Times Square")
-    time.sleep(2)
 
+    # 2,720 ft - QUANTITY
     print "\nWhat is the height of Burj Khalifa"
     EngineObj.respond("What is the height of Burj Khalifa")
-    time.sleep(2)
 
+    # Dubai
     print "\nWhere is Burj Khalifa"
     EngineObj.respond("Where is Burj Khalifa")
-    time.sleep(2)
 
+    # 481 feet - QUANTITY
     print "\nWhat is the height of Great Pyramid of Giza"
     EngineObj.respond("What is the height of Great Pyramid of Giza")
-    time.sleep(2)
 
+    # Kit Harington
     print "\nWho is playing Jon Snow in Game of Thrones"
     EngineObj.respond("Who is playing Jon Snow in Game of Thrones")
-    time.sleep(2)
 
+    # 8 - CARDINAL
     print "\nWhat is the atomic number of oxygen"
     EngineObj.respond("What is the atomic number of oxygen")
-    time.sleep(2)
 
+    # 1.371 billion - QUANTITY
     print "\nWhat is the population of China"
     EngineObj.respond("What is the population of China")
-    time.sleep(2)
 
+    # Japanese - LANGUAGE
     print "\nWhat is the official language of Japan"
     EngineObj.respond("What is the official language of Japan")
-    time.sleep(2)
 
+    # Stark - PERSON
     print "\nWhat is the real name of Iron Man"
     EngineObj.respond("What is the real name of Iron Man")
-    time.sleep(2)
 
+    # Mehmed The Conqueror
     print "\nWho is the conqueror of Constantinople"
     EngineObj.respond("Who is the conqueror of Constantinople")
-    time.sleep(2)
 
+    # 1453
     print "\nWhen Constantinople was conquered"
     EngineObj.respond("When Constantinople was conquered")
-    time.sleep(2)
 
+    # Ankara - GPE
     print "\nWhat is the capital of Turkey"
     EngineObj.respond("What is the capital of Turkey")
-    time.sleep(2)
 
+    # Istanbul - GPE
     print "\nWhat is the largest city of Turkey"
     EngineObj.respond("What is the largest city of Turkey")
-    time.sleep(2)
+
+    # Hinduism - NORP
+    print "\nWhat is the oldest religion"
+    EngineObj.respond("What is the oldest religion")
+
+    # Hartsfield Jackson Atlanta International Airport - FACILITY
+    print "\nWhat is the world's busiest airport"
+    EngineObj.respond("What is the world's busiest airport")
