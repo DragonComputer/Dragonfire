@@ -401,7 +401,7 @@ def command(speech):
 					userin = Data([" "]," ")
 					userin.say(aiml_respond)
 				else:
-					omniscient_.respond(original_com)
+					omniscient_.respond(original_com,True)
 				previous_command = com
 
 			#newest = max(glob.iglob('/tmp/' + str(datetime.date.today().year) + '*.[Ww][Aa][Vv]'), key=os.path.getctime)
