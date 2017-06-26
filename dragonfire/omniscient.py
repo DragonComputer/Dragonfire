@@ -16,7 +16,7 @@ class Engine():
         }
         self.coefficient = {'frequency': 0.6, 'precedence': 0.6, 'proximity': 0.5}
 
-    def respond(self,com):
+    def respond(self,com,tts_output=False):
         userin = Data([" "]," ")
         doc = self.nlp(com.decode('utf-8'))
         query = None
@@ -35,22 +35,24 @@ class Engine():
         elif subjects:
             query = ' '.join(subjects)
         else:
-            userin.say("Sorry, I don't understand your question.")
+            if tts_output: userin.say("Sorry, I don't understand the subject of your question.")
             return False
 
         if query:
-            userin.say("Please wait...", True, False)
+            if tts_output: userin.say("Please wait...", True, False)
             wh_question = []
             for word in doc:
 				if word.tag_ in ['WDT','WP','WP$','WRB']:
-					wh_question.append(word.text)
+					wh_question.append(word.text.upper())
             page = wikipedia.page(wikipedia.search(query)[0])
             wiki_doc = self.nlp(page.content)
             sentences = [sent.string.strip() for sent in wiki_doc.sents]
             #return [' '.join(subjects),' '.join(objects)]
             all_entities = []
             findings = []
-            subject_entity_by_wordnet = self.wordnet_entity_determiner(' '.join(subjects))
+            subject_entity_by_wordnet = None
+            if 'WHAT' in wh_question:
+                subject_entity_by_wordnet = self.wordnet_entity_determiner(' '.join(subjects),tts_output)
             for sentence in reversed(sentences):
                 sentence = self.nlp(sentence)
                 for ent in sentence.ents:
@@ -64,42 +66,46 @@ class Engine():
                             if ent.label_ in target_entities:
                                 findings.append(ent.text)
 
-            frequency = collections.Counter(findings)
-            max_freq = max(frequency.values())
-            for key, value in frequency.iteritems():
-                frequency[key] = float(value) / max_freq
+            if findings:
+                frequency = collections.Counter(findings)
+                max_freq = max(frequency.values())
+                for key, value in frequency.iteritems():
+                    frequency[key] = float(value) / max_freq
 
-            precedence = {}
-            unique = list(set(findings))
-            for i in range(len(unique)):
-                precedence[unique[i]] = float(len(unique) - i) / len(unique)
+                precedence = {}
+                unique = list(set(findings))
+                for i in range(len(unique)):
+                    precedence[unique[i]] = float(len(unique) - i) / len(unique)
 
-            proximity = {}
-            subject_indices = []
-            for i in range(len(all_entities)):
-                for subject in subjects:
-                    for word in subject.split():
-                        if word in all_entities[i]:
-                            subject_indices.append(i)
-            for i in range(len(all_entities)):
-                for index in subject_indices:
-                    inverse_distance = float((len(all_entities) - 1) - abs(i - index)) / (len(all_entities) - 1)
-                    if proximity.has_key(all_entities[i]):
-                        proximity[all_entities[i]] = (proximity[all_entities[i]] + inverse_distance) / 2
-                    else:
-                        proximity[all_entities[i]] = inverse_distance
-                if not proximity.has_key(all_entities[i]):
-                        proximity[all_entities[i]] = 0
+                proximity = {}
+                subject_indices = []
+                for i in range(len(all_entities)):
+                    for subject in subjects:
+                        for word in subject.split():
+                            if word in all_entities[i]:
+                                subject_indices.append(i)
+                for i in range(len(all_entities)):
+                    for index in subject_indices:
+                        inverse_distance = float((len(all_entities) - 1) - abs(i - index)) / (len(all_entities) - 1)
+                        if proximity.has_key(all_entities[i]):
+                            proximity[all_entities[i]] = (proximity[all_entities[i]] + inverse_distance) / 2
+                        else:
+                            proximity[all_entities[i]] = inverse_distance
+                    if not proximity.has_key(all_entities[i]):
+                            proximity[all_entities[i]] = 0
 
-            ranked = {}
-            for key, value in frequency.iteritems():
-                if key not in query:
-                    ranked[key] = value * self.coefficient['frequency'] + precedence[key] * self.coefficient['precedence'] + proximity[key] * self.coefficient['proximity']
-            #print sorted(ranked.items(), key=lambda x:x[1])[::-1][:5]
-            userin.say(sorted(ranked.items(), key=lambda x:x[1])[::-1][0][0], True, True)
-            return True
+                ranked = {}
+                for key, value in frequency.iteritems():
+                    if key not in query:
+                        ranked[key] = value * self.coefficient['frequency'] + precedence[key] * self.coefficient['precedence'] + proximity[key] * self.coefficient['proximity']
+                if not tts_output: print sorted(ranked.items(), key=lambda x:x[1])[::-1][:5]
+                if tts_output: userin.say(sorted(ranked.items(), key=lambda x:x[1])[::-1][0][0], True, True)
+                return True
+            else:
+                if tts_output: userin.say("Sorry, I couldn't find anything worthy to answer your question.")
+                return False
 
-    def wordnet_entity_determiner(self,subject):
+    def wordnet_entity_determiner(self,subject,tts_output):
         #print '\n'+subject
         entity_samples_map = {
                 'PERSON': ['person','character','human','individual','name'],
@@ -133,9 +139,9 @@ class Engine():
                 sample_wn = wn.synset(sample + '.n.01')
                 for word in subject:
                     word_wn = wn.synset(word + '.n.01')
-                    entity_scores[entity] += word_wn.lch_similarity(sample_wn)
+                    entity_scores[entity] += word_wn.path_similarity(sample_wn)
             entity_scores[entity] = entity_scores[entity] / len(samples)
-        #print sorted(entity_scores.items(), key=lambda x:x[1])[::-1][:3]
+        if not tts_output: print sorted(entity_scores.items(), key=lambda x:x[1])[::-1][:3]
         return sorted(entity_scores.items(), key=lambda x:x[1])[::-1][0][0]
 
 
@@ -145,54 +151,54 @@ if __name__ == "__main__":
 
     EngineObj = Engine()
 
-    print "Where is the Times Square\n"
+    print "\nWhere is the Times Square"
     EngineObj.respond("Where is the Times Square")
     time.sleep(2)
 
-    print "What is the height of Burj Khalifa\n"
+    print "\nWhat is the height of Burj Khalifa"
     EngineObj.respond("What is the height of Burj Khalifa")
     time.sleep(2)
 
-    print "Where is Burj Khalifa\n"
+    print "\nWhere is Burj Khalifa"
     EngineObj.respond("Where is Burj Khalifa")
     time.sleep(2)
 
-    print "What is the height of Great Pyramid of Giza\n"
+    print "\nWhat is the height of Great Pyramid of Giza"
     EngineObj.respond("What is the height of Great Pyramid of Giza")
     time.sleep(2)
 
-    print "Who is playing Jon Snow in Game of Thrones\n"
+    print "\nWho is playing Jon Snow in Game of Thrones"
     EngineObj.respond("Who is playing Jon Snow in Game of Thrones")
     time.sleep(2)
 
-    print "What is the atomic number of oxygen\n"
+    print "\nWhat is the atomic number of oxygen"
     EngineObj.respond("What is the atomic number of oxygen")
     time.sleep(2)
 
-    print "What is the population of China\n"
+    print "\nWhat is the population of China"
     EngineObj.respond("What is the population of China")
     time.sleep(2)
 
-    print "What is the official language of Japan\n"
+    print "\nWhat is the official language of Japan"
     EngineObj.respond("What is the official language of Japan")
     time.sleep(2)
 
-    print "What is the real name of Iron Man\n"
+    print "\nWhat is the real name of Iron Man"
     EngineObj.respond("What is the real name of Iron Man")
     time.sleep(2)
 
-    print "Who is the conqueror of Constantinople\n"
+    print "\nWho is the conqueror of Constantinople"
     EngineObj.respond("Who is the conqueror of Constantinople")
     time.sleep(2)
 
-    print "When Constantinople was conquered\n"
+    print "\nWhen Constantinople was conquered"
     EngineObj.respond("When Constantinople was conquered")
     time.sleep(2)
 
-    print "What is the capital of Turkey\n"
+    print "\nWhat is the capital of Turkey"
     EngineObj.respond("What is the capital of Turkey")
     time.sleep(2)
 
-    print "What is the largest city of Turkey\n"
+    print "\nWhat is the largest city of Turkey"
     EngineObj.respond("What is the largest city of Turkey")
     time.sleep(2)
