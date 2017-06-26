@@ -3,6 +3,7 @@ import wikipedia
 import spacy
 import collections
 from nltk.corpus import wordnet as wn
+import random
 
 class Engine():
 
@@ -100,7 +101,7 @@ class Engine():
                         ranked[key] = value * self.coefficient['frequency'] + precedence[key] * self.coefficient['precedence'] + proximity[key] * self.coefficient['proximity']
                 if not tts_output: print sorted(ranked.items(), key=lambda x:x[1])[::-1][:5]
                 if tts_output: userin.say(sorted(ranked.items(), key=lambda x:x[1])[::-1][0][0], True, True)
-                return True
+                return sorted(ranked.items(), key=lambda x:x[1])[::-1][0][0]
             else:
                 if not tts_output: print "Sorry, I couldn't find anything worthy to answer your question."
                 if tts_output: userin.say("Sorry, I couldn't find anything worthy to answer your question.", True, True)
@@ -147,67 +148,88 @@ class Engine():
         if result == 'FACILITY': return [result,'ORG']
         return [result]
 
+    def randomize_coefficients(self):
+        coeff1 = round(random.uniform(0.00, 0.99),2)
+        coeff2 = round(random.uniform(0.00, (1 - coeff1)),2)
+        coeff3 = (1 - coeff1) - coeff2
+        self.coefficient = {'frequency': coeff1, 'precedence': coeff2, 'proximity': coeff3}
 
 
 if __name__ == "__main__":
+
     EngineObj = Engine()
+    best_score = 0
+    best_coefficient = None
+    for i in range(1000):
+        print "Counter: " + str(i)
+        score = 0
+        EngineObj.randomize_coefficients()
+        print EngineObj.coefficient
 
-    # New York City
-    print "\nWhere is the Times Square"
-    EngineObj.respond("Where is the Times Square")
+        # New York City
+        print "\nWhere is the Times Square"
+        if EngineObj.respond("Where is the Times Square") == "New York City": score += 1
 
-    # 2,720 ft - QUANTITY
-    print "\nWhat is the height of Burj Khalifa"
-    EngineObj.respond("What is the height of Burj Khalifa")
+        # 2,720 ft - QUANTITY
+        print "\nWhat is the height of Burj Khalifa"
+        if EngineObj.respond("What is the height of Burj Khalifa") == "2,720 ft": score += 1
 
-    # Dubai
-    print "\nWhere is Burj Khalifa"
-    EngineObj.respond("Where is Burj Khalifa")
+        # Dubai
+        print "\nWhere is Burj Khalifa"
+        if EngineObj.respond("Where is Burj Khalifa") == "Dubai": score += 1
 
-    # 481 feet - QUANTITY
-    print "\nWhat is the height of Great Pyramid of Giza"
-    EngineObj.respond("What is the height of Great Pyramid of Giza")
+        # 481 feet - QUANTITY
+        print "\nWhat is the height of Great Pyramid of Giza"
+        if EngineObj.respond("What is the height of Great Pyramid of Giza") == "(481 feet": score += 1
 
-    # Kit Harington
-    print "\nWho is playing Jon Snow in Game of Thrones"
-    EngineObj.respond("Who is playing Jon Snow in Game of Thrones")
+        # Kit Harington
+        print "\nWho is playing Jon Snow in Game of Thrones"
+        if EngineObj.respond("Who is playing Jon Snow in Game of Thrones") == "Kit Harington": score += 1
 
-    # 8 - CARDINAL
-    print "\nWhat is the atomic number of oxygen"
-    EngineObj.respond("What is the atomic number of oxygen")
+        # 8 - CARDINAL
+        print "\nWhat is the atomic number of oxygen"
+        if EngineObj.respond("What is the atomic number of oxygen") == "8": score += 1
 
-    # 1.371 billion - QUANTITY
-    print "\nWhat is the population of China"
-    EngineObj.respond("What is the population of China")
+        # 1.371 billion - QUANTITY
+        print "\nWhat is the population of China"
+        if EngineObj.respond("What is the population of China") == "1.371 billion": score += 1
 
-    # Japanese - LANGUAGE
-    print "\nWhat is the official language of Japan"
-    EngineObj.respond("What is the official language of Japan")
+        # Japanese - LANGUAGE
+        print "\nWhat is the official language of Japan"
+        if EngineObj.respond("What is the official language of Japan") == "Japanese": score += 1
 
-    # Stark - PERSON
-    print "\nWhat is the real name of Iron Man"
-    EngineObj.respond("What is the real name of Iron Man")
+        # Stark - PERSON
+        print "\nWhat is the real name of Iron Man"
+        if EngineObj.respond("What is the real name of Iron Man") == "Stark": score += 1
 
-    # Mehmed The Conqueror
-    print "\nWho is the conqueror of Constantinople"
-    EngineObj.respond("Who is the conqueror of Constantinople")
+        # Mehmed The Conqueror
+        print "\nWho is the conqueror of Constantinople"
+        if EngineObj.respond("Who is the conqueror of Constantinople") == "Mehmed The Conqueror": score += 1
 
-    # 1453
-    print "\nWhen Constantinople was conquered"
-    EngineObj.respond("When Constantinople was conquered")
+        # 1453
+        print "\nWhen Constantinople was conquered"
+        if EngineObj.respond("When Constantinople was conquered") == "1453": score += 1
 
-    # Ankara - GPE
-    print "\nWhat is the capital of Turkey"
-    EngineObj.respond("What is the capital of Turkey")
+        # Ankara - GPE
+        print "\nWhat is the capital of Turkey"
+        if EngineObj.respond("What is the capital of Turkey") == "Ankara": score += 1
 
-    # Istanbul - GPE
-    print "\nWhat is the largest city of Turkey"
-    EngineObj.respond("What is the largest city of Turkey")
+        # Istanbul - GPE
+        print "\nWhat is the largest city of Turkey"
+        if EngineObj.respond("What is the largest city of Turkey") == "Istanbul": score += 1
 
-    # Hinduism - NORP
-    print "\nWhat is the oldest religion"
-    EngineObj.respond("What is the oldest religion")
+        # Hinduism - NORP
+        print "\nWhat is the oldest religion"
+        if EngineObj.respond("What is the oldest religion") == "Hinduism": score += 1
 
-    # Hartsfield Jackson Atlanta International Airport - FACILITY
-    print "\nWhat is the world's busiest airport"
-    EngineObj.respond("What is the world's busiest airport")
+        # Hartsfield Jackson Atlanta International Airport - FACILITY
+        print "\nWhat is the world's busiest airport"
+        if EngineObj.respond("What is the world's busiest airport") == "Hartsfield Jackson Atlanta International Airport": score += 1
+
+        if score > best_score:
+            print "\n--- !!! NEW BEST !!! ---"
+            best_score = score
+            best_coefficient = EngineObj.coefficient
+            print best_score
+            print best_coefficient
+            print "--- !!! NEW BEST !!! ---\n"
