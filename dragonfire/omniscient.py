@@ -14,7 +14,7 @@ class Engine():
                 'WHEN': ['DATE','TIME','EVENT'],
                 'WHERE': ['FACILITY','GPE','LOC']
         }
-        self.coefficient = {'frequency': 0.3, 'precedence': 0.1, 'proximity': 0.5}
+        self.coefficient = {'frequency': 0.6, 'precedence': 0.6, 'proximity': 0.5}
 
     def respond(self,com):
         userin = Data([" "]," ")
@@ -50,6 +50,7 @@ class Engine():
             #return [' '.join(subjects),' '.join(objects)]
             all_entities = []
             findings = []
+            subject_entity_by_wordnet = self.wordnet_entity_determiner(' '.join(subjects))
             for sentence in reversed(sentences):
                 sentence = self.nlp(sentence)
                 for ent in sentence.ents:
@@ -59,7 +60,7 @@ class Engine():
                             target_entities = self.entity_map[wh.upper()]
                             if wh.upper() == 'WHAT':
                                 target_entities = []
-                                target_entities.append(self.wordnet_entity_determiner(' '.join(subjects)))
+                                target_entities.append(subject_entity_by_wordnet)
                             if ent.label_ in target_entities:
                                 findings.append(ent.text)
 
@@ -99,11 +100,26 @@ class Engine():
             return True
 
     def wordnet_entity_determiner(self,subject):
-        entity_list = ['person','politics','facility','organization','country','location','product','event','art','language','date','time','percent','money','quantity','ordinal','cardinal']
-        entity_list_map = {'person':'PERSON', 'politics':'NORP', 'facility':'FACILITY', 'organization':'ORG',
-                           'country':'GPE', 'location':'LOC', 'product':'PRODUCT', 'event':'EVENT',
-                           'art':'WORK_OF_ART', 'language':'LANGUAGE', 'date':'DATE', 'time':'TIME',
-                           'percent':'PERCENT', 'money':'MONEY', 'quantity':'QUANTITY', 'ordinal': 'ORDINAL', 'cardinal': 'CARDINAL'}
+        #print '\n'+subject
+        entity_samples_map = {
+                'PERSON': ['person','character','human','individual','name'],
+                'NORP': ['nationality','religion','politics'],
+                'FACILITY': ['building','airport','highway','bridge'],
+                'ORG': ['company','agency','institution'],
+                'GPE': ['country','city','state','address'],
+                'LOC': ['geography','mountain','ocean','river'],
+                'PRODUCT': ['product','object','vehicle','food'],
+                'EVENT': ['hurricane','battle','war','sport'],
+                'WORK_OF_ART': ['art','book','song','painting'],
+                'LANGUAGE': ['language','accent','dialect','speech'],
+                'DATE': ['year','month','day'],
+                'TIME': ['time','hour','minute'],
+                'PERCENT': ['percent','rate','ratio','fee'],
+                'MONEY': ['money','cash','salary','wealth'],
+                'QUANTITY': ['measurement','amount','distance','height','population'],
+                'ORDINAL': ['ordinal','first','second','third'],
+                'CARDINAL': ['cardinal','number','amount','mathematics']
+        }
         doc = self.nlp(subject.decode('utf-8'))
         subject = []
         for word in doc:
@@ -111,13 +127,16 @@ class Engine():
             if word.pos_ == 'NOUN':
                 subject.append(word.text.lower())
         entity_scores = {}
-        for entity in entity_list:
+        for entity, samples in entity_samples_map.iteritems():
             entity_scores[entity] = 0
-            entity_wn = wn.synset(entity + '.n.01')
-            for word in subject:
-                word_wn = wn.synset(word + '.n.01')
-                entity_scores[entity] += word_wn.path_similarity(entity_wn)
-        return entity_list_map[sorted(entity_scores.items(), key=lambda x:x[1])[::-1][0][0]]
+            for sample in samples:
+                sample_wn = wn.synset(sample + '.n.01')
+                for word in subject:
+                    word_wn = wn.synset(word + '.n.01')
+                    entity_scores[entity] += word_wn.lch_similarity(sample_wn)
+            entity_scores[entity] = entity_scores[entity] / len(samples)
+        #print sorted(entity_scores.items(), key=lambda x:x[1])[::-1][:3]
+        return sorted(entity_scores.items(), key=lambda x:x[1])[::-1][0][0]
 
 
 
@@ -125,7 +144,7 @@ if __name__ == "__main__":
     import time
 
     EngineObj = Engine()
-    #print EngineObj.wordnet_entity_determiner('the largest city')
+
     print "Where is the Times Square\n"
     EngineObj.respond("Where is the Times Square")
     time.sleep(2)
