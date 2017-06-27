@@ -10,9 +10,9 @@ Dragonfire is an open source virtual assistant project for Ubuntu based Linux di
 
 <br>
 
-Dragonfire does following tasks for each separate command, respectively:
+Dragonfire goes through these steps for your commands, respectively:
 
- - Search across the built-in commands of Dragonfire
+ - Search across the built-in commands
  - Try to [Learn using Advanced NLP and Database Management Techniques](https://github.com/DragonComputer/Dragonfire/blob/master/dragonfire/learn.py)
  - Ask to [Omniscient Q&A Engine](https://github.com/DragonComputer/Dragonfire/blob/master/dragonfire/omniscient.py) (Thanks to all people who contributed to magnificent [spaCy](https://github.com/explosion/spaCy) project and [Wikipedia](https://en.wikipedia.org/), the free encyclopedia for this feature)
 
@@ -22,13 +22,14 @@ Feel free to join [our Gitter chat room](https://gitter.im/DragonComputer/Lobby)
 
 #### Supported Environments
 
-|                      |                                   |
-|----------------------|-----------------------------------|
-| **Operating system** | Linux                             |
-| **Python version**   | CPython 2.7. Only 64 bit.         |
-| **Distro**           | KDE neon, elementary OS, Ubuntu   |
-| **Package managers** | APT, pip                          |
-|                      |                                   |
+|                       |                                   |
+|-----------------------|-----------------------------------|
+| **Operating systems** | Linux                             |
+| **Python versions**   | CPython 2.7. Only 64 bit.         |
+| **Distros**           | KDE neon, elementary OS, Ubuntu   |
+| **Package managers**  | APT, pip                          |
+| **Languages**         | English                           |
+|                       |                                   |
 
 ### Installation
 
