@@ -143,7 +143,7 @@ class Engine():
                 return False
 
     def wordnet_entity_determiner(self,subject,tts_output):
-        print subject
+        #print subject
         entity_samples_map = {
                 'PERSON': ['person','character','human','individual','name'],
                 'NORP': ['nationality','religion','politics'],
