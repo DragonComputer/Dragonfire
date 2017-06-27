@@ -67,36 +67,40 @@ class Engine():
             for word in doc:
 				if word.tag_ in ['WDT','WP','WP$','WRB']:
 					wh_question.append(word.text.upper())
-            page = wikipedia.page(wikipedia.search(query)[0])
-            wiki_doc = self.nlp(page.content)
-            sentences = [sent.string.strip() for sent in wiki_doc.sents]
-            #return [' '.join(subjects),' '.join(pobjects)]
-            all_entities = []
             findings = []
-            mention = {}
-            subject_entities_by_wordnet = None
-            if 'WHAT' in wh_question:
-                subject_entities_by_wordnet = self.wordnet_entity_determiner(subject_with_objects,tts_output)
-            for sentence in reversed(sentences):
-                sentence = self.nlp(sentence)
-                for ent in sentence.ents:
-                    all_entities.append(ent.text)
-                    for wh in wh_question:
-                        if self.entity_map.has_key(wh.upper()):
-                            target_entities = self.entity_map[wh.upper()]
-                            if wh.upper() == 'WHAT':
-                                target_entities = []
-                                for subject_entity_by_wordnet in subject_entities_by_wordnet:
-                                    target_entities.append(subject_entity_by_wordnet)
-                            if ent.label_ in target_entities:
-                                findings.append(ent.text)
-                                if focus:
-                                    if focus in sentence.text:
-                                        mention[ent.text] = 1.0 #* sentence.text.count(focus)
+            nth_page = 0
+            while not findings:
+                page = wikipedia.page(wikipedia.search(query)[nth_page])
+                nth_page += 1
+                if nth_page > 5: break
+                wiki_doc = self.nlp(page.content)
+                sentences = [sent.string.strip() for sent in wiki_doc.sents]
+                #return [' '.join(subjects),' '.join(pobjects)]
+                all_entities = []
+                mention = {}
+                subject_entities_by_wordnet = None
+                if 'WHAT' in wh_question:
+                    subject_entities_by_wordnet = self.wordnet_entity_determiner(subject_with_objects,tts_output)
+                for sentence in reversed(sentences):
+                    sentence = self.nlp(sentence)
+                    for ent in sentence.ents:
+                        all_entities.append(ent.text)
+                        for wh in wh_question:
+                            if self.entity_map.has_key(wh.upper()):
+                                target_entities = self.entity_map[wh.upper()]
+                                if wh.upper() == 'WHAT':
+                                    target_entities = []
+                                    for subject_entity_by_wordnet in subject_entities_by_wordnet:
+                                        target_entities.append(subject_entity_by_wordnet)
+                                if ent.label_ in target_entities:
+                                    findings.append(ent.text)
+                                    if focus:
+                                        if focus in sentence.text:
+                                            mention[ent.text] = 1.0 #* sentence.text.count(focus)
+                                        else:
+                                            mention[ent.text] = 0.0
                                     else:
                                         mention[ent.text] = 0.0
-                                else:
-                                    mention[ent.text] = 0.0
 
             if findings:
                 frequency = collections.Counter(findings)
@@ -177,6 +181,7 @@ class Engine():
         if not tts_output: print sorted(entity_scores.items(), key=lambda x:x[1])[::-1][:3]
         result = sorted(entity_scores.items(), key=lambda x:x[1])[::-1][0][0]
         if result == 'FACILITY': return [result,'ORG']
+        if result == 'PRODUCT': return [result,'ORG']
         return [result]
 
     def randomize_coefficients(self):
