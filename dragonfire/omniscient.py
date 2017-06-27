@@ -36,6 +36,8 @@ class Engine():
             query = ' '.join(pobjects)
         elif subjects:
             query = ' '.join(subjects)
+        elif dobjects:
+            query = ' '.join(dobjects)
         else:
             if not tts_output: print "Sorry, I don't understand the subject of your question."
             if tts_output: userin.say("Sorry, I don't understand the subject of your question.")
@@ -48,6 +50,16 @@ class Engine():
             focus = self.phrase_cleaner(' '.join(subjects))
         elif pobjects:
             focus = self.phrase_cleaner(' '.join(pobjects))
+        if focus in query: focus = None
+
+        subject_with_objects = []
+        for dobject in dobjects:
+            subject_with_objects.append(dobject)
+        for subject in subjects:
+            subject_with_objects.append(subject)
+        for pobject in pobjects:
+            subject_with_objects.append(pobject)
+        subject_with_objects = ' '.join(subject_with_objects)
 
         if query:
             if tts_output: userin.say("Please wait...", True, False)
@@ -64,7 +76,7 @@ class Engine():
             mention = {}
             subject_entities_by_wordnet = None
             if 'WHAT' in wh_question:
-                subject_entities_by_wordnet = self.wordnet_entity_determiner(' '.join(subjects),tts_output)
+                subject_entities_by_wordnet = self.wordnet_entity_determiner(subject_with_objects,tts_output)
             for sentence in reversed(sentences):
                 sentence = self.nlp(sentence)
                 for ent in sentence.ents:
@@ -127,12 +139,12 @@ class Engine():
                 return False
 
     def wordnet_entity_determiner(self,subject,tts_output):
-        #print '\n'+subject
+        print subject
         entity_samples_map = {
                 'PERSON': ['person','character','human','individual','name'],
                 'NORP': ['nationality','religion','politics'],
                 'FACILITY': ['building','airport','highway','bridge','port'],
-                'ORG': ['company','agency','institution'],
+                'ORG': ['company','agency','institution','university'],
                 'GPE': ['country','city','state','address','capital'],
                 'LOC': ['geography','mountain','ocean','river'],
                 'PRODUCT': ['product','object','vehicle','food'],
@@ -253,10 +265,30 @@ if __name__ == "__main__":
         print "\nWhat is the world's busiest airport"
         if EngineObj.respond("What is the world's busiest airport") == "Hartsfield Jackson Atlanta International Airport": score += 1
 
+        # Princeton University - ORG
+        print "\nWhat is the name of the world's best university"
+        if EngineObj.respond("What is the name of the world's best university") == "Princeton University": score += 1
+
+        # Nile river - LOC
+        print "\nWhat is the name of the world's longest river"
+        if EngineObj.respond("What is the name of the world's longest river") == "Nile river": score += 1
+
+        # Rolls-Royce - PRODUCT
+        print "\nWhat is the brand of the world's most expensive car"
+        if EngineObj.respond("What is the brand of the world's most expensive car") == "Rolls-Royce": score += 1
+
+        # World War II - EVENT
+        print "\nWhat is the bloodiest war in human history"
+        if EngineObj.respond("What is the bloodiest war in human history") == "World War II": score += 1
+
+        # Da Vinci Code - WORK_OF_ART
+        print "\nWhat is the name of the best seller book"
+        if EngineObj.respond("What is the name of the best seller book") == "Da Vinci Code": score += 1
+
         if score > best_score:
             print "\n--- !!! NEW BEST !!! ---"
             best_score = score
             best_coefficient = EngineObj.coefficient
-            print best_score
+            print str(best_score) + ' / 20'
             print best_coefficient
             print "--- !!! NEW BEST !!! ---\n"
