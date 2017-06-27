@@ -14,11 +14,21 @@ Dragonfire does following tasks for each separate command, respectively:
 
  - Search across the built-in commands of Dragonfire
  - Try to [Learn using Advanced NLP and Database Management Techniques](https://github.com/DragonComputer/Dragonfire/blob/master/dragonfire/learn.py)
- - Ask to [YodaQA](https://github.com/brmson/yodaqa) (This is a [3rd party service](http://live.ailao.eu/) and it's currently unavailable, we are planning to replace it with a native solution soon)
+ - Ask to [Omniscient Q&A Engine](https://github.com/DragonComputer/Dragonfire/blob/master/dragonfire/omniscient.py) (Thanks to all people who contributed to magnificent [spaCy](https://github.com/explosion/spaCy) project and [Wikipedia](https://en.wikipedia.org/), the free encyclopedia for this feature)
 
 <br>
 
 Feel free to join [our Gitter chat room](https://gitter.im/DragonComputer/Lobby).
+
+#### Supported Environments
+
+|                      |                                   |
+|----------------------|-----------------------------------|
+| **Operating system** | Linux                             |
+| **Python version**   | CPython 2.7. Only 64 bit.         |
+| **Distro**           | KDE neon, elementary OS, Ubuntu   |
+| **Package managers** | APT, pip                          |
+|                      |                                   |
 
 ### Installation
 
@@ -57,20 +67,12 @@ WHAT IS YOUR NAME
 WHAT IS YOUR GENDER
 FILE MANAGER | OPEN FILES
 WEB BROWSER
-OPEN BLENDER
 PHOTOSHOP | PHOTO EDITOR
 INKSCAPE | VECTOR GRAPHICS
 VIDEO EDITOR
-OPEN CAMERA
-OPEN CALENDAR
-OPEN CALCULATOR
-OPEN STEAM
+OPEN [CAMERA, CALENDAR, CALCULATOR, STEAM, BLENDER, WRITER, MATH, IMPRESS, DRAW]
 SOFTWARE CENTER
 OFFICE SUITE
-OPEN WRITER
-OPEN MATH
-OPEN IMPRESS
-OPEN DRAW
 KEYBOARD *
 ENTER | NEW TAB | SWITCH TAB | CLOSE | GO BACK | GO FORWARD
 SCROLL LEFT | SCROLL RIGHT | SCROLL UP | SCROLL DOWN
@@ -87,198 +89,52 @@ GOODBYE | BYE BYE | SEE YOU LATER
 
 [Dragonfire DEVLOG #4 - Learning](https://youtu.be/ujmRtqf2nxQ)
 
-```
-_______________________________________________________________
-
-You: THE SUN IS HOT
-Dragonfire: OK, I GET IT. THE SUN IS HOT
-_______________________________________________________________
-
-You: THE SUN IS YELLOW
-Dragonfire: OK, I GET IT. THE SUN IS YELLOW
-_______________________________________________________________
-
-You: DESCRIBE THE SUN
-Dragonfire: THE SUN IS HOT AND YELLOW
-_______________________________________________________________
-
-You: MY AGE IS 25
-Dragonfire: OK, I GET IT. YOUR AGE IS 25
-_______________________________________________________________
-
-You: WHAT IS MY AGE
-Dragonfire: YOUR AGE IS 25
-_______________________________________________________________
-
-You: MY PLACE OF BIRTH IS TURKEY
-Dragonfire: OK, I GET IT. YOUR PLACE OF BIRTH IS TURKEY
-_______________________________________________________________
-
-You: WHERE IS MY PLACE OF BIRTH
-Dragonfire: YOUR PLACE OF BIRTH IS TURKEY
-_______________________________________________________________
-
-You: YOU ARE JUST A COMPUTER PROGRAM
-Dragonfire: OK, I GET IT. I'M JUST A COMPUTER PROGRAM
-_______________________________________________________________
-
-You: WHAT ARE YOU
-Dragonfire: I'M JUST A COMPUTER PROGRAM
-_______________________________________________________________
-
-You: FORGET MY AGE
-Dragonfire: OK, I FORGOT EVERYTHING I KNOW ABOUT YOUR AGE
-_______________________________________________________________
-
-You: UPDATE MY AGE
-Dragonfire: I WASN'T EVEN KNOW ANYTHING ABOUT YOUR AGE
-_______________________________________________________________
-
-```
+|                                                               |                                                                  |
+|---------------------------------------------------------------|------------------------------------------------------------------|
+| **You:** `THE SUN IS HOT`                                     | **You:** `WHERE IS MY PLACE OF BIRTH`                            |
+| **Dragonfire:** `OK, I GET IT. THE SUN IS HOT`                | **Dragonfire:** `YOUR PLACE OF BIRTH IS TURKEY`                  |
+| **You:** `THE SUN IS YELLOW`                                  | **You:** `YOU ARE JUST A COMPUTER PROGRAM`                       |
+| **Dragonfire:** `OK, I GET IT. THE SUN IS YELLOW`             | **Dragonfire:** `OK, I GET IT. I'M JUST A COMPUTER PROGRAM`      |
+| **You:** `DESCRIBE THE SUN`                                   | **You:** `WHAT ARE YOU`                                          |
+| **Dragonfire:** `THE SUN IS HOT AND YELLOW`                   | **Dragonfire:** `I'M JUST A COMPUTER PROGRAM`                    |
+| **You:** `MY AGE IS 25`                                       | **You:** `FORGET MY AGE`                                         |
+| **Dragonfire:** `OK, I GET IT. YOUR AGE IS 25`                | **Dragonfire:** `OK, I FORGOT EVERYTHING I KNOW ABOUT YOUR AGE`  |
+| **You:** `WHAT IS MY AGE`                                     | **You:** `UPDATE MY AGE`                                         |
+| **Dragonfire:** `YOUR AGE IS 25`                              | **Dragonfire:** `I WASN'T EVEN KNOW ANYTHING ABOUT YOUR AGE`     |
+| **You:** `MY PLACE OF BIRTH IS TURKEY`                        |                                                                  |
+| **Dragonfire:** `OK, I GET IT. YOUR PLACE OF BIRTH IS TURKEY` |                                                                  |
+|                                                               |                                                                  |
 
 <br>
 
-#### YodaQA examples
+#### Omniscient Q&A Engine examples
 
-(This is a [3rd party service](http://live.ailao.eu/) and it's currently unavailable, we are planning to replace it with a native solution soon)
+[Dragonfire DEVLOG #5 - YodaQA](https://youtu.be/FafUcxC0puM) (Old video - YodaQA is deprecated)
 
-[Dragonfire DEVLOG #5 - YodaQA ](https://youtu.be/FafUcxC0puM)
-
-```
-_______________________________________________________________
-
-You: WHERE IS THE TIMES SQUARE
-Dragonfire: I NEED TO DO A BRIEF RESEARCH ON THE INTERNET. IT MAY TAKE UP TO 3 MINUTES, SO PLEASE BE PATIENT.
-_______________________________________________________________
-
-|█████                                                       |
-
-Dragonfire: NEW YORK CITY
-_______________________________________________________________
-
-You: WHAT IS THE HEIGHT OF BURJ KHALIFA
-Dragonfire: I NEED TO DO A BRIEF RESEARCH ON THE INTERNET. IT MAY TAKE UP TO 3 MINUTES, SO PLEASE BE PATIENT.
-_______________________________________________________________
-
-|███████                                                     |
-
-Dragonfire: 829.8
-_______________________________________________________________
-
-You: WHERE IS BURJ KHALIFA
-Dragonfire: I NEED TO DO A BRIEF RESEARCH ON THE INTERNET. IT MAY TAKE UP TO 3 MINUTES, SO PLEASE BE PATIENT.
-_______________________________________________________________
-
-|███████                                                     |
-
-Dragonfire: DUBAI
-_______________________________________________________________
-
-You: WHAT IS THE HEIGHT OF GREAT PYRAMID OF GIZA
-Dragonfire: I NEED TO DO A BRIEF RESEARCH ON THE INTERNET. IT MAY TAKE UP TO 3 MINUTES, SO PLEASE BE PATIENT.
-_______________________________________________________________
-
-|███████                                                     |
-
-Dragonfire: 138.8
-_______________________________________________________________
-
-You: WHO IS PLAYING JON SNOW IN GAME OF THRONES
-Dragonfire: I NEED TO DO A BRIEF RESEARCH ON THE INTERNET. IT MAY TAKE UP TO 3 MINUTES, SO PLEASE BE PATIENT.
-_______________________________________________________________
-
-|███████████                                                 |
-
-Dragonfire: KIT HARINGTON
-_______________________________________________________________
-
-You: WHAT IS THE ATOMIC NUMBER OF OXYGEN
-Dragonfire: I NEED TO DO A BRIEF RESEARCH ON THE INTERNET. IT MAY TAKE UP TO 3 MINUTES, SO PLEASE BE PATIENT.
-_______________________________________________________________
-
-|███████                                                     |
-
-Dragonfire: 8
-_______________________________________________________________
-
-You: WHAT IS THE POPULATION OF CHINA
-Dragonfire: I NEED TO DO A BRIEF RESEARCH ON THE INTERNET. IT MAY TAKE UP TO 3 MINUTES, SO PLEASE BE PATIENT.
-_______________________________________________________________
-
-|████                                                        |
-
-Dragonfire: ALMOST A QUARTER OF WORLD POPULATION
-_______________________________________________________________
-
-You: WHAT IS THE OFFICIAL LANGUAGE OF JAPAN
-Dragonfire: I NEED TO DO A BRIEF RESEARCH ON THE INTERNET. IT MAY TAKE UP TO 3 MINUTES, SO PLEASE BE PATIENT.
-_______________________________________________________________
-
-|█████████                                                   |
-
-Dragonfire: JAPANESE LANGUAGE
-_______________________________________________________________
-
-You: WHAT IS THE REAL NAME OF IRON MAN
-Dragonfire: I NEED TO DO A BRIEF RESEARCH ON THE INTERNET. IT MAY TAKE UP TO 3 MINUTES, SO PLEASE BE PATIENT.
-_______________________________________________________________
-
-|███████████████                                             |
-
-Dragonfire: TONY STARK
-_______________________________________________________________
-
-You: WHO IS THE CONQUEROR OF CONSTANTINOPLE
-Dragonfire: I NEED TO DO A BRIEF RESEARCH ON THE INTERNET. IT MAY TAKE UP TO 3 MINUTES, SO PLEASE BE PATIENT.
-_______________________________________________________________
-
-|████████                                                    |
-
-Dragonfire: MEHMED THE CONQUEROR
-_______________________________________________________________
-
-You: WHEN CONSTANTINOPLE WAS CONQUERED
-Dragonfire: I NEED TO DO A BRIEF RESEARCH ON THE INTERNET. IT MAY TAKE UP TO 3 MINUTES, SO PLEASE BE PATIENT.
-_______________________________________________________________
-
-|███████                                                     |
-
-Dragonfire: 1453
-_______________________________________________________________
-
-You: WHAT IS THE CAPITAL OF TURKEY
-Dragonfire: I NEED TO DO A BRIEF RESEARCH ON THE INTERNET. IT MAY TAKE UP TO 3 MINUTES, SO PLEASE BE PATIENT.
-_______________________________________________________________
-
-|██████                                                      |
-
-Dragonfire: ANKARA
-_______________________________________________________________
-
-You: WHAT IS THE LARGEST CITY OF TURKEY
-Dragonfire: I NEED TO DO A BRIEF RESEARCH ON THE INTERNET. IT MAY TAKE UP TO 3 MINUTES, SO PLEASE BE PATIENT.
-_______________________________________________________________
-
-|███████████                                                 |
-
-Dragonfire: ISTANBUL
-_______________________________________________________________
-
-```
+|                                                                   |                                                                         |
+|-------------------------------------------------------------------|-------------------------------------------------------------------------|
+| **You:** `WHERE IS THE TIMES SQUARE`                              | **You:** `WHEN WAS CONSTANTINOPLE CONQUERED`                            |
+| **Dragonfire:** `PLEASE WAIT... NEW YORK CITY` :white_check_mark: | **Dragonfire:** `PLEASE WAIT... THE 5TH CENTURY` :no_entry:             |
+| **You:** `WHAT IS THE HEIGHT OF BURJ KHALIFA`                     | **You:** `WHAT IS THE CAPITAL OF TURKEY`                                |
+| **Dragonfire:** `PLEASE WAIT... 1,680 FT` :no_entry:              | **Dragonfire:** `PLEASE WAIT... ROME` :no_entry:                        |
+| **You:** `WHERE IS BURJ KHALIFA`                                  | **You:** `WHAT IS THE LARGEST CITY OF TURKEY`                           |
+| **Dragonfire:** `PLEASE WAIT... DUBAI` :white_check_mark:         | **Dragonfire:** `PLEASE WAIT... ISTANBUL` :white_check_mark:            |
+| **You:** `WHAT IS THE HEIGHT OF GREAT PYRAMID OF GIZA`            | **You:** `WHAT IS THE OLDEST RELIGION`                                  |
+| **Dragonfire:** `PLEASE WAIT... (481 FEET` :white_check_mark:     | **Dragonfire:** `PLEASE WAIT... GERMAN` :no_entry:                      |
+| **You:** `WHO IS PLAYING JON SNOW IN GAME OF THRONES`             | **You:** `WHAT IS THE WORLD'S BUSIEST AIRPORT`                          |
+| **Dragonfire:** `PLEASE WAIT... NED` :no_entry:                   | **Dragonfire:** `PLEASE WAIT... THE AIRPORTS COUNCIL INTERNATIONAL`     |
+| **You:** `WHAT IS THE ATOMIC NUMBER OF OXYGEN`                    | **You:** `WHAT IS THE NAME OF THE WORLD'S BEST UNIVERSITY`              |
+| **Dragonfire:** `PLEASE WAIT... 8` :white_check_mark:             | **Dragonfire:** `PLEASE WAIT... U.S. NEWS` :no_entry:                   |
+| **You:** `WHAT IS THE POPULATION OF CHINA`                        | **You:** `WHAT IS THE NAME OF THE WORLD'S LONGEST RIVER`                |
+| **Dragonfire:** `PLEASE WAIT... 66,537,177` :no_entry:            | **Dragonfire:** `PLEASE WAIT... THE NORTH SEA` :no_entry:               |
+| **You:** `WHAT IS THE OFFICIAL LANGUAGE OF JAPAN`                 | **You:** `WHAT IS THE BRAND OF THE WORLD'S MOST EXPENSIVE CAR`          |
+| **Dragonfire:** `PLEASE WAIT... JAPANESE` :white_check_mark:      | **Dragonfire:** `PLEASE WAIT... MERCEDES-BENZ` :no_entry:               |
+| **You:** `WHAT IS THE REAL NAME OF IRON MAN`                      | **You:** `WHAT IS THE BLOODIEST WAR IN HUMAN HISTORY`                   |
+| **Dragonfire:** `PLEASE WAIT... STARK` :white_check_mark:         | **Dragonfire:** `PLEASE WAIT... THE "EUROPEAN AGE"` :no_entry:          |
+| **You:** `WHO IS THE CONQUEROR OF CONSTANTINOPLE`                 | **You:** `WHAT IS THE NAME OF THE BEST SELLER BOOK`                     |
+| **Dragonfire:** `PLEASE WAIT... HAGIA SOPHIA` :no_entry:          | **Dragonfire** `PLEASE WAIT... THE "CHILDREN'S BEST SELLERS` :no_entry: |
+|                                                                   |                                                                         |
 
 <br>
 
-#### Supported Distributions
-
- - KDE neon
- - elementary OS
- - Ubuntu
-
-All modern releases (Ubuntu 12.04 LTS and above) of these distributions are fully supported. Any other Ubuntu based distributions are partially supported.
-
-#### For generating .dict and .dfa files from .grammer and .voca files(for developers only), use:
-
-```Shell
-cd Dragonfire/dragonfire/
-mkdfa sample
-```
+**Supported Distributions:** KDE neon, elementary OS and Ubuntu. All modern releases (Ubuntu 12.04 LTS and above) of these distributions are fully supported. Any other Ubuntu based distributions are partially supported.
