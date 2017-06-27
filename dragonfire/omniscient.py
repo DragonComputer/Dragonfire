@@ -15,28 +15,39 @@ class Engine():
                 'WHEN': ['DATE','TIME','EVENT'],
                 'WHERE': ['FACILITY','GPE','LOC']
         }
-        self.coefficient = {'frequency': 0.35, 'precedence': 0.35, 'proximity': 0.30}
+        self.coefficient = {'frequency': 0.27, 'precedence': 0.27, 'proximity': 0.23, 'mention': 0.23}
 
     def respond(self,com,tts_output=False):
         userin = Data([" "]," ")
         doc = self.nlp(com.decode('utf-8'))
         query = None
         subjects = []
-        objects = []
+        pobjects = []
+        dobjects = []
         for np in doc.noun_chunks:
             #print(np.text, np.root.text, np.root.dep_, np.root.head.text)
             if (np.root.dep_ == 'nsubj' or np.root.dep_ == 'nsubjpass') and np.root.tag_ != 'WP':
                 subjects.append(np.text.encode('utf-8'))
             if np.root.dep_ == 'pobj':
-                objects.append(np.text.encode('utf-8'))
-        if objects:
-            query = ' '.join(objects)
+                pobjects.append(np.text.encode('utf-8'))
+            if np.root.dep_ == 'dobj':
+                dobjects.append(np.text.encode('utf-8'))
+        if pobjects:
+            query = ' '.join(pobjects)
         elif subjects:
             query = ' '.join(subjects)
         else:
             if not tts_output: print "Sorry, I don't understand the subject of your question."
             if tts_output: userin.say("Sorry, I don't understand the subject of your question.")
             return False
+
+        focus = None
+        if dobjects:
+            focus = self.phrase_cleaner(' '.join(dobjects))
+        elif subjects:
+            focus = self.phrase_cleaner(' '.join(subjects))
+        elif pobjects:
+            focus = self.phrase_cleaner(' '.join(pobjects))
 
         if query:
             if tts_output: userin.say("Please wait...", True, False)
@@ -47,9 +58,10 @@ class Engine():
             page = wikipedia.page(wikipedia.search(query)[0])
             wiki_doc = self.nlp(page.content)
             sentences = [sent.string.strip() for sent in wiki_doc.sents]
-            #return [' '.join(subjects),' '.join(objects)]
+            #return [' '.join(subjects),' '.join(pobjects)]
             all_entities = []
             findings = []
+            mention = {}
             subject_entities_by_wordnet = None
             if 'WHAT' in wh_question:
                 subject_entities_by_wordnet = self.wordnet_entity_determiner(' '.join(subjects),tts_output)
@@ -66,6 +78,13 @@ class Engine():
                                     target_entities.append(subject_entity_by_wordnet)
                             if ent.label_ in target_entities:
                                 findings.append(ent.text)
+                                if focus:
+                                    if focus in sentence.text:
+                                        mention[ent.text] = 1.0 #* sentence.text.count(focus)
+                                    else:
+                                        mention[ent.text] = 0.0
+                                else:
+                                    mention[ent.text] = 0.0
 
             if findings:
                 frequency = collections.Counter(findings)
@@ -98,7 +117,7 @@ class Engine():
                 ranked = {}
                 for key, value in frequency.iteritems():
                     if key not in query:
-                        ranked[key] = value * self.coefficient['frequency'] + precedence[key] * self.coefficient['precedence'] + proximity[key] * self.coefficient['proximity']
+                        ranked[key] = value * self.coefficient['frequency'] + precedence[key] * self.coefficient['precedence'] + proximity[key] * self.coefficient['proximity'] + mention[key] * self.coefficient['mention']
                 if not tts_output: print sorted(ranked.items(), key=lambda x:x[1])[::-1][:5]
                 if tts_output: userin.say(sorted(ranked.items(), key=lambda x:x[1])[::-1][0][0], True, True)
                 return sorted(ranked.items(), key=lambda x:x[1])[::-1][0][0]
@@ -149,10 +168,18 @@ class Engine():
         return [result]
 
     def randomize_coefficients(self):
-        coeff1 = round(random.uniform(0.00, 0.99),2)
+        coeff1 = round(random.uniform(0.00, 0.98),2)
         coeff2 = round(random.uniform(0.00, (1 - coeff1)),2)
-        coeff3 = (1 - coeff1) - coeff2
-        self.coefficient = {'frequency': coeff1, 'precedence': coeff2, 'proximity': coeff3}
+        coeff3 = round(random.uniform(0.00, (1 - (coeff1 + coeff2))),2)
+        coeff4 = 1 - (coeff1 + coeff2 + coeff3)
+        self.coefficient = {'frequency': coeff1, 'precedence': coeff2, 'proximity': coeff3, 'mention': coeff4}
+
+    def phrase_cleaner(self,phrase):
+        clean_phrase = []
+        for word in self.nlp(phrase.decode('utf-8')):
+            if word.pos_ not in ['PUNCT','SYM','X','CONJ','DET','ADP','SPACE']:
+                clean_phrase.append(word.text)
+        return ' '.join(clean_phrase)
 
 
 if __name__ == "__main__":
@@ -160,10 +187,10 @@ if __name__ == "__main__":
     EngineObj = Engine()
     best_score = 0
     best_coefficient = None
-    for i in range(1000):
+    for i in range(1):
         print "Counter: " + str(i)
         score = 0
-        EngineObj.randomize_coefficients()
+        #EngineObj.randomize_coefficients()
         print EngineObj.coefficient
 
         # New York City
