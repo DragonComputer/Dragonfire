@@ -8,8 +8,6 @@ The following is a set of guidelines for contributing to Dragonfire an open sour
 
 - [Code of Conduct](#code-of-conduct)
 
-- [I don't want to read this whole thing, I just have a question!!!](#i-dont-want-to-read-this-whole-thing-i-just-have-a-question)
-
 - [Getting Started](#getting-started)
   - [Fork The Repo](#fork-the-repo)
     - [Step 1: Set Up Git](#step-1-set-up-git)
@@ -27,7 +25,12 @@ The following is a set of guidelines for contributing to Dragonfire an open sour
     - [Suggesting Enhancements](#suggesting-enhancements)
     - [Projects](#projects)
     - [Your First Code Contribution](#your-first-code-contribution)
-  - [Push & Pull](#push-and-pull)
+  - [Push & Pull](#push--pull)
+    - [Step 1: Go to the local clone of your fork](#step-1-go-to-the-local-clone-of-your-fork)
+    - [Step 2: Pull the Latest Changes](#step-2-pull-the-latest-changes)
+    - [Step 3: Write Your Code](#step-3-write-your-code)
+    - [Step 4: Push To Your Fork](#step-4-push-to-your-fork)
+    - [Step 5: Creating a Pull Request](#step-5-creating-a-pull-request)
 
 - [Styleguides](#styleguides)
   - [Git Commit Messages](#git-commit-messages)
@@ -39,7 +42,7 @@ The following is a set of guidelines for contributing to Dragonfire an open sour
 
 This project and everyone participating in it is governed by the [Dragonfire's Code of Conduct](CODE_OF_CONDUCT.md). By participating, you are expected to uphold this code. Please report unacceptable behavior to [mert.yildiran@bil.omu.edu.tr](mailto:mert.yildiran@bil.omu.edu.tr).
 
-### I don't want to read this whole thing I just have a question!!!
+#### I don't want to read this whole thing I just have a question!!!
 
 > **Note:** Please don't file an issue to ask a question. You'll get faster results by using the resources below.
 
@@ -94,11 +97,11 @@ git clone https://github.com/YOUR-USERNAME/Dragonfire.git
 ```
 git clone https://github.com/YOUR-USERNAME/Dragonfire.git
 Cloning into 'Dragonfire'...
-remote: Counting objects: 1069, done.
-remote: Compressing objects: 100% (3/3), done.
-remote: Total 1069 (delta 0), reused 2 (delta 0), pack-reused 1066
-Receiving objects: 100% (1069/1069), 13.84 MiB | 70.00 KiB/s, done.
-Resolving deltas: 100% (593/593), done.
+remote: Counting objects: 1076, done.
+remote: Compressing objects: 100% (6/6), done.
+remote: Total 1076 (delta 4), reused 9 (delta 4), pack-reused 1066
+Receiving objects: 100% (1076/1076), 13.85 MiB | 1.62 MiB/s, done.
+Resolving deltas: 100% (597/597), done.
 Checking connectivity... done.
 ```
 
@@ -126,7 +129,7 @@ Post-installation script consists of the [these lines](https://github.com/Dragon
 
 Try to experience every command listed in [README.md](https://github.com/DragonComputer/Dragonfire#built-in-commands). Please watch [this playlist](https://www.youtube.com/playlist?list=PLwnH1TEQvAWddw8iTwCJ333fwygL2-tWD) if you do not understand how to use Dragonfire.
 
-If you face with a problem while installing or using Dragonfire then please take a look to [Troubleshooting](#troubleshooting) section for cases that fitting to you situation. Our [chat room on Gitter](https://gitter.im/DragonComputer/Lobby) is also a viable option for support requests.
+If you face with a problem while installing or using Dragonfire then please take a look to the [Troubleshooting](#troubleshooting) section for cases that fitting to you situation. Our [chat room on Gitter](https://gitter.im/DragonComputer/Lobby) is also a viable option for support requests.
 
 #### Missing Software Packages (Optional)
 
