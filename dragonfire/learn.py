@@ -18,18 +18,19 @@ class Learn():
 		self.replacements["I WAS"] = "YOU WERE"
 		self.replacements["I "] = "YOU "
 		self.replacements["MY"] = "YOUR"
+		self.replacements["MYSELF"] = "YOURSELF"
 		home = expanduser("~")
 		self.db = TinyDB(home + '/.dragonfire_db.json')
 		self.nlp = spacy.load('en')
 
 	def respond(self,com):
-		forget = "^(?:FORGET|UPDATE) (?:ABOUT )?(?P<subject>.*)"
+		forget = "^(?:FORGET|UPDATE) (?:EVERYTHING YOU KNOW ABOUT |ABOUT )?(?P<subject>.*)"
 		capture = re.search(forget, com)
 		if capture:
-			if self.db.remove(Query().subject == capture.group('subject')):
-				return "OK, I FORGOT EVERYTHING I KNOW ABOUT " + self.mirror(capture.group('subject').upper())
+			if self.db.remove(Query().subject == self.pronoun_fixer(capture.group('subject'))):
+				return "OK, I FORGOT EVERYTHING I KNOW ABOUT " + self.mirror(capture.group('subject'))
 			else:
-				return "I WASN'T EVEN KNOW ANYTHING ABOUT " + self.mirror(capture.group('subject').upper())
+				return "I WASN'T EVEN KNOW ANYTHING ABOUT " + self.mirror(capture.group('subject'))
 
 		define = "(?:PLEASE )?(?:DEFINE|EXPLAIN|TELL ME ABOUT|DESCRIBE) (?P<subject>.*)"
 		capture = re.search(define, com)
@@ -106,13 +107,16 @@ class Learn():
 		answer = answer.upper()
 		for key,value in self.replacements.iteritems():
 			if key in answer:
-				answer = answer.replace(key,value)
-				return answer
+				return answer.replace(key,value)
 		for value,key in self.replacements.iteritems():
 			if key in answer:
-				answer = answer.replace(key,value)
-				return answer
+				return answer.replace(key,value)
 		return answer
+
+	def pronoun_fixer(self,subject):
+		subject = subject.upper()
+		if 'YOURSELF' in subject:
+			return subject.replace('YOURSELF','YOU')
 
 def noanswer(user_prefix):
 	words_dragonfire = {
@@ -137,7 +141,11 @@ def nostderr():
 	sys.stderr = save_stderr
 
 if __name__ == "__main__":
-	AimlObj = Aiml()
-	print AimlObj.respond("THE SUN IS HOT")
-	print AimlObj.respond("THE SUN IS YELLOW")
-	print AimlObj.respond("WHAT IS THE SUN")
+	learn_ = Learn()
+	print learn_.respond("THE SUN IS HOT")
+	print learn_.respond("THE SUN IS YELLOW")
+	print learn_.respond("WHAT IS THE SUN")
+
+	print learn_.respond("YOU ARE JUST A COMPUTER PROGRAM")
+	print learn_.respond("WHAT ARE YOU")
+	print learn_.respond("FORGET EVERYTHING YOU KNOW ABOUT YOURSELF")
