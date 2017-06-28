@@ -51,14 +51,15 @@ We have an official [chat room on Gitter](https://gitter.im/DragonComputer/Lobby
 
 ## Getting Started
 
-|                       |                                   |
-|-----------------------|-----------------------------------|
-| **Operating systems** | Linux                             |
-| **Python versions**   | CPython 2.7. Only 64 bit.         |
-| **Distros**           | KDE neon, elementary OS, Ubuntu   |
-| **Package managers**  | APT, pip                          |
-| **Languages**         | English                           |
-|                       |                                   |
+|                         |                                   |
+|-------------------------|-----------------------------------|
+| **Operating systems**   | Linux                             |
+| **Python versions**     | CPython 2.7. Only 64 bit.         |
+| **Distros**             | KDE neon, elementary OS, Ubuntu   |
+| **Package managers**    | APT, pip                          |
+| **Languages**           | English                           |
+| **System requirements** | Minimally 1 Core, 2GB free RAM    |
+|                         |                                   |
 
 **Supported Distributions:** KDE neon, elementary OS and Ubuntu. All modern releases (Ubuntu 12.04 LTS and above) of these distributions are fully supported. Any other Ubuntu based distributions are partially supported.
 
@@ -349,6 +350,16 @@ Probably you don't have [Inkscape](https://inkscape.org/en/) installed on your s
 #### I'm saying VIDEO EDITOR but no software is opening?
 
 Probably you don't have any of the supported video editor software packages: `openshot`, `lightworks`, `kdenlive`
+
+#### Something went wrong on the installation, I'm not sure what?
+
+[This script](https://github.com/DragonComputer/Dragonfire/blob/master/install.sh) will try to install dependencies for you. Run these commands, respectively:
+
+```
+wget https://raw.githubusercontent.com/DragonComputer/Dragonfire/master/install.sh
+chmod +x install.sh
+sudo ./install.sh
+```
 
 #### Dragonfire started to give me senseless answers?
 
