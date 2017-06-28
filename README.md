@@ -51,7 +51,9 @@ To silence her say *ENOUGH* or *SHUT UP*.
 
 To kill her say *GOODBYE* or *BYE BYE* or *SEE YOU LATER*.
 
-Facing with a problem? Take a look to the [Troubleshooting](https://github.com/DragonComputer/Dragonfire/blob/master/CONTRIBUTING.md#troubleshooting) section.
+<br>
+
+:warning: Facing with a problem? Take a look to the [Troubleshooting](https://github.com/DragonComputer/Dragonfire/blob/master/CONTRIBUTING.md#troubleshooting):hammer_and_wrench: section.
 
 <br>
 
