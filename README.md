@@ -51,6 +51,8 @@ To silence her say *ENOUGH* or *SHUT UP*.
 
 To kill her say *GOODBYE* or *BYE BYE* or *SEE YOU LATER*.
 
+Facing with a problem? Take a look to the [Troubleshooting](https://github.com/DragonComputer/Dragonfire/blob/master/CONTRIBUTING.md#troubleshooting) section.
+
 <br>
 
 #### Built-in Commands
@@ -139,3 +141,7 @@ GOODBYE | BYE BYE | SEE YOU LATER
 <br>
 
 **Supported Distributions:** KDE neon, elementary OS and Ubuntu. All modern releases (Ubuntu 12.04 LTS and above) of these distributions are fully supported. Any other Ubuntu based distributions are partially supported.
+
+### Contribute
+
+If you want to contribute to Dragonfire then please read [this guide](https://github.com/DragonComputer/Dragonfire/blob/master/CONTRIBUTING.md).
