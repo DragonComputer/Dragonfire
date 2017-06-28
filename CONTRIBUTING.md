@@ -1,6 +1,6 @@
 # Contributing to Dragonfire
 
-:+1::tada: First off all, thanks for taking the time to contribute! :tada::+1:
+:sparkles: First off all, thanks for taking the time to contribute! :sparkles:
 
 The following is a set of guidelines for contributing to Dragonfire an open source virtual assistant project, which is hosted in the [Dragon Computer Organization](https://github.com/DragonComputer) on GitHub. These are mostly guidelines, not rules. Use your best judgment, and feel free to propose changes to this document in a pull request.
 
@@ -231,17 +231,21 @@ Once you have successfully created the pull request, wait for a response from th
  - Use the imperative mood ("Move cursor to..." not "Moves cursor to...")
  - Limit the first line to 72 characters or less
  - Reference issues and pull requests liberally after the first line
- - When only changing documentation, include `[ci skip]` in the commit description
  - Consider starting the commit message with an applicable emoji:
    - :art: `:art:` when improving the format/structure of the code
-   - :racehorse: `:racehorse:` when improving performance
-   - :non-potable_water: `:non-potable_water:` when plugging memory leaks
+   - :rocket: `:rocket:` when improving performance
+   - :robot: `:robot:` when improving the AI
    - :memo: `:memo:` when writing docs
-   - :penguin: `:penguin:` when fixing something on Linux
-   - :apple: `:apple:` when fixing something on macOS
+   - :penguin: `:penguin:` when fixing something related to Linux
+   - :apple: `:apple:` when fixing something related to macOS
    - :bug: `:bug:` when fixing a bug
+   - :bulb: `:bulb:` new idea
+   - :construction: `:construction:` work in progress
+   - :heavy_plus_sign: `:heavy_plus_sign:` when adding feature
+   - :heavy_minus_sign: `:heavy_minus_sign:` when removing feature
+   - :speaker: `:speaker:` when adding logging
+   - :mute: `:mute:` when reducing logging
    - :fire: `:fire:` when removing code or files
-   - :green_heart: `:green_heart:` when fixing the CI build
    - :white_check_mark: `:white_check_mark:` when adding tests
    - :lock: `:lock:` when dealing with security
    - :arrow_up: `:arrow_up:` when upgrading dependencies
