@@ -6,7 +6,7 @@ https://github.com/pypa/sampleproject
 """
 
 # Always prefer setuptools over distutils
-from setuptools import setup, find_packages
+from setuptools import setup, find_packages, Extension
 from setuptools.command.develop import develop
 from setuptools.command.install import install
 # To use a consistent encoding
@@ -165,5 +165,12 @@ setup(
 	cmdclass={
         'develop': PostDevelopCommand,
         'install': PostInstallCommand,
-    }
+    },
+
+    ext_modules=[Extension('realhud',
+            ['dragonfire/realhud/realhud.c'],
+            extra_compile_args=['-g'],
+            extra_link_args=['-L/usr/X11R6/lib', '-lXpm', '-lXext', '-lX11', '-lm']
+        )
+    ]
 )

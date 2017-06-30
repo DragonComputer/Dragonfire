@@ -3,6 +3,7 @@
  * Experiment with shape and shape input masks.
  */
 
+#include <Python.h>
 #include <stdio.h>
 #include <stdlib.h>    // for getenv
 #include <unistd.h>    // for fork
@@ -28,7 +29,7 @@ int innerBound = 75;
 /* There used to be an RGBColorType defined, but it seems to be gone. */
 unsigned long light, red;
 
-void InitWindow(int argc, char** argv)
+static PyObject* InitWindow(PyObject* self)
 {
     XpmAttributes xpmattr;
     int rv;
@@ -70,6 +71,9 @@ void InitWindow(int argc, char** argv)
     gc = XCreateGC(dpy, win, GCForeground | GCBackground, &gcValues);
 
     XMapWindow(dpy, win);
+
+    while (HandleEvent() >= 0)
+        ;
 }
 
 Region CreateRegion(int x, int y, int w, int h) {
@@ -223,9 +227,24 @@ int HandleEvent()
     return 0;
 }
 
+static char realhud_docs[] =
+    "realhud( ): Any message you want to put here!!\n";
+
+static PyMethodDef realhud_funcs[] = {
+    {"InitWindow", (PyCFunction)InitWindow,
+     METH_NOARGS, realhud_docs},
+    {NULL}
+};
+
+void initrealhud(void)
+{
+    Py_InitModule3("realhud", realhud_funcs,
+                   "Extension module example!");
+}
+
 int main(int argc, char** argv)
 {
-    InitWindow(argc, argv);
+    //InitWindow(PyObject* self);
 
     while (HandleEvent() >= 0)
         ;
