@@ -42,7 +42,7 @@ class Data:
 			else:
 				print "Dragonfire: " + message.upper()
 				print "_______________________________________________________________\n"
-		proc = subprocess.Popen(["festival","--tts"], stdin=subprocess.PIPE, stdout=FNULL, stderr=FNULL, shell=True)
+		proc = subprocess.Popen("festival --tts", stdin=subprocess.PIPE, stdout=FNULL, stderr=FNULL, shell=True)
 		message = "".join([i if ord(i) < 128 else ' ' for i in message])
 		proc.stdin.write(message)
 		proc.stdin.close()
