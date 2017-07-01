@@ -13,6 +13,8 @@
 #include <X11/keysym.h>
 #include <X11/xpm.h>
 #include <X11/extensions/shape.h>
+#include <cairo/cairo.h>
+#include <cairo/cairo-xlib.h>
 
 Display* dpy;
 int screen;
@@ -28,6 +30,100 @@ int innerBound = 75;
 
 /* There used to be an RGBColorType defined, but it seems to be gone. */
 unsigned long light, red;
+
+static PyObject* draw_image(PyObject* self)
+{
+    Display *dpy;
+    Window root, win;
+    XEvent e;
+    int scr;
+    cairo_surface_t *cs, *img;
+    cairo_t *c;
+    int winw, winh;
+    int imgw, imgh;
+    int centerX, centerY;
+    char *imgpath;
+
+    imgpath = "/home/mertyildiran/Downloads/tower.png";
+    if (imgpath == NULL) {
+        fprintf(stderr, "usage: see image.png\n");
+        exit(1);
+    }
+
+    /* load image and get dimantions */
+    img = cairo_image_surface_create_from_png(imgpath);
+    if (cairo_surface_status(img) != CAIRO_STATUS_SUCCESS)
+        errx(1, "load image");
+    imgw = cairo_image_surface_get_width(img);
+    imgh = cairo_image_surface_get_height(img);
+
+    /* init screen and get dimensions */
+    dpy = XOpenDisplay(NULL);
+    if (dpy == NULL)
+        errx(1, "open display");
+    scr = DefaultScreen(dpy);
+    winw = DisplayWidth(dpy, scr);
+    winh = DisplayHeight(dpy, scr);
+
+/* resize window if img is smaller */
+#define MIN(x, y) ((x) < (y) ? (x) : (y))
+    winw = MIN(winw, imgw);
+    winh = MIN(winh, imgh);
+#undef MIN
+
+    /* determine the center */
+    centerX = (XDisplayWidth(dpy, screen) / 2) - (imgw / 2);
+    centerY = (XDisplayHeight(dpy, screen) / 2) - (imgh / 2);
+
+    /* create window */
+    root = RootWindow(dpy, scr);
+    win = XCreateSimpleWindow(dpy, root, 0, 0, winw, winh, 0, BlackPixel(dpy, scr), BlackPixel(dpy, scr));
+
+    /* register for events */
+    XSelectInput(dpy, win, ExposureMask | KeyPressMask);
+
+    /* name window */
+    XStoreName(dpy, win, imgpath);
+
+    /* draw window */
+    XMapWindow(dpy, win);
+
+    /* create surface in window */
+    cs = cairo_xlib_surface_create(dpy, win, DefaultVisual(dpy, scr), winw, winh);
+    c = cairo_create(cs);
+
+    /* put image on surface centered */
+    cairo_set_source_surface(c, img, (winw - imgw) / 2, (winh - imgh) / 2);
+
+    /* move window to the center */
+    XMoveWindow(dpy, win, centerX, centerY);
+
+    while (1) {
+        XNextEvent(dpy, &e);
+
+        switch (e.type) {
+            case Expose:
+                /* redraw if damaged */
+                if (e.xexpose.count < 1)
+                    cairo_paint(c);
+                break;
+            case KeyPress:
+            	/* quit on q pressed */
+            	if (XLookupKeysym(&(e.xkey), 0) == XStringToKeysym("q"))
+                  goto out;
+            	break;
+        }
+    }
+
+    out:
+        /* free */
+        cairo_destroy(c);
+        cairo_surface_destroy(cs);
+        cairo_surface_destroy(img);
+        XCloseDisplay(dpy);
+
+        return 0;
+}
 
 static PyObject* InitWindow(PyObject* self)
 {
@@ -234,6 +330,7 @@ int HandleEvent()
 
 static PyMethodDef realhud_funcs[] = {
     {"InitWindow", (PyCFunction)InitWindow, METH_NOARGS, NULL},
+    {"draw_image", (PyCFunction)draw_image, METH_NOARGS, NULL},
     {NULL}
 };
 
