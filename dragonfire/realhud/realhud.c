@@ -41,6 +41,9 @@ static PyObject* InitWindow(PyObject* self)
     }
     screen = DefaultScreen(dpy);
 
+    int centerX = (XDisplayWidth(dpy, screen) / 2) - (XWinSize / 2);
+    int centerY = (XDisplayHeight(dpy, screen) / 2) - (YWinSize / 2);
+
     win = XCreateSimpleWindow(dpy, RootWindow(dpy, screen),
                               0, 0, XWinSize, YWinSize, 3,
                               WhitePixel(dpy, screen),
@@ -71,6 +74,8 @@ static PyObject* InitWindow(PyObject* self)
     gc = XCreateGC(dpy, win, GCForeground | GCBackground, &gcValues);
 
     XMapWindow(dpy, win);
+
+    XMoveWindow(dpy, win, centerX, centerY);
 
     while (HandleEvent() >= 0)
         ;
@@ -227,12 +232,8 @@ int HandleEvent()
     return 0;
 }
 
-static char realhud_docs[] =
-    "realhud( ): Any message you want to put here!!\n";
-
 static PyMethodDef realhud_funcs[] = {
-    {"InitWindow", (PyCFunction)InitWindow,
-     METH_NOARGS, realhud_docs},
+    {"InitWindow", (PyCFunction)InitWindow, METH_NOARGS, NULL},
     {NULL}
 };
 
