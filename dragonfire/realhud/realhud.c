@@ -2,8 +2,7 @@
 #include <gdk/gdkscreen.h>
 #include <cairo.h>
 #include <gdk-pixbuf/gdk-pixbuf.h>
-
-#include <unistd.h>
+#include <stdlib.h>
 
 /*
  * This program shows you how to create semi-transparent windows,
@@ -22,13 +21,40 @@
 static void screen_changed(GtkWidget *widget, GdkScreen *old_screen, gpointer user_data);
 static gboolean expose(GtkWidget *widget, GdkEventExpose *event, gpointer user_data);
 static void clicked(GtkWindow *win, GdkEventButton *event, gpointer user_data);
+static GdkPixbufAnimation *pixbuf_animation;
+static GdkPixbufAnimationIter *iter;
+static GtkWidget *window;
+
+static gboolean timer(gpointer user_data)
+{
+    GTimeVal time;
+    g_get_current_time(&time);
+    gdk_pixbuf_animation_iter_advance(iter, &time);
+    g_timeout_add(gdk_pixbuf_animation_iter_get_delay_time(iter), timer, NULL);
+    gtk_widget_queue_draw(window);
+    return FALSE;
+}
 
 int main(int argc, char **argv)
 {
     /* boilerplate initialization code */
     gtk_init(&argc, &argv);
 
-    GtkWidget *window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
+    const char *imgpath = "/home/mertyildiran/Downloads/pony.gif";
+    if (imgpath == NULL) {
+        fprintf(stderr, "usage: see image.png\n");
+        exit(1);
+    }
+    pixbuf_animation = gdk_pixbuf_animation_new_from_file (imgpath, NULL);
+
+    GTimeVal time;
+    g_get_current_time(&time);
+
+    iter = gdk_pixbuf_animation_get_iter (pixbuf_animation, &time);
+    timer(NULL);
+
+    window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
+
     gtk_window_set_title(GTK_WINDOW(window), "Alpha Demo");
     g_signal_connect(G_OBJECT(window), "delete-event", gtk_main_quit, NULL);
 
@@ -115,50 +141,19 @@ static gboolean expose(GtkWidget *widget, GdkEventExpose *event, gpointer userda
     int width, height;
     gtk_window_get_size(GTK_WINDOW(widget), &width, &height);
 
-    cairo_surface_t *img;
     int imgw, imgh;
-    char *imgpath;
-
-    imgpath = "/home/mertyildiran/Downloads/pony.gif";
-    if (imgpath == NULL) {
-        fprintf(stderr, "usage: see image.png\n");
-        exit(1);
-    }
 
     GdkPixbuf *pixbuf;
-    GdkPixbufAnimation *pixbuf_animation;
-    cairo_format_t format;
-    /* load image and get dimantions */
-    pixbuf_animation = gdk_pixbuf_animation_new_from_file (imgpath, NULL);
-    //format = (gdk_pixbuf_get_has_alpha (pixbuf)) ? CAIRO_FORMAT_ARGB32 : CAIRO_FORMAT_RGB24;
+
     imgw = gdk_pixbuf_animation_get_width (pixbuf_animation);
     imgh = gdk_pixbuf_animation_get_height (pixbuf_animation);
 
     gtk_window_resize(GTK_WINDOW(widget), imgw, imgh);
 
-
-
-    // Mostly taken from -> https://github.com/acg/w3m/blob/553eff53243049c1da5918adb1b25297d19f619a/w3mimg/fb/fb_gdkpixbuf.c
-    GdkPixbufAnimationIter *iter;
-    GTimeVal time;
-    g_get_current_time(&time);
-
-    iter = gdk_pixbuf_animation_get_iter (pixbuf_animation, &time);
-
-    int n, i, d = -1;
-    for (i = 1; gdk_pixbuf_animation_iter_on_currently_loading_frame(iter) != TRUE; i++) {
-        int tmp;
-        tmp = gdk_pixbuf_animation_iter_get_delay_time(iter);
-        g_time_val_add(&time, tmp * 1000);
-        if (tmp > d) {
-            d = tmp;
-            pixbuf = gdk_pixbuf_animation_iter_get_pixbuf(iter);
-            //g_timeout_add(1000, pixbuf, NULL);
-            gdk_cairo_set_source_pixbuf (cr, pixbuf, 0, 0);
-            cairo_paint (cr);
-        }
-        gdk_pixbuf_animation_iter_advance(iter, &time);
-    }
+    pixbuf = gdk_pixbuf_animation_iter_get_pixbuf(iter);
+    //g_timeout_add(1000, pixbuf, NULL);
+    gdk_cairo_set_source_pixbuf (cr, pixbuf, 0, 0);
+    cairo_paint (cr);
 
 
 
