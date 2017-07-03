@@ -162,15 +162,15 @@ setup(
 		],
 	},
 
-	cmdclass={
-        'develop': PostDevelopCommand,
-        'install': PostInstallCommand,
-    },
+	#cmdclass={
+    #    'develop': PostDevelopCommand,
+    #    'install': PostInstallCommand,
+    #},
 
     ext_modules=[Extension('realhud',
             ['dragonfire/realhud/realhud.c'],
             extra_compile_args=['-g'],
-            extra_link_args=['-L/usr/X11R6/lib', '-lXpm', '-lXext', '-lX11', '-lm'],
+            extra_link_args=['-L/usr/X11R6/lib', '-lXpm', '-lXext', '-lX11', '-lm', '-lGL'],
             libraries=['cairo']
         )
     ]

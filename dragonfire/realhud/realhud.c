@@ -1,349 +1,177 @@
+#include <gtk/gtk.h>
+#include <gdk/gdkscreen.h>
+#include <cairo.h>
+#include <gdk-pixbuf/gdk-pixbuf.h>
+
+#include <unistd.h>
+
 /*
- * realhud: show a translucent image and allow clicks through part of it.
- * Experiment with shape and shape input masks.
+ * This program shows you how to create semi-transparent windows,
+ * without any of the historical screenshot hacks. It requires
+ * a modern system, with a compositing manager. I use xcompmgr
+ * and the nvidia drivers with RenderAccel, and it works well.
+ *
+ * I'll take you through each step as we go. Minimal GTK+ knowledge is
+ * assumed.
+ *
+ * gcc alphademo.c -o alphademo $( pkg-config --cflags --libs gtk+-2.0 )
+ *
+ * https://web.archive.org/web/20121027002505/http://plan99.net/~mike/files/alphademo.c
  */
 
-#include <Python.h>
-#include <stdio.h>
-#include <stdlib.h>    // for getenv
-#include <unistd.h>    // for fork
-#include <libgen.h>    // for basename
-#include <time.h>      // for timezone
-#include <X11/Xlib.h>
-#include <X11/keysym.h>
-#include <X11/xpm.h>
-#include <X11/extensions/shape.h>
-#include <cairo/cairo.h>
-#include <cairo/cairo-xlib.h>
+static void screen_changed(GtkWidget *widget, GdkScreen *old_screen, gpointer user_data);
+static gboolean expose(GtkWidget *widget, GdkEventExpose *event, gpointer user_data);
+static void clicked(GtkWindow *win, GdkEventButton *event, gpointer user_data);
 
-Display* dpy;
-int screen;
-Window win;
-GC gc = 0;
-
-int XWinSize = 300;
-int YWinSize = 200;
-
-/* The boundaries we'll use for the shape mask and input mask */
-int outerBound = 20;
-int innerBound = 75;
-
-/* There used to be an RGBColorType defined, but it seems to be gone. */
-unsigned long light, red;
-
-static PyObject* draw_image(PyObject* self)
+int main(int argc, char **argv)
 {
-    Display *dpy;
-    Window root, win;
-    XEvent e;
-    int scr;
-    cairo_surface_t *cs, *img;
-    cairo_t *c;
-    int winw, winh;
+    /* boilerplate initialization code */
+    gtk_init(&argc, &argv);
+
+    GtkWidget *window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
+    gtk_window_set_title(GTK_WINDOW(window), "Alpha Demo");
+    g_signal_connect(G_OBJECT(window), "delete-event", gtk_main_quit, NULL);
+
+
+    /* Tell GTK+ that we want to draw the windows background ourself.
+     * If we don't do this then GTK+ will clear the window to the
+     * opaque theme default color, which isn't what we want.
+     */
+    gtk_widget_set_app_paintable(window, TRUE);
+
+    /* We need to handle two events ourself: "expose-event" and "screen-changed".
+     *
+     * The X server sends us an expose event when the window becomes
+     * visible on screen. It means we need to draw the contents.  On a
+     * composited desktop expose is normally only sent when the window
+     * is put on the screen. On a non-composited desktop it can be
+     * sent whenever the window is uncovered by another.
+     *
+     * The screen-changed event means the display to which we are
+     * drawing changed. GTK+ supports migration of running
+     * applications between X servers, which might not support the
+     * same features, so we need to check each time.
+     */
+
+    g_signal_connect(G_OBJECT(window), "expose-event", G_CALLBACK(expose), NULL);
+    g_signal_connect(G_OBJECT(window), "screen-changed", G_CALLBACK(screen_changed), NULL);
+
+    /* toggle title bar on click - we add the mask to tell X we are interested in this event */
+    gtk_window_set_decorated(GTK_WINDOW(window), FALSE);
+    gtk_widget_add_events(window, GDK_BUTTON_PRESS_MASK);
+    g_signal_connect(G_OBJECT(window), "button-press-event", G_CALLBACK(clicked), NULL);
+
+    /* initialize for the current display */
+    screen_changed(window, NULL, NULL);
+
+    /* Run the program */
+    gtk_widget_show_all(window);
+    gtk_main();
+
+    return 0;
+}
+
+
+/* Only some X servers support alpha channels. Always have a fallback */
+gboolean supports_alpha = FALSE;
+
+static void screen_changed(GtkWidget *widget, GdkScreen *old_screen, gpointer userdata)
+{
+    /* To check if the display supports alpha channels, get the colormap */
+    GdkScreen *screen = gtk_widget_get_screen(widget);
+    GdkColormap *colormap = gdk_screen_get_rgba_colormap(screen);
+
+    if (!colormap)
+    {
+        printf("Your screen does not support alpha channels!\n");
+        colormap = gdk_screen_get_rgb_colormap(screen);
+        supports_alpha = FALSE;
+    }
+    else
+    {
+        printf("Your screen supports alpha channels!\n");
+        supports_alpha = TRUE;
+    }
+
+    /* Now we have a colormap appropriate for the screen, use it */
+    gtk_widget_set_colormap(widget, colormap);
+}
+
+/* This is called when we need to draw the windows contents */
+static gboolean expose(GtkWidget *widget, GdkEventExpose *event, gpointer userdata)
+{
+    cairo_t *cr = gdk_cairo_create(widget->window);
+
+    //if (supports_alpha)
+    //    cairo_set_source_rgba (cr, 1.0, 1.0, 1.0, 0.0); /* transparent */
+    //else
+    //    cairo_set_source_rgb (cr, 1.0, 1.0, 1.0); /* opaque white */
+
+    /* draw the background */
+    cairo_set_operator (cr, CAIRO_OPERATOR_SOURCE);
+    //cairo_paint (cr);
+
+    /* draw a circle */
+    int width, height;
+    gtk_window_get_size(GTK_WINDOW(widget), &width, &height);
+
+    cairo_surface_t *img;
     int imgw, imgh;
-    int centerX, centerY;
     char *imgpath;
 
-    imgpath = "/home/mertyildiran/Downloads/tower.png";
+    imgpath = "/home/mertyildiran/Downloads/pony.gif";
     if (imgpath == NULL) {
         fprintf(stderr, "usage: see image.png\n");
         exit(1);
     }
 
+    GdkPixbuf *pixbuf;
+    GdkPixbufAnimation *pixbuf_animation;
+    cairo_format_t format;
     /* load image and get dimantions */
-    img = cairo_image_surface_create_from_png(imgpath);
-    if (cairo_surface_status(img) != CAIRO_STATUS_SUCCESS)
-        errx(1, "load image");
-    imgw = cairo_image_surface_get_width(img);
-    imgh = cairo_image_surface_get_height(img);
+    pixbuf_animation = gdk_pixbuf_animation_new_from_file (imgpath, NULL);
+    //format = (gdk_pixbuf_get_has_alpha (pixbuf)) ? CAIRO_FORMAT_ARGB32 : CAIRO_FORMAT_RGB24;
+    imgw = gdk_pixbuf_animation_get_width (pixbuf_animation);
+    imgh = gdk_pixbuf_animation_get_height (pixbuf_animation);
 
-    /* init screen and get dimensions */
-    dpy = XOpenDisplay(NULL);
-    if (dpy == NULL)
-        errx(1, "open display");
-    scr = DefaultScreen(dpy);
-    winw = DisplayWidth(dpy, scr);
-    winh = DisplayHeight(dpy, scr);
+    gtk_window_resize(GTK_WINDOW(widget), imgw, imgh);
 
-/* resize window if img is smaller */
-#define MIN(x, y) ((x) < (y) ? (x) : (y))
-    winw = MIN(winw, imgw);
-    winh = MIN(winh, imgh);
-#undef MIN
 
-    /* determine the center */
-    centerX = (XDisplayWidth(dpy, screen) / 2) - (imgw / 2);
-    centerY = (XDisplayHeight(dpy, screen) / 2) - (imgh / 2);
 
-    /* create window */
-    root = RootWindow(dpy, scr);
-    win = XCreateSimpleWindow(dpy, root, 0, 0, winw, winh, 0, BlackPixel(dpy, scr), BlackPixel(dpy, scr));
+    // Mostly taken from -> https://github.com/acg/w3m/blob/553eff53243049c1da5918adb1b25297d19f619a/w3mimg/fb/fb_gdkpixbuf.c
+    GdkPixbufAnimationIter *iter;
+    GTimeVal time;
+    g_get_current_time(&time);
 
-    /* register for events */
-    XSelectInput(dpy, win, ExposureMask | KeyPressMask);
+    iter = gdk_pixbuf_animation_get_iter (pixbuf_animation, &time);
 
-    /* name window */
-    XStoreName(dpy, win, imgpath);
-
-    /* draw window */
-    XMapWindow(dpy, win);
-
-    /* create surface in window */
-    cs = cairo_xlib_surface_create(dpy, win, DefaultVisual(dpy, scr), winw, winh);
-    c = cairo_create(cs);
-
-    /* put image on surface centered */
-    cairo_set_source_surface(c, img, (winw - imgw) / 2, (winh - imgh) / 2);
-
-    /* move window to the center */
-    XMoveWindow(dpy, win, centerX, centerY);
-
-    while (1) {
-        XNextEvent(dpy, &e);
-
-        switch (e.type) {
-            case Expose:
-                /* redraw if damaged */
-                if (e.xexpose.count < 1)
-                    cairo_paint(c);
-                break;
-            case KeyPress:
-            	/* quit on q pressed */
-            	if (XLookupKeysym(&(e.xkey), 0) == XStringToKeysym("q"))
-                  goto out;
-            	break;
+    int n, i, d = -1;
+    for (i = 1; gdk_pixbuf_animation_iter_on_currently_loading_frame(iter) != TRUE; i++) {
+        int tmp;
+        tmp = gdk_pixbuf_animation_iter_get_delay_time(iter);
+        g_time_val_add(&time, tmp * 1000);
+        if (tmp > d) {
+            d = tmp;
+            pixbuf = gdk_pixbuf_animation_iter_get_pixbuf(iter);
+            //g_timeout_add(1000, pixbuf, NULL);
+            gdk_cairo_set_source_pixbuf (cr, pixbuf, 0, 0);
+            cairo_paint (cr);
         }
+        gdk_pixbuf_animation_iter_advance(iter, &time);
     }
 
-    out:
-        /* free */
-        cairo_destroy(c);
-        cairo_surface_destroy(cs);
-        cairo_surface_destroy(img);
-        XCloseDisplay(dpy);
 
-        return 0;
+
+    //gdk_cairo_set_source_pixbuf (cr, pixbuf, 0, 0);
+
+    //cairo_paint (cr);
+
+    cairo_destroy(cr);
+    return FALSE;
 }
 
-static PyObject* InitWindow(PyObject* self)
+static void clicked(GtkWindow *win, GdkEventButton *event, gpointer user_data)
 {
-    XpmAttributes xpmattr;
-    int rv;
-
-    if ((dpy = XOpenDisplay(getenv("DISPLAY"))) == 0)
-    {
-        fprintf(stderr, "Can't open display: %s\n", getenv("DISPLAY"));
-        exit(1);
-    }
-    screen = DefaultScreen(dpy);
-
-    int centerX = (XDisplayWidth(dpy, screen) / 2) - (XWinSize / 2);
-    int centerY = (XDisplayHeight(dpy, screen) / 2) - (YWinSize / 2);
-
-    win = XCreateSimpleWindow(dpy, RootWindow(dpy, screen),
-                              0, 0, XWinSize, YWinSize, 3,
-                              WhitePixel(dpy, screen),
-                              BlackPixel(dpy, screen));
-    if (!win)
-    {
-        fprintf(stderr, "Can't create window\n");
-        exit(1);
-    }
-
-    XSelectInput(dpy, win, ExposureMask | KeyPressMask | StructureNotifyMask);
-
-    XColor color, exact;
-    XAllocNamedColor(dpy,
-                     DefaultColormap(dpy, screen),
-                     "light green",
-                     &color, &exact);
-    light = color.pixel;
-    XAllocNamedColor(dpy,
-                     DefaultColormap(dpy, screen),
-                     "red",
-                     &color, &exact);
-    red= color.pixel;
-
-    XGCValues gcValues;
-    gcValues.foreground = WhitePixel(dpy, screen);
-    gcValues.background = BlackPixel(dpy, screen);
-    gc = XCreateGC(dpy, win, GCForeground | GCBackground, &gcValues);
-
-    XMapWindow(dpy, win);
-
-    XMoveWindow(dpy, win, centerX, centerY);
-
-    while (HandleEvent() >= 0)
-        ;
-}
-
-Region CreateRegion(int x, int y, int w, int h) {
-    Region region = XCreateRegion();
-    XRectangle rectangle;
-    rectangle.x = x;
-    rectangle.y = y;
-    rectangle.width = w;
-    rectangle.height = h;
-    XUnionRectWithRegion(&rectangle, region, region);
-
-    return region;
-}
-
-Region CreateFrameRegion(int bound) {
-    Region region = XCreateRegion();
-    XRectangle rectangle;
-
-    /* top */
-    rectangle.x = 0;
-    rectangle.y = 0;
-    rectangle.width = XWinSize;
-    rectangle.height = bound;
-    XUnionRectWithRegion(&rectangle, region, region);
-
-    /* bottom */
-    rectangle.x = 0;
-    rectangle.y = YWinSize - bound;
-    rectangle.width = XWinSize;
-    rectangle.height = bound;
-    XUnionRectWithRegion(&rectangle, region, region);
-
-    /* left side */
-    rectangle.x = 0;
-    rectangle.y = 0;
-    rectangle.width = bound;
-    rectangle.height = YWinSize;
-    XUnionRectWithRegion(&rectangle, region, region);
-
-    /* right side */
-    rectangle.x = XWinSize - bound;
-    rectangle.y = 0;
-    rectangle.width = bound;
-    rectangle.height = YWinSize;
-    XUnionRectWithRegion(&rectangle, region, region);
-
-    return region;
-}
-
-void Draw()
-{
-    int shape_event_base, shape_error_base;
-    Region region, inner_region, outer_region;
-
-    XGCValues gcValues;
-    gcValues.foreground = light;
-    XChangeGC(dpy, gc, GCForeground, &gcValues);
-    XFillRectangle(dpy, win, gc, 0, 0, XWinSize, YWinSize);
-
-    gcValues.foreground = red;
-    XChangeGC(dpy, gc, GCForeground, &gcValues);
-    XFillRectangle(dpy, win, gc, outerBound, outerBound,
-                   XWinSize-outerBound*2, YWinSize-outerBound*2);
-
-    gcValues.foreground = light;
-    XChangeGC(dpy, gc, GCForeground, &gcValues);
-    XFillRectangle(dpy, win, gc, innerBound, innerBound,
-                   XWinSize-innerBound*2, YWinSize-innerBound*2);
-
-    if (!XShapeQueryExtension(dpy, &shape_event_base, &shape_error_base)) {
-        printf("No SHAPE extension\n");
-        return;
-    }
-
-    /* Make a shaped window, a rectangle smaller than the total
-     * size of the window. The rest will be transparent.
-     */
-    region = CreateRegion(outerBound, outerBound,
-                          XWinSize-outerBound*2, YWinSize-outerBound*2);
-    XShapeCombineRegion(dpy, win, ShapeBounding, 0, 0, region, ShapeSet);
-    XDestroyRegion(region);
-
-    /* Make an input region that's even smaller.
-     * This window will get input inside the region;
-     * outside it, input will be passed through to the window below.
-    region = CreateRegion(innerBound, innerBound,
-                          XWinSize-innerBound*2, YWinSize-innerBound*2);
-    XShapeCombineRegion(dpy, win, ShapeInput, 0, 0, region, ShapeSet);
-    XDestroyRegion(region);
-     */
-
-    /* Make an input region that's everything BUT an outer ring.
-     * So in the outer ring, we get input, but inside it, it passes through.
-     * This creates tons of errors.
-    inner_region = CreateRegion(innerBound, innerBound,
-                                XWinSize-innerBound*2, YWinSize-innerBound*2);
-    outer_region = CreateRegion(0, 0, XWinSize, YWinSize);
-    XXorRegion(inner_region, outer_region, region);
-    //XShapeCombineRegion(dpy, win, ShapeInput, 0, 0, region, ShapeSet);
-    XDestroyRegion(inner_region);
-    XDestroyRegion(outer_region);
-    XDestroyRegion(region);
-     */
-
-    /* Make a frame region.
-     * So in the outer frame, we get input, but inside it, it passes through.
-     */
-    region = CreateFrameRegion(innerBound);
-    XShapeCombineRegion(dpy, win, ShapeInput, 0, 0, region, ShapeSet);
-    XDestroyRegion(region);
-}
-
-int HandleEvent()
-{
-    XEvent event;
-    time_t sec;
-    char buffer[20];
-    KeySym keysym;
-    XComposeStatus compose;
-
-    XNextEvent(dpy, &event);
-    switch (event.type)
-    {
-      case Expose:
-      case MapNotify:
-          Draw();
-          break;
-      case ConfigureNotify:
-          XWinSize = event.xconfigure.width;
-          YWinSize = event.xconfigure.height;
-          //printf("ConfigureNotify: now (%d, %d)\n", XWinSize, YWinSize);
-          break;
-      case ReparentNotify: /* When we make the window shaped? */
-      case UnmapNotify:    /* e.g. move to all desktops? */
-      case NoExpose:       /* No idea what this is */
-          break;
-      case KeyPress:
-          XLookupString(&(event.xkey), buffer, sizeof buffer,
-                        &keysym, &compose);
-          switch (keysym)
-          {
-            case XK_q:
-                return -1;
-            default:
-                break;
-          }
-          break;
-      default:
-          printf("Unknown event: %d\n", event.type);
-    }
-    return 0;
-}
-
-static PyMethodDef realhud_funcs[] = {
-    {"InitWindow", (PyCFunction)InitWindow, METH_NOARGS, NULL},
-    {"draw_image", (PyCFunction)draw_image, METH_NOARGS, NULL},
-    {NULL}
-};
-
-void initrealhud(void)
-{
-    Py_InitModule3("realhud", realhud_funcs,
-                   "Extension module example!");
-}
-
-int main(int argc, char** argv)
-{
-    //InitWindow(PyObject* self);
-
-    while (HandleEvent() >= 0)
-        ;
+    /* toggle window manager frames */
+    gtk_window_set_decorated(win, !gtk_window_get_decorated(win));
 }
