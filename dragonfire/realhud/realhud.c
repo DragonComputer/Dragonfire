@@ -39,12 +39,17 @@ static gboolean timer(gpointer user_data)
     return FALSE;
 }
 
-static PyObject* play_gif(PyObject* self)
+static PyObject* play_gif(PyObject* self, PyObject *args)
 {
+    char *imgpath;
+
+    if (!PyArg_ParseTuple(args, "s", &imgpath)) {
+      return NULL;
+    }
+
     /* boilerplate initialization code */
     gtk_init(&glob_argc, &glob_argv);
 
-    const char *imgpath = "/home/mertyildiran/Downloads/pony.gif";
     if (imgpath == NULL) {
         fprintf(stderr, "usage: see image.png\n");
         exit(1);
@@ -176,7 +181,7 @@ static void clicked(GtkWindow *win, GdkEventButton *event, gpointer user_data)
 }
 
 static PyMethodDef realhud_funcs[] = {
-    {"play_gif", (PyCFunction)play_gif, METH_NOARGS, NULL},
+    {"play_gif", (PyCFunction)play_gif, METH_VARARGS, NULL},
     {NULL}
 };
 
