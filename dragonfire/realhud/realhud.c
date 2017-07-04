@@ -5,6 +5,8 @@
 #include <gdk-pixbuf/gdk-pixbuf.h>
 #include <stdlib.h>
 #include <X11/Xlib.h>
+#include <X11/extensions/shape.h>
+#include <gdk/gdkx.h>
 
 /*
  * This program shows you how to create semi-transparent windows,
@@ -47,6 +49,7 @@ static gboolean timer(gpointer user_data)
 
 static PyObject* play_gif(PyObject* self, PyObject *args)
 {
+    /* get the display and the screen */
     if ((dpy = XOpenDisplay(getenv("DISPLAY"))) == 0)
     {
         fprintf(stderr, "Can't open display: %s\n", getenv("DISPLAY"));
@@ -176,6 +179,15 @@ static gboolean expose(GtkWidget *widget, GdkEventExpose *event, gpointer userda
 
     /* make the window Always on Top */
     gtk_window_set_keep_above(GTK_WINDOW(widget), TRUE);
+
+    /* make the window click-through */
+    Display *display = GDK_SCREEN_XDISPLAY(gdk_screen_get_default());
+    unsigned long window_xid = GDK_WINDOW_XID(gtk_widget_get_window(widget));
+    Region region = XCreateRegion();
+    XRectangle rectangle = { 0, 0, 1, 1 };
+    XUnionRectWithRegion(&rectangle, region, region);
+    XShapeCombineRegion(display, window_xid, ShapeInput, 0, 0, region, ShapeSet);
+    XDestroyRegion(region);
 
     /* iterate over the frames of the animation */
     pixbuf = gdk_pixbuf_animation_iter_get_pixbuf(iter);
