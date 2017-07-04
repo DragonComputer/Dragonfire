@@ -174,6 +174,9 @@ static gboolean expose(GtkWidget *widget, GdkEventExpose *event, gpointer userda
     centerY = (XDisplayHeight(dpy, screen) / 2) - (winh / 2);
     gtk_window_move(GTK_WINDOW(widget), centerX, centerY);
 
+    /* make the window Always on Top */
+    gtk_window_set_keep_above(GTK_WINDOW(widget), TRUE);
+
     /* iterate over the frames of the animation */
     pixbuf = gdk_pixbuf_animation_iter_get_pixbuf(iter);
     //g_timeout_add(1000, pixbuf, NULL);
@@ -191,7 +194,7 @@ static gboolean expose(GtkWidget *widget, GdkEventExpose *event, gpointer userda
 static void clicked(GtkWindow *win, GdkEventButton *event, gpointer user_data)
 {
     /* toggle window manager frames */
-    gtk_window_set_decorated(win, !gtk_window_get_decorated(win));
+    //gtk_window_set_decorated(win, !gtk_window_get_decorated(win));
 }
 
 static PyMethodDef realhud_funcs[] = {
