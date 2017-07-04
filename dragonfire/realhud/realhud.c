@@ -4,6 +4,7 @@
 #include <cairo.h>
 #include <gdk-pixbuf/gdk-pixbuf.h>
 #include <stdlib.h>
+#include <X11/Xlib.h>
 
 /*
  * This program shows you how to create semi-transparent windows,
@@ -29,6 +30,9 @@ static GdkPixbufAnimation *pixbuf_animation;
 static GdkPixbufAnimationIter *iter;
 static GtkWidget *window;
 
+Display *dpy;
+int screen;
+
 static gboolean timer(gpointer user_data)
 {
     GTimeVal time;
@@ -41,6 +45,13 @@ static gboolean timer(gpointer user_data)
 
 static PyObject* play_gif(PyObject* self, PyObject *args)
 {
+    if ((dpy = XOpenDisplay(getenv("DISPLAY"))) == 0)
+    {
+        fprintf(stderr, "Can't open display: %s\n", getenv("DISPLAY"));
+        exit(1);
+    }
+    screen = DefaultScreen(dpy);
+
     char *imgpath;
 
     if (!PyArg_ParseTuple(args, "s", &imgpath)) {
@@ -136,6 +147,10 @@ static void screen_changed(GtkWidget *widget, GdkScreen *old_screen, gpointer us
 static gboolean expose(GtkWidget *widget, GdkEventExpose *event, gpointer userdata)
 {
     cairo_t *cr = gdk_cairo_create(widget->window);
+    int winw, winh;
+    int imgw, imgh;
+    int centerX, centerY;
+    GdkPixbuf *pixbuf;
 
     //if (supports_alpha)
     //    cairo_set_source_rgba (cr, 1.0, 1.0, 1.0, 0.0); /* transparent */
@@ -146,25 +161,22 @@ static gboolean expose(GtkWidget *widget, GdkEventExpose *event, gpointer userda
     cairo_set_operator (cr, CAIRO_OPERATOR_SOURCE);
     //cairo_paint (cr);
 
-    /* draw a circle */
-    int width, height;
-    gtk_window_get_size(GTK_WINDOW(widget), &width, &height);
-
-    int imgw, imgh;
-
-    GdkPixbuf *pixbuf;
-
+    /* resize the window */
+    gtk_window_get_size(GTK_WINDOW(widget), &winw, &winh);
     imgw = gdk_pixbuf_animation_get_width (pixbuf_animation);
     imgh = gdk_pixbuf_animation_get_height (pixbuf_animation);
-
     gtk_window_resize(GTK_WINDOW(widget), imgw, imgh);
 
+    /* center the window */
+    centerX = (XDisplayWidth(dpy, screen) / 2) - (winw / 2);
+    centerY = (XDisplayHeight(dpy, screen) / 2) - (winh / 2);
+    gtk_window_move(GTK_WINDOW(widget), centerX, centerY);
+
+    /* iterate over the frames of the animation */
     pixbuf = gdk_pixbuf_animation_iter_get_pixbuf(iter);
     //g_timeout_add(1000, pixbuf, NULL);
     gdk_cairo_set_source_pixbuf (cr, pixbuf, 0, 0);
     cairo_paint (cr);
-
-
 
     //gdk_cairo_set_source_pixbuf (cr, pixbuf, 0, 0);
 
