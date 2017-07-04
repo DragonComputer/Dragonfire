@@ -20,6 +20,10 @@
  * gcc alphademo.c -o alphademo $( pkg-config --cflags --libs gtk+-2.0 )
  *
  * https://web.archive.org/web/20121027002505/http://plan99.net/~mike/files/alphademo.c
+ *
+ * Usage(Python):
+ * import realhud
+ * realhud.play_gif("/home/mertyildiran/Downloads/pony.gif", 0.5, True)
  */
 
 int glob_argc;
@@ -35,7 +39,10 @@ static GtkWidget *window;
 Display *dpy;
 int screen;
 
+char *imgpath;
 float opacity = 1.0;
+PyObject *is_click_through_arg;
+int is_click_through;
 
 static gboolean timer(gpointer user_data)
 {
@@ -57,11 +64,13 @@ static PyObject* play_gif(PyObject* self, PyObject *args)
     }
     screen = DefaultScreen(dpy);
 
-    char *imgpath;
-
-    if (!PyArg_ParseTuple(args, "sf", &imgpath, &opacity)) {
+    /* parse the arguments */
+    if (!PyArg_ParseTuple(args, "sfO", &imgpath, &opacity, &is_click_through_arg)) {
       return NULL;
     }
+
+    /* determine if it's click-through */
+    is_click_through = PyObject_IsTrue(is_click_through_arg);
 
     /* boilerplate initialization code */
     gtk_init(&glob_argc, &glob_argv);
@@ -183,14 +192,16 @@ static gboolean expose(GtkWidget *widget, GdkEventExpose *event, gpointer userda
     /* make the window Always on Top */
     gtk_window_set_keep_above(GTK_WINDOW(widget), TRUE);
 
-    /* make the window click-through */
-    Display *display = GDK_SCREEN_XDISPLAY(gdk_screen_get_default());
-    unsigned long window_xid = GDK_WINDOW_XID(gtk_widget_get_window(widget));
-    Region region = XCreateRegion();
-    XRectangle rectangle = { 0, 0, 1, 1 };
-    XUnionRectWithRegion(&rectangle, region, region);
-    XShapeCombineRegion(display, window_xid, ShapeInput, 0, 0, region, ShapeSet);
-    XDestroyRegion(region);
+    if (is_click_through) {
+        /* make the window click-through */
+        Display *display = GDK_SCREEN_XDISPLAY(gdk_screen_get_default());
+        unsigned long window_xid = GDK_WINDOW_XID(gtk_widget_get_window(widget));
+        Region region = XCreateRegion();
+        XRectangle rectangle = { 0, 0, 1, 1 };
+        XUnionRectWithRegion(&rectangle, region, region);
+        XShapeCombineRegion(display, window_xid, ShapeInput, 0, 0, region, ShapeSet);
+        XDestroyRegion(region);
+    }
 
     /* iterate over the frames of the animation */
     pixbuf = gdk_pixbuf_animation_iter_get_pixbuf(iter);
