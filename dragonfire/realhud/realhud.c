@@ -166,6 +166,9 @@ static gboolean expose(GtkWidget *widget, GdkEventExpose *event, gpointer userda
     cairo_set_operator(cr, CAIRO_OPERATOR_IN);
     //cairo_paint (cr);
 
+    /* hide the window from appearing in the task bar */
+    gtk_window_set_skip_taskbar_hint(GTK_WINDOW(widget),TRUE);
+
     /* resize the window */
     gtk_window_get_size(GTK_WINDOW(widget), &winw, &winh);
     imgw = gdk_pixbuf_animation_get_width (pixbuf_animation);
