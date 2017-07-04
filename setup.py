@@ -19,7 +19,7 @@ from subprocess import check_call, PIPE, Popen
 class PostDevelopCommand(develop):
     """Post-installation for development mode."""
     def run(self):
-        check_call("apt-get -y install julius festival festlex-cmu python-xlib portaudio19-dev python-all-dev flac libnotify-bin python-egenix-mx-base-dev python-lxml python-nltk python-pyaudio python-httplib2 libxpm-dev libcairo2-dev libgtk2.0-dev".split())
+        check_call("apt-get -y install julius festival festlex-cmu python-xlib portaudio19-dev python-all-dev flac libnotify-bin python-egenix-mx-base-dev python-lxml python-nltk python-pyaudio python-httplib2 libglib2.0-dev libcairo2-dev libgtk2.0-dev".split())
         check_call("wget -c http://www.speech.cs.cmu.edu/cmu_arctic/packed/cmu_us_clb_arctic-0.95-release.tar.bz2 -P /usr/share/festival/voices/english/".split())
         check_call("tar jxf /usr/share/festival/voices/english/cmu_us_clb_arctic-0.95-release.tar.bz2 -C /usr/share/festival/voices/english/".split())
         check_call("ln -fs /usr/share/festival/voices/english/cmu_us_clb_arctic /usr/share/festival/voices/english/cmu_us_clb_arctic_clunits".split())
@@ -37,7 +37,7 @@ class PostDevelopCommand(develop):
 class PostInstallCommand(install):
     """Post-installation for installation mode."""
     def run(self):
-        check_call("apt-get -y install julius festival festlex-cmu python-xlib portaudio19-dev python-all-dev flac libnotify-bin python-egenix-mx-base-dev python-lxml python-nltk python-pyaudio python-httplib2 libxpm-dev libcairo2-dev libgtk2.0-dev".split())
+        check_call("apt-get -y install julius festival festlex-cmu python-xlib portaudio19-dev python-all-dev flac libnotify-bin python-egenix-mx-base-dev python-lxml python-nltk python-pyaudio python-httplib2 libglib2.0-dev libcairo2-dev libgtk2.0-dev".split())
         check_call("wget -c http://www.speech.cs.cmu.edu/cmu_arctic/packed/cmu_us_clb_arctic-0.95-release.tar.bz2 -P /usr/share/festival/voices/english/".split())
         check_call("tar jxf /usr/share/festival/voices/english/cmu_us_clb_arctic-0.95-release.tar.bz2 -C /usr/share/festival/voices/english/".split())
         check_call("ln -fs /usr/share/festival/voices/english/cmu_us_clb_arctic /usr/share/festival/voices/english/cmu_us_clb_arctic_clunits".split())
@@ -195,9 +195,7 @@ setup(
 
     ext_modules=[Extension('realhud',
             ['dragonfire/realhud/realhud.c'],
-            extra_compile_args=['-g'],
-            extra_link_args=['-L/usr/X11R6/lib', '-lXpm', '-lXext', '-lX11', '-lm', '-lGL'],
-            **pkgconfig('gtk+-2.0')
+            **pkgconfig('gtk+-2.0 x11 xext')
         )
     ]
 )
