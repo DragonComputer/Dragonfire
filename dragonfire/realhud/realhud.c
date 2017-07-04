@@ -1,3 +1,4 @@
+#include <Python.h>
 #include <gtk/gtk.h>
 #include <gdk/gdkscreen.h>
 #include <cairo.h>
@@ -18,6 +19,9 @@
  * https://web.archive.org/web/20121027002505/http://plan99.net/~mike/files/alphademo.c
  */
 
+int glob_argc;
+char **glob_argv;
+
 static void screen_changed(GtkWidget *widget, GdkScreen *old_screen, gpointer user_data);
 static gboolean expose(GtkWidget *widget, GdkEventExpose *event, gpointer user_data);
 static void clicked(GtkWindow *win, GdkEventButton *event, gpointer user_data);
@@ -35,10 +39,10 @@ static gboolean timer(gpointer user_data)
     return FALSE;
 }
 
-int main(int argc, char **argv)
+static PyObject* play_gif(PyObject* self)
 {
     /* boilerplate initialization code */
-    gtk_init(&argc, &argv);
+    gtk_init(&glob_argc, &glob_argv);
 
     const char *imgpath = "/home/mertyildiran/Downloads/pony.gif";
     if (imgpath == NULL) {
@@ -169,4 +173,30 @@ static void clicked(GtkWindow *win, GdkEventButton *event, gpointer user_data)
 {
     /* toggle window manager frames */
     gtk_window_set_decorated(win, !gtk_window_get_decorated(win));
+}
+
+static PyMethodDef realhud_funcs[] = {
+    {"play_gif", (PyCFunction)play_gif, METH_NOARGS, NULL},
+    {NULL}
+};
+
+void initrealhud(void)
+{
+    Py_InitModule3("realhud", realhud_funcs,
+                   "Extension module example!");
+}
+
+int main(int argc, char *argv[])
+{
+    glob_argc = argc;
+    glob_argv = argv;
+
+    /* Pass argv[0] to the Python interpreter */
+    Py_SetProgramName(argv[0]);
+
+    /* Initialize the Python interpreter.  Required. */
+    Py_Initialize();
+
+    /* Add a static module */
+    initrealhud();
 }

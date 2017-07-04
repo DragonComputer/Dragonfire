@@ -13,7 +13,7 @@ from setuptools.command.install import install
 from codecs import open
 from os import path
 import os
-from subprocess import check_call
+from subprocess import check_call, PIPE, Popen
 
 
 class PostDevelopCommand(develop):
@@ -54,6 +54,32 @@ class PostInstallCommand(install):
 
 
 here = path.abspath(path.dirname(__file__))
+
+def pkgconfig(*packages):
+    flags = {
+        '-D': 'define_macros',
+        '-I': 'include_dirs',
+        '-L': 'library_dirs',
+        '-l': 'libraries'}
+    cmd = ['pkg-config', '--cflags', '--libs'] + list(packages)
+    proc = Popen(cmd, stdout=PIPE, stderr=PIPE)
+    output, error = proc.stdout.read(), proc.stderr.read()
+
+    if error:
+        raise ValueError(error)
+
+    config = {}
+
+    for token in output.split():
+        if token != '-pthread':
+            flag, value = token[:2], token[2:]
+            config.setdefault(flags[flag], []).append(value)
+
+    if 'define_macros' in config:
+        macros = [(name, None) for name in config['define_macros']]
+        config['define_macros'] = macros
+
+    return config
 
 # Get the long description from the README file
 with open(path.join(here, 'README.rst'), encoding='utf-8') as f:
@@ -162,16 +188,16 @@ setup(
 		],
 	},
 
-	#cmdclass={
-    #    'develop': PostDevelopCommand,
-    #    'install': PostInstallCommand,
-    #},
+	cmdclass={
+        'develop': PostDevelopCommand,
+        'install': PostInstallCommand,
+    },
 
     ext_modules=[Extension('realhud',
             ['dragonfire/realhud/realhud.c'],
             extra_compile_args=['-g'],
             extra_link_args=['-L/usr/X11R6/lib', '-lXpm', '-lXext', '-lX11', '-lm', '-lGL'],
-            libraries=['cairo']
+            **pkgconfig('gtk+-2.0')
         )
     ]
 )
