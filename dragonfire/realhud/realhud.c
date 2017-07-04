@@ -33,6 +33,8 @@ static GtkWidget *window;
 Display *dpy;
 int screen;
 
+float opacity = 1.0;
+
 static gboolean timer(gpointer user_data)
 {
     GTimeVal time;
@@ -54,7 +56,7 @@ static PyObject* play_gif(PyObject* self, PyObject *args)
 
     char *imgpath;
 
-    if (!PyArg_ParseTuple(args, "s", &imgpath)) {
+    if (!PyArg_ParseTuple(args, "sf", &imgpath, &opacity)) {
       return NULL;
     }
 
@@ -158,7 +160,7 @@ static gboolean expose(GtkWidget *widget, GdkEventExpose *event, gpointer userda
     //    cairo_set_source_rgb (cr, 1.0, 1.0, 1.0); /* opaque white */
 
     /* draw the background */
-    cairo_set_operator (cr, CAIRO_OPERATOR_SOURCE);
+    cairo_set_operator(cr, CAIRO_OPERATOR_IN);
     //cairo_paint (cr);
 
     /* resize the window */
@@ -175,8 +177,8 @@ static gboolean expose(GtkWidget *widget, GdkEventExpose *event, gpointer userda
     /* iterate over the frames of the animation */
     pixbuf = gdk_pixbuf_animation_iter_get_pixbuf(iter);
     //g_timeout_add(1000, pixbuf, NULL);
-    gdk_cairo_set_source_pixbuf (cr, pixbuf, 0, 0);
-    cairo_paint (cr);
+    gdk_cairo_set_source_pixbuf(cr, pixbuf, 0, 0);
+    cairo_paint_with_alpha(cr, opacity);
 
     //gdk_cairo_set_source_pixbuf (cr, pixbuf, 0, 0);
 
