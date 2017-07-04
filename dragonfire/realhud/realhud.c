@@ -9,7 +9,7 @@
 #include <gdk/gdkx.h>
 
 /*
- * This program shows you how to create semi-transparent windows,
+ * This program shows you how to create transparent windows,
  * without any of the historical screenshot hacks. It requires
  * a modern system, with a compositing manager. I use xcompmgr
  * and the nvidia drivers with RenderAccel, and it works well.
@@ -19,11 +19,23 @@
  *
  * gcc alphademo.c -o alphademo $( pkg-config --cflags --libs gtk+-2.0 )
  *
+ * Ancestor of this file:
  * https://web.archive.org/web/20121027002505/http://plan99.net/~mike/files/alphademo.c
+ *
+ * Features added lately to this program are; animated GIF support,
+ * alpha adjustment for images, click-through window support
  *
  * Usage(Python):
  * import realhud
  * realhud.play_gif("/home/mertyildiran/Downloads/pony.gif", 0.5, True)
+ *
+ * Author:
+ * Mehmet Mert Yıldıran     mert.yildiran@bil.omu.edu.tr
+ *
+ * Special thanks to:
+ * Mike Hearn               mike@plan99.net
+ * Uli Schlachter           psychon@znc.in
+ * for their indirect contributions to this program.
  */
 
 int glob_argc;
