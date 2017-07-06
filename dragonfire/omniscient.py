@@ -1,4 +1,3 @@
-from dragonfire.utilities import Data
 import wikipedia
 import spacy
 import collections
@@ -17,8 +16,7 @@ class Engine():
         }
         self.coefficient = {'frequency': 0.27, 'precedence': 0.27, 'proximity': 0.23, 'mention': 0.23}
 
-    def respond(self,com,tts_output=False):
-        userin = Data([" "]," ")
+    def respond(self,com,tts_output=False,userin=None):
         doc = self.nlp(com.decode('utf-8'))
         query = None
         subjects = []

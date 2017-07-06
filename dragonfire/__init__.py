@@ -4,7 +4,7 @@
 #from __future__ import unicode_literals
 import sys
 from lxml import etree
-from dragonfire.utilities import Data
+from dragonfire.utilities import TTA
 from dragonfire.nlplib import Classifiers
 from dragonfire.omniscient import Engine
 from subprocess import call, Popen
@@ -39,6 +39,7 @@ DRAGONFIRE_PATH = os.path.dirname(os.path.abspath(inspect.getfile(inspect.curren
 FNULL = open(os.devnull, 'w')
 GENDER_PREFIX = {'male': 'Sir', 'female': 'My Lady'}
 CONVO_ID = uuid.uuid4()
+userin = TTA()
 learn_ = Learn()
 omniscient_ = Engine()
 
@@ -83,7 +84,7 @@ def command(speech):
 			if "DRAGONFIRE" == com or "DRAGON FIRE" == com or "WAKE UP" == com or com == "HEY":
 				tts_kill()
 				inactive = 0
-				userin = Data([" "]," ")
+				userin.define([" "]," ")
 				words_dragonfire = {
 					0 : "Yes, " + user_prefix + ".",
 					1 : "Yes. I'm waiting.",
@@ -93,7 +94,7 @@ def command(speech):
 			elif "GO TO SLEEP" == com:
 				tts_kill()
 				inactive = 1
-				userin = Data(["echo"],"Dragonfire deactivated. To reactivate say 'Dragonfire!' or 'Wake Up!'")
+				userin.define(["echo"],"Dragonfire deactivated. To reactivate say 'Dragonfire!' or 'Wake Up!'")
 				userin.say("I'm going to sleep")
 				userin.interact(0)
 				previous_command = com
@@ -102,7 +103,7 @@ def command(speech):
 				tts_kill()
 			elif "WHO AM I" == com or "SAY MY NAME" == com:
 				tts_kill()
-				userin = Data([" "], user_full_name)
+				userin.define([" "], user_full_name)
 				userin.say("Your name is " + user_full_name + ", " + user_prefix + ".")
 				userin.interact(0)
 				previous_command = com
@@ -110,13 +111,13 @@ def command(speech):
 				tts_kill()
 				config_file.update({'gender': 'female'}, Query().datatype == 'gender')
 				user_prefix = "My Lady"
-				userin = Data([" "]," ")
+				userin.define([" "]," ")
 				userin.say("Pardon, " + user_prefix + ".")
 			elif "MY TITLE IS SIR" == com or "I'M A MAN" == com or "I'M A BOY" == com:
 				tts_kill()
 				config_file.update({'gender': 'male'}, Query().datatype == 'gender')
 				user_prefix = "Sir"
-				userin = Data([" "]," ")
+				userin.define([" "]," ")
 				userin.say("Pardon, " + user_prefix + ".")
 			elif com.startswith("CALL ME "):
 				tts_kill()
@@ -126,134 +127,134 @@ def command(speech):
 				else:
 					config_file.insert({'datatype': 'callme', 'title': original_com[8:].lower()})
 				user_prefix = original_com[8:].lower().encode("utf8")
-				userin = Data([" "]," ")
+				userin.define([" "]," ")
 				userin.say("Pardon, " + user_prefix + ".")
 			elif "WHAT IS YOUR NAME" == com:
 				tts_kill()
-				userin = Data([" "],"My name is Dragonfire.")
+				userin.define([" "],"My name is Dragonfire.")
 				userin.say("My name is Dragon Fire.")
 				userin.interact(0)
 				previous_command = com
 			elif "WHAT IS YOUR GENDER" == com:
 				tts_kill()
-				userin = Data([" "]," ")
+				userin.define([" "]," ")
 				userin.say("I have a female voice but I don't have a gender identity. I'm a computer program, " + user_prefix + ".")
 				previous_command = com
 			elif "FILE MANAGER" in com or "OPEN FILES" == com:
 				tts_kill()
-				userin = Data(["dolphin"],"File Manager") # KDE neon
+				userin.define(["dolphin"],"File Manager") # KDE neon
 				userin.interact(0)
-				userin = Data(["pantheon-files"],"File Manager") # elementary OS
+				userin.define(["pantheon-files"],"File Manager") # elementary OS
 				userin.interact(0)
-				userin = Data(["nautilus","--browser"],"File Manager") # Ubuntu
+				userin.define(["nautilus","--browser"],"File Manager") # Ubuntu
 				userin.say("File Manager")
 				userin.interact(0)
 				previous_command = com
 			elif "WEB BROWSER" in com:
 				tts_kill()
-				userin = Data(["sensible-browser"],"Web Browser")
+				userin.define(["sensible-browser"],"Web Browser")
 				userin.say("Web Browser")
 				userin.interact(0)
 				previous_command = com
 			elif "OPEN BLENDER" == com:
 				tts_kill()
-				userin = Data(["blender"],"Blender")
+				userin.define(["blender"],"Blender")
 				userin.say("Blender 3D computer graphics software")
 				userin.interact(0)
 				previous_command = com
 			elif "PHOTO SHOP" in com or "PHOTO EDITOR" in com or "GIMP" in com:
 				tts_kill()
-				userin = Data(["gimp"],"GIMP")
+				userin.define(["gimp"],"GIMP")
 				userin.say("Photo editor")
 				userin.interact(0)
 				previous_command = com
 			elif "INKSCAPE" in com or "VECTOR GRAPHICS" in com or "VECTORIAL DRAWING" in com:
 				tts_kill()
-				userin = Data(["inkscape"],"Inkscape")
+				userin.define(["inkscape"],"Inkscape")
 				userin.say("Inkscape")
 				userin.interact(0)
 				previous_command = com
 			elif "VIDEO EDITOR" in com:
 				tts_kill()
-				#userin = Data(["openshot"],"Openshot")
+				#userin.define(["openshot"],"Openshot")
 				#userin.interact(0)
-				#userin = Data(["lightworks"],"Lightworks")
+				#userin.define(["lightworks"],"Lightworks")
 				#userin.interact(0)
-				userin = Data(["kdenlive"],"Kdenlive")
+				userin.define(["kdenlive"],"Kdenlive")
 				userin.say("Video editor")
 				userin.interact(0)
 				previous_command = com
 			elif "OPEN CAMERA" == com:
 				tts_kill()
-				userin = Data(["kamoso"],"Camera") # KDE neon
+				userin.define(["kamoso"],"Camera") # KDE neon
 				userin.interact(0)
-				userin = Data(["snap-photobooth"],"Camera") # elementary OS
+				userin.define(["snap-photobooth"],"Camera") # elementary OS
 				userin.interact(0)
-				userin = Data(["cheese"],"Camera") # Ubuntu
+				userin.define(["cheese"],"Camera") # Ubuntu
 				userin.say("Camera")
 				userin.interact(0)
 				previous_command = com
 			elif "OPEN CALENDAR" == com:
 				tts_kill()
-				userin = Data(["korganizer"],"Calendar") # KDE neon
+				userin.define(["korganizer"],"Calendar") # KDE neon
 				userin.interact(0)
-				userin = Data(["maya-calendar"],"Calendar") # elementary OS
+				userin.define(["maya-calendar"],"Calendar") # elementary OS
 				userin.interact(0)
-				userin = Data(["orage"],"Calendar") # Ubuntu
+				userin.define(["orage"],"Calendar") # Ubuntu
 				userin.say("Calendar")
 				userin.interact(0)
 				previous_command = com
 			elif "OPEN CALCULATOR" == com:
 				tts_kill()
-				userin = Data(["kcalc"],"Calculator") # KDE neon
+				userin.define(["kcalc"],"Calculator") # KDE neon
 				userin.interact(0)
-				userin = Data(["pantheon-calculator"],"Calculator") # elementary OS
+				userin.define(["pantheon-calculator"],"Calculator") # elementary OS
 				userin.interact(0)
-				userin = Data(["gnome-calculator"],"Calculator") # Ubuntu
+				userin.define(["gnome-calculator"],"Calculator") # Ubuntu
 				userin.say("Calculator")
 				userin.interact(0)
 				previous_command = com
 			elif "OPEN STEAM" == com:
 				tts_kill()
-				userin = Data(["steam"],"Steam")
+				userin.define(["steam"],"Steam")
 				userin.say("Steam Game Store")
 				userin.interact(0)
 				previous_command = com
 			elif "SOFTWARE CENTER" in com:
 				tts_kill()
-				userin = Data(["plasma-discover"],"Software Center") # KDE neon
+				userin.define(["plasma-discover"],"Software Center") # KDE neon
 				userin.interact(0)
-				userin = Data(["software-center"],"Software Center") # elementary OS & Ubuntu
+				userin.define(["software-center"],"Software Center") # elementary OS & Ubuntu
 				userin.say("Software Center")
 				userin.interact(0)
 				previous_command = com
 			elif "OFFICE SUITE" in com:
 				tts_kill()
-				userin = Data(["libreoffice"],"LibreOffice")
+				userin.define(["libreoffice"],"LibreOffice")
 				userin.say("Office Suite")
 				userin.interact(0)
 				previous_command = com
 			elif "OPEN WRITER" == com:
 				tts_kill()
-				userin = Data(["libreoffice","--writer"],"LibreOffice Writer")
+				userin.define(["libreoffice","--writer"],"LibreOffice Writer")
 				userin.say("Writer")
 				userin.interact(0)
 				previous_command = com
 			elif "OPEN MATH" == com:
 				tts_kill()
-				userin = Data(["libreoffice","--math"],"LibreOffice Math")
+				userin.define(["libreoffice","--math"],"LibreOffice Math")
 				userin.say("Math")
 				userin.interact(0)
 				previous_command = com
 			elif "OPEN IMPRESS" == com:
 				tts_kill()
-				userin = Data(["libreoffice","--impress"],"LibreOffice Impress")
+				userin.define(["libreoffice","--impress"],"LibreOffice Impress")
 				userin.say("Impress")
 				userin.interact(0)
 				previous_command = com
 			elif "OPEN DRAW" == com:
 				tts_kill()
-				userin = Data(["libreoffice","--draw"],"LibreOffice Draw")
+				userin.define(["libreoffice","--draw"],"LibreOffice Draw")
 				userin.say("Draw")
 				userin.interact(0)
 				previous_command = com
@@ -334,13 +335,13 @@ def command(speech):
 						k.tap_key(" ")
 			elif "SHUTDOWN THE COMPUTER" == com:
 				tts_kill()
-				userin = Data(["sudo","poweroff"],"Shutting down")
+				userin.define(["sudo","poweroff"],"Shutting down")
 				userin.say("Shutting down")
 				userin.interact(3)
 				previous_command = com
 			elif com == "GOODBYE" or com == "BYE BYE" or com == "SEE YOU LATER":
 				tts_kill()
-				userin = Data([" "]," ")
+				userin.define([" "]," ")
 				userin.say("Goodbye, " + user_prefix)
 				previous_command = com
 				julius_proc.terminate()
@@ -362,7 +363,7 @@ def command(speech):
 								wikipage = wikipedia.page(wikipedia.search(search_query)[0])
 								wikicontent = "".join([i if ord(i) < 128 else ' ' for i in wikipage.content])
 								wikicontent = re.sub(r'\([^)]*\)', '', wikicontent)
-								userin = Data(["sensible-browser",wikipage.url],search_query)
+								userin.define(["sensible-browser",wikipage.url],search_query)
 								userin.interact(0)
 								userin.say(wikicontent)
 								previous_command = com
@@ -379,11 +380,11 @@ def command(speech):
 							if len(info['entries']) > 0:
 								youtube_title = info['entries'][0]['title']
 								youtube_url = "https://www.youtube.com/watch?v=%s" % (info['entries'][0]['id'])
-								userin = Data(["sensible-browser",youtube_url],youtube_title)
+								userin.define(["sensible-browser",youtube_url],youtube_title)
 								youtube_title = "".join([i if ord(i) < 128 else ' ' for i in youtube_title])
 							else:
 								youtube_title = "No video found, " + user_prefix + "."
-								userin = Data(" "," ")
+								userin.define(" "," ")
 							userin.say(youtube_title)
 							userin.interact(0)
 							time.sleep(5)
@@ -398,10 +399,10 @@ def command(speech):
 				#dragonfire_respond = kernel.respond(com)
 				aiml_respond = learn_.respond(com)
 				if aiml_respond:
-					userin = Data([" "]," ")
+					userin.define([" "]," ")
 					userin.say(aiml_respond)
 				else:
-					omniscient_.respond(original_com,True)
+					omniscient_.respond(original_com,True,userin)
 				previous_command = com
 
 			#newest = max(glob.iglob('/tmp/' + str(datetime.date.today().year) + '*.[Ww][Aa][Vv]'), key=os.path.getctime)
@@ -438,15 +439,15 @@ def dragon_greet():
 			user_prefix = GENDER_PREFIX[gender]
 
 	if time < datetime.time(12):
-		userin = Data(["echo"],"To activate say 'Dragonfire!' or 'Wake Up!'")
+		userin.define(["echo"],"To activate say 'Dragonfire!' or 'Wake Up!'")
 		userin.say("Good morning " + user_prefix)
 		userin.interact(0)
 	elif datetime.time(12) < time  and time < datetime.time(18):
-		userin = Data(["echo"],"To activate say 'Dragonfire!' or 'Wake Up!'")
+		userin.define(["echo"],"To activate say 'Dragonfire!' or 'Wake Up!'")
 		userin.say("Good afternoon " + user_prefix)
 		userin.interact(0)
 	else:
-		userin = Data(["echo"],"To activate say 'Dragonfire!' or 'Wake Up!'")
+		userin.define(["echo"],"To activate say 'Dragonfire!' or 'Wake Up!'")
 		userin.say("Good evening " + user_prefix)
 		userin.interact(0)
 
@@ -465,7 +466,7 @@ def google_speech_api():
 
 def speech_error():
 	tts_kill()
-	userin = Data(["echo"],"An error occurred")
+	userin.define(["echo"],"An error occurred")
 	userin.say("I couldn't understand, please repeat again")
 	userin.interact(0)
 
