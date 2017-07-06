@@ -27,7 +27,8 @@
  *
  * Usage(Python):
  * import realhud
- * realhud.play_gif("/home/mertyildiran/Downloads/pony.gif", 0.5, True)
+ * realhud.load_gif("/home/mertyildiran/Downloads/example.gif")
+ * realhud.play_gif(0.5, True)
  *
  * Author:
  * Mehmet Mert Yıldıran     mert.yildiran@bil.omu.edu.tr
@@ -35,6 +36,7 @@
  * Special thanks to:
  * Mike Hearn               mike@plan99.net
  * Uli Schlachter           psychon@znc.in
+ * Phillip Berndt           phillip.berndt@googlemail.com
  * for their indirect contributions to this program.
  */
 
@@ -53,7 +55,6 @@ int screen;
 
 char *imgpath;
 float opacity = 1.0;
-PyObject *is_click_through_arg;
 int is_click_through;
 
 static gboolean timer(gpointer user_data)
@@ -62,11 +63,29 @@ static gboolean timer(gpointer user_data)
     g_get_current_time(&time);
     gdk_pixbuf_animation_iter_advance(iter, &time);
     if (gdk_pixbuf_animation_iter_on_currently_loading_frame(iter)) {
-        exit(1);
+        gtk_widget_destroy(window);
+        gtk_main_quit();
+        return FALSE;
     }
     g_timeout_add(gdk_pixbuf_animation_iter_get_delay_time(iter), timer, NULL);
     gtk_widget_queue_draw(window);
     return FALSE;
+}
+
+static PyObject* load_gif(PyObject* self, PyObject *args)
+{
+    /* parse the arguments */
+    if (!PyArg_ParseTuple(args, "s", &imgpath)) {
+        return NULL;
+    }
+
+    if (imgpath == NULL) {
+        fprintf(stderr, "usage: see image.png\n");
+        exit(1);
+    }
+    pixbuf_animation = gdk_pixbuf_animation_new_from_file(imgpath, NULL);
+
+    Py_RETURN_NONE;
 }
 
 static PyObject* play_gif(PyObject* self, PyObject *args)
@@ -79,9 +98,10 @@ static PyObject* play_gif(PyObject* self, PyObject *args)
     }
     screen = DefaultScreen(dpy);
 
+    PyObject *is_click_through_arg;
     /* parse the arguments */
-    if (!PyArg_ParseTuple(args, "sfO", &imgpath, &opacity, &is_click_through_arg)) {
-      return NULL;
+    if (!PyArg_ParseTuple(args, "fO", &opacity, &is_click_through_arg)) {
+        return NULL;
     }
 
     /* determine if it's click-through */
@@ -89,12 +109,6 @@ static PyObject* play_gif(PyObject* self, PyObject *args)
 
     /* boilerplate initialization code */
     gtk_init(&glob_argc, &glob_argv);
-
-    if (imgpath == NULL) {
-        fprintf(stderr, "usage: see image.png\n");
-        exit(1);
-    }
-    pixbuf_animation = gdk_pixbuf_animation_new_from_file (imgpath, NULL);
 
     GTimeVal time;
     g_get_current_time(&time);
@@ -143,7 +157,7 @@ static PyObject* play_gif(PyObject* self, PyObject *args)
     gtk_widget_show_all(window);
     gtk_main();
 
-    return 0;
+    Py_RETURN_NONE;
 }
 
 
@@ -239,6 +253,7 @@ static void clicked(GtkWindow *win, GdkEventButton *event, gpointer user_data)
 }
 
 static PyMethodDef realhud_funcs[] = {
+    {"load_gif", (PyCFunction)load_gif, METH_VARARGS, NULL},
     {"play_gif", (PyCFunction)play_gif, METH_VARARGS, NULL},
     {NULL}
 };
