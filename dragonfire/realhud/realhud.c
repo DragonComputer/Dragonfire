@@ -61,6 +61,9 @@ static gboolean timer(gpointer user_data)
     GTimeVal time;
     g_get_current_time(&time);
     gdk_pixbuf_animation_iter_advance(iter, &time);
+    if (gdk_pixbuf_animation_iter_on_currently_loading_frame(iter)) {
+        exit(1);
+    }
     g_timeout_add(gdk_pixbuf_animation_iter_get_delay_time(iter), timer, NULL);
     gtk_widget_queue_draw(window);
     return FALSE;
