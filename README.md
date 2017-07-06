@@ -4,7 +4,7 @@ Dragonfire is an open source virtual assistant project for Ubuntu based Linux di
 
 ![Dragonfire](https://raw.githubusercontent.com/mertyildiran/Dragonfire/master/docs/img/dragonfire.gif)
 
-<p align="center"><i>Dragonfire will never leave your questions unanswered.</i></p>
+<p align="center"><sup>*Thanks to Jassu Ilama for this beautiful 3D modelling and material design.*</sup></p>
 
 <p align="center"><b>Dragonfire is not The Next Big Thing but a spectacular combination of freely available technologies.</b></p>
 
