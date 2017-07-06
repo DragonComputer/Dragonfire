@@ -5,15 +5,23 @@ from sys import stdout
 import subprocess
 import time
 import os
+import inspect
+import realhud
 
+DRAGONFIRE_PATH = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 FNULL = open(os.devnull, 'w')
 
 songRunning = False
-class Data:
-	def __init__(self, com="", msg="", sp="False"):
+class TTA:
+
+	def __init__(self):
+		pass
+
+	def define(self, com="", msg="", sp="False"):
 		self.command = com
 		self.message = msg
 		self.speak = sp
+
 	def interact(self,duration):
 		try:
 			subprocess.Popen(["notify-send","Dragonfire", self.message])
@@ -28,6 +36,7 @@ class Data:
 		#if self.speak == True:
 		#	self.say(self.message)
 		#else:
+
 	def say(self,message,dynamic=False,end=False):
 		#if songRunning == True:
 		#	subprocess.Popen(["rhythmbox-client","--pause"])
@@ -49,9 +58,11 @@ class Data:
 		#proc.wait()
 		#if songRunning == True:
 		#	subprocess.Popen(["rhythmbox-client","--play"])
+
 	def espeak(self,message):
 		subprocess.Popen(["espeak","-v","en-uk-north",message])
 
 if __name__ == "__main__":
-	userin = Data([" "]," ")
+	userin = TTA()
+	userin.define([" "]," ")
 	userin.say("I have a female voice but I don't have a gender identity. I'm a computer program.")
