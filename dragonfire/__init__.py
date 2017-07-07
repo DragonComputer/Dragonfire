@@ -95,8 +95,8 @@ def command(speech):
 				tts_kill()
 				inactive = 1
 				userin.define(["echo"],"Dragonfire deactivated. To reactivate say 'Dragonfire!' or 'Wake Up!'")
+				userin.execute(0)
 				userin.say("I'm going to sleep")
-				userin.interact(0)
 				previous_command = com
 			elif "ENOUGH" == com or "SHUT UP" == com:
 				print "Dragonfire quiets."
@@ -104,8 +104,8 @@ def command(speech):
 			elif "WHO AM I" == com or "SAY MY NAME" == com:
 				tts_kill()
 				userin.define([" "], user_full_name)
+				userin.execute(0)
 				userin.say("Your name is " + user_full_name + ", " + user_prefix + ".")
-				userin.interact(0)
 				previous_command = com
 			elif "MY TITLE IS LADY" == com or "I'M A LADY" == com or "I'M A WOMAN" == com or "I'M A GIRL" == com:
 				tts_kill()
@@ -132,8 +132,8 @@ def command(speech):
 			elif "WHAT IS YOUR NAME" == com:
 				tts_kill()
 				userin.define([" "],"My name is Dragonfire.")
+				userin.execute(0)
 				userin.say("My name is Dragon Fire.")
-				userin.interact(0)
 				previous_command = com
 			elif "WHAT IS YOUR GENDER" == com:
 				tts_kill()
@@ -143,120 +143,120 @@ def command(speech):
 			elif "FILE MANAGER" in com or "OPEN FILES" == com:
 				tts_kill()
 				userin.define(["dolphin"],"File Manager") # KDE neon
-				userin.interact(0)
+				userin.execute(0)
 				userin.define(["pantheon-files"],"File Manager") # elementary OS
-				userin.interact(0)
+				userin.execute(0)
 				userin.define(["nautilus","--browser"],"File Manager") # Ubuntu
+				userin.execute(0)
 				userin.say("File Manager")
-				userin.interact(0)
 				previous_command = com
 			elif "WEB BROWSER" in com:
 				tts_kill()
 				userin.define(["sensible-browser"],"Web Browser")
+				userin.execute(0)
 				userin.say("Web Browser")
-				userin.interact(0)
 				previous_command = com
 			elif "OPEN BLENDER" == com:
 				tts_kill()
 				userin.define(["blender"],"Blender")
+				userin.execute(0)
 				userin.say("Blender 3D computer graphics software")
-				userin.interact(0)
 				previous_command = com
 			elif "PHOTO SHOP" in com or "PHOTO EDITOR" in com or "GIMP" in com:
 				tts_kill()
 				userin.define(["gimp"],"GIMP")
+				userin.execute(0)
 				userin.say("Photo editor")
-				userin.interact(0)
 				previous_command = com
 			elif "INKSCAPE" in com or "VECTOR GRAPHICS" in com or "VECTORIAL DRAWING" in com:
 				tts_kill()
 				userin.define(["inkscape"],"Inkscape")
+				userin.execute(0)
 				userin.say("Inkscape")
-				userin.interact(0)
 				previous_command = com
 			elif "VIDEO EDITOR" in com:
 				tts_kill()
 				#userin.define(["openshot"],"Openshot")
-				#userin.interact(0)
+				#userin.execute(0)
 				#userin.define(["lightworks"],"Lightworks")
-				#userin.interact(0)
+				#userin.execute(0)
 				userin.define(["kdenlive"],"Kdenlive")
+				userin.execute(0)
 				userin.say("Video editor")
-				userin.interact(0)
 				previous_command = com
 			elif "OPEN CAMERA" == com:
 				tts_kill()
 				userin.define(["kamoso"],"Camera") # KDE neon
-				userin.interact(0)
+				userin.execute(0)
 				userin.define(["snap-photobooth"],"Camera") # elementary OS
-				userin.interact(0)
+				userin.execute(0)
 				userin.define(["cheese"],"Camera") # Ubuntu
+				userin.execute(0)
 				userin.say("Camera")
-				userin.interact(0)
 				previous_command = com
 			elif "OPEN CALENDAR" == com:
 				tts_kill()
 				userin.define(["korganizer"],"Calendar") # KDE neon
-				userin.interact(0)
+				userin.execute(0)
 				userin.define(["maya-calendar"],"Calendar") # elementary OS
-				userin.interact(0)
+				userin.execute(0)
 				userin.define(["orage"],"Calendar") # Ubuntu
+				userin.execute(0)
 				userin.say("Calendar")
-				userin.interact(0)
 				previous_command = com
 			elif "OPEN CALCULATOR" == com:
 				tts_kill()
 				userin.define(["kcalc"],"Calculator") # KDE neon
-				userin.interact(0)
+				userin.execute(0)
 				userin.define(["pantheon-calculator"],"Calculator") # elementary OS
-				userin.interact(0)
+				userin.execute(0)
 				userin.define(["gnome-calculator"],"Calculator") # Ubuntu
+				userin.execute(0)
 				userin.say("Calculator")
-				userin.interact(0)
 				previous_command = com
 			elif "OPEN STEAM" == com:
 				tts_kill()
 				userin.define(["steam"],"Steam")
+				userin.execute(0)
 				userin.say("Steam Game Store")
-				userin.interact(0)
 				previous_command = com
 			elif "SOFTWARE CENTER" in com:
 				tts_kill()
 				userin.define(["plasma-discover"],"Software Center") # KDE neon
-				userin.interact(0)
+				userin.execute(0)
 				userin.define(["software-center"],"Software Center") # elementary OS & Ubuntu
+				userin.execute(0)
 				userin.say("Software Center")
-				userin.interact(0)
 				previous_command = com
 			elif "OFFICE SUITE" in com:
 				tts_kill()
 				userin.define(["libreoffice"],"LibreOffice")
+				userin.execute(0)
 				userin.say("Office Suite")
-				userin.interact(0)
 				previous_command = com
 			elif "OPEN WRITER" == com:
 				tts_kill()
 				userin.define(["libreoffice","--writer"],"LibreOffice Writer")
+				userin.execute(0)
 				userin.say("Writer")
-				userin.interact(0)
 				previous_command = com
 			elif "OPEN MATH" == com:
 				tts_kill()
 				userin.define(["libreoffice","--math"],"LibreOffice Math")
+				userin.execute(0)
 				userin.say("Math")
-				userin.interact(0)
 				previous_command = com
 			elif "OPEN IMPRESS" == com:
 				tts_kill()
 				userin.define(["libreoffice","--impress"],"LibreOffice Impress")
+				userin.execute(0)
 				userin.say("Impress")
-				userin.interact(0)
 				previous_command = com
 			elif "OPEN DRAW" == com:
 				tts_kill()
 				userin.define(["libreoffice","--draw"],"LibreOffice Draw")
+				userin.execute(0)
 				userin.say("Draw")
-				userin.interact(0)
 				previous_command = com
 			elif com.startswith("KEYBOARD "):
 				tts_kill()
@@ -337,7 +337,7 @@ def command(speech):
 				tts_kill()
 				userin.define(["sudo","poweroff"],"Shutting down")
 				userin.say("Shutting down")
-				userin.interact(3)
+				userin.execute(3)
 				previous_command = com
 			elif com == "GOODBYE" or com == "BYE BYE" or com == "SEE YOU LATER":
 				tts_kill()
@@ -364,7 +364,7 @@ def command(speech):
 								wikicontent = "".join([i if ord(i) < 128 else ' ' for i in wikipage.content])
 								wikicontent = re.sub(r'\([^)]*\)', '', wikicontent)
 								userin.define(["sensible-browser",wikipage.url],search_query)
-								userin.interact(0)
+								userin.execute(0)
 								userin.say(wikicontent)
 								previous_command = com
 							except:
@@ -385,8 +385,8 @@ def command(speech):
 							else:
 								youtube_title = "No video found, " + user_prefix + "."
 								userin.define(" "," ")
+							userin.execute(0)
 							userin.say(youtube_title)
-							userin.interact(0)
 							time.sleep(5)
 							k = PyKeyboard()
 							k.tap_key(k.tab_key)
@@ -440,16 +440,16 @@ def dragon_greet():
 
 	if time < datetime.time(12):
 		userin.define(["echo"],"To activate say 'Dragonfire!' or 'Wake Up!'")
+		userin.execute(0)
 		userin.say("Good morning " + user_prefix)
-		userin.interact(0)
 	elif datetime.time(12) < time  and time < datetime.time(18):
 		userin.define(["echo"],"To activate say 'Dragonfire!' or 'Wake Up!'")
+		userin.execute(0)
 		userin.say("Good afternoon " + user_prefix)
-		userin.interact(0)
 	else:
 		userin.define(["echo"],"To activate say 'Dragonfire!' or 'Wake Up!'")
+		userin.execute(0)
 		userin.say("Good evening " + user_prefix)
-		userin.interact(0)
 
 def google_speech_api():
 
@@ -467,8 +467,8 @@ def google_speech_api():
 def speech_error():
 	tts_kill()
 	userin.define(["echo"],"An error occurred")
+	userin.execute(0)
 	userin.say("I couldn't understand, please repeat again")
-	userin.interact(0)
 
 @contextlib.contextmanager
 def nostdout():
@@ -510,7 +510,7 @@ if __name__ == '__main__':
 		inactive = 1
 		dragon_greet()
 		# padsp julius -input mic -C julian.jconf | ./getcommand.py
-		sys.stdin = subprocess.Popen(["padsp", "julius", "-input", "mic", "-C", DRAGONFIRE_PATH + "julian.jconf"], stdout=subprocess.PIPE).stdout
+		sys.stdin = subprocess.Popen(["padsp", "julius", "-input", "mic", "-C", DRAGONFIRE_PATH + "/julian.jconf"], stdout=subprocess.PIPE).stdout
 		command(sys.stdin)
 	except:
 		sys.exit(1)

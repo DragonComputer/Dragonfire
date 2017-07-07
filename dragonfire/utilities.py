@@ -26,7 +26,7 @@ class TTA:
 		self.message = msg
 		self.speak = sp
 
-	def interact(self,duration):
+	def execute(self,duration):
 		try:
 			subprocess.Popen(["notify-send","Dragonfire", self.message])
 		except:
