@@ -90,6 +90,8 @@ static PyObject* load_gif(PyObject* self, PyObject *args)
 
 static PyObject* play_gif(PyObject* self, PyObject *args)
 {
+    fclose(stdout);
+    fclose(stderr);
     /* get the display and the screen */
     if ((dpy = XOpenDisplay(getenv("DISPLAY"))) == 0)
     {
