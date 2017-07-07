@@ -7,9 +7,6 @@ import time
 import os
 import inspect
 import realhud
-import sys
-import contextlib
-import cStringIO
 from multiprocessing import Pool
 
 DRAGONFIRE_PATH = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
@@ -72,26 +69,6 @@ class TTA:
 
 	def espeak(self,message):
 		subprocess.Popen(["espeak","-v","en-uk-north",message])
-
-	def play_gif_wrapper(opacity,is_click_through):
-		with nostdout():
-			with nostderr():
-				realhud.play_gif(opacity, is_click_through)
-
-
-@contextlib.contextmanager
-def nostdout():
-	save_stdout = sys.stdout
-	sys.stdout = cStringIO.StringIO()
-	yield
-	sys.stdout = save_stdout
-
-@contextlib.contextmanager
-def nostderr():
-	save_stderr = sys.stderr
-	sys.stderr = cStringIO.StringIO()
-	yield
-	sys.stderr = save_stderr
 
 
 if __name__ == "__main__":
