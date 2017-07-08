@@ -171,6 +171,7 @@ setup(
 		'': ['*.term'],
 		'': ['*.voca'],
 		'': ['*.aiml'],
+        '': ['*.gif']
 	},
 
 	# Although 'package_data' is the preferred approach, in some case you may
