@@ -32,6 +32,7 @@ class PostDevelopCommand(develop):
         nltk.download("names")
         nltk.download("brown")
         nltk.download('wordnet')
+        check_call("apt-get -y install python-pyaudio python-scipy python-qt4 python-tk".split()) # dependencies for SpeechRecognition (only development)
         develop.run(self)
 
 class PostInstallCommand(install):
@@ -154,7 +155,7 @@ setup(
 	# for example:
 	# $ pip install -e .[dev,test]
 	extras_require={
-        'optionals': ['egenix-mx-base','lxml','nltk','pyaudio','httplib2>=0.9.1']
+        'optionals': ['egenix-mx-base','lxml','nltk','pyaudio','httplib2>=0.9.1','imutils','pyqtgraph']
     },
 
 	# If there are data files included in your packages that need to be
