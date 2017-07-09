@@ -20,7 +20,7 @@ RATE = 44100 # Bit Rate of audio stream / Frame Rate
 THRESHOLD = 1000 # Threshhold value for detecting stimulant
 SILENCE_DETECTION = 5 # Wait number of frames to decide whether it fell silent or not
 EMPTY_CHUNK = chr(int('000000', 2)) * CHUNK * 4 # Create an empty unit of audio for just once
-WAVE_OUTPUT_FILENAME = "hearing/memory/" +  str(datetime.date.today()) + ".wav" # Example path if saving needed
+WAVE_OUTPUT_FILENAME = "/tmp/" +  str(datetime.date.today()) + ".wav" # Example path if saving needed
 root = Tkinter.Tk()
 SCREEN_WIDTH = root.winfo_screenwidth()
 SCREEN_HEIGHT = root.winfo_screenheight()
@@ -50,7 +50,7 @@ class SpeechRecognition():
 		wf.writeframes(previous_wav + b''.join(frames)) # Write the all frames including previous ones
 		wf.close() # Close the session
 
-	# A function that will compute frequency of chunk with Fourier Transform
+	# A function that will compute frequency of chunk using Fourier Transform
 	@staticmethod
 	def find_frequency(data):
 		T = 1.0/RATE # Reciprocal of Bit Rate
@@ -88,7 +88,7 @@ class SpeechRecognition():
 			except IndexError: # If we are getting an IndexError because of this -> thresh_frames[-1:][0]
 				pw.plot(x=f,y=Pxx, clear=True, pen=pg.mkPen('w', width=1.0, style=QtCore.Qt.SolidLine)) # Then plot with white pen
 			pg.QtGui.QApplication.processEvents() # ???
-			time.sleep(0.05) # Wait a few miliseconds
+			time.sleep(0.016) # Wait a few miliseconds
 
 	# A function that will draw a waveform graphic to screen (PyQtGraph)
 	@staticmethod
@@ -112,7 +112,7 @@ class SpeechRecognition():
 			pw.addItem(text) # Display seconds according to number of total frames
 			text.setPos(500, 0) # Set text position
 			pg.QtGui.QApplication.processEvents()
-			time.sleep(0.05) # Wait a few miliseconds
+			time.sleep(0.016) # Wait a few miliseconds
 
 	# MAIN CODE BLOCK
 	@staticmethod
@@ -138,10 +138,10 @@ class SpeechRecognition():
 						rate=wf.getframerate(),
 						output=True)
 
-		hearing_manager = multiprocessing.Manager() # Shared memory space manager
-		memory_data = [] # Define memory data array
-		all_frames = hearing_manager.list() # Define all_frames array in shared memory
-		thresh_frames = hearing_manager.list() # Define thresh_frames array in shared memory
+		shared_memory = multiprocessing.Manager() # Shared memory space manager
+		clause_data = [] # Define clause data array
+		all_frames = shared_memory.list() # Define all_frames array in shared memory
+		thresh_frames = shared_memory.list() # Define thresh_frames array in shared memory
 
 		if audio_input == "0":
 			data = stream.read(CHUNK) # Get first data frame from .wav file
@@ -172,12 +172,12 @@ class SpeechRecognition():
 
 			rms = audioop.rms(data, 2) # Calculate Root Mean Square of current chunk
 			if rms >= THRESHOLD: # If Root Mean Square value is greater than THRESHOLD constant
-				starting_time = datetime.datetime.now() # Starting time of the memory
+				starting_time = datetime.datetime.now() # Starting time of the clause
 				thresh_frames.pop() # Pop out last frame of thresh frames
 				thresh_frames.pop() # Pop out last frame of thresh frames
-				memory_data.append(previous_data) # Append previous chunk to memory data
+				clause_data.append(previous_data) # Append previous chunk to clause data
 				thresh_frames.append(previous_data) # APpend previos chunk to thresh frames
-				memory_data.append(data) # Append current chunk to memory data
+				clause_data.append(data) # Append current chunk to clause data
 				thresh_frames.append(data) # Append current chunk to thresh frames
 				silence_counter = 0 # Define silence counter
 				while silence_counter < SILENCE_DETECTION: # While silence counter value less than SILENCE_DETECTION constant
@@ -189,7 +189,7 @@ class SpeechRecognition():
 						data = wf.readframes(CHUNK) # Read a new chunk from the stream
 
 					all_frames.append(data) # Append this chunk to all frames
-					memory_data.append(data) # Append this chunk to memory data
+					clause_data.append(data) # Append this chunk to clause data
 					thresh_frames.append(data) # Append this chunk to thresh frames
 					rms = audioop.rms(data, 2) # Calculate Root Mean Square of current chunk again
 
@@ -198,14 +198,15 @@ class SpeechRecognition():
 					else: # Else
 						silence_counter = 0 # Assign zero value to silence counter
 
-				del memory_data[-(SILENCE_DETECTION-2):] # Delete last frames of memory data as much as SILENCE_DETECTION constant
+				del clause_data[-(SILENCE_DETECTION-2):] # Delete last frames of clause data as much as SILENCE_DETECTION constant
 				del thresh_frames[-(SILENCE_DETECTION-2):] # Delete last frames of thresh frames as much as SILENCE_DETECTION constant
 				for i in range(SILENCE_DETECTION-2): # SILENCE_DETECTION constant times
 					thresh_frames.append(EMPTY_CHUNK) # Append an EMPTY_CHUNK
-				ending_time = datetime.datetime.now() # Ending time of the memory
+				ending_time = datetime.datetime.now() # Ending time of the clause
 
-				memory_data = ''.join(memory_data)
-				memory_data = [] # Empty memory data
+				clause_data = ''.join(clause_data)
+				# Handle/Use clause_data
+				clause_data = [] # Empty clause data
 
 		process1.terminate() # Terminate draw waveform process
 		process2.terminate() # Terminate drar spectrum analyzer process
