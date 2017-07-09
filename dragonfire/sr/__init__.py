@@ -11,7 +11,6 @@ import imutils # A series of convenience functions to make basic image processin
 import pyqtgraph as pg # A pure-python graphics and GUI library built on PyQt4 / PySide and numpy
 from PyQt4 import QtCore, QtGui # A comprehensive set of Python bindings for Digia's Qt cross platform GUI toolkit.
 import time # Provides various time-related functions.
-from cerebrum.hearing.utilities import HearingMemoryUtil # BUILT-IN Memory operations package
 import Tkinter
 
 CHUNK = 1024 # Smallest unit of audio. 1024 bytes
@@ -26,7 +25,7 @@ root = Tkinter.Tk()
 SCREEN_WIDTH = root.winfo_screenwidth()
 SCREEN_HEIGHT = root.winfo_screenheight()
 
-class HearingPerception():
+class SpeechRecognition():
 
 	# A function that will save recordings to a file
 	@staticmethod
@@ -78,7 +77,7 @@ class HearingPerception():
 			pw.setXRange(-(RATE/16), (RATE/16), padding=0) # Set X range of graph relative to Bit Rate
 			pwAxis = pw.getAxis("bottom") # Get bottom axis
 			pwAxis.setLabel("Frequency [Hz]") # Set bottom axis label
-			f, Pxx = HearingPerception.find_frequency(data) # Call find frequency function
+			f, Pxx = SpeechRecognition.find_frequency(data) # Call find frequency function
 			f = f.tolist() # Numpy array to list
 			Pxx = (numpy.absolute(Pxx)).tolist() # Numpy array to list
 			try: # Try this block
@@ -117,7 +116,7 @@ class HearingPerception():
 
 	# MAIN CODE BLOCK
 	@staticmethod
-	def start(audio_input, hearing_perception_stimulated):
+	def start(audio_input):
 
 		if audio_input == "0":
 			pass
@@ -152,10 +151,10 @@ class HearingPerception():
 		all_frames.append(data) # Append to all frames
 		thresh_frames.append(EMPTY_CHUNK) # Append an EMPTY CHUNK to thresh frames
 
-		process1 = multiprocessing.Process(target=HearingPerception.draw_waveform, args=(all_frames, thresh_frames)) # Define draw waveform process
+		process1 = multiprocessing.Process(target=SpeechRecognition.draw_waveform, args=(all_frames, thresh_frames)) # Define draw waveform process
 		process1.start() # Start draw waveform process
 
-		process2 = multiprocessing.Process(target=HearingPerception.draw_spectrum_analyzer, args=(all_frames, thresh_frames)) # Define draw spectrum analyzer process
+		process2 = multiprocessing.Process(target=SpeechRecognition.draw_spectrum_analyzer, args=(all_frames, thresh_frames)) # Define draw spectrum analyzer process
 		process2.start() # Start drar spectrum analyzer process
 
 		# Loop over the frames of the audio / data chunks
@@ -174,7 +173,6 @@ class HearingPerception():
 			rms = audioop.rms(data, 2) # Calculate Root Mean Square of current chunk
 			if rms >= THRESHOLD: # If Root Mean Square value is greater than THRESHOLD constant
 				starting_time = datetime.datetime.now() # Starting time of the memory
-				hearing_perception_stimulated.value = 1 # Hearing perception stimulated
 				thresh_frames.pop() # Pop out last frame of thresh frames
 				thresh_frames.pop() # Pop out last frame of thresh frames
 				memory_data.append(previous_data) # Append previous chunk to memory data
@@ -205,12 +203,8 @@ class HearingPerception():
 				for i in range(SILENCE_DETECTION-2): # SILENCE_DETECTION constant times
 					thresh_frames.append(EMPTY_CHUNK) # Append an EMPTY_CHUNK
 				ending_time = datetime.datetime.now() # Ending time of the memory
-				hearing_perception_stimulated.value = 0 # Hearing perception NOT stimulated
 
 				memory_data = ''.join(memory_data)
-				#HearingMemoryUtil.add_memory(memory_data, starting_time, ending_time)
-				process3 = multiprocessing.Process(target=HearingMemoryUtil.add_memory, args=(memory_data, starting_time, ending_time)) # Define write memory process
-				process3.start() # Start write memory process
 				memory_data = [] # Empty memory data
 
 		process1.terminate() # Terminate draw waveform process
@@ -218,3 +212,12 @@ class HearingPerception():
 		stream.stop_stream() # Stop the stream
 		stream.close() # Close the stream
 		p.terminate() # Terminate the session
+
+
+if __name__ == "__main__":
+	import argparse # Makes it easy to write user-friendly command-line interfaces.
+	ap = argparse.ArgumentParser() # Define an Argument Parser
+	ap.add_argument("-a", "--audio", help="path to the audio file") # Add --audio argument
+	args = vars(ap.parse_args()) # Parse the arguments
+
+	SpeechRecognition.start(args["audio"])
