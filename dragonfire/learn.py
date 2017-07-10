@@ -1,6 +1,3 @@
-import sys
-import contextlib
-import cStringIO
 from random import randint
 import collections
 import pkg_resources
@@ -118,27 +115,6 @@ class Learn():
 		if 'YOURSELF' in subject:
 			return subject.replace('YOURSELF','YOU')
 
-def noanswer(user_prefix):
-	words_dragonfire = {
-	0 : "I'm not that smart, " + user_prefix + ".",
-	1 : "Please, be simple.",
-	2 : "Excuse me? I have an average IQ."
-	}
-	return words_dragonfire[randint(0,2)]
-
-@contextlib.contextmanager
-def nostdout():
-	save_stdout = sys.stdout
-	sys.stdout = cStringIO.StringIO()
-	yield
-	sys.stdout = save_stdout
-
-@contextlib.contextmanager
-def nostderr():
-	save_stderr = sys.stderr
-	sys.stderr = cStringIO.StringIO()
-	yield
-	sys.stderr = save_stderr
 
 if __name__ == "__main__":
 	learn_ = Learn()
