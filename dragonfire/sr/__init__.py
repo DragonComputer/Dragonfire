@@ -11,8 +11,8 @@ import imutils # A series of convenience functions to make basic image processin
 import pyqtgraph as pg # A pure-python graphics and GUI library built on PyQt4 / PySide and numpy
 from PyQt4 import QtCore, QtGui # A comprehensive set of Python bindings for Digia's Qt cross platform GUI toolkit.
 import time # Provides various time-related functions.
-import Tkinter
-import peakutils.peak
+import Tkinter # Python's de-facto standard GUI (Graphical User Interface) package
+import peakutils.peak # Peak detection utilities for 1D data
 
 CHUNK = 1024 # Smallest unit of audio. 1024 bytes
 FORMAT = pyaudio.paInt16 # Data format
@@ -68,22 +68,22 @@ class SpeechRecognition():
 		time.sleep(1) # Wait just one second
 		pw = pg.plot(title="Spectrum Analyzer") # Window title
 		pg.setConfigOptions(antialias=True) # Enable antialias for better resolution
-		pw.win.resize(800, 300) # Define window size
-		pw.win.move(540 * SCREEN_WIDTH / 1920, 500 * SCREEN_HEIGHT / 1080) # Define window position
+		pw.win.resize(1600, 300) # Define window size
+		pw.win.move(160 * SCREEN_WIDTH / 1920, 500 * SCREEN_HEIGHT / 1080) # Define window position
 		while True: # Loop over the frames of the audio / data chunks
 			data = ''.join(all_frames[-1:]) # Get only the last frame of all frames
 			data = numpy.fromstring(data, 'int16') # Binary string to numpy int16 data format
 			pw.setMouseEnabled(y=False) # Disable mouse
 			pw.setYRange(0,1000) # Set Y range of graph
-			pw.setXRange(-(RATE/16), (RATE/16), padding=0) # Set X range of graph relative to Bit Rate
+			pw.setXRange(-(RATE/2), (RATE/2), padding=0) # Set X range of graph relative to Bit Rate
 			pwAxis = pw.getAxis("bottom") # Get bottom axis
 			pwAxis.setLabel("Frequency [Hz]") # Set bottom axis label
-			f, Pxx = SpeechRecognition.find_frequency(data) # Call find frequency function
+			f, Pxx = SpeechRecognition.find_frequency(data) # Call find frequency function. f is frequency, Pxx is amplitude.
 			Pxx = numpy.absolute(Pxx) # Calculate the absolute value element-wise. (complex input a + ib to sqrt(a^2 + b^2))
-			peak_indexes = peakutils.peak.indexes(Pxx, thres=7.0/max(Pxx), min_dist=40)
-			peak_indexes = peak_indexes.tolist()
-			peak_values = list(Pxx[peak_indexes])
-			peak_indexes = list(f[peak_indexes])
+			peak_indexes = peakutils.peak.indexes(Pxx, thres=50.0/max(Pxx), min_dist=5) # Find the peaks. thres (amplitude threshold) is a rational value in here like 10/2000 on y-axis. min_dist is the minimum distance criteria for the peaks on x-axis.
+			peak_indexes = peak_indexes.tolist() # Numpy array to list
+			peak_values = list(Pxx[peak_indexes]) # Automatically map into list using peak indexes
+			peak_indexes = list(f[peak_indexes]) # Automatically map into list using peak indexes
 			f = f.tolist() # Numpy array to list
 			Pxx = Pxx.tolist() # Numpy array to list
 			try: # Try this block
@@ -91,8 +91,8 @@ class SpeechRecognition():
 					pw.plot(x=f,y=Pxx, clear=True, pen=pg.mkPen('w', width=1.0, style=QtCore.Qt.SolidLine)) # Then plot with white pen
 				else: # If last thresh frame is not equal to EMPTY CHUNK
 					pw.plot(x=f,y=Pxx, clear=True, pen=pg.mkPen('y', width=1.0, style=QtCore.Qt.SolidLine)) # Then plot with yellow pen
-					pw.plot(x=peak_indexes, y=peak_values, pen=None, symbol='t')
-					pw.plot(x=peak_indexes, y=peak_values, pen=pg.mkPen('b', width=0.5, style=QtCore.Qt.SolidLine))
+					pw.plot(x=peak_indexes, y=peak_values, pen=None, symbol='t') # Draw a scatter plot to the peak points
+					pw.plot(x=peak_indexes, y=peak_values, pen=pg.mkPen('b', width=0.5, style=QtCore.Qt.SolidLine)) # Draw faint lines between the peak poits
 			except IndexError: # If we are getting an IndexError because of this -> thresh_frames[-1:][0]
 				pw.plot(x=f,y=Pxx, clear=True, pen=pg.mkPen('w', width=1.0, style=QtCore.Qt.SolidLine)) # Then plot with white pen
 			pg.QtGui.QApplication.processEvents() # ???

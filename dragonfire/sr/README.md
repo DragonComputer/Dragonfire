@@ -1,11 +1,11 @@
 # SpeechRecognition
 
 <p align="center">
-	![SpectrumAnalyzer](http://i.imgur.com/pp33AYX.png)
+	<img src="http://i.imgur.com/pp33AYX.png" alt="SpectrumAnalyzer"/>
 </p>
 
 <p align="center">
-	![Waveform](http://i.imgur.com/gGsooR6.png)
+	<img src="http://i.imgur.com/gGsooR6.png" alt="Waveform"/>
 </p>
 
 ### Install Dependencies

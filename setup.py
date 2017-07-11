@@ -155,7 +155,7 @@ setup(
 	# for example:
 	# $ pip install -e .[dev,test]
 	extras_require={
-        'optionals': ['egenix-mx-base','lxml','nltk','pyaudio','httplib2>=0.9.1','imutils','pyqtgraph']
+        'optionals': ['egenix-mx-base','lxml','nltk','pyaudio','httplib2>=0.9.1','imutils','pyqtgraph','PeakUtils']
     },
 
 	# If there are data files included in your packages that need to be
