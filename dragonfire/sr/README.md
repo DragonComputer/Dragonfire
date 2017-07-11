@@ -1,8 +1,12 @@
 # SpeechRecognition
 
-![SpectrumAnalyzer](http://i.imgur.com/pp33AYX.png)
+<p align="center">
+	![SpectrumAnalyzer](http://i.imgur.com/pp33AYX.png)
+</p>
 
-![Waveform](http://i.imgur.com/gGsooR6.png)
+<p align="center">
+	![Waveform](http://i.imgur.com/gGsooR6.png)
+</p>
 
 ### Install Dependencies
 
@@ -10,6 +14,7 @@
 sudo apt-get -y install python-pyaudio python-scipy python-qt4 python-tk
 pip install imutils
 pip install pyqtgraph
+pip install PeakUtils
 ```
 
 ### Usage

@@ -12,6 +12,7 @@ import pyqtgraph as pg # A pure-python graphics and GUI library built on PyQt4 /
 from PyQt4 import QtCore, QtGui # A comprehensive set of Python bindings for Digia's Qt cross platform GUI toolkit.
 import time # Provides various time-related functions.
 import Tkinter
+import peakutils.peak
 
 CHUNK = 1024 # Smallest unit of audio. 1024 bytes
 FORMAT = pyaudio.paInt16 # Data format
@@ -78,13 +79,20 @@ class SpeechRecognition():
 			pwAxis = pw.getAxis("bottom") # Get bottom axis
 			pwAxis.setLabel("Frequency [Hz]") # Set bottom axis label
 			f, Pxx = SpeechRecognition.find_frequency(data) # Call find frequency function
+			Pxx = numpy.absolute(Pxx) # Calculate the absolute value element-wise. (complex input a + ib to sqrt(a^2 + b^2))
+			peak_indexes = peakutils.peak.indexes(Pxx, thres=7.0/max(Pxx), min_dist=40)
+			peak_indexes = peak_indexes.tolist()
+			peak_values = list(Pxx[peak_indexes])
+			peak_indexes = list(f[peak_indexes])
 			f = f.tolist() # Numpy array to list
-			Pxx = (numpy.absolute(Pxx)).tolist() # Numpy array to list
+			Pxx = Pxx.tolist() # Numpy array to list
 			try: # Try this block
 				if thresh_frames[-1:][0] == EMPTY_CHUNK: # If last thresh frame is equal to EMPTY CHUNK
 					pw.plot(x=f,y=Pxx, clear=True, pen=pg.mkPen('w', width=1.0, style=QtCore.Qt.SolidLine)) # Then plot with white pen
 				else: # If last thresh frame is not equal to EMPTY CHUNK
 					pw.plot(x=f,y=Pxx, clear=True, pen=pg.mkPen('y', width=1.0, style=QtCore.Qt.SolidLine)) # Then plot with yellow pen
+					pw.plot(x=peak_indexes, y=peak_values, pen=None, symbol='t')
+					pw.plot(x=peak_indexes, y=peak_values, pen=pg.mkPen('b', width=0.5, style=QtCore.Qt.SolidLine))
 			except IndexError: # If we are getting an IndexError because of this -> thresh_frames[-1:][0]
 				pw.plot(x=f,y=Pxx, clear=True, pen=pg.mkPen('w', width=1.0, style=QtCore.Qt.SolidLine)) # Then plot with white pen
 			pg.QtGui.QApplication.processEvents() # ???
