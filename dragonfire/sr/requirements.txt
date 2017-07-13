@@ -1,0 +1,3 @@
+imutils
+pyqtgraph
+PeakUtils
