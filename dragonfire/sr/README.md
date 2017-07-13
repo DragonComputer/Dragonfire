@@ -12,9 +12,7 @@
 
 ```
 sudo apt-get -y install python-pyaudio python-scipy python-qt4 python-tk
-pip install imutils
-pip install pyqtgraph
-pip install PeakUtils
+pip install -r requirements.txt
 ```
 
 ### Usage
