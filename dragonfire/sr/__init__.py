@@ -19,7 +19,7 @@ CHUNK = 1024 # Smallest unit of audio. 1024 bytes
 FORMAT = pyaudio.paInt16 # Data format
 CHANNELS = 2 # Number of channels
 RATE = 44100 # Bit Rate of audio stream / Frame Rate
-THRESHOLD = 500 # Threshhold value for detecting stimulant
+THRESHOLD = 1000 # Threshhold value for detecting stimulant
 SILENCE_DETECTION = 5 # Wait number of frames to decide whether it fell silent or not
 EMPTY_CHUNK = chr(int('000000', 2)) * CHUNK * 4 # Create an empty unit of audio for just once
 WAVE_OUTPUT_FILENAME = "/tmp/" +  str(datetime.date.today()) + ".wav" # Example path if saving needed
@@ -54,16 +54,21 @@ class SpeechRecognition():
 		wf.close() # Close the session
 
 	@staticmethod
-	def save_training_data(training_data):
+	def save_training_data(training_data,words):
+		file_id = str(random.randint(100000,999999)) # Random file ID
 		if not os.path.exists(TRAINING_DATA_DIRECTORY): # Check whether the directory is exist or not
 			os.makedirs(TRAINING_DATA_DIRECTORY) # If there is none then create one
 		p = pyaudio.PyAudio() # Create a PyAudio session
-		wf = wave.open(TRAINING_DATA_DIRECTORY + str(random.randint(100000,999999)) + ".wav", 'w') # Create the .wav file with a random name
+		wf = wave.open(TRAINING_DATA_DIRECTORY + file_id + ".wav", 'wb') # Create the .wav file with a random name
 		wf.setnchannels(CHANNELS) # Set number of channels
 		wf.setsampwidth(p.get_sample_size(FORMAT)) # Set sampling format
 		wf.setframerate(RATE) # Set Bit Rate / Frame Rate
 		wf.writeframes(''.join(training_data)) # Write the all frames of training_data
 		wf.close() # Close the session
+
+		with open(TRAINING_DATA_DIRECTORY + file_id + ".txt", "w") as thefile:
+			for word in words:
+				thefile.write("%s\n" % word)
 
 	# A function that will compute frequency of chunk using Fourier Transform
 	@staticmethod
@@ -277,6 +282,7 @@ class SpeechRecognition():
 			process2 = multiprocessing.Process(target=SpeechRecognition.draw_spectrum_analyzer, args=(all_frames, thresh_frames)) # Define draw spectrum analyzer process
 			process2.start() # Start drar spectrum analyzer process
 
+			word_counter = 0
 			# Loop over the frames of the audio / data chunks
 			while data != '':
 				previous_data = data # Get previous chunk that coming from end of the loop
@@ -296,8 +302,8 @@ class SpeechRecognition():
 					thresh_frames.pop() # Pop out last frame of thresh frames
 					thresh_frames.pop() # Pop out last frame of thresh frames
 					training_data.append(previous_data) # Append previous chunk to training data
-					thresh_frames.append(previous_data) # APpend previos chunk to thresh frames
 					training_data.append(data) # Append current chunk to training data
+					thresh_frames.append(previous_data) # Append previous chunk to thresh frames
 					thresh_frames.append(data) # Append current chunk to thresh frames
 					silence_counter = 0 # Define silence counter
 					while silence_counter < SILENCE_DETECTION: # While silence counter value less than SILENCE_DETECTION constant
@@ -323,6 +329,8 @@ class SpeechRecognition():
 					for i in range(SILENCE_DETECTION-2): # SILENCE_DETECTION constant times
 						thresh_frames.append(EMPTY_CHUNK) # Append an EMPTY_CHUNK
 					ending_time = datetime.datetime.now() # Ending time of the training
+					word_counter += 1
+					print word_counter
 
 
 			process1.terminate() # Terminate draw waveform process
@@ -330,10 +338,23 @@ class SpeechRecognition():
 			stream.stop_stream() # Stop the stream
 			stream.close() # Close the stream
 			p.terminate() # Terminate the session
-			SpeechRecognition.save_training_data(training_data)
+			words = raw_input("Enter the words separating them by comma(,): ").split(',')
+			if len(words) == word_counter:
+				SpeechRecognition.save_training_data(training_data,words)
+			else:
+				print "Sorry, word counts don't match. Please try again."
 		except KeyboardInterrupt: # We will use KeyboardInterrupt to finish the microphone session
+			process1.terminate() # Terminate draw waveform process
+			process2.terminate() # Terminate drar spectrum analyzer process
+			stream.stop_stream() # Stop the stream
+			stream.close() # Close the stream
+			p.terminate() # Terminate the session
 			if training_data: # If there is a training_data
-				SpeechRecognition.save_training_data(training_data) # Then save it
+				words = raw_input("Enter the words separating them by comma(,): ").split(',')
+				if len(words) == word_counter:
+					SpeechRecognition.save_training_data(training_data,words) # Then save it
+				else:
+					print "Sorry, word counts don't match. Please try again."
 
 
 if __name__ == "__main__":
