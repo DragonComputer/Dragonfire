@@ -3,6 +3,7 @@
 
 #from __future__ import unicode_literals
 import sys
+import pyowm
 from lxml import etree
 from dragonfire.utilities import TTA
 from dragonfire.nlplib import Classifiers
@@ -135,6 +136,24 @@ def command(speech):
 				userin.execute(0)
 				userin.say("My name is Dragon Fire.")
 				previous_command = com
+			elif "WHAT IS THE TEMPERATURE" in com: # only for The United States today but prepared for all countries. Also only for celsius degrees today. --> by Radan Liska :-)
+				tts_kill()
+				with nostdout():
+					with nostderr():
+						capture = re.search("WHAT IS THE TEMPERATURE (?:IN|ON|AT)? (?P<query_city>.*) (?:IN|ON|AT|)? (?:THE)? (?P<query_state>.*)",com)
+						if capture:
+							search_query_city = capture.group('query_city')
+							try:
+								owm = pyowm.OWM("16d66c84e82424f0f8e62c3e3b27b574")
+								city_and_state = str(search_query_city + ",us")
+								weather = owm.weather_at_place(city_and_state).get_weather()
+								userin.define([" "],str("The temperature in " + search_query_city + " is " + str(weather.get_temperature("celsius")['temp'])))
+								userin.execute(0)
+								userin.say("The temperature in " + search_query_city + " is " + str(weather.get_temperature("celsius")['temp']))
+								previous_command = com
+							except:
+								pass
+
 			elif "WHAT IS YOUR GENDER" == com:
 				tts_kill()
 				userin.define([" "]," ")
