@@ -158,3 +158,6 @@ dkms.conf
 
 # realhud specific
 dragonfire/realhud/realhud
+
+# SpeechRecognition specific
+dragonfire/sr/training_data/*

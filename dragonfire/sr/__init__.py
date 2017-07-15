@@ -3,7 +3,7 @@ __author__ = 'Mehmet Mert Yildiran, mert.yildiran@bil.omu.edu.tr'
 import pyaudio # Provides Python bindings for PortAudio, the cross platform audio API
 import wave # Provides a convenient interface to the WAV sound format
 import datetime # Supplies classes for manipulating dates and times in both simple and complex ways
-import os.path # The path module suitable for the operating system Python is running on, and therefore usable for local paths
+import os # The path module suitable for the operating system Python is running on, and therefore usable for local paths
 import audioop # Operates on sound fragments consisting of signed integer samples 8, 16 or 32 bits wide, stored in Python strings.
 import numpy # The fundamental package for scientific computing with Python.
 import multiprocessing # A package that supports spawning processes using an API similar to the threading module.
@@ -13,15 +13,17 @@ from PyQt4 import QtCore, QtGui # A comprehensive set of Python bindings for Dig
 import time # Provides various time-related functions.
 import Tkinter # Python's de-facto standard GUI (Graphical User Interface) package
 #import peakutils.peak # Peak detection utilities for 1D data
+import random # Pseudo-random number generators for various distributions
 
 CHUNK = 1024 # Smallest unit of audio. 1024 bytes
 FORMAT = pyaudio.paInt16 # Data format
 CHANNELS = 2 # Number of channels
 RATE = 44100 # Bit Rate of audio stream / Frame Rate
-THRESHOLD = 1000 # Threshhold value for detecting stimulant
+THRESHOLD = 500 # Threshhold value for detecting stimulant
 SILENCE_DETECTION = 5 # Wait number of frames to decide whether it fell silent or not
 EMPTY_CHUNK = chr(int('000000', 2)) * CHUNK * 4 # Create an empty unit of audio for just once
 WAVE_OUTPUT_FILENAME = "/tmp/" +  str(datetime.date.today()) + ".wav" # Example path if saving needed
+TRAINING_DATA_DIRECTORY = "training_data/"
 root = Tkinter.Tk()
 SCREEN_WIDTH = root.winfo_screenwidth()
 SCREEN_HEIGHT = root.winfo_screenheight()
@@ -49,6 +51,18 @@ class SpeechRecognition():
 		wf.setsampwidth(p.get_sample_size(FORMAT)) # Set sampling format
 		wf.setframerate(RATE) # Set Bit Rate / Frame Rate
 		wf.writeframes(previous_wav + b''.join(frames)) # Write the all frames including previous ones
+		wf.close() # Close the session
+
+	@staticmethod
+	def save_training_data(training_data):
+		if not os.path.exists(TRAINING_DATA_DIRECTORY): # Check whether the directory is exist or not
+			os.makedirs(TRAINING_DATA_DIRECTORY) # If there is none then create one
+		p = pyaudio.PyAudio() # Create a PyAudio session
+		wf = wave.open(TRAINING_DATA_DIRECTORY + str(random.randint(100000,999999)) + ".wav", 'w') # Create the .wav file with a random name
+		wf.setnchannels(CHANNELS) # Set number of channels
+		wf.setsampwidth(p.get_sample_size(FORMAT)) # Set sampling format
+		wf.setframerate(RATE) # Set Bit Rate / Frame Rate
+		wf.writeframes(''.join(training_data)) # Write the all frames of training_data
 		wf.close() # Close the session
 
 	# A function that will compute frequency of chunk using Fourier Transform
@@ -222,6 +236,105 @@ class SpeechRecognition():
 		stream.close() # Close the stream
 		p.terminate() # Terminate the session
 
+	@staticmethod
+	def create_training_data(audio_input):
+		try:
+			if audio_input == "0":
+				pass
+			else:
+				wf = wave.open(audio_input, 'rb') # Open .wav file from given path as audio_input in arguments
+
+			p = pyaudio.PyAudio() # Create a PyAudio session
+			# Create a stream
+			if audio_input == "0":
+				stream = p.open(format=FORMAT,
+							channels=CHANNELS,
+							rate=RATE,
+							input=True,
+							frames_per_buffer=CHUNK)
+			else:
+				stream = p.open(format=p.get_format_from_width(wf.getsampwidth()),
+							channels=wf.getnchannels(),
+							rate=wf.getframerate(),
+							output=True)
+
+			shared_memory = multiprocessing.Manager() # Shared memory space manager
+			training_data = [] # Define training data array
+			all_frames = shared_memory.list() # Define all_frames array in shared memory
+			thresh_frames = shared_memory.list() # Define thresh_frames array in shared memory
+
+			if audio_input == "0":
+				data = stream.read(CHUNK) # Get first data frame from the microphone
+			else:
+				data = wf.readframes(CHUNK) # Get first data frame from .wav file
+
+			all_frames.append(data) # Append to all frames
+			thresh_frames.append(EMPTY_CHUNK) # Append an EMPTY CHUNK to thresh frames
+
+			process1 = multiprocessing.Process(target=SpeechRecognition.draw_waveform, args=(all_frames, thresh_frames)) # Define draw waveform process
+			process1.start() # Start draw waveform process
+
+			process2 = multiprocessing.Process(target=SpeechRecognition.draw_spectrum_analyzer, args=(all_frames, thresh_frames)) # Define draw spectrum analyzer process
+			process2.start() # Start drar spectrum analyzer process
+
+			# Loop over the frames of the audio / data chunks
+			while data != '':
+				previous_data = data # Get previous chunk that coming from end of the loop
+
+				if audio_input == "0":
+					data = stream.read(CHUNK) # Read a new chunk from the stream
+				else:
+					stream.write(data) # Monitor current chunk
+					data = wf.readframes(CHUNK) # Read a new chunk from the stream
+
+				all_frames.append(data) # Append this chunk to all frames
+				thresh_frames.append(EMPTY_CHUNK) # Append an EMPTY CHUNK to thresh frames
+
+				rms = audioop.rms(data, 2) # Calculate Root Mean Square of current chunk
+				if rms >= THRESHOLD: # If Root Mean Square value is greater than THRESHOLD constant
+					starting_time = datetime.datetime.now() # Starting time of the word
+					thresh_frames.pop() # Pop out last frame of thresh frames
+					thresh_frames.pop() # Pop out last frame of thresh frames
+					training_data.append(previous_data) # Append previous chunk to training data
+					thresh_frames.append(previous_data) # APpend previos chunk to thresh frames
+					training_data.append(data) # Append current chunk to training data
+					thresh_frames.append(data) # Append current chunk to thresh frames
+					silence_counter = 0 # Define silence counter
+					while silence_counter < SILENCE_DETECTION: # While silence counter value less than SILENCE_DETECTION constant
+
+						if audio_input == "0":
+							data = stream.read(CHUNK) # Read a new chunk from the stream
+						else:
+							stream.write(data) # Monitor current chunk
+							data = wf.readframes(CHUNK) # Read a new chunk from the stream
+
+						all_frames.append(data) # Append this chunk to all frames
+						training_data.append(data) # Append this chunk to training data
+						thresh_frames.append(data) # Append this chunk to thresh frames
+						rms = audioop.rms(data, 2) # Calculate Root Mean Square of current chunk again
+
+						if rms < THRESHOLD: # If Root Mean Square value is less than THRESHOLD constant
+							silence_counter += 1 # Then increase silence counter
+						else: # Else
+							silence_counter = 0 # Assign zero value to silence counter
+
+					del training_data[-(SILENCE_DETECTION-2):] # Delete last frames of training data as much as SILENCE_DETECTION constant
+					del thresh_frames[-(SILENCE_DETECTION-2):] # Delete last frames of thresh frames as much as SILENCE_DETECTION constant
+					for i in range(SILENCE_DETECTION-2): # SILENCE_DETECTION constant times
+						thresh_frames.append(EMPTY_CHUNK) # Append an EMPTY_CHUNK
+					ending_time = datetime.datetime.now() # Ending time of the training
+
+
+			process1.terminate() # Terminate draw waveform process
+			process2.terminate() # Terminate drar spectrum analyzer process
+			stream.stop_stream() # Stop the stream
+			stream.close() # Close the stream
+			p.terminate() # Terminate the session
+			SpeechRecognition.save_training_data(training_data)
+		except KeyboardInterrupt: # We will use KeyboardInterrupt to finish the microphone session
+			if training_data: # If there is a training_data
+				SpeechRecognition.save_training_data(training_data) # Then save it
+
 
 if __name__ == "__main__":
 	import argparse # Makes it easy to write user-friendly command-line interfaces.
@@ -229,4 +342,5 @@ if __name__ == "__main__":
 	ap.add_argument("-a", "--audio", help="path to the audio file") # Add --audio argument
 	args = vars(ap.parse_args()) # Parse the arguments
 
-	SpeechRecognition.start(args["audio"])
+	#SpeechRecognition.start(args["audio"])
+	SpeechRecognition.create_training_data(args["audio"])
