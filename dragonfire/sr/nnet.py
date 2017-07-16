@@ -50,13 +50,24 @@ class RNN():
 									 (self.b_hy, self.b_hy - lr*gb_hy)],
 							allow_input_downcast=True)
 
+		self.run = theano.function([u], y)
+
 	def recurrent_fn(self, u_t, h_tm1, W_hh, W_uh, W_hy, b_hh):
 		h_t = self.activ(T.dot(h_tm1, W_hh) + T.dot(u_t, W_uh) + b_hh)
 		return h_t
 
-	def dump(self,path):
-		with open(path + 'model.npz', "wb") as thefile:
+	def dump(self,path,filename='model.npz'):
+		with open(path + filename, "wb") as thefile:
 			np.savez(thefile, W_uh=self.W_uh, W_hh=self.W_hh, W_hy=self.W_hy, b_hh=self.b_hh, b_hy=self.b_hy)
+
+	def importdump(self,path_to_file):
+		with open(path_to_file, "rb") as thefile:
+			npzfile = np.load(thefile)
+			self.W_uh = npzfile['W_uh']
+			self.W_hh = npzfile['W_hh']
+			self.W_hy = npzfile['W_hy']
+			self.b_hh = npzfile['b_hh']
+			self.b_hy = npzfile['b_hy']
 
 if __name__ == '__main__':
 	rnn = RNN(2, 20, 1)

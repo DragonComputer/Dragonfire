@@ -412,17 +412,27 @@ class SpeechRecognition():
 				e = (1.0/len(words_data))*numpy.sqrt(c) + ((len(words_data) - 1.0)/len(words_data))*e # Contributes to error 1 / word count
 				if i % (n_iteration/100) == 0:
 					vals.append(e)
+
 		if not os.path.exists(OUT_DIRECTORY): # Check whether the directory is exist or not
 			os.makedirs(OUT_DIRECTORY) # If there is none then create one
 		rnn.dump(OUT_DIRECTORY) # Dump model.npz (reusable training result) to out/ directory
+		print "The neural network dump saved into: " + OUT_DIRECTORY + "model.npz"
+
 		with open(OUT_DIRECTORY + "words.txt", "w") as thefile:
 			for word in words:
 				thefile.write("%s\n" % word) # Dump the words line by line
+		print "The word list saved into: " + OUT_DIRECTORY + "words.txt"
 
 		plt.plot(vals) # Plot the graph
 		if not os.path.exists(PLOTS_DIRECTORY): # Check whether the directory is exist or not
 			os.makedirs(PLOTS_DIRECTORY) # If there is none then create one
 		plt.savefig(PLOTS_DIRECTORY + 'error.png') # Save the graph
+		print "Graph of the decline of error by the time is saved as: " + PLOTS_DIRECTORY + "error.png"
+
+		print "--- TESTING ---"
+		rnn.importdump(OUT_DIRECTORY + "model.npz")
+		for i in xrange(len(words_data)):
+			print words[i] + '\t\t', rnn.run(words_data[i])
 
 
 if __name__ == "__main__":
