@@ -115,7 +115,7 @@ class SpeechRecognition():
 			except IndexError: # If we are getting an IndexError because of this -> thresh_frames[-1:][0]
 				pw.plot(x=f,y=Pxx, clear=True, pen=pg.mkPen('w', width=1.0, style=QtCore.Qt.SolidLine)) # Then plot with white pen
 			pg.QtGui.QApplication.processEvents() # ???
-			time.sleep(0.016) # Wait a few miliseconds
+			time.sleep(0.03) # Wait a few miliseconds
 
 	# A function that will draw a waveform graphic to screen (PyQtGraph)
 	@staticmethod
@@ -139,7 +139,7 @@ class SpeechRecognition():
 			pw.addItem(text) # Display seconds according to number of total frames
 			text.setPos(500, 0) # Set text position
 			pg.QtGui.QApplication.processEvents()
-			time.sleep(0.016) # Wait a few miliseconds
+			time.sleep(0.03) # Wait a few miliseconds
 
 	# MAIN CODE BLOCK
 	@staticmethod
@@ -293,7 +293,8 @@ class SpeechRecognition():
 				if audio_input == "0":
 					data = stream.read(CHUNK) # Read a new chunk from the stream
 				else:
-					stream.write(data) # Monitor current chunk
+					if graphs:
+						stream.write(data) # Monitor current chunk
 					data = wf.readframes(CHUNK) # Read a new chunk from the stream
 
 				all_frames.append(data) # Append this chunk to all frames
@@ -315,7 +316,8 @@ class SpeechRecognition():
 						if audio_input == "0":
 							data = stream.read(CHUNK) # Read a new chunk from the stream
 						else:
-							stream.write(data) # Monitor current chunk
+							if graphs:
+								stream.write(data) # Monitor current chunk
 							data = wf.readframes(CHUNK) # Read a new chunk from the stream
 
 						all_frames.append(data) # Append this chunk to all frames
@@ -328,10 +330,10 @@ class SpeechRecognition():
 						else: # Else
 							silence_counter = 0 # Assign zero value to silence counter
 
-					del word_data[-(SILENCE_DETECTION-2):] # Delete last frames of training data as much as SILENCE_DETECTION constant
-					del thresh_frames[-(SILENCE_DETECTION-2):] # Delete last frames of thresh frames as much as SILENCE_DETECTION constant
-					for i in range(SILENCE_DETECTION-2): # SILENCE_DETECTION constant times
-						thresh_frames.append(EMPTY_CHUNK) # Append an EMPTY_CHUNK
+					#del word_data[-(SILENCE_DETECTION-2):] # Delete last frames of training data as much as SILENCE_DETECTION constant
+					#del thresh_frames[-(SILENCE_DETECTION-2):] # Delete last frames of thresh frames as much as SILENCE_DETECTION constant
+					#for i in range(SILENCE_DETECTION-2): # SILENCE_DETECTION constant times
+					#	thresh_frames.append(EMPTY_CHUNK) # Append an EMPTY_CHUNK
 					ending_time = datetime.datetime.now() # Ending time of the training
 					words_data.append(word_data)
 					if verbose:
@@ -368,6 +370,19 @@ class SpeechRecognition():
 			else:
 				print "Sorry, word counts don't match. Please try again."
 
+	@staticmethod
+	def load_training_data():
+		words_data = []
+		words = []
+		for filename in os.listdir(TRAINING_DATA_DIRECTORY):
+			if filename.endswith(".wav"):
+				wav_path = os.path.join(TRAINING_DATA_DIRECTORY, filename)
+				words_data = words_data + SpeechRecognition.extact_words_from_audio(wav_path)
+				txt_path = os.path.join(TRAINING_DATA_DIRECTORY, filename[:-4] + ".txt")
+				with open(txt_path) as f:
+					words = words + [x.strip() for x in f.readlines()]
+		return (words_data,words)
+
 
 if __name__ == "__main__":
 	import argparse # Makes it easy to write user-friendly command-line interfaces.
@@ -376,4 +391,9 @@ if __name__ == "__main__":
 	args = vars(ap.parse_args()) # Parse the arguments
 
 	#SpeechRecognition.start(args["audio"])
-	SpeechRecognition.create_training_data(args["audio"])
+	if args["audio"]:
+		SpeechRecognition.create_training_data(args["audio"])
+	else:
+		words_data, words = SpeechRecognition.load_training_data()
+		print len(words_data)
+		print words
