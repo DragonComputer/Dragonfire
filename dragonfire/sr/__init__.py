@@ -242,7 +242,7 @@ class SpeechRecognition():
 		p.terminate() # Terminate the session
 
 	@staticmethod
-	def create_training_data(audio_input):
+	def extact_words_from_audio(audio_input,graphs=False,verbose=False):
 		try:
 			if audio_input == "0":
 				pass
@@ -263,10 +263,13 @@ class SpeechRecognition():
 							rate=wf.getframerate(),
 							output=True)
 
-			shared_memory = multiprocessing.Manager() # Shared memory space manager
-			training_data = [] # Define training data array
-			all_frames = shared_memory.list() # Define all_frames array in shared memory
-			thresh_frames = shared_memory.list() # Define thresh_frames array in shared memory
+			words_data = [] # Define words data array
+			all_frames = []
+			thresh_frames = []
+			if graphs:
+				shared_memory = multiprocessing.Manager() # Shared memory space manager
+				all_frames = shared_memory.list() # Define all_frames array in shared memory
+				thresh_frames = shared_memory.list() # Define thresh_frames array in shared memory
 
 			if audio_input == "0":
 				data = stream.read(CHUNK) # Get first data frame from the microphone
@@ -276,13 +279,13 @@ class SpeechRecognition():
 			all_frames.append(data) # Append to all frames
 			thresh_frames.append(EMPTY_CHUNK) # Append an EMPTY CHUNK to thresh frames
 
-			process1 = multiprocessing.Process(target=SpeechRecognition.draw_waveform, args=(all_frames, thresh_frames)) # Define draw waveform process
-			process1.start() # Start draw waveform process
+			if graphs:
+				process1 = multiprocessing.Process(target=SpeechRecognition.draw_waveform, args=(all_frames, thresh_frames)) # Define draw waveform process
+				process1.start() # Start draw waveform process
 
-			process2 = multiprocessing.Process(target=SpeechRecognition.draw_spectrum_analyzer, args=(all_frames, thresh_frames)) # Define draw spectrum analyzer process
-			process2.start() # Start drar spectrum analyzer process
+				process2 = multiprocessing.Process(target=SpeechRecognition.draw_spectrum_analyzer, args=(all_frames, thresh_frames)) # Define draw spectrum analyzer process
+				process2.start() # Start drar spectrum analyzer process
 
-			word_counter = 0
 			# Loop over the frames of the audio / data chunks
 			while data != '':
 				previous_data = data # Get previous chunk that coming from end of the loop
@@ -297,12 +300,13 @@ class SpeechRecognition():
 				thresh_frames.append(EMPTY_CHUNK) # Append an EMPTY CHUNK to thresh frames
 
 				rms = audioop.rms(data, 2) # Calculate Root Mean Square of current chunk
+				word_data = [] # Define single word data
 				if rms >= THRESHOLD: # If Root Mean Square value is greater than THRESHOLD constant
 					starting_time = datetime.datetime.now() # Starting time of the word
 					thresh_frames.pop() # Pop out last frame of thresh frames
 					thresh_frames.pop() # Pop out last frame of thresh frames
-					training_data.append(previous_data) # Append previous chunk to training data
-					training_data.append(data) # Append current chunk to training data
+					word_data.append(previous_data) # Append previous chunk to training data
+					word_data.append(data) # Append current chunk to training data
 					thresh_frames.append(previous_data) # Append previous chunk to thresh frames
 					thresh_frames.append(data) # Append current chunk to thresh frames
 					silence_counter = 0 # Define silence counter
@@ -315,7 +319,7 @@ class SpeechRecognition():
 							data = wf.readframes(CHUNK) # Read a new chunk from the stream
 
 						all_frames.append(data) # Append this chunk to all frames
-						training_data.append(data) # Append this chunk to training data
+						word_data.append(data) # Append this chunk to training data
 						thresh_frames.append(data) # Append this chunk to thresh frames
 						rms = audioop.rms(data, 2) # Calculate Root Mean Square of current chunk again
 
@@ -324,37 +328,45 @@ class SpeechRecognition():
 						else: # Else
 							silence_counter = 0 # Assign zero value to silence counter
 
-					del training_data[-(SILENCE_DETECTION-2):] # Delete last frames of training data as much as SILENCE_DETECTION constant
+					del word_data[-(SILENCE_DETECTION-2):] # Delete last frames of training data as much as SILENCE_DETECTION constant
 					del thresh_frames[-(SILENCE_DETECTION-2):] # Delete last frames of thresh frames as much as SILENCE_DETECTION constant
 					for i in range(SILENCE_DETECTION-2): # SILENCE_DETECTION constant times
 						thresh_frames.append(EMPTY_CHUNK) # Append an EMPTY_CHUNK
 					ending_time = datetime.datetime.now() # Ending time of the training
-					word_counter += 1
-					print word_counter
+					words_data.append(word_data)
+					if verbose:
+						print len(words_data)
 
 
-			process1.terminate() # Terminate draw waveform process
-			process2.terminate() # Terminate drar spectrum analyzer process
+			if graphs:
+				process1.terminate() # Terminate draw waveform process
+				process2.terminate() # Terminate drar spectrum analyzer process
 			stream.stop_stream() # Stop the stream
 			stream.close() # Close the stream
 			p.terminate() # Terminate the session
+			return words_data
+		except KeyboardInterrupt: # We will use KeyboardInterrupt to finish the microphone session
+			if graphs:
+				process1.terminate() # Terminate draw waveform process
+				process2.terminate() # Terminate drar spectrum analyzer process
+			stream.stop_stream() # Stop the stream
+			stream.close() # Close the stream
+			p.terminate() # Terminate the session
+			return words_data
+
+	@staticmethod
+	def create_training_data(audio_input,graphs=True,verbose=True):
+		try:
+			words_data = SpeechRecognition.extact_words_from_audio(audio_input,graphs,verbose)
+		except KeyboardInterrupt:
+			pass
+		else:
 			words = raw_input("Enter the words separating them by comma(,): ").split(',')
-			if len(words) == word_counter:
-				SpeechRecognition.save_training_data(training_data,words)
+			if len(words) == len(words_data):
+				training_data = [frame for word_data in words_data for frame in word_data] # Flatten the words data into single big array of frames
+				SpeechRecognition.save_training_data(training_data,words) # Then save it
 			else:
 				print "Sorry, word counts don't match. Please try again."
-		except KeyboardInterrupt: # We will use KeyboardInterrupt to finish the microphone session
-			process1.terminate() # Terminate draw waveform process
-			process2.terminate() # Terminate drar spectrum analyzer process
-			stream.stop_stream() # Stop the stream
-			stream.close() # Close the stream
-			p.terminate() # Terminate the session
-			if training_data: # If there is a training_data
-				words = raw_input("Enter the words separating them by comma(,): ").split(',')
-				if len(words) == word_counter:
-					SpeechRecognition.save_training_data(training_data,words) # Then save it
-				else:
-					print "Sorry, word counts don't match. Please try again."
 
 
 if __name__ == "__main__":
