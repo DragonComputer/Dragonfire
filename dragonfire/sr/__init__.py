@@ -14,6 +14,8 @@ import time # Provides various time-related functions.
 import Tkinter # Python's de-facto standard GUI (Graphical User Interface) package
 #import peakutils.peak # Peak detection utilities for 1D data
 import random # Pseudo-random number generators for various distributions
+from nnet import RNN # Import the Recurrent Neural Network class from Dragonfire's Neural Network Library
+import matplotlib.pyplot as plt # Simple graph plotting library
 
 CHUNK = 1024 # Smallest unit of audio. 1024 bytes
 FORMAT = pyaudio.paInt16 # Data format
@@ -24,6 +26,7 @@ SILENCE_DETECTION = 5 # Wait number of frames to decide whether it fell silent o
 EMPTY_CHUNK = chr(int('000000', 2)) * CHUNK * 4 # Create an empty unit of audio for just once
 WAVE_OUTPUT_FILENAME = "/tmp/" +  str(datetime.date.today()) + ".wav" # Example path if saving needed
 TRAINING_DATA_DIRECTORY = "training_data/"
+PLOTS_DIRECTORY = "plots/" # Directory to save the plots
 root = Tkinter.Tk()
 SCREEN_WIDTH = root.winfo_screenwidth()
 SCREEN_HEIGHT = root.winfo_screenheight()
@@ -383,6 +386,36 @@ class SpeechRecognition():
 					words = words + [x.strip() for x in f.readlines()]
 		return (words_data,words)
 
+	@staticmethod
+	def train():
+		words_data, words = SpeechRecognition.load_training_data() # Load the training data
+		target = numpy.identity(len(words_data)) # Create a unit matrix (identity matrix) as our target
+		for i in xrange(len(words_data)):
+			for j in xrange(len(words_data[i])):
+				words_data[i][j] = numpy.fromstring(words_data[i][j], 'int16') # Convert each frame from binary string to int16
+			words_data[i] = numpy.asarray(words_data[i]) # Conver the word data into numpy array
+		rnn = RNN(len(words_data[0][0]), 20, len(words_data)) # Create a Recurrent Neural Network instance
+		#print len(words_data[0][0]), len(words_data)
+		#print numpy.asarray(words_data[0]).shape # Input shape
+		#print target[0].shape # Target shape
+		lr = 0.01 # Learning rate
+		e = 1 # Initial error = 1
+		vals = [] # Values for plotting
+		n_iteration = 1000
+		for i in xrange(n_iteration): # Iterate (n_iteration) times
+			for j in xrange(len(words_data)): # For each word in words
+				u = words_data[j] # Input (2048)
+				t = target[j] # Target (word count)
+				c = rnn.train_step(u, t, lr) # Cost
+				print "iteration {0}: {1}".format(i, numpy.sqrt(c))
+				e = (1.0/len(words_data))*numpy.sqrt(c) + ((len(words_data) - 1.0)/len(words_data))*e # Contributes to error 1 / word count
+				if i % (n_iteration/100) == 0:
+					vals.append(e)
+		plt.plot(vals) # Plot the graph
+		if not os.path.exists(PLOTS_DIRECTORY): # Check whether the directory is exist or not
+			os.makedirs(PLOTS_DIRECTORY) # If there is none then create one
+		plt.savefig(PLOTS_DIRECTORY + 'error.png') # Save the graph
+
 
 if __name__ == "__main__":
 	import argparse # Makes it easy to write user-friendly command-line interfaces.
@@ -394,6 +427,4 @@ if __name__ == "__main__":
 	if args["audio"]:
 		SpeechRecognition.create_training_data(args["audio"])
 	else:
-		words_data, words = SpeechRecognition.load_training_data()
-		print len(words_data)
-		print words
+		SpeechRecognition.train()
