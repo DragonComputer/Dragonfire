@@ -1,3 +1,7 @@
+PyAudio
+numpy
 imutils
 pyqtgraph
 PeakUtils
+theano
+matplotlib
