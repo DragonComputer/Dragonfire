@@ -5,54 +5,58 @@ import cPickle
 import random
 import matplotlib.pyplot as plt
 
-class RNN(object):
+class RNN():
 
 	def __init__(self, nin, n_hidden, nout):
 		rng = np.random.RandomState(1234)
-		W_uh = np.asarray(
+		self.W_uh = np.asarray(
 			rng.normal(size=(nin, n_hidden), scale= .01, loc = .0), dtype = theano.config.floatX)
-		W_hh = np.asarray(
+		self.W_hh = np.asarray(
 			rng.normal(size=(n_hidden, n_hidden), scale=.01, loc = .0), dtype = theano.config.floatX)
-		W_hy = np.asarray(
+		self.W_hy = np.asarray(
 			rng.normal(size=(n_hidden, nout), scale =.01, loc=0.0), dtype = theano.config.floatX)
-		b_hh = np.zeros((n_hidden,), dtype=theano.config.floatX)
-		b_hy = np.zeros((nout,), dtype=theano.config.floatX)
+		self.b_hh = np.zeros((n_hidden,), dtype=theano.config.floatX)
+		self.b_hy = np.zeros((nout,), dtype=theano.config.floatX)
 		self.activ = T.nnet.sigmoid
 		lr = T.scalar()
 		u = T.matrix()
 		t = T.vector()
 
-		W_uh = theano.shared(W_uh, 'W_uh')
-		W_hh = theano.shared(W_hh, 'W_hh')
-		W_hy = theano.shared(W_hy, 'W_hy')
-		b_hh = theano.shared(b_hh, 'b_hh')
-		b_hy = theano.shared(b_hy, 'b_hy')
+		self.W_uh = theano.shared(self.W_uh, 'W_uh')
+		self.W_hh = theano.shared(self.W_hh, 'W_hh')
+		self.W_hy = theano.shared(self.W_hy, 'W_hy')
+		self.b_hh = theano.shared(self.b_hh, 'b_hh')
+		self.b_hy = theano.shared(self.b_hy, 'b_hy')
 
 		h0_tm1 = theano.shared(np.zeros(n_hidden, dtype=theano.config.floatX))
 
 		h, _ = theano.scan(self.recurrent_fn, sequences = u,
 					   outputs_info = [h0_tm1],
-					   non_sequences = [W_hh, W_uh, W_hy, b_hh])
+					   non_sequences = [self.W_hh, self.W_uh, self.W_hy, self.b_hh])
 
-		y = T.dot(h[-1], W_hy) + b_hy
+		y = T.dot(h[-1], self.W_hy) + self.b_hy
 		cost = ((t - y)**2).mean(axis=0).sum()
 
 		gW_hh, gW_uh, gW_hy,\
 		   gb_hh, gb_hy = T.grad(
-			   cost, [W_hh, W_uh, W_hy, b_hh, b_hy])
+			   cost, [self.W_hh, self.W_uh, self.W_hy, self.b_hh, self.b_hy])
 
 		self.train_step = theano.function([u, t, lr], cost,
 							on_unused_input='warn',
-							updates=[(W_hh, W_hh - lr*gW_hh),
-									 (W_uh, W_uh - lr*gW_uh),
-									 (W_hy, W_hy - lr*gW_hy),
-									 (b_hh, b_hh - lr*gb_hh),
-									 (b_hy, b_hy - lr*gb_hy)],
+							updates=[(self.W_hh, self.W_hh - lr*gW_hh),
+									 (self.W_uh, self.W_uh - lr*gW_uh),
+									 (self.W_hy, self.W_hy - lr*gW_hy),
+									 (self.b_hh, self.b_hh - lr*gb_hh),
+									 (self.b_hy, self.b_hy - lr*gb_hy)],
 							allow_input_downcast=True)
 
 	def recurrent_fn(self, u_t, h_tm1, W_hh, W_uh, W_hy, b_hh):
 		h_t = self.activ(T.dot(h_tm1, W_hh) + T.dot(u_t, W_uh) + b_hh)
 		return h_t
+
+	def dump(self,path):
+		with open(path + 'model.npz', "wb") as thefile:
+			np.savez(thefile, W_uh=self.W_uh, W_hh=self.W_hh, W_hy=self.W_hy, b_hh=self.b_hh, b_hy=self.b_hy)
 
 if __name__ == '__main__':
 	rnn = RNN(2, 20, 1)

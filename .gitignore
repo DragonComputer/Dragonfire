@@ -162,3 +162,4 @@ dragonfire/realhud/realhud
 # SpeechRecognition specific
 dragonfire/sr/training_data/*
 dragonfire/sr/plots/*
+dragonfire/sr/out/*

@@ -27,6 +27,7 @@ EMPTY_CHUNK = chr(int('000000', 2)) * CHUNK * 4 # Create an empty unit of audio 
 WAVE_OUTPUT_FILENAME = "/tmp/" +  str(datetime.date.today()) + ".wav" # Example path if saving needed
 TRAINING_DATA_DIRECTORY = "training_data/"
 PLOTS_DIRECTORY = "plots/" # Directory to save the plots
+OUT_DIRECTORY = "out/" # Output directory for training results (model.npz & words.txt)
 root = Tkinter.Tk()
 SCREEN_WIDTH = root.winfo_screenwidth()
 SCREEN_HEIGHT = root.winfo_screenheight()
@@ -411,6 +412,13 @@ class SpeechRecognition():
 				e = (1.0/len(words_data))*numpy.sqrt(c) + ((len(words_data) - 1.0)/len(words_data))*e # Contributes to error 1 / word count
 				if i % (n_iteration/100) == 0:
 					vals.append(e)
+		if not os.path.exists(OUT_DIRECTORY): # Check whether the directory is exist or not
+			os.makedirs(OUT_DIRECTORY) # If there is none then create one
+		rnn.dump(OUT_DIRECTORY) # Dump model.npz (reusable training result) to out/ directory
+		with open(OUT_DIRECTORY + "words.txt", "w") as thefile:
+			for word in words:
+				thefile.write("%s\n" % word) # Dump the words line by line
+
 		plt.plot(vals) # Plot the graph
 		if not os.path.exists(PLOTS_DIRECTORY): # Check whether the directory is exist or not
 			os.makedirs(PLOTS_DIRECTORY) # If there is none then create one
