@@ -20,7 +20,7 @@ class RNN(object):
 		self.activ = T.nnet.sigmoid
 		lr = T.scalar()
 		u = T.matrix()
-		t = T.scalar()
+		t = T.vector()
 
 		W_uh = theano.shared(W_uh, 'W_uh')
 		W_hh = theano.shared(W_hh, 'W_hh')
