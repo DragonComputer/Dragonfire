@@ -31,6 +31,9 @@ OUT_DIRECTORY = "out/" # Output directory for training results (model.npz & word
 root = Tkinter.Tk()
 SCREEN_WIDTH = root.winfo_screenwidth()
 SCREEN_HEIGHT = root.winfo_screenheight()
+HIDDEN_NEURON = 20 # Hidden neuron count in the network
+REPEAT_N_TIMES = 10 # How many times repeated? For 3 for example; one, one, one, two, two, two, three, ...
+TRAINING_ITERATION = 100 # How many iterations for training
 
 class SpeechRecognition():
 
@@ -147,7 +150,13 @@ class SpeechRecognition():
 
 	# MAIN CODE BLOCK
 	@staticmethod
-	def start(audio_input):
+	def start(audio_input,graphs=True,verbose=True):
+		words = []
+		txt_path = os.path.join(OUT_DIRECTORY, "words.txt")
+		with open(txt_path) as f:
+			words = words + [x.strip() for x in f.readlines()] # Load words from words.txt into an array
+		rnn = RNN(CHUNK*2, HIDDEN_NEURON, len(words)) # Create a Recurrent Neural Network instance (input,hidden,output)
+		rnn.importdump(OUT_DIRECTORY + "model.npz") # Import the dump
 
 		if audio_input == "0":
 			pass
@@ -155,7 +164,6 @@ class SpeechRecognition():
 			wf = wave.open(audio_input, 'rb') # Open .wav file from given path as audio_input in arguments
 
 		p = pyaudio.PyAudio() # Create a PyAudio session
-
 		# Create a stream
 		if audio_input == "0":
 			stream = p.open(format=FORMAT,
@@ -169,24 +177,27 @@ class SpeechRecognition():
 						rate=wf.getframerate(),
 						output=True)
 
-		shared_memory = multiprocessing.Manager() # Shared memory space manager
-		clause_data = [] # Define clause data array
-		all_frames = shared_memory.list() # Define all_frames array in shared memory
-		thresh_frames = shared_memory.list() # Define thresh_frames array in shared memory
+		all_frames = []
+		thresh_frames = []
+		if graphs:
+			shared_memory = multiprocessing.Manager() # Shared memory space manager
+			all_frames = shared_memory.list() # Define all_frames array in shared memory
+			thresh_frames = shared_memory.list() # Define thresh_frames array in shared memory
 
 		if audio_input == "0":
-			data = stream.read(CHUNK) # Get first data frame from .wav file
+			data = stream.read(CHUNK) # Get first data frame from the microphone
 		else:
 			data = wf.readframes(CHUNK) # Get first data frame from .wav file
 
 		all_frames.append(data) # Append to all frames
 		thresh_frames.append(EMPTY_CHUNK) # Append an EMPTY CHUNK to thresh frames
 
-		process1 = multiprocessing.Process(target=SpeechRecognition.draw_waveform, args=(all_frames, thresh_frames)) # Define draw waveform process
-		process1.start() # Start draw waveform process
+		if graphs:
+			process1 = multiprocessing.Process(target=SpeechRecognition.draw_waveform, args=(all_frames, thresh_frames)) # Define draw waveform process
+			process1.start() # Start draw waveform process
 
-		process2 = multiprocessing.Process(target=SpeechRecognition.draw_spectrum_analyzer, args=(all_frames, thresh_frames)) # Define draw spectrum analyzer process
-		process2.start() # Start drar spectrum analyzer process
+			process2 = multiprocessing.Process(target=SpeechRecognition.draw_spectrum_analyzer, args=(all_frames, thresh_frames)) # Define draw spectrum analyzer process
+			process2.start() # Start drar spectrum analyzer process
 
 		# Loop over the frames of the audio / data chunks
 		while data != '':
@@ -195,20 +206,22 @@ class SpeechRecognition():
 			if audio_input == "0":
 				data = stream.read(CHUNK) # Read a new chunk from the stream
 			else:
-				stream.write(data) # Monitor current chunk
+				if graphs:
+					stream.write(data) # Monitor current chunk
 				data = wf.readframes(CHUNK) # Read a new chunk from the stream
 
 			all_frames.append(data) # Append this chunk to all frames
 			thresh_frames.append(EMPTY_CHUNK) # Append an EMPTY CHUNK to thresh frames
 
 			rms = audioop.rms(data, 2) # Calculate Root Mean Square of current chunk
+			word_data = [] # Define single word data
 			if rms >= THRESHOLD: # If Root Mean Square value is greater than THRESHOLD constant
-				starting_time = datetime.datetime.now() # Starting time of the clause
+				starting_time = datetime.datetime.now() # Starting time of the word
 				thresh_frames.pop() # Pop out last frame of thresh frames
 				thresh_frames.pop() # Pop out last frame of thresh frames
-				clause_data.append(previous_data) # Append previous chunk to clause data
-				thresh_frames.append(previous_data) # APpend previos chunk to thresh frames
-				clause_data.append(data) # Append current chunk to clause data
+				word_data.append(previous_data) # Append previous chunk to training data
+				word_data.append(data) # Append current chunk to training data
+				thresh_frames.append(previous_data) # Append previous chunk to thresh frames
 				thresh_frames.append(data) # Append current chunk to thresh frames
 				silence_counter = 0 # Define silence counter
 				while silence_counter < SILENCE_DETECTION: # While silence counter value less than SILENCE_DETECTION constant
@@ -216,11 +229,12 @@ class SpeechRecognition():
 					if audio_input == "0":
 						data = stream.read(CHUNK) # Read a new chunk from the stream
 					else:
-						stream.write(data) # Monitor current chunk
+						if graphs:
+							stream.write(data) # Monitor current chunk
 						data = wf.readframes(CHUNK) # Read a new chunk from the stream
 
 					all_frames.append(data) # Append this chunk to all frames
-					clause_data.append(data) # Append this chunk to clause data
+					word_data.append(data) # Append this chunk to training data
 					thresh_frames.append(data) # Append this chunk to thresh frames
 					rms = audioop.rms(data, 2) # Calculate Root Mean Square of current chunk again
 
@@ -229,21 +243,46 @@ class SpeechRecognition():
 					else: # Else
 						silence_counter = 0 # Assign zero value to silence counter
 
-				del clause_data[-(SILENCE_DETECTION-2):] # Delete last frames of clause data as much as SILENCE_DETECTION constant
-				del thresh_frames[-(SILENCE_DETECTION-2):] # Delete last frames of thresh frames as much as SILENCE_DETECTION constant
-				for i in range(SILENCE_DETECTION-2): # SILENCE_DETECTION constant times
-					thresh_frames.append(EMPTY_CHUNK) # Append an EMPTY_CHUNK
-				ending_time = datetime.datetime.now() # Ending time of the clause
+				#del word_data[-(SILENCE_DETECTION-2):] # Delete last frames of training data as much as SILENCE_DETECTION constant
+				#del thresh_frames[-(SILENCE_DETECTION-2):] # Delete last frames of thresh frames as much as SILENCE_DETECTION constant
+				#for i in range(SILENCE_DETECTION-2): # SILENCE_DETECTION constant times
+				#	thresh_frames.append(EMPTY_CHUNK) # Append an EMPTY_CHUNK
+				ending_time = datetime.datetime.now() # Ending time of the training
+				for i in xrange(len(word_data)):
+					word_data[i] = numpy.fromstring(word_data[i], 'int16') # Convert each frame from binary string to int16
+				word_data = numpy.asarray(word_data) # Convert the word data into numpy array
+				word_data = word_data / word_data.max() # Normalize the input
+				output = rnn.run(word_data) # Run the network to get the output/result (feedforward)
+				print words[numpy.argmax(output)] + '\t\t', output # Print the best guess
 
-				clause_data = ''.join(clause_data)
-				# Handle/Use clause_data
-				clause_data = [] # Empty clause data
 
-		process1.terminate() # Terminate draw waveform process
-		process2.terminate() # Terminate drar spectrum analyzer process
+		if graphs:
+			process1.terminate() # Terminate draw waveform process
+			process2.terminate() # Terminate drar spectrum analyzer process
 		stream.stop_stream() # Stop the stream
 		stream.close() # Close the stream
 		p.terminate() # Terminate the session
+
+	@staticmethod
+	def _teststart():
+		rnn = RNN(2048, HIDDEN_NEURON, 5)
+		rnn.importdump("out/model.npz")
+		words_data = []
+		words = []
+		for filename in os.listdir(TRAINING_DATA_DIRECTORY):
+			if filename.endswith(".wav"):
+				wav_path = os.path.join(TRAINING_DATA_DIRECTORY, filename)
+				words_data = words_data + SpeechRecognition.extact_words_from_audio(wav_path)
+				txt_path = os.path.join(TRAINING_DATA_DIRECTORY, filename[:-4] + ".txt")
+				with open(txt_path) as f:
+					words = words + [x.strip() for x in f.readlines()]
+		for i in xrange(len(words_data)):
+			for j in xrange(len(words_data[i])):
+				words_data[i][j] = numpy.fromstring(words_data[i][j], 'int16') # Convert each frame from binary string to int16
+			words_data[i] = numpy.asarray(words_data[i]) # Convert the word data into numpy array
+			words_data[i] = words_data[i] / words_data[i].max() # Normalize the input
+		for i in xrange(len(words_data)):
+			print words[i/REPEAT_N_TIMES] + '\t\t', rnn.run(words_data[i])
 
 	@staticmethod
 	def extact_words_from_audio(audio_input,graphs=False,verbose=False):
@@ -368,7 +407,7 @@ class SpeechRecognition():
 			pass
 		else:
 			words = raw_input("Enter the words separating them by comma(,): ").split(',')
-			if len(words) == len(words_data):
+			if len(words) == (len(words_data)/REPEAT_N_TIMES):
 				training_data = [frame for word_data in words_data for frame in word_data] # Flatten the words data into single big array of frames
 				SpeechRecognition.save_training_data(training_data,words) # Then save it
 			else:
@@ -390,19 +429,24 @@ class SpeechRecognition():
 	@staticmethod
 	def train():
 		words_data, words = SpeechRecognition.load_training_data() # Load the training data
-		target = numpy.identity(len(words_data)) # Create a unit matrix (identity matrix) as our target
+		target = numpy.identity(len(words)) # Create a unit matrix (identity matrix) as our target
+		ri = []
+		for i in xrange(len(words)):
+			ri += [i] * REPEAT_N_TIMES
+		target = target[ri]
 		for i in xrange(len(words_data)):
 			for j in xrange(len(words_data[i])):
 				words_data[i][j] = numpy.fromstring(words_data[i][j], 'int16') # Convert each frame from binary string to int16
-			words_data[i] = numpy.asarray(words_data[i]) # Conver the word data into numpy array
-		rnn = RNN(len(words_data[0][0]), 20, len(words_data)) # Create a Recurrent Neural Network instance
+			words_data[i] = numpy.asarray(words_data[i]) # Convert the word data into numpy array
+			words_data[i] = words_data[i] / words_data[i].max() # Normalize the input
+		rnn = RNN(len(words_data[0][0]), HIDDEN_NEURON, len(words)) # Create a Recurrent Neural Network instance
 		#print len(words_data[0][0]), len(words_data)
 		#print numpy.asarray(words_data[0]).shape # Input shape
 		#print target[0].shape # Target shape
 		lr = 0.01 # Learning rate
 		e = 1 # Initial error = 1
 		vals = [] # Values for plotting
-		n_iteration = 1000
+		n_iteration = TRAINING_ITERATION
 		for i in xrange(n_iteration): # Iterate (n_iteration) times
 			for j in xrange(len(words_data)): # For each word in words
 				u = words_data[j] # Input (2048)
@@ -430,9 +474,11 @@ class SpeechRecognition():
 		print "Graph of the decline of error by the time is saved as: " + PLOTS_DIRECTORY + "error.png"
 
 		print "--- TESTING ---"
+		del rnn
+		rnn = RNN(len(words_data[0][0]), HIDDEN_NEURON, len(words))
 		rnn.importdump(OUT_DIRECTORY + "model.npz")
 		for i in xrange(len(words_data)):
-			print words[i] + '\t\t', rnn.run(words_data[i])
+			print words[i/REPEAT_N_TIMES] + '\t\t', rnn.run(words_data[i])
 
 
 if __name__ == "__main__":
