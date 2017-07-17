@@ -1,0 +1,9 @@
+#!/usr/bin/make -f
+%:
+	dh $@ --with python-virtualenv
+
+override_dh_virtualenv:
+	dh_virtualenv --setuptools \
+	--extra-pip-arg --ignore-installed \
+	--extra-pip-arg --no-dependencies \
+	--use-system-packages
