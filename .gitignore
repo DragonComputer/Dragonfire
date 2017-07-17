@@ -163,3 +163,7 @@ dragonfire/realhud/realhud
 dragonfire/sr/training_data/*
 dragonfire/sr/plots/*
 dragonfire/sr/out/*
+
+# Debian packaging (stdeb) realted
+dragonfire*tar.gz
+deb_dist/
