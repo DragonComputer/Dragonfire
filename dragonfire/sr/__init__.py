@@ -33,7 +33,7 @@ SCREEN_WIDTH = root.winfo_screenwidth()
 SCREEN_HEIGHT = root.winfo_screenheight()
 HIDDEN_NEURON = 20 # Hidden neuron count in the network
 REPEAT_N_TIMES = 10 # How many times repeated? For 3 for example; one, one, one, two, two, two, three, ...
-TRAINING_ITERATION = 100 # How many iterations for training
+TRAINING_ITERATION = 1000 # How many iterations for training
 
 class SpeechRecognition():
 
@@ -272,7 +272,7 @@ class SpeechRecognition():
 		for filename in os.listdir(TRAINING_DATA_DIRECTORY):
 			if filename.endswith(".wav"):
 				wav_path = os.path.join(TRAINING_DATA_DIRECTORY, filename)
-				words_data = words_data + SpeechRecognition.extact_words_from_audio(wav_path)
+				words_data = words_data + SpeechRecognition.extract_words_from_audio(wav_path)
 				txt_path = os.path.join(TRAINING_DATA_DIRECTORY, filename[:-4] + ".txt")
 				with open(txt_path) as f:
 					words = words + [x.strip() for x in f.readlines()]
@@ -285,7 +285,7 @@ class SpeechRecognition():
 			print words[i/REPEAT_N_TIMES] + '\t\t', rnn.run(words_data[i])
 
 	@staticmethod
-	def extact_words_from_audio(audio_input,graphs=False,verbose=False):
+	def extract_words_from_audio(audio_input,graphs=False,verbose=False):
 		try:
 			if audio_input == "0":
 				pass
@@ -402,7 +402,7 @@ class SpeechRecognition():
 	@staticmethod
 	def create_training_data(audio_input,graphs=True,verbose=True):
 		try:
-			words_data = SpeechRecognition.extact_words_from_audio(audio_input,graphs,verbose)
+			words_data = SpeechRecognition.extract_words_from_audio(audio_input,graphs,verbose)
 		except KeyboardInterrupt:
 			pass
 		else:
@@ -420,7 +420,7 @@ class SpeechRecognition():
 		for filename in os.listdir(TRAINING_DATA_DIRECTORY):
 			if filename.endswith(".wav"):
 				wav_path = os.path.join(TRAINING_DATA_DIRECTORY, filename)
-				words_data = words_data + SpeechRecognition.extact_words_from_audio(wav_path)
+				words_data = words_data + SpeechRecognition.extract_words_from_audio(wav_path)
 				txt_path = os.path.join(TRAINING_DATA_DIRECTORY, filename[:-4] + ".txt")
 				with open(txt_path) as f:
 					words = words + [x.strip() for x in f.readlines()]
@@ -485,10 +485,15 @@ if __name__ == "__main__":
 	import argparse # Makes it easy to write user-friendly command-line interfaces.
 	ap = argparse.ArgumentParser() # Define an Argument Parser
 	ap.add_argument("-a", "--audio", help="path to the audio file") # Add --audio argument
+	ap.add_argument("-c", "--create", help="create training data, use with --audio")
+	ap.add_argument("-t", "--train", help="train the network, use just by itself")
 	args = vars(ap.parse_args()) # Parse the arguments
 
-	#SpeechRecognition.start(args["audio"])
-	if args["audio"]:
-		SpeechRecognition.create_training_data(args["audio"])
-	else:
+	if args["train"]:
 		SpeechRecognition.train()
+	elif args["create"] and args["audio"]:
+		SpeechRecognition.create_training_data(args["audio"])
+	elif args["audio"]:
+		SpeechRecognition.start(args["audio"])
+	else:
+		print "You tried to use it with a wrong combination. Check out --help"
