@@ -1,6 +1,6 @@
 # install bash script to usr/bin
 # usr/local/bin seems to only be for self compiled stuff
-debian/dragonfire usr/bin
+debian/fire/dragonfire usr/bin
 # Copy application file and icon
 debian/dragonfire.desktop usr/share/applications
 #debian/home_made_icon.png usr/share/icons/hicolor/48x48/apps
