@@ -28,10 +28,10 @@ class RNN():
 		self.b_hh = theano.shared(self.b_hh, 'b_hh')
 		self.b_hy = theano.shared(self.b_hy, 'b_hy')
 
-		h0_tm1 = theano.shared(np.zeros(n_hidden, dtype=theano.config.floatX))
+		self.h0_tm1 = theano.shared(np.zeros(n_hidden, dtype=theano.config.floatX))
 
 		h, _ = theano.scan(self.recurrent_fn, sequences = u,
-					   outputs_info = [h0_tm1],
+					   outputs_info = [self.h0_tm1],
 					   non_sequences = [self.W_hh, self.W_uh, self.W_hy, self.b_hh])
 
 		y = T.dot(h[-1], self.W_hy) + self.b_hy
@@ -58,16 +58,17 @@ class RNN():
 
 	def dump(self,path,filename='model.npz'):
 		with open(path + filename, "wb") as thefile:
-			np.savez(thefile, W_uh=self.W_uh, W_hh=self.W_hh, W_hy=self.W_hy, b_hh=self.b_hh, b_hy=self.b_hy)
+			np.savez(thefile, W_uh=self.W_uh.get_value(), W_hh=self.W_hh.get_value(), W_hy=self.W_hy.get_value(), b_hh=self.b_hh.get_value(), b_hy=self.b_hy.get_value(), h0_tm1=self.h0_tm1.get_value())
 
 	def importdump(self,path_to_file):
 		with open(path_to_file, "rb") as thefile:
 			npzfile = np.load(thefile)
-			self.W_uh = npzfile['W_uh']
-			self.W_hh = npzfile['W_hh']
-			self.W_hy = npzfile['W_hy']
-			self.b_hh = npzfile['b_hh']
-			self.b_hy = npzfile['b_hy']
+			self.W_uh.set_value(npzfile['W_uh'])
+			self.W_hh.set_value(npzfile['W_hh'])
+			self.W_hy.set_value(npzfile['W_hy'])
+			self.b_hh.set_value(npzfile['b_hh'])
+			self.b_hy.set_value(npzfile['b_hy'])
+			self.h0_tm1.set_value(npzfile['h0_tm1'])
 
 if __name__ == '__main__':
 	rnn = RNN(2, 20, 1)
