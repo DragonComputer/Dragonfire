@@ -1,12 +1,12 @@
 [Desktop Entry]
 Version=0.9.5
 Type=Application
-Name=dragonfire
-Comment=Dragonfire is an open source virtual assistant project for Ubuntu based Linux distributions
-Exec=fire/dragonfire
-Icon=/usr/share/icons/gnome/48x48/apps/file-manager.png
+Name=Dragonfire
+Comment=Virtual Assistant for Linux
+Exec=dragonfire
 Categories=Utility;
 # desktop should run this in a terminal application
-Terminal=true
+Terminal=false
 StartupNotify=true
 StartupWMClass=dragonfire
+Icon=dragonfire_icon.png

@@ -3,4 +3,4 @@
 debian/fire/dragonfire usr/bin
 # Copy application file and icon
 debian/dragonfire.desktop usr/share/applications
-#debian/home_made_icon.png usr/share/icons/hicolor/48x48/apps
+debian/dragonfire_icon.png usr/share/icons/hicolor/48x48/apps
