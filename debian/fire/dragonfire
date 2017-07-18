@@ -1,3 +1,3 @@
 #!/bin/sh
 
-/usr/local/bin/dragonfire
+/usr/share/python/dragonfire/bin/dragonfire

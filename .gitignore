@@ -164,6 +164,9 @@ dragonfire/sr/training_data/*
 dragonfire/sr/plots/*
 dragonfire/sr/out/*
 
-# Debian packaging (stdeb) realted
-dragonfire*tar.gz
-deb_dist/
+# Debian packaging (dh-virtualenv) realted
+debian/dragonfire/
+debian/debhelper-build-stamp
+debian/dragonfire.postinst.debhelper
+debian/dragonfire.substvars
+debian/files

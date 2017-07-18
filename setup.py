@@ -19,34 +19,15 @@ from subprocess import check_call, PIPE, Popen
 class PostDevelopCommand(develop):
     """Post-installation for development mode."""
     def run(self):
-        check_call("apt-get -y install julius festival festlex-cmu python-xlib portaudio19-dev python-all-dev flac libnotify-bin python-egenix-mx-base-dev python-lxml python-nltk python-pyaudio python-httplib2 libglib2.0-dev libcairo2-dev libgtk2.0-dev".split())
-        check_call("wget -c http://www.speech.cs.cmu.edu/cmu_arctic/packed/cmu_us_clb_arctic-0.95-release.tar.bz2 -P /usr/share/festival/voices/english/".split())
-        check_call("tar jxf /usr/share/festival/voices/english/cmu_us_clb_arctic-0.95-release.tar.bz2 -C /usr/share/festival/voices/english/".split())
-        check_call("ln -fs /usr/share/festival/voices/english/cmu_us_clb_arctic /usr/share/festival/voices/english/cmu_us_clb_arctic_clunits".split())
-        check_call("cp /etc/festival.scm /etc/festival.scm.backup".split())
-        check_call("chmod o+w /etc/festival.scm".split())
-        with open("/etc/festival.scm", "a") as myfile:
-            myfile.write("(set! voice_default 'voice_cmu_us_clb_arctic_clunits)")
-        check_call("python -m spacy download en".split())
         import nltk
         nltk.download("names")
         nltk.download("brown")
         nltk.download('wordnet')
-        check_call("apt-get -y install python-pyaudio python-scipy python-qt4 python-tk".split()) # dependencies for SpeechRecognition (only development)
         develop.run(self)
 
 class PostInstallCommand(install):
     """Post-installation for installation mode."""
     def run(self):
-        check_call("apt-get -y install julius festival festlex-cmu python-xlib portaudio19-dev python-all-dev flac libnotify-bin python-egenix-mx-base-dev python-lxml python-nltk python-pyaudio python-httplib2 libglib2.0-dev libcairo2-dev libgtk2.0-dev".split())
-        check_call("wget -c http://www.speech.cs.cmu.edu/cmu_arctic/packed/cmu_us_clb_arctic-0.95-release.tar.bz2 -P /usr/share/festival/voices/english/".split())
-        check_call("tar jxf /usr/share/festival/voices/english/cmu_us_clb_arctic-0.95-release.tar.bz2 -C /usr/share/festival/voices/english/".split())
-        check_call("ln -fs /usr/share/festival/voices/english/cmu_us_clb_arctic /usr/share/festival/voices/english/cmu_us_clb_arctic_clunits".split())
-        check_call("cp /etc/festival.scm /etc/festival.scm.backup".split())
-        check_call("chmod o+w /etc/festival.scm".split())
-        with open("/etc/festival.scm", "a") as myfile:
-            myfile.write("(set! voice_default 'voice_cmu_us_clb_arctic_clunits)")
-        check_call("python -m spacy download en".split())
         import nltk
         nltk.download("names")
         nltk.download("brown")
