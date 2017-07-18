@@ -8,5 +8,5 @@ Standards-Version: 3.9.5
 Package: dragonfire
 Architecture: any
 Pre-Depends: dpkg (>= 1.16.1), python2.7-minimal, ${misc:Pre-Depends}
-Depends: ${python:Depends}, ${misc:Depends}, julius, festival, festlex-cmu, python-xlib, portaudio19-dev, python-all-dev, flac, libnotify-bin, python-egenix-mx-base-dev, python-lxml, python-nltk, python-pyaudio, python-httplib2,
+Depends: ${python:Depends}, ${misc:Depends}, julius, festival, festlex-cmu, python-xlib, portaudio19-dev, python-all-dev, flac, libnotify-bin, python-egenix-mx-base-dev, python-lxml, python-nltk, python-pyaudio, python-httplib2
 Description: Dragonfire is an open source virtual assistant project for Ubuntu based Linux distributions
