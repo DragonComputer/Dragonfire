@@ -8,6 +8,8 @@ from lxml import etree
 from dragonfire.utilities import TTA
 from dragonfire.nlplib import Classifiers
 from dragonfire.omniscient import Engine
+from dragonfire.stray import SystemTrayInit, SystemTrayExitListenerSet
+from multiprocessing import Process, Event
 from subprocess import call, Popen
 import time
 import subprocess
@@ -43,6 +45,8 @@ CONVO_ID = uuid.uuid4()
 userin = TTA()
 learn_ = Learn()
 omniscient_ = Engine()
+e = Event()
+julius_proc = None
 
 def command(speech):
 	#here = os.path.dirname(os.path.realpath(__file__))
@@ -64,6 +68,9 @@ def command(speech):
 	global config_file
 
 	while(True):
+
+		if (e.is_set()): # System Tray Icon exit must trigger this
+			raise KeyboardInterrupt
 
 		line = speech.readline()
 		if line.startswith("sentence1: ") or line.startswith("<search failed>"):
@@ -502,6 +509,8 @@ def initiate():
 		global inactive
 		global julius_proc
 		inactive = 1
+		SystemTrayExitListenerSet(e)
+		Process(target=SystemTrayInit).start()
 		dragon_greet()
 		# padsp julius -input mic -C julian.jconf | ./getcommand.py
 		julius_proc = subprocess.Popen(["padsp", "julius", "-input", "mic", "-C", DRAGONFIRE_PATH + "/julian.jconf"], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
