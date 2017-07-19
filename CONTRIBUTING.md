@@ -379,6 +379,12 @@ Learning feature has a priority so if in the past, you said something like `ALBE
 
 ## Build the Debian package
 
+Install build dependencies:
+
+```
+sudo apt-get install debhelper python dh-virtualenv python-all-dev libglib2.0-dev libcairo2-dev libgtk2.0-dev
+```
+
 To building the Debian package simply run:
 
 ```
