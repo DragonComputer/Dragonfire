@@ -2,8 +2,6 @@
 # -*- coding: utf-8 -*-
 
 import sys
-import contextlib
-import cStringIO
 import nltk
 from nltk.corpus import names
 from nltk.corpus import brown
