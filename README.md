@@ -34,9 +34,13 @@ Feel free to join [our Gitter chat room](https://gitter.im/DragonComputer/Lobby)
 
 ### Installation
 
+Download the [latest release](https://github.com/DragonComputer/Dragonfire/releases/latest) (the `.deb` file) and:
+
 ```Shell
-sudo pip install dragonfire
+sudo dpkg -i dragonfire_0.9.5_amd64.deb
 ```
+
+<sup><i>To install the dependencies run `sudo apt-get -f install` right after the `dpkg -i` command.</i></sup>
 
 ### Usage
 
