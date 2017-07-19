@@ -61,8 +61,10 @@ def SystemTrayExitListenerSet(e):
     global_event_holder = e
 
 def SystemTrayInit():
-	app = App(False)
-	app.MainLoop()
+    os.close(1) # close C's stdout stream
+    os.close(2) # close C's stderr stream
+    app = App(False)
+    app.MainLoop()
 
 
 if __name__ == '__main__':

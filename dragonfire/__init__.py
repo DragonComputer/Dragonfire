@@ -363,15 +363,7 @@ def command(speech):
 				tts_kill()
 				userin.define([" "]," ")
 				userin.say("Goodbye, " + user_prefix)
-				previous_command = com
-				julius_proc.terminate()
-				with nostdout():
-					with nostderr():
-						try:
-							os.system('rm -f /tmp/' + str(datetime.date.today().year) + '*.[Ww][Aa][Vv]')
-						except:
-							pass
-				sys.exit(1)
+				raise KeyboardInterrupt
 			elif "WIKIPEDIA" in com and ("SEARCH" in com or "FIND" in com):
 				tts_kill()
 				with nostdout():
@@ -510,7 +502,8 @@ def initiate():
 		global julius_proc
 		inactive = 1
 		SystemTrayExitListenerSet(e)
-		Process(target=SystemTrayInit).start()
+		stray_proc = Process(target=SystemTrayInit)
+		stray_proc.start()
 		dragon_greet()
 		# padsp julius -input mic -C julian.jconf | ./getcommand.py
 		julius_proc = subprocess.Popen(["padsp", "julius", "-input", "mic", "-C", DRAGONFIRE_PATH + "/julian.jconf"], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
@@ -519,6 +512,7 @@ def initiate():
 		#command(sys.stdin)
 	except KeyboardInterrupt:
 		julius_proc.terminate()
+		stray_proc.terminate()
 		with nostdout():
 			with nostderr():
 				try:
