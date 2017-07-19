@@ -38,6 +38,8 @@ The following is a set of guidelines for contributing to Dragonfire an open sour
 
 - [Troubleshooting](#troubleshooting)
 
+- [Build the Debian package](#build-the-debian-package)
+
 ## Code of Conduct
 
 This project and everyone participating in it is governed by the [Dragonfire's Code of Conduct](CODE_OF_CONDUCT.md). By participating, you are expected to uphold this code. Please report unacceptable behavior to [mert.yildiran@bil.omu.edu.tr](mailto:mert.yildiran@bil.omu.edu.tr).
@@ -311,6 +313,10 @@ Dragonfire starts on sleeping mode to do not disturb your acoustic environment. 
 
 Then you need to deactivate her by saying *GO TO SLEEP*.
 
+#### Dragonfire confusing with her own voice?
+
+Simply use your headphones:headphones: instead of the speakers:speaker: to listen Dragonfire or lower the volume.
+
 #### Dragonfire started to read something and now she is not stopping?
 
 Then you need to silence her by saying *ENOUGH* OR *SHUT UP*.
@@ -370,3 +376,14 @@ Dragonfire's learning is far from perfect so by the time, the conversations fill
 Learning feature has a priority so if in the past, you said something like `ALBERT EINSTEIN IS A PHYSICIST` then it will block your way when you asked anything about **Albert Einstein**. To fix this you should say: `FORGET ABOUT ALBERT EINSTEIN`
 
 :checkered_flag: If none of the cases listed above are fitting to your situation then always consider to [file an issue](https://github.com/DragonComputer/Dragonfire/issues/new) or visit our [chat room on Gitter](https://gitter.im/DragonComputer/Lobby).
+
+## Build the Debian package
+
+To building the Debian package simply run:
+
+```
+cd Dragonfire/
+dpkg-buildpackage -us -uc -b
+```
+
+It will save the `.deb` file into parent directory. `debian` directory is the directory contains all the configuration files and pre/post installation scripts related to Debian packaging.
