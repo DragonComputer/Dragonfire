@@ -4,36 +4,27 @@
 #from __future__ import unicode_literals
 import sys
 import pyowm
-from lxml import etree
 from dragonfire.utilities import TTA
 from dragonfire.nlplib import Classifiers
 from dragonfire.omniscient import Engine
 from dragonfire.stray import SystemTrayInit, SystemTrayExitListenerSet
 from multiprocessing import Process, Event
-from subprocess import call, Popen
 import time
 import subprocess
-import urllib2
 import wikipedia
 from random import randint
-import getpass
 import os
 import re
-import xml.etree.ElementTree as ET
 from pykeyboard import PyKeyboard
 from pymouse import PyMouse
 import datetime
-from apiclient.discovery import build
-from apiclient.errors import HttpError
 import glob
 import speech_recognition as sr
 import inspect
-#import aiml
 import contextlib
 import cStringIO
 from dragonfire.learn import Learn
 import uuid
-import string
 import youtube_dl
 from tinydb import TinyDB, Query
 from os.path import expanduser
@@ -41,24 +32,15 @@ from os.path import expanduser
 DRAGONFIRE_PATH = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 FNULL = open(os.devnull, 'w')
 GENDER_PREFIX = {'male': 'Sir', 'female': 'My Lady'}
-CONVO_ID = uuid.uuid4()
+CONVERSATION_ID = uuid.uuid4()
 userin = TTA()
 learn_ = Learn()
 omniscient_ = Engine()
 e = Event()
 julius_proc = None
 
-def command(speech):
-	#here = os.path.dirname(os.path.realpath(__file__))
-	#Popen(["./gradlew","web","-q"], stdout=FNULL, stderr=FNULL)
-	#os.chdir(here)
 
-	'''
-	kernel = aiml.Kernel()
-	with nostdout():
-		with nostderr():
-			kernel.learn(DRAGONFIRE_PATH + "/aiml/learn.aiml")
-	'''
+def command(speech):
 
 	previous_command = ""
 	global inactive
@@ -422,8 +404,8 @@ def command(speech):
 
 
 def tts_kill():
-	call(["pkill", "audsp"], stdout=FNULL, stderr=FNULL)
-	call(["pkill", "aplay"], stdout=FNULL, stderr=FNULL)
+	subprocess.call(["pkill", "audsp"], stdout=FNULL, stderr=FNULL)
+	subprocess.call(["pkill", "aplay"], stdout=FNULL, stderr=FNULL)
 
 def dragon_greet():
 	tts_kill()
