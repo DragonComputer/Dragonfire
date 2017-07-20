@@ -1,5 +1,5 @@
-dragonfire (0.9.5) xenial; urgency=medium
+dragonfire (0.9.5) jessie; urgency=medium
 
   * Initial release.
 
- -- Mehmet Mert Yildiran <mertyildiran@Corsair>  Mon, 17 Jul 2017 22:20:48 +0000
+ -- Mehmet Mert Yildiran <mehmetmertyildiran@gmail.com>  Mon, 17 Jul 2017 22:20:48 +0000
