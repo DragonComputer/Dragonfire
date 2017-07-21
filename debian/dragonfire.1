@@ -1,0 +1,108 @@
+.\" Process this file with
+.\" groff -man -Tascii foo.1
+.\"
+.TH DRAGONFIRE 1 "JULY 2017" Linux "User Manuals"
+.SH NAME
+dragonfire \- Virtual assistant for Debian based Linux distributions
+.SH SYNOPSIS
+.B dragonfire [--cli]
+.B ...
+.SH DESCRIPTION
+.B dragonfire
+is the virtual assistant of Debian based
+Linux distributions. The user can execute it either from
+command line or from the Application Launcher. It receives
+voice commands from users and takes actions accordingly.
+Dragonfire goes through these steps for your commands,
+respectively: (1) Search across the built-in commands.
+(2) Try to Learn using Advanced NLP and Database Management
+Techniques. (3) Ask to Omniscient Q&A Engine. Dragonfire plays
+an avatar animation on the screen (for max 10 seconds)
+everytime she speaks. It uses default notification method
+of the system and also places an icon into system tray.
+.SH OPTIONS
+.\"
+.TP
+.BR \-c ", " \-\-cli
+Command\-line interface mode. Give commands to Dragonfire via
+command\-line inputs (keyboard) instead of audio inputs (microphone).
+.\"
+.TP
+.BR \-s ", " \-\-silent
+Silent mode. Disable Text\-to\-Speech output. Dragonfire won't
+generate any audio output.
+.\"
+.TP
+.BR \-\-headless
+Headless mode. Do not display an avatar animation on the screen.
+Disable the female head model.
+.SH DIAGNOSTICS
+The following issues can occur on runtime:
+
+\fBNo sound is coming out of my computer?\fR
+.RS
+Dragonfire's audio output (ALSA plug-in [aplay]: ALSA Playback)
+could be mapped to wrong audio device or you can fix this either
+by changing it to correct device using the audio settings of your
+operating system or you can choose to use Phonon to configure your
+device priority. The problem also could be related to missing
+.BR festival (1)
+package on your system. It should normally be installed
+on post-installation automatically but try to install it one more time.
+.RE
+
+\fBDragonfire is not reacting to my voice?\fR
+.RS
+First of all, Dragonfire's speech recognition ability needs an
+Internet connection so make sure your machine is connected to
+the Internet. If Internet connection is not the issue then most probably
+Dragonfire's audio input \fB(ALSA plug-in [python2.7]: ALSA Capture)\fR
+is mapped to wrong audio device so you can fix this either
+by changing it to correct device using the audio settings of your
+operating system or you can choose to use Phonon to configure your
+device priority.
+.RE
+
+\fBDragonfire is understanding my commands but doing nothing?\fR
+.RS
+Dragonfire starts on sleeping mode to do not disturb your acoustic
+environment. You need to active her by saying
+\fBDRAGONFIRE\fR or \fBHEY\fR or \fBWAKE UP\fR to your microphone.
+.RE
+
+\fBDragonfire is unnecessarily jumping into real world conversation of me?\fR
+.RS
+Then you need to deactivate her by saying \fBGO TO SLEEP\fR.
+.RE
+
+\fBDragonfire confusing with her own voice?\fR
+.RS
+Simply use your headphones instead of the speakers to listen Dragonfire or
+lower the volume.
+.RE
+
+.SH EXAMPLES
+.\"
+.TP
+\fBdragonfire\fR
+Run in plain mode. By default, audio input (microphone), avatar animation and
+Text\-to\-Speech features are enabled.
+.TP
+\fBdragonfire --cli\fR
+Run in command\-line interface mode. Take the inputs from command\-line.
+Avatar animation and Text\-to\-Speech features are still active.
+.TP
+\fBdragonfire --cli --headless\fR
+Also disable the avatar animation. Text\-to\-Speech is still active.
+.TP
+\fBdragonfire --cli --headless --silent\fR
+Fully silent mode. Audio input (microphone), avatar animation and
+Text\-to\-Speech features are all disabled. Only the command-line
+interaction is possible.
+
+.SH AUTHOR
+Mehmet Mert Yildiran <mehmetmertyildiran at gmail dot com>
+
+.SH "SEE ALSO"
+.BR festival (1),
+.BR notify-send (1)

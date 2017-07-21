@@ -7,3 +7,6 @@ override_dh_virtualenv:
 	--extra-pip-arg --ignore-installed \
 	--extra-pip-arg --no-dependencies \
 	--use-system-packages
+
+override_dh_installman:
+	dh_installman debian/dragonfire.1

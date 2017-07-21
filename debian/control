@@ -9,4 +9,14 @@ Package: dragonfire
 Architecture: any
 Pre-Depends: dpkg (>= 1.16.1), python2.7-minimal, ${misc:Pre-Depends}
 Depends: ${python:Depends}, ${misc:Depends}, festival, festlex-cmu, python-xlib, portaudio19-dev, python-all-dev, flac, libnotify-bin, python-egenix-mx-base-dev, python-lxml, python-nltk, python-pyaudio, python-httplib2, python-pip, python-wxgtk3.0
-Description: Dragonfire is an open source virtual assistant project for Ubuntu based Linux distributions
+Description: Virtual assistant for Debian based Linux distributions.
+	The user can execute it either from
+	command line or from the Application Launcher. It receives
+	voice commands from users and takes actions accordingly.
+	Dragonfire goes through these steps for your commands,
+	respectively: (1) Search across the built-in commands.
+	(2) Try to Learn using Advanced NLP and Database Management
+	Techniques. (3) Ask to Omniscient Q&A Engine. Dragonfire plays
+	an avatar animation on the screen (for max 10 seconds)
+	everytime she speaks. It uses default notification method
+	of the system and also places an icon into system tray.
