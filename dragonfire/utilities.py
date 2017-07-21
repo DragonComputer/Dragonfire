@@ -15,7 +15,9 @@ FNULL = open(os.devnull, 'w')
 songRunning = False
 class TTA:
 
-	def __init__(self):
+	def __init__(self, args):
+		self.headless = args["headless"]
+		self.silent = args["silent"]
 		realhud.load_gif(DRAGONFIRE_PATH + "/realhud/animation/avatar.gif")
 
 	def define(self, com="", msg="", sp="False"):
@@ -52,17 +54,20 @@ class TTA:
 			else:
 				print "Dragonfire: " + message.upper()
 				print "_______________________________________________________________\n"
-		tts_proc = subprocess.Popen("festival --tts", stdin=subprocess.PIPE, stdout=FNULL, stderr=FNULL, shell=True)
-		message = "".join([i if ord(i) < 128 else ' ' for i in message])
-		tts_proc.stdin.write(message)
-		tts_proc.stdin.close()
-		#print "TTS process started."
+		if not self.silent:
+			tts_proc = subprocess.Popen("festival --tts", stdin=subprocess.PIPE, stdout=FNULL, stderr=FNULL, shell=True)
+			message = "".join([i if ord(i) < 128 else ' ' for i in message])
+			tts_proc.stdin.write(message)
+			tts_proc.stdin.close()
+			#print "TTS process started."
 
 		pool = Pool(processes=1)
-		pool.apply_async(realhud.play_gif, [0.5, True])
-		#print "Avatar process started."
+		if not self.headless:
+			pool.apply_async(realhud.play_gif, [0.5, True])
+			#print "Avatar process started."
 
-		tts_proc.wait()
+		if not self.silent:
+			tts_proc.wait()
 		pool.terminate()
 		#if songRunning == True:
 		#	subprocess.Popen(["rhythmbox-client","--play"])
