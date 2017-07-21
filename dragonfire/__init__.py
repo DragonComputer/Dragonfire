@@ -28,19 +28,20 @@ import uuid
 import youtube_dl
 from tinydb import TinyDB, Query
 from os.path import expanduser
+import argparse
 
 DRAGONFIRE_PATH = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 FNULL = open(os.devnull, 'w')
 GENDER_PREFIX = {'male': 'Sir', 'female': 'My Lady'}
 CONVERSATION_ID = uuid.uuid4()
-userin = TTA()
+userin = None
 learn_ = Learn()
 omniscient_ = Engine()
 e = Event()
 r = sr.Recognizer()
 
 
-def command():
+def command(args):
 
 	previous_command = ""
 	global inactive
@@ -56,12 +57,15 @@ def command():
 		if (e.is_set()): # System Tray Icon exit must trigger this
 			raise KeyboardInterrupt
 
-		with sr.Microphone() as source:
-			audio = r.listen(source)
-		try:
-			com = r.recognize_google(audio)
-		except sr.UnknownValueError or sr.RequestError:
-			continue
+		if args["cli"]:
+			com = raw_input("Enter your command: ")
+		else:
+			with sr.Microphone() as source:
+				audio = r.listen(source)
+			try:
+				com = r.recognize_google(audio)
+			except sr.UnknownValueError or sr.RequestError:
+				continue
 
 		if com == "\n" or com == " ":
 			com = "Enter"
@@ -402,7 +406,7 @@ def command():
 				userin.define([" "]," ")
 				userin.say(aiml_respond)
 			else:
-				omniscient_.respond(original_com,True,userin)
+				omniscient_.respond(original_com,not args["silent"],userin)
 			previous_command = com
 
 		#newest = max(glob.iglob('/tmp/' + str(datetime.date.today().year) + '*.[Ww][Aa][Vv]'), key=os.path.getctime)
@@ -485,6 +489,13 @@ def nostderr():
 	sys.stderr = save_stderr
 
 def initiate():
+	ap = argparse.ArgumentParser()
+	ap.add_argument("-c", "--cli", help="Command-line interface mode. Give commands to Dragonfire via command-line inputs (keyboard) instead of audio inputs (microphone).", action="store_true")
+	ap.add_argument("-s", "--silent", help="Silent mode. Disable Text-to-Speech output. Dragonfire won't generate any audio output.", action="store_true")
+	ap.add_argument("--headless", help="Headless mode. Do not display an avatar animation on the screen. Disable the female head model.", action="store_true")
+	args = vars(ap.parse_args())
+	global userin
+	userin = TTA(args)
 	try:
 		global inactive
 		inactive = 1
@@ -492,7 +503,7 @@ def initiate():
 		stray_proc = Process(target=SystemTrayInit)
 		stray_proc.start()
 		dragon_greet()
-		command()
+		command(args)
 	except KeyboardInterrupt:
 		stray_proc.terminate()
 		with nostdout():
