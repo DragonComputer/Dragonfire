@@ -108,7 +108,7 @@ setup(
 	# your project is installed. For an analysis of "install_requires" vs pip's
 	# requirements files see:
 	# https://packaging.python.org/en/latest/requirements.html
-	install_requires=['wikipedia','PyUserInput','google-api-python-client','SpeechRecognition','tinydb','youtube_dl','spacy','pyowm','wxPython'],
+	install_requires=['wikipedia','PyUserInput','google-api-python-client','SpeechRecognition','tinydb','youtube_dl','spacy','pyowm'],
 
 	# List additional groups of dependencies here (e.g. development
 	# dependencies). You can install these using the following syntax,
@@ -125,7 +125,8 @@ setup(
 		# If any package contains *.txt files, include them:
 		#'': ['*.txt'],
 		#'': ['*.ini'],
-		'dragonfire': ['*.jconf','*.dfa','*.dict','*.grammar','*.term','*.voca','acousticmodel/*','realhud/animation/*']
+		#'dragonfire': ['*.jconf','*.dfa','*.dict','*.grammar','*.term','*.voca','acousticmodel/*','realhud/animation/*']
+        'dragonfire': ['realhud/animation/*']
 		#'': ['*.aiml']
 	},
 
