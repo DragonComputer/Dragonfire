@@ -7,32 +7,11 @@ https://github.com/pypa/sampleproject
 
 # Always prefer setuptools over distutils
 from setuptools import setup, find_packages, Extension
-from setuptools.command.develop import develop
-from setuptools.command.install import install
 # To use a consistent encoding
 from codecs import open
 from os import path
 import os
 from subprocess import check_call, PIPE, Popen
-
-
-class PostDevelopCommand(develop):
-    """Post-installation for development mode."""
-    def run(self):
-        import nltk
-        nltk.download("names")
-        nltk.download("brown")
-        nltk.download('wordnet')
-        develop.run(self)
-
-class PostInstallCommand(install):
-    """Post-installation for installation mode."""
-    def run(self):
-        import nltk
-        nltk.download("names")
-        nltk.download("brown")
-        nltk.download('wordnet')
-        install.run(self)
 
 
 here = path.abspath(path.dirname(__file__))
@@ -164,11 +143,6 @@ setup(
 			'dragonfire=dragonfire:initiate',
 		],
 	},
-
-	cmdclass={
-        'develop': PostDevelopCommand,
-        'install': PostInstallCommand,
-    },
 
     ext_modules=[Extension('realhud',
             ['dragonfire/realhud/realhud.c'],
