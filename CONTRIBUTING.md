@@ -389,7 +389,7 @@ To building the Debian package simply run:
 
 ```
 cd Dragonfire/
-dpkg-buildpackage -us -uc -b
+dpkg-buildpackage -us -uc
 ```
 
 It will save the `.deb` file into parent directory. `debian` directory is the directory contains all the configuration files and pre/post installation scripts related to Debian packaging.
