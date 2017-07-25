@@ -44,8 +44,18 @@ sudo dpkg -i dragonfire_0.9.5_amd64.deb
 
 ### Usage
 
-```Shell
-dragonfire
+```
+usage: dragonfire [-h] [-c] [-s] [--headless]
+
+optional arguments:
+  -h, --help    show this help message and exit
+  -c, --cli     Command-line interface mode. Give commands to Dragonfire via
+                command-line inputs (keyboard) instead of audio inputs
+                (microphone).
+  -s, --silent  Silent mode. Disable Text-to-Speech output. Dragonfire won't
+                generate any audio output.
+  --headless    Headless mode. Do not display an avatar animation on the
+                screen. Disable the female head model.
 ```
 
 To activate Dragonfire say *DRAGONFIRE* or *HEY* or *WAKE UP*.
