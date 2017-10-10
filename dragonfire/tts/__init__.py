@@ -1,4 +1,5 @@
 __author__ = 'Mehmet Mert Yildiran, mert.yildiran@bil.omu.edu.tr'
+# This submodule is experimental and not functional
 
 import csv # CSV (Comma Separated Values) format is the most common import and export format for spreadsheets and databases
 import glob
