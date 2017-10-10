@@ -1,4 +1,5 @@
 __author__ = 'Mehmet Mert Yildiran, mert.yildiran@bil.omu.edu.tr'
+# This submodule is experimental and not functional
 
 import pyaudio # Provides Python bindings for PortAudio, the cross platform audio API
 import wave # Provides a convenient interface to the WAV sound format
