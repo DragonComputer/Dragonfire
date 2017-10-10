@@ -55,10 +55,8 @@ class TTA:
 				print "Dragonfire: " + message.upper()
 				print "_______________________________________________________________\n"
 		if not self.silent:
-			tts_proc = subprocess.Popen("festival --tts", stdin=subprocess.PIPE, stdout=FNULL, stderr=FNULL, shell=True)
 			message = "".join([i if ord(i) < 128 else ' ' for i in message])
-			tts_proc.stdin.write(message)
-			tts_proc.stdin.close()
+			tts_proc = subprocess.Popen('flite -voice slt -t "' + message + '"', stdin=FNULL, stdout=FNULL, stderr=FNULL, shell=True)
 			#print "TTS process started."
 
 		pool = Pool(processes=1)
