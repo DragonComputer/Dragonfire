@@ -1,6 +1,8 @@
 # -*- coding: UTF-8 -*-
 
 import unittest
+import gi
+gi.require_version('Gst', '1.0')
 from gi.repository import GObject, Gst
 from threading import Thread
 import logging
@@ -10,6 +12,8 @@ import pyaudio # Provides Python bindings for PortAudio, the cross platform audi
 import audioop # Operates on sound fragments consisting of signed integer samples 8, 16 or 32 bits wide, stored in Python strings.
 from dragonfire import VirtualAssistant
 import os
+from ctypes import *
+from contextlib import contextmanager
 
 CHUNK = 8000 # Smallest unit of audio. 1024 bytes
 FORMAT = pyaudio.paInt16 # Data format
@@ -57,7 +61,8 @@ class KaldiRecognizer():
 
     def recognize(self, args):
 
-        p = pyaudio.PyAudio() # Create a PyAudio session
+        with noalsaerr():
+            p = pyaudio.PyAudio() # Create a PyAudio session
         # Create a stream
         stream = p.open(format=FORMAT,
                     channels=CHANNELS,
@@ -106,6 +111,22 @@ class KaldiRecognizer():
             p.terminate()
             self.loop.quit()
             raise KeyboardInterrupt
+
+
+
+ERROR_HANDLER_FUNC = CFUNCTYPE(None, c_char_p, c_int, c_char_p, c_int, c_char_p)
+
+def py_error_handler(filename, line, function, err, fmt):
+    pass
+
+c_error_handler = ERROR_HANDLER_FUNC(py_error_handler)
+
+@contextmanager
+def noalsaerr():
+    asound = cdll.LoadLibrary('libasound.so')
+    asound.snd_lib_error_set_handler(c_error_handler)
+    yield
+    asound.snd_lib_error_set_handler(None)
 
 
 
