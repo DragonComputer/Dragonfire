@@ -15,37 +15,34 @@ RATE = 16000 # Bit Rate of audio stream / Frame Rate
 THRESHOLD = 1000 # Threshhold value for detecting stimulant
 RECORD_SECONDS = 10
 
-class DecoderPipelineTests(unittest.TestCase):
+class KaldiRecognizer():
 
-    def __init__(self,  *args, **kwargs):
-        super(DecoderPipelineTests, self).__init__(*args, **kwargs)
+    def __init__(self):
         logging.basicConfig(level=logging.INFO)
 
-    @classmethod
-    def setUpClass(cls):
         # voxforge/tri2b_mmi_b0.05 model:
         decoder_conf = {"model" : "models/english/final.mdl",
                         "lda-mat" : "models/english/final.mat",
                         "word-syms" : "models/english/words.txt",
                         "fst" : "models/english/HCLG.fst",
                         "silence-phones" : "6"}
-        cls.decoder_pipeline = DecoderPipeline({"decoder" : decoder_conf})
-        cls.words = []
-        cls.finished = False
+        self.decoder_pipeline = DecoderPipeline({"decoder" : decoder_conf})
+        self.__class__.words = []
+        self.__class__.finished = False
 
-        cls.decoder_pipeline.set_word_handler(cls.word_getter)
-        cls.decoder_pipeline.set_eos_handler(cls.set_finished, cls.finished)
+        self.decoder_pipeline.set_word_handler(self.word_getter)
+        self.decoder_pipeline.set_eos_handler(self.set_finished, self.finished)
 
         loop = GObject.MainLoop()
         thread.start_new_thread(loop.run, ())
 
     @classmethod
-    def word_getter(cls, word):
-        cls.words.append(word)
+    def word_getter(self, word):
+        self.words.append(word)
 
     @classmethod
-    def set_finished(cls, finished):
-        cls.finished = True
+    def set_finished(self, finished):
+        self.finished = True
 
     def setUp(self):
         self.__class__.words = []
@@ -53,7 +50,7 @@ class DecoderPipelineTests(unittest.TestCase):
 
 
 
-    def testRecognize(self):
+    def recognize(self):
         self.decoder_pipeline.init_request("recognize", "audio/x-raw, layout=(string)interleaved, rate=(int)16000, format=(string)S16LE, channels=(int)1")
         p = pyaudio.PyAudio() # Create a PyAudio session
         # Create a stream
@@ -81,24 +78,7 @@ class DecoderPipelineTests(unittest.TestCase):
         print self.words
 
 
-    def testWav(self):
-        self.decoder_pipeline.init_request("testWav", "")
-        f = open("tests/ten_digits.wav", "rb")
-        for block in iter(lambda: f.read(16000*2*2/4), ""):
-            time.sleep(0.25)
-            self.decoder_pipeline.process_data(block)
-
-        self.decoder_pipeline.end_request()
-
-
-        while not self.finished:
-            time.sleep(1)
-        self.assertEqual(['ONE', 'TWO', 'THREE', 'FOUR', 'FIVE', 'SIX', 'SEVEN', 'EIGHT', '<#s>'], self.words)
-
-
-
-def main():
-    unittest.main()
 
 if __name__ == '__main__':
-    main()
+    recognizer = KaldiRecognizer()
+    recognizer.recognize()
