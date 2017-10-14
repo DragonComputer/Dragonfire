@@ -42,6 +42,8 @@ class Engine():
         elif dobjects:
             query = ' '.join(dobjects)
         else:
+            userin.define([""],'You said: "' + com + '"')
+            userin.execute(0)
             if not tts_output: print "Sorry, I don't understand the subject of your question." # if tts_output is enabled then it does not print
             if tts_output: userin.say("Sorry, I don't understand the subject of your question.") # if tts_output is enabled then it executes TTS
             return False
