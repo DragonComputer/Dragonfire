@@ -29,6 +29,7 @@ import youtube_dl
 from tinydb import TinyDB, Query
 from os.path import expanduser
 import argparse
+import thread
 
 DRAGONFIRE_PATH = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 FNULL = open(os.devnull, 'w')
@@ -351,7 +352,8 @@ class VirtualAssistant():
 			tts_kill()
 			userin.define([" "]," ")
 			userin.say("Goodbye, " + user_prefix)
-			raise KeyboardInterrupt
+			#raise KeyboardInterrupt
+			thread.interrupt_main()
 		elif "WIKIPEDIA" in com and ("SEARCH" in com or "FIND" in com):
 			tts_kill()
 			with nostdout():

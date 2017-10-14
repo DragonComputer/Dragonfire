@@ -94,12 +94,13 @@ class KaldiRecognizer():
                     stream.stop_stream()
                     self.decoder_pipeline.end_request()
                     while not self.finished:
-                        time.sleep(1)
+                        time.sleep(0.1)
+                    stream.start_stream()
                     words = self.words
                     words = [x for x in words if x != '<#s>']
                     com = ' '.join(words)
-                    VirtualAssistant.command(com, args)
-                    stream.start_stream()
+                    t = Thread(target=VirtualAssistant.command, args=(com, args))
+                    t.start()
                     self.reset()
 
                 data = stream.read(CHUNK) # Read a new chunk from the stream
