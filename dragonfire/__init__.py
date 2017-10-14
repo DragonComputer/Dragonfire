@@ -41,15 +41,8 @@ e = Event()
 r = sr.Recognizer()
 
 
-def command(args):
+def start(args):
 
-	previous_command = ""
-	global inactive
-
-	global user_full_name
-	global user_prefix
-	global config_file
-	global e
 	global r
 
 	while(True):
@@ -67,365 +60,369 @@ def command(args):
 			except sr.UnknownValueError or sr.RequestError:
 				continue
 
-		if com == "\n" or com == " ":
-			com = "Enter"
-		original_com = com
 
-		if (com == 0):
-			#speech_error()
-			continue
+def command(com):
 
-		com = com.upper()
-		print "You: " + com
+	original_com = com
+	previous_command = ""
+	global inactive
 
-		if inactive == 1 and "DRAGONFIRE" != com and "DRAGON FIRE" != com and "WAKE UP" != com and com != "HEY":
-			continue
+	global user_full_name
+	global user_prefix
+	global config_file
+	global e
 
-		if "DRAGONFIRE" == com or "DRAGON FIRE" == com or "WAKE UP" == com or com == "HEY":
-			tts_kill()
-			inactive = 0
-			userin.define([" "]," ")
-			words_dragonfire = {
-				0 : "Yes, " + user_prefix + ".",
-				1 : "Yes. I'm waiting.",
-				2 : "What is your orders?"
-			}
-			userin.say(words_dragonfire[randint(0,2)])
-		elif "GO TO SLEEP" == com:
-			tts_kill()
-			inactive = 1
-			userin.define(["echo"],"Dragonfire deactivated. To reactivate say 'Dragonfire!' or 'Wake Up!'")
+	com = com.upper()
+	print "You: " + com
+
+	if inactive == 1 and "DRAGONFIRE" != com and "DRAGON FIRE" != com and "WAKE UP" != com and com != "HEY":
+		return True
+
+	if "DRAGONFIRE" == com or "DRAGON FIRE" == com or "WAKE UP" == com or com == "HEY":
+		tts_kill()
+		inactive = 0
+		userin.define([" "]," ")
+		words_dragonfire = {
+			0 : "Yes, " + user_prefix + ".",
+			1 : "Yes. I'm waiting.",
+			2 : "What is your orders?"
+		}
+		userin.say(words_dragonfire[randint(0,2)])
+	elif "GO TO SLEEP" == com:
+		tts_kill()
+		inactive = 1
+		userin.define(["echo"],"Dragonfire deactivated. To reactivate say 'Dragonfire!' or 'Wake Up!'")
+		userin.execute(0)
+		userin.say("I'm going to sleep")
+		previous_command = com
+	elif "ENOUGH" == com or "SHUT UP" == com:
+		print "Dragonfire quiets."
+		tts_kill()
+	elif "WHO AM I" == com or "SAY MY NAME" == com:
+		tts_kill()
+		userin.define([" "], user_full_name)
+		userin.execute(0)
+		userin.say("Your name is " + user_full_name + ", " + user_prefix + ".")
+		previous_command = com
+	elif "MY TITLE IS LADY" == com or "I'M A LADY" == com or "I'M A WOMAN" == com or "I'M A GIRL" == com:
+		tts_kill()
+		config_file.update({'gender': 'female'}, Query().datatype == 'gender')
+		user_prefix = "My Lady"
+		userin.define([" "]," ")
+		userin.say("Pardon, " + user_prefix + ".")
+	elif "MY TITLE IS SIR" == com or "I'M A MAN" == com or "I'M A BOY" == com:
+		tts_kill()
+		config_file.update({'gender': 'male'}, Query().datatype == 'gender')
+		user_prefix = "Sir"
+		userin.define([" "]," ")
+		userin.say("Pardon, " + user_prefix + ".")
+	elif com.startswith("CALL ME "):
+		tts_kill()
+		callme_config = config_file.search(Query().datatype == 'callme')
+		if callme_config:
+			config_file.update({'title': original_com[8:].lower()}, Query().datatype == 'callme')
+		else:
+			config_file.insert({'datatype': 'callme', 'title': original_com[8:].lower()})
+		user_prefix = original_com[8:].lower().encode("utf8")
+		userin.define([" "]," ")
+		userin.say("Pardon, " + user_prefix + ".")
+	elif "WHAT IS YOUR NAME" == com:
+		tts_kill()
+		userin.define([" "],"My name is Dragonfire.")
+		userin.execute(0)
+		userin.say("My name is Dragon Fire.")
+		previous_command = com
+	elif "WHAT" in com and "TEMPERATURE" in com: # only for The United States today but prepared for all countries. Also only for celsius degrees today. --> by Radan Liska :-)
+		tts_kill()
+		capture = re.search("(?:WHAT IS|WHAT'S) THE TEMPERATURE (?:IN|ON|AT|OF)? (?P<city>.*)",com)
+		if capture:
+			city = capture.group('city')
+			owm = pyowm.OWM("16d66c84e82424f0f8e62c3e3b27b574")
+			reg = owm.city_id_registry()
+			weather = owm.weather_at_id(reg.ids_for(city)[0][0]).get_weather()
+			userin.define([" "],"The temperature in " + city + " is " + str(weather.get_temperature('celsius')['temp']) + " degrees celsius")
 			userin.execute(0)
-			userin.say("I'm going to sleep")
+			userin.say("The temperature in " + city + " is " + str(weather.get_temperature('celsius')['temp']) + " degrees celsius")
 			previous_command = com
-		elif "ENOUGH" == com or "SHUT UP" == com:
-			print "Dragonfire quiets."
-			tts_kill()
-		elif "WHO AM I" == com or "SAY MY NAME" == com:
-			tts_kill()
-			userin.define([" "], user_full_name)
-			userin.execute(0)
-			userin.say("Your name is " + user_full_name + ", " + user_prefix + ".")
-			previous_command = com
-		elif "MY TITLE IS LADY" == com or "I'M A LADY" == com or "I'M A WOMAN" == com or "I'M A GIRL" == com:
-			tts_kill()
-			config_file.update({'gender': 'female'}, Query().datatype == 'gender')
-			user_prefix = "My Lady"
-			userin.define([" "]," ")
-			userin.say("Pardon, " + user_prefix + ".")
-		elif "MY TITLE IS SIR" == com or "I'M A MAN" == com or "I'M A BOY" == com:
-			tts_kill()
-			config_file.update({'gender': 'male'}, Query().datatype == 'gender')
-			user_prefix = "Sir"
-			userin.define([" "]," ")
-			userin.say("Pardon, " + user_prefix + ".")
-		elif com.startswith("CALL ME "):
-			tts_kill()
-			callme_config = config_file.search(Query().datatype == 'callme')
-			if callme_config:
-				config_file.update({'title': original_com[8:].lower()}, Query().datatype == 'callme')
-			else:
-				config_file.insert({'datatype': 'callme', 'title': original_com[8:].lower()})
-			user_prefix = original_com[8:].lower().encode("utf8")
-			userin.define([" "]," ")
-			userin.say("Pardon, " + user_prefix + ".")
-		elif "WHAT IS YOUR NAME" == com:
-			tts_kill()
-			userin.define([" "],"My name is Dragonfire.")
-			userin.execute(0)
-			userin.say("My name is Dragon Fire.")
-			previous_command = com
-		elif "WHAT" in com and "TEMPERATURE" in com: # only for The United States today but prepared for all countries. Also only for celsius degrees today. --> by Radan Liska :-)
-			tts_kill()
-			capture = re.search("(?:WHAT IS|WHAT'S) THE TEMPERATURE (?:IN|ON|AT|OF)? (?P<city>.*)",com)
-			if capture:
-				city = capture.group('city')
-				owm = pyowm.OWM("16d66c84e82424f0f8e62c3e3b27b574")
-				reg = owm.city_id_registry()
-				weather = owm.weather_at_id(reg.ids_for(city)[0][0]).get_weather()
-				userin.define([" "],"The temperature in " + city + " is " + str(weather.get_temperature('celsius')['temp']) + " degrees celsius")
-				userin.execute(0)
-				userin.say("The temperature in " + city + " is " + str(weather.get_temperature('celsius')['temp']) + " degrees celsius")
-				previous_command = com
-		elif "WHAT IS YOUR GENDER" == com:
-			tts_kill()
-			userin.define([" "]," ")
-			userin.say("I have a female voice but I don't have a gender identity. I'm a computer program, " + user_prefix + ".")
-			previous_command = com
-		elif "FILE MANAGER" in com or "OPEN FILES" == com:
-			tts_kill()
-			userin.define(["dolphin"],"File Manager") # KDE neon
-			userin.execute(0)
-			userin.define(["pantheon-files"],"File Manager") # elementary OS
-			userin.execute(0)
-			userin.define(["nautilus","--browser"],"File Manager") # Ubuntu
-			userin.execute(0)
-			userin.say("File Manager")
-			previous_command = com
-		elif "WEB BROWSER" in com:
-			tts_kill()
-			userin.define(["sensible-browser"],"Web Browser")
-			userin.execute(0)
-			userin.say("Web Browser")
-			previous_command = com
-		elif "OPEN BLENDER" == com:
-			tts_kill()
-			userin.define(["blender"],"Blender")
-			userin.execute(0)
-			userin.say("Blender 3D computer graphics software")
-			previous_command = com
-		elif "PHOTO SHOP" in com or "PHOTO EDITOR" in com or "GIMP" in com:
-			tts_kill()
-			userin.define(["gimp"],"GIMP")
-			userin.execute(0)
-			userin.say("Photo editor")
-			previous_command = com
-		elif "INKSCAPE" in com or "VECTOR GRAPHICS" in com or "VECTORIAL DRAWING" in com:
-			tts_kill()
-			userin.define(["inkscape"],"Inkscape")
-			userin.execute(0)
-			userin.say("Inkscape")
-			previous_command = com
-		elif "VIDEO EDITOR" in com:
-			tts_kill()
-			#userin.define(["openshot"],"Openshot")
-			#userin.execute(0)
-			#userin.define(["lightworks"],"Lightworks")
-			#userin.execute(0)
-			userin.define(["kdenlive"],"Kdenlive")
-			userin.execute(0)
-			userin.say("Video editor")
-			previous_command = com
-		elif "OPEN CAMERA" == com:
-			tts_kill()
-			userin.define(["kamoso"],"Camera") # KDE neon
-			userin.execute(0)
-			userin.define(["snap-photobooth"],"Camera") # elementary OS
-			userin.execute(0)
-			userin.define(["cheese"],"Camera") # Ubuntu
-			userin.execute(0)
-			userin.say("Camera")
-			previous_command = com
-		elif "OPEN CALENDAR" == com:
-			tts_kill()
-			userin.define(["korganizer"],"Calendar") # KDE neon
-			userin.execute(0)
-			userin.define(["maya-calendar"],"Calendar") # elementary OS
-			userin.execute(0)
-			userin.define(["orage"],"Calendar") # Ubuntu
-			userin.execute(0)
-			userin.say("Calendar")
-			previous_command = com
-		elif "OPEN CALCULATOR" == com:
-			tts_kill()
-			userin.define(["kcalc"],"Calculator") # KDE neon
-			userin.execute(0)
-			userin.define(["pantheon-calculator"],"Calculator") # elementary OS
-			userin.execute(0)
-			userin.define(["gnome-calculator"],"Calculator") # Ubuntu
-			userin.execute(0)
-			userin.say("Calculator")
-			previous_command = com
-		elif "OPEN STEAM" == com:
-			tts_kill()
-			userin.define(["steam"],"Steam")
-			userin.execute(0)
-			userin.say("Steam Game Store")
-			previous_command = com
-		elif "SOFTWARE CENTER" in com:
-			tts_kill()
-			userin.define(["plasma-discover"],"Software Center") # KDE neon
-			userin.execute(0)
-			userin.define(["software-center"],"Software Center") # elementary OS & Ubuntu
-			userin.execute(0)
-			userin.say("Software Center")
-			previous_command = com
-		elif "OFFICE SUITE" in com:
-			tts_kill()
-			userin.define(["libreoffice"],"LibreOffice")
-			userin.execute(0)
-			userin.say("Office Suite")
-			previous_command = com
-		elif "OPEN WRITER" == com:
-			tts_kill()
-			userin.define(["libreoffice","--writer"],"LibreOffice Writer")
-			userin.execute(0)
-			userin.say("Writer")
-			previous_command = com
-		elif "OPEN MATH" == com:
-			tts_kill()
-			userin.define(["libreoffice","--math"],"LibreOffice Math")
-			userin.execute(0)
-			userin.say("Math")
-			previous_command = com
-		elif "OPEN IMPRESS" == com:
-			tts_kill()
-			userin.define(["libreoffice","--impress"],"LibreOffice Impress")
-			userin.execute(0)
-			userin.say("Impress")
-			previous_command = com
-		elif "OPEN DRAW" == com:
-			tts_kill()
-			userin.define(["libreoffice","--draw"],"LibreOffice Draw")
-			userin.execute(0)
-			userin.say("Draw")
-			previous_command = com
-		elif com.startswith("KEYBOARD "):
-			tts_kill()
-			with nostdout():
-				with nostderr():
-					k = PyKeyboard()
-					for character in original_com[9:]:
-						k.tap_key(character)
-					k.tap_key(" ")
-		elif com == "ENTER":
-			tts_kill()
-			with nostdout():
-				with nostderr():
-					k = PyKeyboard()
-					k.tap_key(k.enter_key)
-		elif com == "NEW TAB":
-			tts_kill()
-			with nostdout():
-				with nostderr():
-					k = PyKeyboard()
-					k.press_keys([k.control_l_key,'t'])
-		elif com == "SWITCH TAB":
-			tts_kill()
-			with nostdout():
-				with nostderr():
-					k = PyKeyboard()
-					k.press_keys([k.control_l_key,k.tab_key])
-		elif com == "CLOSE" or com == "ESCAPE":
-			tts_kill()
-			with nostdout():
-				with nostderr():
-					k = PyKeyboard()
-					k.press_keys([k.control_l_key,'w'])
-					k.tap_key(k.escape_key)
-		elif com == "GO BACK":
-			tts_kill()
-			with nostdout():
-				with nostderr():
-					k = PyKeyboard()
-					k.press_keys([k.alt_l_key,k.left_key])
-		elif com == "GO FORWARD":
-			tts_kill()
-			with nostdout():
-				with nostderr():
-					k = PyKeyboard()
-					k.press_keys([k.alt_l_key,k.right_key])
-		elif com == "SCROLL LEFT":
-			tts_kill()
-			with nostdout():
-				with nostderr():
-					m = PyMouse()
-					m.scroll(0,-5)
-		elif com == "SCROLL RIGHT":
-			tts_kill()
-			with nostdout():
-				with nostderr():
-					m = PyMouse()
-					m.scroll(0,5)
-		elif com == "SCROLL UP":
-			tts_kill()
-			with nostdout():
-				with nostderr():
-					m = PyMouse()
-					m.scroll(5,0)
-		elif com == "SCROLL DOWN":
-			tts_kill()
-			with nostdout():
-				with nostderr():
-					m = PyMouse()
-					m.scroll(-5,0)
-		elif com == "PLAY" or com == "PAUSE" or com == "SPACEBAR":
-			tts_kill()
-			with nostdout():
-				with nostderr():
-					k = PyKeyboard()
-					k.tap_key(" ")
-		elif "SHUTDOWN THE COMPUTER" == com:
-			tts_kill()
-			userin.define(["sudo","poweroff"],"Shutting down")
-			userin.say("Shutting down")
-			userin.execute(3)
-			previous_command = com
-		elif com == "GOODBYE" or com == "BYE BYE" or com == "SEE YOU LATER":
-			tts_kill()
-			userin.define([" "]," ")
-			userin.say("Goodbye, " + user_prefix)
-			raise KeyboardInterrupt
-		elif "WIKIPEDIA" in com and ("SEARCH" in com or "FIND" in com):
-			tts_kill()
-			with nostdout():
-				with nostderr():
-					capture = re.search("(?:SEARCH|FIND) (?P<query>.*) (?:IN|ON|AT|USING)? WIKIPEDIA", com)
-					if capture:
-						search_query = capture.group('query')
-						try:
-							wikipage = wikipedia.page(wikipedia.search(search_query)[0])
-							wikicontent = "".join([i if ord(i) < 128 else ' ' for i in wikipage.content])
-							wikicontent = re.sub(r'\([^)]*\)', '', wikicontent)
-							userin.define(["sensible-browser",wikipage.url],search_query)
-							userin.execute(0)
-							userin.say(wikicontent)
-							previous_command = com
-						except:
-							pass
-		elif "YOUTUBE" in com and ("SEARCH" in com or "FIND" in com):
-			tts_kill()
-			with nostdout():
-				with nostderr():
-					capture = re.search("(?:SEARCH|FIND) (?P<query>.*) (?:IN|ON|AT|USING)? YOUTUBE", com)
-					if capture:
-						search_query = capture.group('query')
-						info = youtube_dl.YoutubeDL({}).extract_info('ytsearch:' + search_query, download=False, ie_key='YoutubeSearch')
-						if len(info['entries']) > 0:
-							youtube_title = info['entries'][0]['title']
-							youtube_url = "https://www.youtube.com/watch?v=%s" % (info['entries'][0]['id'])
-							userin.define(["sensible-browser",youtube_url],youtube_title)
-							youtube_title = "".join([i if ord(i) < 128 else ' ' for i in youtube_title])
-						else:
-							youtube_title = "No video found, " + user_prefix + "."
-							userin.define(" "," ")
-						userin.execute(0)
-						userin.say(youtube_title)
-						time.sleep(5)
-						k = PyKeyboard()
-						k.tap_key(k.tab_key)
-						k.tap_key(k.tab_key)
-						k.tap_key(k.tab_key)
-						k.tap_key(k.tab_key)
-						k.tap_key('f')
-		elif "WEB" in com and ("SEARCH" in com or "FIND" in com):
-			tts_kill()
-			with nostdout():
-				with nostderr():
-					capture = re.search("(?:SEARCH|FIND) (?P<query>.*) (?:IN|ON|AT|USING)? WEB", com)
-					if capture:
-						search_query = capture.group('query')
+	elif "WHAT IS YOUR GENDER" == com:
+		tts_kill()
+		userin.define([" "]," ")
+		userin.say("I have a female voice but I don't have a gender identity. I'm a computer program, " + user_prefix + ".")
+		previous_command = com
+	elif "FILE MANAGER" in com or "OPEN FILES" == com:
+		tts_kill()
+		userin.define(["dolphin"],"File Manager") # KDE neon
+		userin.execute(0)
+		userin.define(["pantheon-files"],"File Manager") # elementary OS
+		userin.execute(0)
+		userin.define(["nautilus","--browser"],"File Manager") # Ubuntu
+		userin.execute(0)
+		userin.say("File Manager")
+		previous_command = com
+	elif "WEB BROWSER" in com:
+		tts_kill()
+		userin.define(["sensible-browser"],"Web Browser")
+		userin.execute(0)
+		userin.say("Web Browser")
+		previous_command = com
+	elif "OPEN BLENDER" == com:
+		tts_kill()
+		userin.define(["blender"],"Blender")
+		userin.execute(0)
+		userin.say("Blender 3D computer graphics software")
+		previous_command = com
+	elif "PHOTO SHOP" in com or "PHOTO EDITOR" in com or "GIMP" in com:
+		tts_kill()
+		userin.define(["gimp"],"GIMP")
+		userin.execute(0)
+		userin.say("Photo editor")
+		previous_command = com
+	elif "INKSCAPE" in com or "VECTOR GRAPHICS" in com or "VECTORIAL DRAWING" in com:
+		tts_kill()
+		userin.define(["inkscape"],"Inkscape")
+		userin.execute(0)
+		userin.say("Inkscape")
+		previous_command = com
+	elif "VIDEO EDITOR" in com:
+		tts_kill()
+		#userin.define(["openshot"],"Openshot")
+		#userin.execute(0)
+		#userin.define(["lightworks"],"Lightworks")
+		#userin.execute(0)
+		userin.define(["kdenlive"],"Kdenlive")
+		userin.execute(0)
+		userin.say("Video editor")
+		previous_command = com
+	elif "OPEN CAMERA" == com:
+		tts_kill()
+		userin.define(["kamoso"],"Camera") # KDE neon
+		userin.execute(0)
+		userin.define(["snap-photobooth"],"Camera") # elementary OS
+		userin.execute(0)
+		userin.define(["cheese"],"Camera") # Ubuntu
+		userin.execute(0)
+		userin.say("Camera")
+		previous_command = com
+	elif "OPEN CALENDAR" == com:
+		tts_kill()
+		userin.define(["korganizer"],"Calendar") # KDE neon
+		userin.execute(0)
+		userin.define(["maya-calendar"],"Calendar") # elementary OS
+		userin.execute(0)
+		userin.define(["orage"],"Calendar") # Ubuntu
+		userin.execute(0)
+		userin.say("Calendar")
+		previous_command = com
+	elif "OPEN CALCULATOR" == com:
+		tts_kill()
+		userin.define(["kcalc"],"Calculator") # KDE neon
+		userin.execute(0)
+		userin.define(["pantheon-calculator"],"Calculator") # elementary OS
+		userin.execute(0)
+		userin.define(["gnome-calculator"],"Calculator") # Ubuntu
+		userin.execute(0)
+		userin.say("Calculator")
+		previous_command = com
+	elif "OPEN STEAM" == com:
+		tts_kill()
+		userin.define(["steam"],"Steam")
+		userin.execute(0)
+		userin.say("Steam Game Store")
+		previous_command = com
+	elif "SOFTWARE CENTER" in com:
+		tts_kill()
+		userin.define(["plasma-discover"],"Software Center") # KDE neon
+		userin.execute(0)
+		userin.define(["software-center"],"Software Center") # elementary OS & Ubuntu
+		userin.execute(0)
+		userin.say("Software Center")
+		previous_command = com
+	elif "OFFICE SUITE" in com:
+		tts_kill()
+		userin.define(["libreoffice"],"LibreOffice")
+		userin.execute(0)
+		userin.say("Office Suite")
+		previous_command = com
+	elif "OPEN WRITER" == com:
+		tts_kill()
+		userin.define(["libreoffice","--writer"],"LibreOffice Writer")
+		userin.execute(0)
+		userin.say("Writer")
+		previous_command = com
+	elif "OPEN MATH" == com:
+		tts_kill()
+		userin.define(["libreoffice","--math"],"LibreOffice Math")
+		userin.execute(0)
+		userin.say("Math")
+		previous_command = com
+	elif "OPEN IMPRESS" == com:
+		tts_kill()
+		userin.define(["libreoffice","--impress"],"LibreOffice Impress")
+		userin.execute(0)
+		userin.say("Impress")
+		previous_command = com
+	elif "OPEN DRAW" == com:
+		tts_kill()
+		userin.define(["libreoffice","--draw"],"LibreOffice Draw")
+		userin.execute(0)
+		userin.say("Draw")
+		previous_command = com
+	elif com.startswith("KEYBOARD "):
+		tts_kill()
+		with nostdout():
+			with nostderr():
+				k = PyKeyboard()
+				for character in original_com[9:]:
+					k.tap_key(character)
+				k.tap_key(" ")
+	elif com == "ENTER":
+		tts_kill()
+		with nostdout():
+			with nostderr():
+				k = PyKeyboard()
+				k.tap_key(k.enter_key)
+	elif com == "NEW TAB":
+		tts_kill()
+		with nostdout():
+			with nostderr():
+				k = PyKeyboard()
+				k.press_keys([k.control_l_key,'t'])
+	elif com == "SWITCH TAB":
+		tts_kill()
+		with nostdout():
+			with nostderr():
+				k = PyKeyboard()
+				k.press_keys([k.control_l_key,k.tab_key])
+	elif com == "CLOSE" or com == "ESCAPE":
+		tts_kill()
+		with nostdout():
+			with nostderr():
+				k = PyKeyboard()
+				k.press_keys([k.control_l_key,'w'])
+				k.tap_key(k.escape_key)
+	elif com == "GO BACK":
+		tts_kill()
+		with nostdout():
+			with nostderr():
+				k = PyKeyboard()
+				k.press_keys([k.alt_l_key,k.left_key])
+	elif com == "GO FORWARD":
+		tts_kill()
+		with nostdout():
+			with nostderr():
+				k = PyKeyboard()
+				k.press_keys([k.alt_l_key,k.right_key])
+	elif com == "SCROLL LEFT":
+		tts_kill()
+		with nostdout():
+			with nostderr():
+				m = PyMouse()
+				m.scroll(0,-5)
+	elif com == "SCROLL RIGHT":
+		tts_kill()
+		with nostdout():
+			with nostderr():
+				m = PyMouse()
+				m.scroll(0,5)
+	elif com == "SCROLL UP":
+		tts_kill()
+		with nostdout():
+			with nostderr():
+				m = PyMouse()
+				m.scroll(5,0)
+	elif com == "SCROLL DOWN":
+		tts_kill()
+		with nostdout():
+			with nostderr():
+				m = PyMouse()
+				m.scroll(-5,0)
+	elif com == "PLAY" or com == "PAUSE" or com == "SPACEBAR":
+		tts_kill()
+		with nostdout():
+			with nostderr():
+				k = PyKeyboard()
+				k.tap_key(" ")
+	elif "SHUTDOWN THE COMPUTER" == com:
+		tts_kill()
+		userin.define(["sudo","poweroff"],"Shutting down")
+		userin.say("Shutting down")
+		userin.execute(3)
+		previous_command = com
+	elif com == "GOODBYE" or com == "BYE BYE" or com == "SEE YOU LATER":
+		tts_kill()
+		userin.define([" "]," ")
+		userin.say("Goodbye, " + user_prefix)
+		raise KeyboardInterrupt
+	elif "WIKIPEDIA" in com and ("SEARCH" in com or "FIND" in com):
+		tts_kill()
+		with nostdout():
+			with nostderr():
+				capture = re.search("(?:SEARCH|FIND) (?P<query>.*) (?:IN|ON|AT|USING)? WIKIPEDIA", com)
+				if capture:
+					search_query = capture.group('query')
 					try:
-						tabUrl="http://google.com/?#q="+search_query
-						userin.define(["sensible-browser",tabUrl],search_query)
+						wikipage = wikipedia.page(wikipedia.search(search_query)[0])
+						wikicontent = "".join([i if ord(i) < 128 else ' ' for i in wikipage.content])
+						wikicontent = re.sub(r'\([^)]*\)', '', wikicontent)
+						userin.define(["sensible-browser",wikipage.url],search_query)
 						userin.execute(0)
-						userin.say(search_query)
+						userin.say(wikicontent)
 						previous_command = com
 					except:
 						pass
+	elif "YOUTUBE" in com and ("SEARCH" in com or "FIND" in com):
+		tts_kill()
+		with nostdout():
+			with nostderr():
+				capture = re.search("(?:SEARCH|FIND) (?P<query>.*) (?:IN|ON|AT|USING)? YOUTUBE", com)
+				if capture:
+					search_query = capture.group('query')
+					info = youtube_dl.YoutubeDL({}).extract_info('ytsearch:' + search_query, download=False, ie_key='YoutubeSearch')
+					if len(info['entries']) > 0:
+						youtube_title = info['entries'][0]['title']
+						youtube_url = "https://www.youtube.com/watch?v=%s" % (info['entries'][0]['id'])
+						userin.define(["sensible-browser",youtube_url],youtube_title)
+						youtube_title = "".join([i if ord(i) < 128 else ' ' for i in youtube_title])
+					else:
+						youtube_title = "No video found, " + user_prefix + "."
+						userin.define(" "," ")
+					userin.execute(0)
+					userin.say(youtube_title)
+					time.sleep(5)
+					k = PyKeyboard()
+					k.tap_key(k.tab_key)
+					k.tap_key(k.tab_key)
+					k.tap_key(k.tab_key)
+					k.tap_key(k.tab_key)
+					k.tap_key('f')
+	elif "WEB" in com and ("SEARCH" in com or "FIND" in com):
+		tts_kill()
+		with nostdout():
+			with nostderr():
+				capture = re.search("(?:SEARCH|FIND) (?P<query>.*) (?:IN|ON|AT|USING)? WEB", com)
+				if capture:
+					search_query = capture.group('query')
+				try:
+					tabUrl="http://google.com/?#q="+search_query
+					userin.define(["sensible-browser",tabUrl],search_query)
+					userin.execute(0)
+					userin.say(search_query)
+					previous_command = com
+				except:
+					pass
+	else:
+		tts_kill()
+		#dragonfire_respond = kernel.respond(com)
+		aiml_respond = learn_.respond(com)
+		if aiml_respond:
+			userin.define([" "]," ")
+			userin.say(aiml_respond)
 		else:
-			tts_kill()
-			#dragonfire_respond = kernel.respond(com)
-			aiml_respond = learn_.respond(com)
-			if aiml_respond:
-				userin.define([" "]," ")
-				userin.say(aiml_respond)
-			else:
-				omniscient_.respond(original_com,not args["silent"],userin)
-			previous_command = com
+			omniscient_.respond(original_com,not args["silent"],userin)
+		previous_command = com
 
-		#newest = max(glob.iglob('/tmp/' + str(datetime.date.today().year) + '*.[Ww][Aa][Vv]'), key=os.path.getctime)
-		#print newest
+	#newest = max(glob.iglob('/tmp/' + str(datetime.date.today().year) + '*.[Ww][Aa][Vv]'), key=os.path.getctime)
+	#print newest
 
 
 def tts_kill():
@@ -518,7 +515,7 @@ def initiate():
 		stray_proc = Process(target=SystemTrayInit)
 		stray_proc.start()
 		dragon_greet()
-		command(args)
+		start(args)
 	except KeyboardInterrupt:
 		stray_proc.terminate()
 		with nostdout():
@@ -533,6 +530,6 @@ if __name__ == '__main__':
 	try:
 		inactive = 1
 		dragon_greet()
-		command(sys.stdin)
+		start(sys.stdin)
 	except:
 		sys.exit(1)
