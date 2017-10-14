@@ -1,6 +1,5 @@
 # -*- coding: UTF-8 -*-
 
-import unittest
 import gi
 gi.require_version('Gst', '1.0')
 from gi.repository import GObject, Gst
