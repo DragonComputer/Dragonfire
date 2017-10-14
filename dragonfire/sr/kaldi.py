@@ -2,7 +2,7 @@
 
 import unittest
 from gi.repository import GObject, Gst
-import thread
+from threading import Thread
 import logging
 from decoder import DecoderPipeline
 import time
@@ -23,7 +23,7 @@ ENGLISH_MODEL_PATH = os.path.dirname(os.path.realpath(__file__)) + "/models/engl
 class KaldiRecognizer():
 
     def __init__(self):
-        logging.basicConfig(level=logging.INFO)
+        #logging.basicConfig(level=logging.INFO)
 
         # voxforge/tri2b_mmi_b0.05 model:
         decoder_conf = {"model" : ENGLISH_MODEL_PATH + "final.mdl",
@@ -38,8 +38,10 @@ class KaldiRecognizer():
         self.decoder_pipeline.set_word_handler(self.word_getter)
         self.decoder_pipeline.set_eos_handler(self.set_finished, self.finished)
 
-        loop = GObject.MainLoop()
-        thread.start_new_thread(loop.run, ())
+        GObject.threads_init()
+        self.loop = GObject.MainLoop()
+        self.gi_thread = Thread(target=self.loop.run, args=())
+        self.gi_thread.start()
 
     @classmethod
     def word_getter(self, word):
@@ -102,6 +104,8 @@ class KaldiRecognizer():
             stream.stop_stream()
             stream.close()
             p.terminate()
+            self.loop.quit()
+            raise KeyboardInterrupt
 
 
 
