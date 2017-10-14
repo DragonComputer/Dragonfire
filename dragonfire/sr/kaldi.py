@@ -8,6 +8,8 @@ from decoder import DecoderPipeline
 import time
 import pyaudio # Provides Python bindings for PortAudio, the cross platform audio API
 import audioop # Operates on sound fragments consisting of signed integer samples 8, 16 or 32 bits wide, stored in Python strings.
+from dragonfire import VirtualAssistant
+import os
 
 CHUNK = 8000 # Smallest unit of audio. 1024 bytes
 FORMAT = pyaudio.paInt16 # Data format
@@ -15,7 +17,8 @@ CHANNELS = 1 # Number of channels
 RATE = 16000 # Bit Rate of audio stream / Frame Rate
 THRESHOLD = 1000 # Threshhold value for detecting stimulant
 SILENCE_DETECTION = 5 # Wait number of frames to decide whether it fell silent or not
-LISTENING = True
+LISTENING = False
+ENGLISH_MODEL_PATH = os.path.dirname(os.path.realpath(__file__)) + "/models/english/"
 
 class KaldiRecognizer():
 
@@ -23,10 +26,10 @@ class KaldiRecognizer():
         logging.basicConfig(level=logging.INFO)
 
         # voxforge/tri2b_mmi_b0.05 model:
-        decoder_conf = {"model" : "models/english/final.mdl",
-                        "lda-mat" : "models/english/final.mat",
-                        "word-syms" : "models/english/words.txt",
-                        "fst" : "models/english/HCLG.fst",
+        decoder_conf = {"model" : ENGLISH_MODEL_PATH + "final.mdl",
+                        "lda-mat" : ENGLISH_MODEL_PATH + "final.mat",
+                        "word-syms" : ENGLISH_MODEL_PATH + "words.txt",
+                        "fst" : ENGLISH_MODEL_PATH + "HCLG.fst",
                         "silence-phones" : "6"}
         self.decoder_pipeline = DecoderPipeline({"decoder" : decoder_conf})
         self.__class__.words = []
@@ -50,7 +53,7 @@ class KaldiRecognizer():
         self.__class__.words = []
         self.__class__.finished = False
 
-    def recognize(self):
+    def recognize(self, args):
 
         p = pyaudio.PyAudio() # Create a PyAudio session
         # Create a stream
@@ -81,10 +84,15 @@ class KaldiRecognizer():
                         else: # Else
                             silence_counter = 0 # Assign zero value to silence counter
 
+                    stream.stop_stream()
                     self.decoder_pipeline.end_request()
                     while not self.finished:
                         time.sleep(1)
-                    print self.words
+                    words = self.words
+                    words = [x for x in words if x != '<#s>']
+                    com = ' '.join(words)
+                    VirtualAssistant.command(com, args)
+                    stream.start_stream()
                     self.reset()
 
                 data = stream.read(CHUNK) # Read a new chunk from the stream
