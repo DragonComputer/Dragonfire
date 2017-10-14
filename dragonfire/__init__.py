@@ -19,7 +19,6 @@ from pykeyboard import PyKeyboard
 from pymouse import PyMouse
 import datetime
 import glob
-import speech_recognition as sr
 import inspect
 import contextlib
 import cStringIO
@@ -39,7 +38,6 @@ userin = None
 learn_ = Learn()
 omniscient_ = Engine()
 e = Event()
-r = sr.Recognizer()
 
 
 def start(args):
@@ -467,19 +465,6 @@ def dragon_greet():
 		userin.define(["echo"],"To activate say 'Dragonfire!' or 'Wake Up!'")
 		userin.execute(0)
 		userin.say("Good evening " + user_prefix)
-
-def google_speech_api():
-
-	newest_recording = max(glob.iglob('/tmp/' + str(datetime.date.today().year) + '*.[Ww][Aa][Vv]'), key=os.path.getctime)
-
-	r = sr.Recognizer()
-	with sr.WavFile(newest_recording) as source:            # use "test.wav" as the audio source
-		audio = r.record(source)                        # extract audio data from the file
-	try:
-		return r.recognize_google(audio)   # recognize speech using Google Speech Recognition
-	except:
-		pass
-	return 0
 
 def speech_error():
 	tts_kill()
