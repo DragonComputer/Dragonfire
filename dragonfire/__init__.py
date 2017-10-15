@@ -409,6 +409,21 @@ class VirtualAssistant():
 						previous_command = com
 					except:
 						pass
+		elif "GOOGLE IMAGE" in com and ("SEARCH" in com or "FIND" in com):
+			tts_kill()
+			with nostdout():
+				with nostderr():
+					capture = re.search("(?:SEARCH|FIND) (?P<query>.*) (?:IN|ON|AT|USING)? GOOGLE IMAGE", com)
+					if capture:
+						search_query = capture.group('query')
+					try:
+						tabUrl="http://google.com/?#q="+search_query+"&tbm=isch"
+						userin.define(["sensible-browser",tabUrl],search_query)
+						userin.execute(0)
+						userin.say(search_query)
+						previous_command = com
+					except:
+						pass
 		else:
 			tts_kill()
 			#dragonfire_respond = kernel.respond(com)
