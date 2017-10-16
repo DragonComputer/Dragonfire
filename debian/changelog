@@ -1,3 +1,14 @@
+dragonfire (0.9.6) unstable; urgency=medium
+
+  * Migrated from PyPI SpeechRecognition package to Kaldi Speech Recognition Toolkit
+  * Migrated from festival cmu_us_clb_arctic voice to flite slt voice
+  * Kaldi GStreamer English model is added
+  * Google Search built-in commands are added
+  * Several minor bugs are fixed
+  * A number of experimental(non-functional) scripts are added
+
+ -- Mehmet Mert Yildiran <mehmetmertyildiran@gmail.com>  Mon, 16 Oct 2017 21:57:32 +0000
+
 dragonfire (0.9.5) unstable; urgency=medium
 
   * Initial release (Closes: #869121)
