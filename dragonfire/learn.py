@@ -81,10 +81,10 @@ class Learn():
 			first_verbtense = False
 			for key, value in dictionary.iteritems(): # iterate over the dictionary defined and assigned on above
 				if not first_verbtense: # if the first verbtense assignment does not made yet
-					answer += ' ' + key # concatenate with a whitespace
+					answer += ' ' + str(key) # concatenate with a whitespace
 					first_verbtense = True
 				else:
-					answer += ', ' + key # otherwise concatenate with a comma + whitespace
+					answer += ', ' + str(key) # otherwise concatenate with a comma + whitespace
 				first_clause = False
 				for clause in value: # iterate over the clauses of the key
 					if not first_clause: # if the first verbtense assignment does not made yet
@@ -117,7 +117,8 @@ class Learn():
 	def pronoun_fixer(self,subject): # TODO: Extend the context of this function
 		subject = subject.upper()
 		if 'YOURSELF' in subject:
-			return subject.replace('YOURSELF','YOU')
+			subject = subject.replace('YOURSELF','YOU')
+		return subject
 
 
 if __name__ == "__main__":
