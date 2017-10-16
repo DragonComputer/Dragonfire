@@ -50,7 +50,7 @@ def start(args):
 	if args["cli"]:
 		while(True):
 			com = raw_input("Enter your command: ")
-			VirtualAssistant.command(com)
+			VirtualAssistant.command(com, args)
 	else:
 		from dragonfire.sr import KaldiRecognizer
 		recognizer = KaldiRecognizer()
@@ -62,7 +62,6 @@ class VirtualAssistant():
 	def command(com, args):
 
 		original_com = com
-		previous_command = ""
 		global inactive
 
 		global user_full_name
@@ -92,7 +91,6 @@ class VirtualAssistant():
 			userin.define(["echo"],"Dragonfire deactivated. To reactivate say 'Dragonfire!' or 'Wake Up!'")
 			userin.execute(0)
 			userin.say("I'm going to sleep")
-			previous_command = com
 		elif "ENOUGH" == com or "SHUT UP" == com:
 			print "Dragonfire quiets."
 			tts_kill()
@@ -101,7 +99,6 @@ class VirtualAssistant():
 			userin.define([" "], user_full_name)
 			userin.execute(0)
 			userin.say("Your name is " + user_full_name + ", " + user_prefix + ".")
-			previous_command = com
 		elif "MY TITLE IS LADY" == com or "I'M A LADY" == com or "I'M A WOMAN" == com or "I'M A GIRL" == com:
 			tts_kill()
 			config_file.update({'gender': 'female'}, Query().datatype == 'gender')
@@ -129,7 +126,6 @@ class VirtualAssistant():
 			userin.define([" "],"My name is Dragonfire.")
 			userin.execute(0)
 			userin.say("My name is Dragon Fire.")
-			previous_command = com
 		elif "WHAT" in com and "TEMPERATURE" in com: # only for The United States today but prepared for all countries. Also only for celsius degrees today. --> by Radan Liska :-)
 			tts_kill()
 			capture = re.search("(?:WHAT IS|WHAT'S) THE TEMPERATURE (?:IN|ON|AT|OF)? (?P<city>.*)",com)
@@ -141,12 +137,10 @@ class VirtualAssistant():
 				userin.define([" "],"The temperature in " + city + " is " + str(weather.get_temperature('celsius')['temp']) + " degrees celsius")
 				userin.execute(0)
 				userin.say("The temperature in " + city + " is " + str(weather.get_temperature('celsius')['temp']) + " degrees celsius")
-				previous_command = com
 		elif "WHAT IS YOUR GENDER" == com:
 			tts_kill()
 			userin.define([" "]," ")
 			userin.say("I have a female voice but I don't have a gender identity. I'm a computer program, " + user_prefix + ".")
-			previous_command = com
 		elif "FILE MANAGER" in com or "OPEN FILES" == com:
 			tts_kill()
 			userin.define(["dolphin"],"File Manager") # KDE neon
@@ -156,31 +150,26 @@ class VirtualAssistant():
 			userin.define(["nautilus","--browser"],"File Manager") # Ubuntu
 			userin.execute(0)
 			userin.say("File Manager")
-			previous_command = com
 		elif "WEB BROWSER" in com:
 			tts_kill()
 			userin.define(["sensible-browser"],"Web Browser")
 			userin.execute(0)
 			userin.say("Web Browser")
-			previous_command = com
 		elif "OPEN BLENDER" == com:
 			tts_kill()
 			userin.define(["blender"],"Blender")
 			userin.execute(0)
 			userin.say("Blender 3D computer graphics software")
-			previous_command = com
 		elif "PHOTO SHOP" in com or "PHOTO EDITOR" in com or "GIMP" in com:
 			tts_kill()
 			userin.define(["gimp"],"GIMP")
 			userin.execute(0)
 			userin.say("Photo editor")
-			previous_command = com
 		elif "INKSCAPE" in com or "VECTOR GRAPHICS" in com or "VECTORIAL DRAWING" in com:
 			tts_kill()
 			userin.define(["inkscape"],"Inkscape")
 			userin.execute(0)
 			userin.say("Inkscape")
-			previous_command = com
 		elif "VIDEO EDITOR" in com:
 			tts_kill()
 			#userin.define(["openshot"],"Openshot")
@@ -190,7 +179,6 @@ class VirtualAssistant():
 			userin.define(["kdenlive"],"Kdenlive")
 			userin.execute(0)
 			userin.say("Video editor")
-			previous_command = com
 		elif "OPEN CAMERA" == com:
 			tts_kill()
 			userin.define(["kamoso"],"Camera") # KDE neon
@@ -200,7 +188,6 @@ class VirtualAssistant():
 			userin.define(["cheese"],"Camera") # Ubuntu
 			userin.execute(0)
 			userin.say("Camera")
-			previous_command = com
 		elif "OPEN CALENDAR" == com:
 			tts_kill()
 			userin.define(["korganizer"],"Calendar") # KDE neon
@@ -210,7 +197,6 @@ class VirtualAssistant():
 			userin.define(["orage"],"Calendar") # Ubuntu
 			userin.execute(0)
 			userin.say("Calendar")
-			previous_command = com
 		elif "OPEN CALCULATOR" == com:
 			tts_kill()
 			userin.define(["kcalc"],"Calculator") # KDE neon
@@ -220,13 +206,11 @@ class VirtualAssistant():
 			userin.define(["gnome-calculator"],"Calculator") # Ubuntu
 			userin.execute(0)
 			userin.say("Calculator")
-			previous_command = com
 		elif "OPEN STEAM" == com:
 			tts_kill()
 			userin.define(["steam"],"Steam")
 			userin.execute(0)
 			userin.say("Steam Game Store")
-			previous_command = com
 		elif "SOFTWARE CENTER" in com:
 			tts_kill()
 			userin.define(["plasma-discover"],"Software Center") # KDE neon
@@ -234,37 +218,31 @@ class VirtualAssistant():
 			userin.define(["software-center"],"Software Center") # elementary OS & Ubuntu
 			userin.execute(0)
 			userin.say("Software Center")
-			previous_command = com
 		elif "OFFICE SUITE" in com:
 			tts_kill()
 			userin.define(["libreoffice"],"LibreOffice")
 			userin.execute(0)
 			userin.say("Office Suite")
-			previous_command = com
 		elif "OPEN WRITER" == com:
 			tts_kill()
 			userin.define(["libreoffice","--writer"],"LibreOffice Writer")
 			userin.execute(0)
 			userin.say("Writer")
-			previous_command = com
 		elif "OPEN MATH" == com:
 			tts_kill()
 			userin.define(["libreoffice","--math"],"LibreOffice Math")
 			userin.execute(0)
 			userin.say("Math")
-			previous_command = com
 		elif "OPEN IMPRESS" == com:
 			tts_kill()
 			userin.define(["libreoffice","--impress"],"LibreOffice Impress")
 			userin.execute(0)
 			userin.say("Impress")
-			previous_command = com
 		elif "OPEN DRAW" == com:
 			tts_kill()
 			userin.define(["libreoffice","--draw"],"LibreOffice Draw")
 			userin.execute(0)
 			userin.say("Draw")
-			previous_command = com
 		elif com.startswith("KEYBOARD "):
 			tts_kill()
 			with nostdout():
@@ -345,7 +323,6 @@ class VirtualAssistant():
 			userin.define(["sudo","poweroff"],"Shutting down")
 			userin.say("Shutting down")
 			userin.execute(3)
-			previous_command = com
 		elif com == "GOODBYE" or com == "BYE BYE" or com == "SEE YOU LATER":
 			tts_kill()
 			userin.define([" "]," ")
@@ -366,7 +343,6 @@ class VirtualAssistant():
 							userin.define(["sensible-browser",wikipage.url],search_query)
 							userin.execute(0)
 							userin.say(wikicontent)
-							previous_command = com
 						except:
 							pass
 		elif "YOUTUBE" in com and ("SEARCH" in com or "FIND" in com):
@@ -394,36 +370,28 @@ class VirtualAssistant():
 						k.tap_key(k.tab_key)
 						k.tap_key(k.tab_key)
 						k.tap_key('f')
-		elif "WEB" in com and ("SEARCH" in com or "FIND" in com):
+		elif ("GOOGLE" in com or "WEB" in com) and "IMAGE" not in com and ("SEARCH" in com or "FIND" in com):
 			tts_kill()
 			with nostdout():
 				with nostderr():
-					capture = re.search("(?:SEARCH|FIND) (?P<query>.*) (?:IN|ON|AT|USING)? WEB", com)
+					capture = re.search("(?:SEARCH|FIND) (?P<query>.*) (?:IN|ON|AT|USING)? (?:GOOGLE|WEB)?", com)
 					if capture:
 						search_query = capture.group('query')
-					try:
-						tabUrl="http://google.com/?#q="+search_query
-						userin.define(["sensible-browser",tabUrl],search_query)
+						tab_url = "http://google.com/?#q=" + search_query
+						userin.define(["sensible-browser",tab_url],search_query)
 						userin.execute(0)
 						userin.say(search_query)
-						previous_command = com
-					except:
-						pass
-		elif "GOOGLE IMAGE" in com and ("SEARCH" in com or "FIND" in com):
+		elif ("GOOGLE" in com or "WEB" in com) and "IMAGE" in com and ("SEARCH" in com or "FIND" in com):
 			tts_kill()
 			with nostdout():
 				with nostderr():
-					capture = re.search("(?:SEARCH|FIND) (?P<query>.*) (?:IN|ON|AT|USING)? GOOGLE IMAGE", com)
+					capture = re.search("(?:SEARCH IMAGES OF|FIND IMAGES OF|SEARCH|FIND) (?P<query>.*) (?:IN|ON|AT|USING)? (?:GOOGLE|WEB|GOOGLE IMAGES|WEB IMAGES)?", com)
 					if capture:
 						search_query = capture.group('query')
-					try:
-						tabUrl="http://google.com/?#q="+search_query+"&tbm=isch"
-						userin.define(["sensible-browser",tabUrl],search_query)
+						tab_url = "http://google.com/?#q=" + search_query + "&tbm=isch"
+						userin.define(["sensible-browser",tab_url],search_query)
 						userin.execute(0)
 						userin.say(search_query)
-						previous_command = com
-					except:
-						pass
 		else:
 			tts_kill()
 			#dragonfire_respond = kernel.respond(com)
@@ -433,7 +401,6 @@ class VirtualAssistant():
 				userin.say(aiml_respond)
 			else:
 				omniscient_.respond(original_com,not args["silent"],userin)
-			previous_command = com
 
 		#newest = max(glob.iglob('/tmp/' + str(datetime.date.today().year) + '*.[Ww][Aa][Vv]'), key=os.path.getctime)
 		#print newest
