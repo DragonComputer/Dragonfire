@@ -1,8 +1,3 @@
-#DEBHELPER#
-RED='\033[0;31m'
-GREEN='\033[0;32m'
-NC='\033[0m' # No Color
-
 KALDI_DIRECTORY=/usr/share/kaldi
 AVAILABLE_CORES=$(getconf _NPROCESSORS_ONLN)
 if [ $AVAILABLE_CORES > 1 ]; then
@@ -31,6 +26,3 @@ make ext -j $AVAILABLE_CORES
 cd gst-plugin/
 make depend -j $AVAILABLE_CORES
 make -j $AVAILABLE_CORES
-
-pip install wikipedia PyUserInput google-api-python-client tinydb youtube_dl spacy pyowm && sudo pip install -U PyAudio && python -m spacy download en \
-&& printf "import nltk\nnltk.download('names')\nnltk.download('brown')\nnltk.download('wordnet')" | python && echo "\n\n${GREEN}Dragonfire is successfully installed to your computer.${NC}\n"
