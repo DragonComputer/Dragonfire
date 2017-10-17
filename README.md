@@ -10,13 +10,15 @@ Dragonfire is an open source virtual assistant project for Ubuntu based Linux di
 
 <br>
 
-Dragonfire goes through these steps for your commands, respectively:
+Dragonfire goes through these steps for each one of your commands, respectively:
 
  - Search across the built-in commands
  - Try to [Learn using Advanced NLP and Database Management Techniques](https://github.com/DragonComputer/Dragonfire/blob/master/dragonfire/learn.py)
  - Ask to [Omniscient Q&A Engine](https://github.com/DragonComputer/Dragonfire/blob/master/dragonfire/omniscient.py) (Thanks to all people who contributed to magnificent [spaCy](https://github.com/explosion/spaCy) project and [Wikipedia](https://en.wikipedia.org/), the free encyclopedia for this feature)
 
 <br>
+
+Dragonfire uses [Kaldi Speech Recognition Toolkit](https://github.com/kaldi-asr/kaldi) to understand your voice commands and [Festival Speech Synthesis System](http://www.cstr.ed.ac.uk/projects/festival/) to handle text-to-speech tasks.
 
 Feel free to join [our Gitter chat room](https://gitter.im/DragonComputer/Lobby).
 
@@ -40,7 +42,7 @@ Download the [latest release](https://github.com/DragonComputer/Dragonfire/relea
 sudo dpkg -i dragonfire_0.9.6_amd64.deb
 ```
 
-<sup><i>To install the dependencies run `sudo apt-get -f install` right after the `dpkg -i` command.</i></sup>
+<sup><i>To install the dependencies run `sudo apt-get -f install` right after the `dpkg -i` command. The installation will take roughly 20-30 minutes because it will compile and install [Kaldi](https://github.com/kaldi-asr/kaldi) under `/usr/share/kaldi` directory.</i></sup>
 
 ### Usage
 
