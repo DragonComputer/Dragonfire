@@ -166,3 +166,11 @@ GOODBYE | BYE BYE | SEE YOU LATER
 ### Contribute
 
 If you want to contribute to Dragonfire then please read [this guide](https://github.com/DragonComputer/Dragonfire/blob/master/CONTRIBUTING.md).
+
+Please consider to support us on Patreon:
+
+<a href="https://www.patreon.com/DragonComputer">
+  <p align="center">
+    <img src="https://i.imgur.com/KDVHXg0.png" alt="Become a patron" height="100px"/>
+  </p>
+</a>
