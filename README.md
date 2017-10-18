@@ -6,8 +6,6 @@ Dragonfire is an open source virtual assistant project for Ubuntu based Linux di
 
 <p align="center"><sup><i>Special thanks to Jassu Ilama for the beautiful 3D modelling and material design of this avatar.</i></sup></p>
 
-<p align="center"><b>Dragonfire is not The Next Big Thing but a spectacular combination of freely available technologies.</b></p>
-
 <br>
 
 Dragonfire goes through these steps for each one of your commands, respectively:
@@ -70,7 +68,7 @@ To kill her say *GOODBYE* or *BYE BYE* or *SEE YOU LATER*.
 
 <br>
 
-:warning: Facing with a problem? Take a look to the [Troubleshooting](https://github.com/DragonComputer/Dragonfire/blob/master/CONTRIBUTING.md#troubleshooting):hammer_and_wrench: section.
+:warning: Facing with a problem? Take a look at the [Troubleshooting](https://github.com/DragonComputer/Dragonfire/blob/master/CONTRIBUTING.md#troubleshooting):hammer_and_wrench: section.
 
 <br>
 
@@ -171,6 +169,6 @@ Please consider to support us on Patreon:
 
 <a href="https://www.patreon.com/DragonComputer">
   <p align="center">
-    <img src="https://i.imgur.com/KDVHXg0.png" alt="Become a patron" height="100px"/>
+    <img src="https://i.imgur.com/KDVHXg0.png" alt="Become a patron" height="80px"/>
   </p>
 </a>
