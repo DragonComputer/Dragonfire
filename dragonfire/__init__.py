@@ -65,6 +65,9 @@ class VirtualAssistant():
 	@staticmethod
 	def command(com, args):
 
+		if (type(com) is not str) or com == "":
+			return False
+
 		original_com = com
 		global inactive
 
@@ -78,6 +81,28 @@ class VirtualAssistant():
 
 		if inactive == 1 and "DRAGONFIRE" != com and "DRAGON FIRE" != com and "WAKE UP" != com and com != "HEY":
 			return True
+
+		if USER_ANSWERING['status']:
+			if com.startswith("FIRST") or com.startswith("THE FIRST") or com.startswith("SECOND") or com.startswith("THE SECOND") or com.startswith("THIRD") or com.startswith("THE THIRD"):
+				USER_ANSWERING['status'] = False
+				choice = None
+				if com.startswith("FIRST") or com.startswith("THE FIRST"):
+					choice = 0
+				elif com.startswith("SECOND") or com.startswith("THE SECOND"):
+					choice = 1
+				elif com.startswith("THIRD") or com.startswith("THE THIRD"):
+					choice = 2
+
+				if USER_ANSWERING['for'] == 'wikipedia':
+					with nostderr():
+						search_query = USER_ANSWERING['options'][choice]
+						wikipage = wikipedia.page(wikipedia.search(search_query)[0])
+						wikicontent = "".join([i if ord(i) < 128 else ' ' for i in wikipage.content])
+						wikicontent = re.sub(r'\([^)]*\)', '', wikicontent)
+						userin.define(["sensible-browser",wikipage.url],search_query)
+						userin.execute(0)
+						userin.say(wikicontent)
+						return True
 
 		if "DRAGONFIRE" == com or "DRAGON FIRE" == com or "WAKE UP" == com or com == "HEY":
 			tts_kill()
