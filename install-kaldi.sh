@@ -1,6 +1,6 @@
 KALDI_DIRECTORY=/usr/share/kaldi
 AVAILABLE_CORES=$(getconf _NPROCESSORS_ONLN)
-if [ $AVAILABLE_CORES > 1 ]; then
+if [ $AVAILABLE_CORES -gt 1 ]; then
   AVAILABLE_CORES=$(expr $AVAILABLE_CORES / 2)
 fi
 
