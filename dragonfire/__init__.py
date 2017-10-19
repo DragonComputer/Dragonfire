@@ -51,7 +51,8 @@ def start(args):
 	if args["cli"]:
 		while(True):
 			com = raw_input("Enter your command: ")
-			VirtualAssistant.command(com, args)
+			thread.start_new_thread(VirtualAssistant.command, (com, args))
+			time.sleep(0.5)
 	else:
 		from dragonfire.sr import KaldiRecognizer
 		recognizer = KaldiRecognizer()
@@ -332,22 +333,21 @@ class VirtualAssistant():
 			thread.interrupt_main()
 		elif "WIKIPEDIA" in com and ("SEARCH" in com or "FIND" in com):
 			tts_kill()
-			with nostdout():
-				with nostderr():
-					capture = re.search("(?:SEARCH|FIND) (?P<query>.*) (?:IN|ON|AT|USING)? WIKIPEDIA", com)
-					if capture:
-						search_query = capture.group('query')
-						try:
-							wikipage = wikipedia.page(wikipedia.search(search_query)[0])
-							wikicontent = "".join([i if ord(i) < 128 else ' ' for i in wikipage.content])
-							wikicontent = re.sub(r'\([^)]*\)', '', wikicontent)
-							userin.define(["sensible-browser",wikipage.url],search_query)
-							userin.execute(0)
-							userin.say(wikicontent)
-						except requests.exceptions.ConnectionError:
-							userin.define([" "],"Wikipedia connection error.")
-							userin.execute(0)
-							userin.say("Sorry, " + user_prefix + ". But I'm unable to connect to Wikipedia servers.")
+			with nostderr():
+				capture = re.search("(?:SEARCH|FIND) (?P<query>.*) (?:IN|ON|AT|USING)? WIKIPEDIA", com)
+				if capture:
+					search_query = capture.group('query')
+					try:
+						wikipage = wikipedia.page(wikipedia.search(search_query)[0])
+						wikicontent = "".join([i if ord(i) < 128 else ' ' for i in wikipage.content])
+						wikicontent = re.sub(r'\([^)]*\)', '', wikicontent)
+						userin.define(["sensible-browser",wikipage.url],search_query)
+						userin.execute(0)
+						userin.say(wikicontent)
+					except requests.exceptions.ConnectionError:
+						userin.define([" "],"Wikipedia connection error.")
+						userin.execute(0)
+						userin.say("Sorry, " + user_prefix + ". But I'm unable to connect to Wikipedia servers.")
 		elif "YOUTUBE" in com and ("SEARCH" in com or "FIND" in com):
 			tts_kill()
 			with nostdout():
@@ -410,8 +410,7 @@ class VirtualAssistant():
 
 
 def tts_kill():
-	subprocess.call(["pkill", "audsp"], stdout=FNULL, stderr=FNULL)
-	subprocess.call(["pkill", "aplay"], stdout=FNULL, stderr=FNULL)
+	subprocess.call(["pkill", "flite"], stdout=FNULL, stderr=FNULL)
 
 def dragon_greet():
 	tts_kill()
