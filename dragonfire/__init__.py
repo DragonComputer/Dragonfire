@@ -29,7 +29,8 @@ from tinydb import TinyDB, Query
 from os.path import expanduser
 import argparse
 import thread
-import requests
+import requests.exceptions
+import wikipedia.exceptions
 
 DRAGONFIRE_PATH = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 FNULL = open(os.devnull, 'w')
@@ -40,6 +41,7 @@ learn_ = Learn()
 omniscient_ = Engine()
 e = Event()
 
+USER_ANSWERING = {'status': False, 'for': None, 'reason': None, 'options': None}
 
 def start(args):
 
@@ -348,6 +350,22 @@ class VirtualAssistant():
 						userin.define([" "],"Wikipedia connection error.")
 						userin.execute(0)
 						userin.say("Sorry, " + user_prefix + ". But I'm unable to connect to Wikipedia servers.")
+					except wikipedia.exceptions.DisambiguationError as disambiguation:
+						USER_ANSWERING['status'] = True
+						USER_ANSWERING['for'] = 'wikipedia'
+						USER_ANSWERING['reason'] = 'disambiguation'
+						USER_ANSWERING['options'] = disambiguation.options[:3]
+						notify = "Wikipedia disambiguation. Which one of these you meant?:\n - " + disambiguation.options[0]
+						message = user_prefix + ", there is a disambiguation. Which one of these you meant? " + disambiguation.options[0]
+						for option in disambiguation.options[1:3]:
+							message += ", or " + option
+							notify += "\n - " + option
+						notify += '\nSay, for example: "THE FIRST ONE" to choose.'
+						userin.define([" "],notify)
+						userin.execute(0)
+						userin.say(message)
+					except:
+						pass
 		elif "YOUTUBE" in com and ("SEARCH" in com or "FIND" in com):
 			tts_kill()
 			with nostdout():
