@@ -29,6 +29,7 @@ from tinydb import TinyDB, Query
 from os.path import expanduser
 import argparse
 import thread
+import requests
 
 DRAGONFIRE_PATH = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 FNULL = open(os.devnull, 'w')
@@ -343,8 +344,10 @@ class VirtualAssistant():
 							userin.define(["sensible-browser",wikipage.url],search_query)
 							userin.execute(0)
 							userin.say(wikicontent)
-						except:
-							pass
+						except requests.exceptions.ConnectionError:
+							userin.define([" "],"Wikipedia connection error.")
+							userin.execute(0)
+							userin.say("Sorry, " + user_prefix + ". But I'm unable to connect to Wikipedia servers.")
 		elif "YOUTUBE" in com and ("SEARCH" in com or "FIND" in com):
 			tts_kill()
 			with nostdout():
