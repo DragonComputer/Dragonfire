@@ -1,0 +1,2 @@
+KALDI_DIRECTORY=/usr/share/kaldi
+rm -rf $KALDI_DIRECTORY
