@@ -96,13 +96,25 @@ class VirtualAssistant():
 				if USER_ANSWERING['for'] == 'wikipedia':
 					with nostderr():
 						search_query = USER_ANSWERING['options'][choice]
-						wikipage = wikipedia.page(wikipedia.search(search_query)[0])
-						wikicontent = "".join([i if ord(i) < 128 else ' ' for i in wikipage.content])
-						wikicontent = re.sub(r'\([^)]*\)', '', wikicontent)
-						userin.define(["sensible-browser",wikipage.url],search_query)
-						userin.execute(0)
-						userin.say(wikicontent)
-						return True
+						try:
+							wikiresult = wikipedia.search(search_query)
+							if len(wikiresult) == 0:
+								userin.say("Sorry, " + user_prefix + ". But I couldn't find anything about " + search_query + " in Wikipedia.")
+								return True
+							wikipage = wikipedia.page(wikiresult[0])
+							wikicontent = "".join([i if ord(i) < 128 else ' ' for i in wikipage.content])
+							wikicontent = re.sub(r'\([^)]*\)', '', wikicontent)
+							userin.define(["sensible-browser",wikipage.url],search_query)
+							userin.execute(0)
+							userin.say(wikicontent)
+							return True
+						except requests.exceptions.ConnectionError:
+							userin.define([" "],"Wikipedia connection error.")
+							userin.execute(0)
+							userin.say("Sorry, " + user_prefix + ". But I'm unable to connect to Wikipedia servers.")
+							return True
+						except:
+							return True
 
 		if "DRAGONFIRE" == com or "DRAGON FIRE" == com or "WAKE UP" == com or com == "HEY":
 			tts_kill()
@@ -365,7 +377,11 @@ class VirtualAssistant():
 				if capture:
 					search_query = capture.group('query')
 					try:
-						wikipage = wikipedia.page(wikipedia.search(search_query)[0])
+						wikiresult = wikipedia.search(search_query)
+						if len(wikiresult) == 0:
+							userin.say("Sorry, " + user_prefix + ". But I couldn't find anything about " + search_query + " in Wikipedia.")
+							return True
+						wikipage = wikipedia.page(wikiresult[0])
 						wikicontent = "".join([i if ord(i) < 128 else ' ' for i in wikipage.content])
 						wikicontent = re.sub(r'\([^)]*\)', '', wikicontent)
 						userin.define(["sensible-browser",wikipage.url],search_query)
