@@ -8,13 +8,12 @@ if [ $AVAILABLE_CORES -gt 1 ]; then
   AVAILABLE_CORES=$(expr $AVAILABLE_CORES - 1)
 fi
 
-if [ ! -d "$KALDI_DIRECTORY" ]; then
-  mkdir $KALDI_DIRECTORY
-  cd $KALDI_DIRECTORY
-  git clone https://github.com/kaldi-asr/kaldi.git .
-else
-  cd $KALDI_DIRECTORY
+if [ -d "$KALDI_DIRECTORY" ]; then
+  rm -rf $KALDI_DIRECTORY
 fi
+mkdir $KALDI_DIRECTORY
+cd $KALDI_DIRECTORY
+git clone https://github.com/kaldi-asr/kaldi.git .
 
 cd tools/
 extras/check_dependencies.sh
