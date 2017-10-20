@@ -1,8 +1,8 @@
 #!/bin/bash
-apt-get -y install python python-all-dev libglib2.0-dev libcairo2-dev libgtk2.0-dev python-wxgtk3.0 && \
-apt-get -y install python2.7-minimal ${misc:Pre-Depends} && \
+apt-get -y install debhelper python dh-virtualenv python-all-dev libglib2.0-dev libcairo2-dev libgtk2.0-dev python-wxgtk3.0 && \
+apt-get -y install dpkg python2.7-minimal ${misc:Pre-Depends} && \
 apt-get -y install ${python:Depends} ${misc:Depends} flite python-xlib portaudio19-dev python-all-dev flac libnotify-bin python-egenix-mx-base-dev python-lxml python-nltk python-pyaudio python-httplib2 python-pip python-wxgtk3.0 git libgstreamer1.0-dev gstreamer1.0-plugins-good gstreamer1.0-tools subversion libatlas-base-dev && \
-pip install .
+pip install -e .
 
 #DEBHELPER#
 RED='\033[0;31m'
