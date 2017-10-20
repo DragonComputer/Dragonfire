@@ -1,7 +1,8 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-#from __future__ import unicode_literals
+# from __future__ import unicode_literals
+from __future__ import print_function
 import sys
 import pyowm
 from dragonfire.utilities import TTA
@@ -18,7 +19,6 @@ import re
 from pykeyboard import PyKeyboard
 from pymouse import PyMouse
 import datetime
-import glob
 import inspect
 import contextlib
 import cStringIO
@@ -77,9 +77,9 @@ class VirtualAssistant():
 		global e
 
 		com = com.upper()
-		print "You: " + com
+		print("You: " + com)
 
-		if inactive == 1 and "DRAGONFIRE" != com and "DRAGON FIRE" != com and "WAKE UP" != com and com != "HEY":
+		if inactive == 1 and com not in ("DRAGONFIRE", "DRAGON FIRE", "WAKE UP", "HEY"):
 			return True
 
 		if USER_ANSWERING['status']:
@@ -116,7 +116,7 @@ class VirtualAssistant():
 						except:
 							return True
 
-		if "DRAGONFIRE" == com or "DRAGON FIRE" == com or "WAKE UP" == com or com == "HEY":
+		if com in ("DRAGONFIRE", "DRAGON FIRE", "WAKE UP", "HEY"):
 			tts_kill()
 			inactive = 0
 			userin.define([" "]," ")
@@ -132,21 +132,21 @@ class VirtualAssistant():
 			userin.define(["echo"],"Dragonfire deactivated. To reactivate say 'Dragonfire!' or 'Wake Up!'")
 			userin.execute(0)
 			userin.say("I'm going to sleep")
-		elif "ENOUGH" == com or "SHUT UP" == com:
-			print "Dragonfire quiets."
+		elif com in ("ENOUGH", "SHUT UP"):
+			print("Dragonfire quiets.")
 			tts_kill()
-		elif "WHO AM I" == com or "SAY MY NAME" == com:
+		elif com in ("WHO AM I", "SAY MY NAME"):
 			tts_kill()
 			userin.define([" "], user_full_name)
 			userin.execute(0)
 			userin.say("Your name is " + user_full_name + ", " + user_prefix + ".")
-		elif "MY TITLE IS LADY" == com or "I'M A LADY" == com or "I'M A WOMAN" == com or "I'M A GIRL" == com:
+		elif com in ("MY TITLE IS LADY", "I'M A LADY", "I'M A WOMAN", "I'M A GIRL"):
 			tts_kill()
 			config_file.update({'gender': 'female'}, Query().datatype == 'gender')
 			user_prefix = "My Lady"
 			userin.define([" "]," ")
 			userin.say("Pardon, " + user_prefix + ".")
-		elif "MY TITLE IS SIR" == com or "I'M A MAN" == com or "I'M A BOY" == com:
+		elif com in ("MY TITLE IS SIR", "I'M A MAN", "I'M A BOY"):
 			tts_kill()
 			config_file.update({'gender': 'male'}, Query().datatype == 'gender')
 			user_prefix = "Sir"
@@ -310,7 +310,7 @@ class VirtualAssistant():
 				with nostderr():
 					k = PyKeyboard()
 					k.press_keys([k.control_l_key,k.tab_key])
-		elif com == "CLOSE" or com == "ESCAPE":
+		elif com in ("CLOSE", "ESCAPE"):
 			tts_kill()
 			with nostdout():
 				with nostderr():
@@ -353,7 +353,7 @@ class VirtualAssistant():
 				with nostderr():
 					m = PyMouse()
 					m.scroll(-5,0)
-		elif com == "PLAY" or com == "PAUSE" or com == "SPACEBAR":
+		elif com in ("PLAY", "PAUSE", "SPACEBAR"):
 			tts_kill()
 			with nostdout():
 				with nostderr():
@@ -364,7 +364,7 @@ class VirtualAssistant():
 			userin.define(["sudo","poweroff"],"Shutting down")
 			userin.say("Shutting down")
 			userin.execute(3)
-		elif com == "GOODBYE" or com == "BYE BYE" or com == "SEE YOU LATER":
+		elif com in ("GOODBYE", "BYE BYE", "SEE YOU LATER"):
 			tts_kill()
 			userin.define([" "]," ")
 			userin.say("Goodbye, " + user_prefix)
@@ -470,7 +470,7 @@ def tts_kill():
 
 def dragon_greet():
 	tts_kill()
-	print "_______________________________________________________________\n"
+	print("_______________________________________________________________\n")
 	time = datetime.datetime.now().time()
 
 	global user_full_name
