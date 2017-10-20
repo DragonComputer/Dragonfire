@@ -19,7 +19,7 @@ class Learn():
 		self.nlp = spacy.load('en') # Load en_core_web_sm, English, 50 MB, default model
 
 	# Entry function for this class. Dragonfire calls only this function. It does not handle TTS.
-	def respond(self,com):
+	def respond(self, com):
 		forget = "^(?:FORGET|UPDATE) (?:EVERYTHING YOU KNOW ABOUT |ABOUT )?(?P<subject>.*)"
 		capture = re.search(forget, com)
 		if capture:
@@ -65,10 +65,10 @@ class Learn():
 						verb_found = True # verb is found
 						verbtense = word.text.encode('utf-8') # append it to verbtense
 				clause = ' '.join(clause).strip() # concatenate the clause
-				return(self.db_setter(subject,verbtense,clause,com)) # set the record to the database
+				return(self.db_setter(subject, verbtense, clause, com)) # set the record to the database
 
 	# Function to get a record from the database
-	def db_getter(self,subject):
+	def db_getter(self, subject):
 		result = self.db.search(Query().subject == subject) # make a database search by giving subject string
 		if result: # if there is a result
 			dictionary = {}
@@ -97,13 +97,13 @@ class Learn():
 			return None # if there is no result return None
 
 	# Function to set a record to the database
-	def db_setter(self,subject,verbtense,clause,com):
+	def db_setter(self, subject, verbtense, clause, com):
 		if not self.db.search( (Query().subject == subject) & (Query().verbtense == verbtense) & (Query().clause == clause) ): # if there is no exacty record on the database then
 			self.db.insert({'subject': subject, 'verbtense': verbtense, 'clause': clause}) # insert the given data
 		return "OK, I GET IT. " + self.mirror(com) # mirror the command(user's speech) and return it to say
 
 	# Function to mirror the answer (for example: I'M to YOU ARE)
-	def mirror(self,answer):
+	def mirror(self, answer):
 		answer = answer.upper() # make the given string fully uppercase
 		for key,value in self.replacements.iteritems(): # iterate over the replacements
 			if key in answer: # if the key is in the answer
@@ -114,15 +114,16 @@ class Learn():
 		return answer # return the same string if there is no replacement
 
 	# Pronoun fixer to handle situations like YOU and YOURSELF
-	def pronoun_fixer(self,subject): # TODO: Extend the context of this function
+	def pronoun_fixer(self, subject): # TODO: Extend the context of this function
 		subject = subject.upper()
 		if 'YOURSELF' in subject:
-			subject = subject.replace('YOURSELF','YOU')
+			subject = subject.replace('YOURSELF', 'YOU')
 		return subject
 
 
 if __name__ == "__main__":
 	learn_ = Learn()
+
 	print learn_.respond("THE SUN IS HOT")
 	print learn_.respond("THE SUN IS YELLOW")
 	print learn_.respond("WHAT IS THE SUN")

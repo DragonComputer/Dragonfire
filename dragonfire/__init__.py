@@ -456,16 +456,13 @@ class VirtualAssistant():
 						userin.say(search_query)
 		else:
 			tts_kill()
-			#dragonfire_respond = kernel.respond(com)
-			aiml_respond = learn_.respond(com)
-			if aiml_respond:
+			learn_response = learn_.respond(com)
+			if learn_response:
 				userin.define([" "]," ")
-				userin.say(aiml_respond)
+				userin.say(learn_response)
 			else:
-				omniscient_.respond(original_com,not args["silent"],userin)
+				omniscient_.respond(original_com, user_prefix, not args["silent"], userin)
 
-		#newest = max(glob.iglob('/tmp/' + str(datetime.date.today().year) + '*.[Ww][Aa][Vv]'), key=os.path.getctime)
-		#print newest
 
 
 def tts_kill():
@@ -547,18 +544,7 @@ def initiate():
 		start(args)
 	except KeyboardInterrupt:
 		stray_proc.terminate()
-		with nostdout():
-			with nostderr():
-				try:
-					os.system('rm -f /tmp/' + str(datetime.date.today().year) + '*.[Ww][Aa][Vv]')
-				except:
-					pass
 		sys.exit(1)
 
 if __name__ == '__main__':
-	try:
-		inactive = 1
-		dragon_greet()
-		start(sys.stdin)
-	except:
-		sys.exit(1)
+	initiate()
