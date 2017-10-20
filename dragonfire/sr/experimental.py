@@ -8,7 +8,6 @@ import os # The path module suitable for the operating system Python is running 
 import audioop # Operates on sound fragments consisting of signed integer samples 8, 16 or 32 bits wide, stored in Python strings.
 import numpy # The fundamental package for scientific computing with Python.
 import multiprocessing # A package that supports spawning processes using an API similar to the threading module.
-import imutils # A series of convenience functions to make basic image processing functions such as translation, rotation, resizing, skeletonization etc.
 import pyqtgraph as pg # A pure-python graphics and GUI library built on PyQt4 / PySide and numpy
 from PyQt4 import QtCore, QtGui # A comprehensive set of Python bindings for Digia's Qt cross platform GUI toolkit.
 import time # Provides various time-related functions.
@@ -40,7 +39,8 @@ class SpeechRecognition():
 
 	# A function that will save recordings to a file
 	@staticmethod
-	def save_file():
+	def save_file(frames):
+		p = pyaudio.PyAudio() # Create a PyAudio session
 		if not os.path.isfile(WAVE_OUTPUT_FILENAME): # If there is not such a file
 			wf = wave.open(WAVE_OUTPUT_FILENAME, 'wb') # Create the file
 			wf.setnchannels(CHANNELS) # Set number of channels
@@ -217,7 +217,7 @@ class SpeechRecognition():
 			rms = audioop.rms(data, 2) # Calculate Root Mean Square of current chunk
 			word_data = [] # Define single word data
 			if rms >= THRESHOLD: # If Root Mean Square value is greater than THRESHOLD constant
-				starting_time = datetime.datetime.now() # Starting time of the word
+				#starting_time = datetime.datetime.now() # Starting time of the word
 				thresh_frames.pop() # Pop out last frame of thresh frames
 				thresh_frames.pop() # Pop out last frame of thresh frames
 				word_data.append(previous_data) # Append previous chunk to training data
@@ -248,7 +248,7 @@ class SpeechRecognition():
 				#del thresh_frames[-(SILENCE_DETECTION-2):] # Delete last frames of thresh frames as much as SILENCE_DETECTION constant
 				#for i in range(SILENCE_DETECTION-2): # SILENCE_DETECTION constant times
 				#	thresh_frames.append(EMPTY_CHUNK) # Append an EMPTY_CHUNK
-				ending_time = datetime.datetime.now() # Ending time of the training
+				#ending_time = datetime.datetime.now() # Ending time of the training
 				for i in xrange(len(word_data)):
 					word_data[i] = numpy.fromstring(word_data[i], 'int16') # Convert each frame from binary string to int16
 				word_data = numpy.asarray(word_data) # Convert the word data into numpy array
@@ -347,7 +347,7 @@ class SpeechRecognition():
 				rms = audioop.rms(data, 2) # Calculate Root Mean Square of current chunk
 				word_data = [] # Define single word data
 				if rms >= THRESHOLD: # If Root Mean Square value is greater than THRESHOLD constant
-					starting_time = datetime.datetime.now() # Starting time of the word
+					#starting_time = datetime.datetime.now() # Starting time of the word
 					thresh_frames.pop() # Pop out last frame of thresh frames
 					thresh_frames.pop() # Pop out last frame of thresh frames
 					word_data.append(previous_data) # Append previous chunk to training data
@@ -378,7 +378,7 @@ class SpeechRecognition():
 					#del thresh_frames[-(SILENCE_DETECTION-2):] # Delete last frames of thresh frames as much as SILENCE_DETECTION constant
 					#for i in range(SILENCE_DETECTION-2): # SILENCE_DETECTION constant times
 					#	thresh_frames.append(EMPTY_CHUNK) # Append an EMPTY_CHUNK
-					ending_time = datetime.datetime.now() # Ending time of the training
+					#ending_time = datetime.datetime.now() # Ending time of the training
 					words_data.append(word_data)
 					if verbose:
 						print len(words_data)

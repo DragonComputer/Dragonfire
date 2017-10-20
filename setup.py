@@ -10,8 +10,7 @@ from setuptools import setup, find_packages, Extension
 # To use a consistent encoding
 from codecs import open
 from os import path
-import os
-from subprocess import check_call, PIPE, Popen
+from subprocess import PIPE, Popen
 
 
 here = path.abspath(path.dirname(__file__))

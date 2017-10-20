@@ -1,10 +1,7 @@
 # -*- coding: UTF-8 -*-
 
-import gi
-gi.require_version('Gst', '1.0')
-from gi.repository import GObject, Gst
+from gi.repository import GObject
 from threading import Thread
-import logging
 from decoder import DecoderPipeline
 import time
 import pyaudio # Provides Python bindings for PortAudio, the cross platform audio API
