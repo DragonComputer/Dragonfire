@@ -17,7 +17,7 @@ class Engine():
         self.coefficient = {'frequency': 0.27, 'precedence': 0.27, 'proximity': 0.23, 'mention': 0.23} # Coefficients for scoring
 
     # Entry function for this class. Dragonfire calls only this function. Unlike Learn.respond() it executes TTS because of its late reponse nature.
-    def respond(self,com,tts_output=False,userin=None):
+    def respond(self, com, user_prefix, tts_output=False, userin=None):
         doc = self.nlp(com.decode('utf-8')) # Command(user's speech) must be decoded from utf-8 to unicode because spaCy only supports unicode strings, self.nlp() handles all parsing
         query = None # Wikipedia search query variable definition
         # Followings are lists because it could be multiple of them in a string. Multiple objects or subjects...
@@ -44,8 +44,8 @@ class Engine():
         else:
             userin.define([""],'You said: "' + com + '"')
             userin.execute(0)
-            if not tts_output: print "Sorry, I don't understand the subject of your question." # if tts_output is enabled then it does not print
-            if tts_output: userin.say("Sorry, I don't understand the subject of your question.") # if tts_output is enabled then it executes TTS
+            if not tts_output: print "Sorry, " + user_prefix + ". But I didn't even understand the subject." # if tts_output is enabled then it does not print
+            if tts_output: userin.say("Sorry, " + user_prefix + ". But I didn't even understand the subject.") # if tts_output is enabled then it executes TTS
             return False
 
         # This block determines the focus(objective/goal) by relying on this priority: [Direct object] > [Subject] > [Object of a preposition]
@@ -202,7 +202,7 @@ class Engine():
         self.coefficient = {'frequency': coeff1, 'precedence': coeff2, 'proximity': coeff3, 'mention': coeff4}
 
     # function to clean unnecessary words from the given phrase/string. (Punctuation mark, symbol, unknown, conjunction, determiner, subordinating or preposition and space)
-    def phrase_cleaner(self,phrase):
+    def phrase_cleaner(self, phrase):
         clean_phrase = []
         for word in self.nlp(phrase.decode('utf-8')):
             if word.pos_ not in ['PUNCT','SYM','X','CONJ','DET','ADP','SPACE']:
