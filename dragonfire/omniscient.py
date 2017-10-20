@@ -3,6 +3,11 @@ import spacy # Most powerful NLP library available - spaCy
 import collections # Imported to support ordered dictionaries in Python
 from nltk.corpus import wordnet as wn # WordNet
 import random
+import sys
+import contextlib
+import cStringIO
+import requests.exceptions
+import wikipedia.exceptions
 
 class Engine():
 
@@ -75,14 +80,43 @@ class Engine():
             for word in doc: # Iterate over the words in the command(user's speech)
 				if word.tag_ in ['WDT','WP','WP$','WRB']: # if there is a wh word then
 					wh_question.append(word.text.upper()) # append it by converting to uppercase
+            with nostderr():
+                try:
+                    wikiresult = wikipedia.search(query) # run a Wikipedia search with the query
+                    if len(wikiresult) == 0: # if there are no results
+                        userin.say("Sorry, " + user_prefix + ". But I couldn't find anything about " + query + " in Wikipedia.")
+                        return True
+                    wikipedia.page(wikiresult[0])
+                except requests.exceptions.ConnectionError: # if there is a connection error
+                    userin.define([" "],"Wikipedia connection error.")
+                    userin.execute(0)
+                    userin.say("Sorry, " + user_prefix + ". But I'm unable to connect to Wikipedia servers.")
+                    return True
+                except wikipedia.exceptions.DisambiguationError as disambiguation: # if there is a disambiguation
+                    wikiresult = wikipedia.search(disambiguation.options[0]) # run Wikipedia search again with the most common option
+                except:
+                    userin.say("Sorry, " + user_prefix + ". But something went horribly wrong while I'm searching Wikipedia.")
+                    return True
             findings = [] # empty findings list for scoring
             nth_page = 0 # nth Wikipedia page/article
-            while not findings: # while there is no any findings
-                page = wikipedia.page(wikipedia.search(query)[nth_page]) # Get the next Wikipedia page/article from the search results (this line also handles the search at the same time)
+            while not findings: # while there are no any findings
+                if not len(wikiresult) >= (nth_page + 1): # prevent index error
+                    break
+                with nostderr():
+                    try:
+                        wikipage = wikipedia.page(wikiresult[nth_page]) # Get the next Wikipedia page/article from the search results (this line also handles the search at the same time)
+                    except requests.exceptions.ConnectionError: # if there is a connection error
+                        userin.define([" "],"Wikipedia connection error.")
+                        userin.execute(0)
+                        userin.say("Sorry, " + user_prefix + ". But I'm unable to connect to Wikipedia servers.")
+                        return True
+                    except:
+                        userin.say("Sorry, " + user_prefix + ". But something went horribly wrong while I'm searching Wikipedia.")
+                        return True
                 nth_page += 1 # increase the visited page/article count
                 if nth_page > 5: break # if script searched more than 5 Wikipedia pages/articles then give up
-                wiki_doc = self.nlp(page.content) # parse the Wikipedia page/article content using spaCy NLP library
-                sentences = [sent.string.strip() for sent in wiki_doc.sents] # each individual sentence in the current Wikipedia page/article
+                wikidoc = self.nlp(wikipage.content) # parse the Wikipedia page/article content using spaCy NLP library
+                sentences = [sent.string.strip() for sent in wikidoc.sents] # each individual sentence in the current Wikipedia page/article
                 #return [' '.join(subjects),' '.join(pobjects)]
                 all_entities = [] # all entities, useful or not all of them
                 mention = {} # sentences with focus mentioned
@@ -208,6 +242,21 @@ class Engine():
             if word.pos_ not in ['PUNCT','SYM','X','CONJ','DET','ADP','SPACE']:
                 clean_phrase.append(word.text)
         return ' '.join(clean_phrase)
+
+
+@contextlib.contextmanager
+def nostdout():
+	save_stdout = sys.stdout
+	sys.stdout = cStringIO.StringIO()
+	yield
+	sys.stdout = save_stdout
+
+@contextlib.contextmanager
+def nostderr():
+	save_stderr = sys.stderr
+	sys.stderr = cStringIO.StringIO()
+	yield
+	sys.stderr = save_stderr
 
 
 if __name__ == "__main__":
