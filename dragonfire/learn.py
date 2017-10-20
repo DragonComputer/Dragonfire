@@ -1,4 +1,3 @@
-from random import randint # Random integer generator
 import collections # Imported to support ordered dictionaries in Python
 import re # Regular expression operations library of Python
 from tinydb import TinyDB, Query # TinyDB is a lightweight document oriented database
@@ -30,7 +29,6 @@ class Learn():
 
 		define = "(?:PLEASE )?(?:DEFINE|EXPLAIN|TELL ME ABOUT|DESCRIBE) (?P<subject>.*)" # TODO: Extend the context of this regular expression
 		capture = re.search(define, com)
-		result = None
 		if capture:
 			return self.db_getter(capture.group('subject'))
 

@@ -1,8 +1,6 @@
 import theano
 import theano.tensor as T
 import numpy as np
-import cPickle
-import random
 import matplotlib.pyplot as plt
 
 class RNN():

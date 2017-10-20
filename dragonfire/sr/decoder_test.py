@@ -1,7 +1,7 @@
 # -*- coding: UTF-8 -*-
 
 import unittest
-from gi.repository import GObject, Gst
+from gi.repository import GObject
 import thread
 import logging
 from decoder import DecoderPipeline
