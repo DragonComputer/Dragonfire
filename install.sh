@@ -7,7 +7,11 @@ cd dragonfire/sr/models/english/
 wget https://github.com/DragonComputer/Dragonfire/releases/download/v0.9.6/sr_model_en.tar.gz
 tar -xvf sr_model_en.tar.gz
 rm sr_model_en.tar.gz
-cd ../../../../
+cd ../../tests/
+wget https://github.com/DragonComputer/Dragonfire/releases/download/v0.9.6/sr_model_tests.tar.gz
+tar -xvf sr_model_tests.tar.gz
+rm sr_model_tests.tar.gz
+cd ../../../
 
 pip install .
 

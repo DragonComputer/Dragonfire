@@ -164,9 +164,13 @@ dragonfire/sr/training_data/*
 dragonfire/sr/plots/*
 dragonfire/sr/out/*
 
-# Debian packaging (dh-virtualenv) realted
+# Debian packaging (dh-virtualenv) related
 debian/dragonfire/
 debian/debhelper-build-stamp
 debian/dragonfire.postinst.debhelper
 debian/dragonfire.substvars
 debian/files
+
+# Speech recognition
+dragonfire/sr/models/english/*
+dragonfire/sr/tests/*
