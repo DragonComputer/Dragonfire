@@ -56,6 +56,7 @@ def start(args):
 			thread.start_new_thread(VirtualAssistant.command, (com, args))
 			time.sleep(0.5)
 	else:
+		os.environ["GST_PLUGIN_PATH"] = "/usr/share/kaldi/src/gst-plugin"
 		from dragonfire.sr import KaldiRecognizer
 		recognizer = KaldiRecognizer()
 		recognizer.recognize(args)

@@ -1,4 +1,3 @@
 #!/bin/sh
 
-export GST_PLUGIN_PATH=/usr/share/kaldi/src/gst-plugin
 /usr/share/python/dragonfire/bin/dragonfire $@
