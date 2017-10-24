@@ -40,8 +40,8 @@ class Learn():
 			if np.root.dep_ == 'pobj' and prev_type == 'nsubj': # if it's an object of a preposition and the previous noun phrase's type was nsubj(nominal subject) then (it's purpose is capturing subject like MY PLACE OF BIRTH)
 				subject.append(np.root.head.text.encode('utf-8')) # append the parent text from syntactic relations tree (example: while nsubj is 'MY PLACE', np.root.head.text is 'OF')
 				subject.append(np.text.encode('utf-8')) # append the text of this noun phrase (example: while nsubj is 'MY PLACE', np.text is 'BIRTH')
-			prev_type = None # make it None on each iteration after it completes its mission
-			if np.root.dep_ == 'nsubj' and np.root.tag_ != 'WP': # if it's a nsubj(nominal subject). "wh-" words are also considered as nsubj(nominal subject) but they are out of scope. This is why we are excluding them.
+				prev_type = 'pobj' # assign the previous type as pobj
+			if np.root.dep_ == 'nsubj' and np.root.tag_ != 'WP' and prev_type != 'pobj': # if it's a nsubj(nominal subject). "wh-" words are also considered as nsubj(nominal subject) but they are out of scope. This is why we are excluding them.
 				subject.append(np.text.encode('utf-8')) # append the text of this noun phrase
 				prev_type = 'nsubj' # assign the previous type as nsubj(nominal subject)
 		subject = ' '.join(subject).strip() # concatenate all noun phrases found
@@ -58,7 +58,8 @@ class Learn():
 				clause = [] # is the information that we need to acknowledge
 				for word in doc:
 					if verb_found: # get the all words comes after the first verb which will be our verbtense
-						clause.append(word.text.encode('utf-8'))
+						if word.pos_ != 'PUNCT': # exclude punctuations
+							clause.append(word.text.encode('utf-8'))
 					if word.pos_ == 'VERB' and not verb_found: # if that's a verb and verb does not found yet then
 						verb_found = True # verb is found
 						verbtense = word.text.encode('utf-8') # append it to verbtense
