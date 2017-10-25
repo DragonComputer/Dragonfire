@@ -24,56 +24,16 @@ class Engine():
 
     # Entry function for this class. Dragonfire calls only this function. Unlike Learn.respond() it executes TTS because of its late reponse nature.
     def respond(self, com, tts_output=False, userin=None, user_prefix=None):
-        doc = self.nlp(com.decode('utf-8')) # Command(user's speech) must be decoded from utf-8 to unicode because spaCy only supports unicode strings, self.nlp() handles all parsing
-        query = None # Wikipedia search query variable definition
-        # Followings are lists because it could be multiple of them in a string. Multiple objects or subjects...
-        subjects = [] # subject list
-        pobjects = [] # object of a preposition list
-        dobjects = [] # direct object list
-        # https://nlp.stanford.edu/software/dependencies_manual.pdf - Hierarchy of typed dependencies
-        for np in doc.noun_chunks: # Iterate over the noun phrases(chunks)
-            #print(np.text, np.root.text, np.root.dep_, np.root.head.text)
-            if (np.root.dep_ == 'nsubj' or np.root.dep_ == 'nsubjpass') and np.root.tag_ != 'WP': # if it's a nsubj(nominal subject) or nsubjpass(passive nominal subject) then
-                subjects.append(np.text.encode('utf-8')) # append it to subjects
-            if np.root.dep_ == 'pobj': # if it's an object of a preposition then
-                pobjects.append(np.text.encode('utf-8')) # append it to pobjects
-            if np.root.dep_ == 'dobj': # if it's a direct object then
-                dobjects.append(np.text.encode('utf-8')) # append it to direct objects
-
-        # This block determines the Wikipedia query by relying on this priority: [Object of a preposition] > [Subject] > [Direct object]
-        if pobjects:
-            query = ' '.join(pobjects)
-        elif subjects:
-            query = ' '.join(subjects)
-        elif dobjects:
-            query = ' '.join(dobjects)
-        else:
+        subject, subjects, focus, subject_with_objects = self.semantic_extractor(com) # Extract the subject, focus, objects etc.
+        if subject is 1:
             userin.define([""],'You said: "' + com + '"')
             userin.execute(0)
             if not tts_output: print "Sorry, " + user_prefix + ". But I didn't even understand the subject." # if tts_output is enabled then it does not print
             if tts_output: userin.say("Sorry, " + user_prefix + ". But I didn't even understand the subject.") # if tts_output is enabled then it executes TTS
             return False
 
-        # This block determines the focus(objective/goal) by relying on this priority: [Direct object] > [Subject] > [Object of a preposition]
-        focus = None
-        if dobjects:
-            focus = self.phrase_cleaner(' '.join(dobjects))
-        elif subjects:
-            focus = self.phrase_cleaner(' '.join(subjects))
-        elif pobjects:
-            focus = self.phrase_cleaner(' '.join(pobjects))
-        if focus in query: focus = None
-
-        # Full string of all subjects and objects concatenated
-        subject_with_objects = []
-        for dobject in dobjects:
-            subject_with_objects.append(dobject)
-        for subject in subjects:
-            subject_with_objects.append(subject)
-        for pobject in pobjects:
-            subject_with_objects.append(pobject)
-        subject_with_objects = ' '.join(subject_with_objects)
-
+        doc = self.nlp(com.decode('utf-8')) # Command(user's speech) must be decoded from utf-8 to unicode because spaCy only supports unicode strings, self.nlp() handles all parsing
+        query = subject # Wikipedia search query (same as the subject)
         # This is where the real search begins
         if query: # If there is a Wikipedia query determined
             if not tts_output: print "Please wait..."
@@ -258,6 +218,55 @@ class Engine():
             if word.pos_ not in ['PUNCT','SYM','X','CONJ','DET','ADP','SPACE']:
                 clean_phrase.append(word.text)
         return ' '.join(clean_phrase)
+
+    def semantic_extractor(self, string):
+        doc = self.nlp(string.decode('utf-8')) # The string must be decoded from utf-8 to unicode because spaCy only supports unicode strings, self.nlp() handles all parsing
+        the_subject = None # Wikipedia search query variable definition (the subject)
+        # Followings are lists because it could be multiple of them in a string. Multiple objects or subjects...
+        subjects = [] # subject list
+        pobjects = [] # object of a preposition list
+        dobjects = [] # direct object list
+        # https://nlp.stanford.edu/software/dependencies_manual.pdf - Hierarchy of typed dependencies
+        for np in doc.noun_chunks: # Iterate over the noun phrases(chunks)
+            #print(np.text, np.root.text, np.root.dep_, np.root.head.text)
+            if (np.root.dep_ == 'nsubj' or np.root.dep_ == 'nsubjpass') and np.root.tag_ != 'WP': # if it's a nsubj(nominal subject) or nsubjpass(passive nominal subject) then
+                subjects.append(np.text.encode('utf-8')) # append it to subjects
+            if np.root.dep_ == 'pobj': # if it's an object of a preposition then
+                pobjects.append(np.text.encode('utf-8')) # append it to pobjects
+            if np.root.dep_ == 'dobj': # if it's a direct object then
+                dobjects.append(np.text.encode('utf-8')) # append it to direct objects
+
+        # This block determines the Wikipedia query (the subject) by relying on this priority: [Object of a preposition] > [Subject] > [Direct object]
+        if pobjects:
+            the_subject = ' '.join(pobjects)
+        elif subjects:
+            the_subject = ' '.join(subjects)
+        elif dobjects:
+            the_subject = ' '.join(dobjects)
+        else:
+            return 1, 1, 1, 1
+
+        # This block determines the focus(objective/goal) by relying on this priority: [Direct object] > [Subject] > [Object of a preposition]
+        focus = None
+        if dobjects:
+            focus = self.phrase_cleaner(' '.join(dobjects))
+        elif subjects:
+            focus = self.phrase_cleaner(' '.join(subjects))
+        elif pobjects:
+            focus = self.phrase_cleaner(' '.join(pobjects))
+        if focus in the_subject: focus = None
+
+        # Full string of all subjects and objects concatenated
+        subject_with_objects = []
+        for dobject in dobjects:
+            subject_with_objects.append(dobject)
+        for subject in subjects:
+            subject_with_objects.append(subject)
+        for pobject in pobjects:
+            subject_with_objects.append(pobject)
+        subject_with_objects = ' '.join(subject_with_objects)
+
+        return the_subject, subjects, focus, subject_with_objects
 
 
 @contextlib.contextmanager
