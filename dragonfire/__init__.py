@@ -462,7 +462,7 @@ class VirtualAssistant():
 				userin.define([" "]," ")
 				userin.say(learn_response)
 			else:
-				omniscient_.respond(original_com, user_prefix, not args["silent"], userin)
+				omniscient_.respond(original_com, not args["silent"], userin, user_prefix)
 
 
 

@@ -8,6 +8,7 @@ import contextlib
 import cStringIO
 import requests.exceptions
 import wikipedia.exceptions
+from nltk.corpus.reader.wordnet import WordNetError
 
 class Engine():
 
@@ -22,7 +23,7 @@ class Engine():
         self.coefficient = {'frequency': 0.27, 'precedence': 0.27, 'proximity': 0.23, 'mention': 0.23} # Coefficients for scoring
 
     # Entry function for this class. Dragonfire calls only this function. Unlike Learn.respond() it executes TTS because of its late reponse nature.
-    def respond(self, com, user_prefix, tts_output=False, userin=None):
+    def respond(self, com, tts_output=False, userin=None, user_prefix=None):
         doc = self.nlp(com.decode('utf-8')) # Command(user's speech) must be decoded from utf-8 to unicode because spaCy only supports unicode strings, self.nlp() handles all parsing
         query = None # Wikipedia search query variable definition
         # Followings are lists because it could be multiple of them in a string. Multiple objects or subjects...
@@ -128,7 +129,9 @@ class Engine():
                 mention = {} # sentences with focus mentioned
                 subject_entities_by_wordnet = None # target entities according to the subject
                 if 'WHAT' in wh_question: # if it's a WHAT question then
-                    subject_entities_by_wordnet = self.wordnet_entity_determiner(subject_with_objects,tts_output) # result of wordnet_entity_determiner()
+                    subject_entities_by_wordnet = self.wordnet_entity_determiner(subject_with_objects, tts_output, userin, user_prefix) # result of wordnet_entity_determiner()
+                    if subject_entities_by_wordnet == 1:
+                        return True
                 for sentence in reversed(sentences): # iterate over the sentences (in reversed order)
                     sentence = self.nlp(sentence) # parse the sentence using spaCy NLP library
                     for ent in sentence.ents: # iterate over the all entities in the sentence (has been found by spaCy)
@@ -191,7 +194,7 @@ class Engine():
                 return False # in case of no any findings return False
 
     # function to determine the entity of the subject
-    def wordnet_entity_determiner(self,subject,tts_output):
+    def wordnet_entity_determiner(self, subject, tts_output, userin=None, user_prefix=None):
         #print subject
         entity_samples_map = {
                 'PERSON': ['person','character','human','individual','name'],
@@ -224,8 +227,15 @@ class Engine():
             for sample in samples: # for each sample in the samples
                 sample_wn = wn.synset(sample + '.n.01') # convert the sample to a WordNet noun
                 for word in subject: # for each word in the subject
-                    word_wn = wn.synset(word + '.n.01') # convert the word to a WodNet noun
-                    entity_scores[entity] += word_wn.path_similarity(sample_wn) # calculate the similarity using WordNet path_similarity() and add it to the score of the entity
+                    try:
+                        word_wn = wn.synset(word + '.n.01') # convert the word to a WodNet noun
+                        entity_scores[entity] += word_wn.path_similarity(sample_wn) # calculate the similarity using WordNet path_similarity() and add it to the score of the entity
+                    except WordNetError:
+                        userin.define([" "],"NLP(WordNet) error. Unrecognized word: " + word)
+                        userin.execute(0)
+                        if not tts_output: print "Sorry, " + user_prefix + ". But I'm unable to understand the word '" + word + "'."
+                        if tts_output: userin.say("Sorry, " + user_prefix + ". But I'm unable to understand the word '" + word + "'.")
+                        return 1
             entity_scores[entity] = entity_scores[entity] / len(samples) # to calculate the average; divide the total by the amount of samples
         if not tts_output: print sorted(entity_scores.items(), key=lambda x:x[1])[::-1][:3] # if not tts_output print the best 3 result
         result = sorted(entity_scores.items(), key=lambda x:x[1])[::-1][0][0] # assign the best result
