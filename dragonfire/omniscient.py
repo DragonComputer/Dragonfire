@@ -75,6 +75,7 @@ class Engine():
 
         # This is where the real search begins
         if query: # If there is a Wikipedia query determined
+            if not tts_output: print "Please wait..."
             if tts_output: userin.say("Please wait...", True, False) # Gain a few more seconds by saying Please wait...
             wh_question = []
             for word in doc: # Iterate over the words in the command(user's speech)
@@ -84,18 +85,21 @@ class Engine():
                 try:
                     wikiresult = wikipedia.search(query) # run a Wikipedia search with the query
                     if len(wikiresult) == 0: # if there are no results
-                        userin.say("Sorry, " + user_prefix + ". But I couldn't find anything about " + query + " in Wikipedia.")
+                        if not tts_output: print "Sorry, " + user_prefix + ". But I couldn't find anything about " + query + " in Wikipedia."
+                        if tts_output: userin.say("Sorry, " + user_prefix + ". But I couldn't find anything about " + query + " in Wikipedia.")
                         return True
                     wikipedia.page(wikiresult[0])
                 except requests.exceptions.ConnectionError: # if there is a connection error
                     userin.define([" "],"Wikipedia connection error.")
                     userin.execute(0)
-                    userin.say("Sorry, " + user_prefix + ". But I'm unable to connect to Wikipedia servers.")
+                    if not tts_output: print "Sorry, " + user_prefix + ". But I'm unable to connect to Wikipedia servers."
+                    if tts_output: userin.say("Sorry, " + user_prefix + ". But I'm unable to connect to Wikipedia servers.")
                     return True
                 except wikipedia.exceptions.DisambiguationError as disambiguation: # if there is a disambiguation
                     wikiresult = wikipedia.search(disambiguation.options[0]) # run Wikipedia search again with the most common option
                 except:
-                    userin.say("Sorry, " + user_prefix + ". But something went horribly wrong while I'm searching Wikipedia.")
+                    if not tts_output: print "Sorry, " + user_prefix + ". But something went horribly wrong while I'm searching Wikipedia."
+                    if tts_output: userin.say("Sorry, " + user_prefix + ". But something went horribly wrong while I'm searching Wikipedia.")
                     return True
             findings = [] # empty findings list for scoring
             nth_page = 0 # nth Wikipedia page/article
@@ -108,10 +112,12 @@ class Engine():
                     except requests.exceptions.ConnectionError: # if there is a connection error
                         userin.define([" "],"Wikipedia connection error.")
                         userin.execute(0)
-                        userin.say("Sorry, " + user_prefix + ". But I'm unable to connect to Wikipedia servers.")
+                        if not tts_output: print "Sorry, " + user_prefix + ". But I'm unable to connect to Wikipedia servers."
+                        if tts_output: userin.say("Sorry, " + user_prefix + ". But I'm unable to connect to Wikipedia servers.")
                         return True
                     except:
-                        userin.say("Sorry, " + user_prefix + ". But something went horribly wrong while I'm searching Wikipedia.")
+                        if not tts_output: print "Sorry, " + user_prefix + ". But something went horribly wrong while I'm searching Wikipedia."
+                        if tts_output: userin.say("Sorry, " + user_prefix + ". But something went horribly wrong while I'm searching Wikipedia.")
                         return True
                 nth_page += 1 # increase the visited page/article count
                 if nth_page > 5: break # if script searched more than 5 Wikipedia pages/articles then give up
