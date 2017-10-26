@@ -8,17 +8,13 @@ class Learn():
 
 	def __init__(self):
 		self.replacements = collections.OrderedDict() # Create an ordered dictionary
-		self.replacements["I'M"] = "YOU ARE"
-		self.replacements["I WAS"] = "YOU WERE"
-		self.replacements["I "] = "YOU "
+		self.replacements["I'M"] = "YOU-ARE"
+		self.replacements["I-WAS"] = "YOU-WERE"
+		self.replacements["I"] = "YOU"
 		self.replacements["MY"] = "YOUR"
 		self.replacements["MINE"] = "YOURS"
 		self.replacements["MYSELF"] = "YOURSELF"
-		#self.replacements["WE "] = "YOU "
-		#self.replacements["US "] = "YOU "
-		#self.replacements["OUR "] = "YOUR "
-		#self.replacements["OURS"] = "YOURS"
-		#self.replacements["OURSELVES"] = "YOURSELVES"
+		self.replacements["OURSELVES"] = "YOURSELVES"
 		home = expanduser("~") # Get the home directory of the user
 		self.db = TinyDB(home + '/.dragonfire_db.json') # This is where we store the database; /home/USERNAME/.dragonfire_db.json
 		self.nlp = spacy.load('en') # Load en_core_web_sm, English, 50 MB, default model
@@ -81,7 +77,7 @@ class Learn():
 						verb_found = True # verb is found
 						verbtense = word.text.encode('utf-8') # append it to verbtense
 				clause = ' '.join(clause).strip() # concatenate the clause
-				return(self.db_setter(subject, verbtense, clause, com)) # set the record to the database
+				return self.db_setter(subject, verbtense, clause, com) # set the record to the database
 
 	# Function to get a record from the database
 	def db_getter(self, subject, invert=False):
@@ -127,13 +123,49 @@ class Learn():
 	# Function to mirror the answer (for example: I'M to YOU ARE)
 	def mirror(self, answer):
 		answer = answer.upper() # make the given string fully uppercase
-		for key,value in self.replacements.iteritems(): # iterate over the replacements
-			if key in answer: # if the key is in the answer
-				return answer.replace(key,value) # replace and return
-		for value,key in self.replacements.iteritems(): # invert the process above
-			if key in answer:
-				return answer.replace(key,value)
-		return answer # return the same string if there is no replacement
+		answer = self.forward_replace(answer)
+		result = []
+		for word in answer.split(): # for each word in the answer
+			replaced = False
+			for key,value in self.replacements.iteritems(): # iterate over the replacements
+				if word == key: # if the word is equal to key
+					result.append(value) # append the value
+					replaced = True
+			if word in ["WE","US"]:
+				result.append("YOU")
+				replaced = True
+			elif word == "OUR":
+				result.append("YOUR")
+				replaced = True
+			elif word == "OURS":
+				result.append("YOURS")
+				replaced = True
+			if not replaced:
+				result.append(word) # otherwise append the word
+		if ' '.join(result) != answer: # if there is a replacement
+			return self.backward_replace(' '.join(result)) # return the result
+		result = []
+		for word in answer.split(): # for each word in the answer
+			replaced = False
+			for value,key in self.replacements.iteritems(): # invert the process above
+				if word == key: # if the word is equal to key
+					result.append(value) # append the value
+					replaced = True
+			if not replaced:
+				result.append(word) # otherwise append the word
+		return self.backward_replace(' '.join(result)) # return the result anyway
+
+	def forward_replace(self, string):
+		string = string.replace("I WAS", "I-WAS")
+		string = string.replace("YOU ARE", "YOU-ARE")
+		string = string.replace("YOU WERE", "YOU-WERE")
+		return string
+
+	def backward_replace(self, string):
+		string = string.replace("I-WAS", "I WAS")
+		string = string.replace("YOU-ARE", "YOU ARE")
+		string = string.replace("YOU-WERE", "YOU WERE")
+		return string
 
 	# Pronoun fixer to handle situations like YOU and YOURSELF
 	def pronoun_fixer(self, subject): # TODO: Extend the context of this function
