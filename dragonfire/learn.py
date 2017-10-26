@@ -14,11 +14,11 @@ class Learn():
 		self.replacements["MY"] = "YOUR"
 		self.replacements["MINE"] = "YOURS"
 		self.replacements["MYSELF"] = "YOURSELF"
-		self.replacements["WE"] = "YOU"
-		self.replacements["US"] = "YOU"
-		self.replacements["OUR"] = "YOUR"
-		self.replacements["OURS"] = "YOURS"
-		self.replacements["OURSELVES"] = "YOURSELVES"
+		#self.replacements["WE "] = "YOU "
+		#self.replacements["US "] = "YOU "
+		#self.replacements["OUR "] = "YOUR "
+		#self.replacements["OURS"] = "YOURS"
+		#self.replacements["OURSELVES"] = "YOURSELVES"
 		home = expanduser("~") # Get the home directory of the user
 		self.db = TinyDB(home + '/.dragonfire_db.json') # This is where we store the database; /home/USERNAME/.dragonfire_db.json
 		self.nlp = spacy.load('en') # Load en_core_web_sm, English, 50 MB, default model
@@ -49,11 +49,13 @@ class Learn():
 					subject.append(np.text.encode('utf-8')) # append the text of this noun phrase (example: while nsubj is 'MY PLACE', np.text is 'BIRTH')
 				prev_type = 'pobj' # assign the previous type as pobj
 			if np.root.dep_ == 'nsubj': # if it's a nsubj(nominal subject)
-				if np.root.tag_ != 'WP' and prev_type not in ['pobj','nsubj']: # "wh-" words are also considered as nsubj(nominal subject) but they are out of scope. This is why we are excluding them.
+				if np.root.tag_ != 'WP' and prev_type not in ['pobj', 'nsubj']: # "wh-" words are also considered as nsubj(nominal subject) but they are out of scope. This is why we are excluding them.
 					subject.append(np.text.encode('utf-8')) # append the text of this noun phrase
 				prev_type = 'nsubj' # assign the previous type as nsubj(nominal subject)
+				if np.root.tag_ == 'WP':
+					prev_type = 'WP'
 			if np.root.dep_ == 'attr': # if it's an attribute
-				if prev_type == 'nsubj': # and the previous noun phrase's type was nsubj(nominal subject)
+				if prev_type not in ['pobj', 'nsubj']: # and the previous noun phrase's type was nsubj(nominal subject)
 					subject.append(np.text.encode('utf-8')) # append the text of this noun phrase
 				prev_type = 'attr'
 		subject = ' '.join(subject).strip() # concatenate all noun phrases found
@@ -63,7 +65,10 @@ class Learn():
 				if word.tag_ in ['WDT','WP','WP$','WRB']: # check if there is a "wh-" question (we are determining that if it's a question or not, so only accepting questions with "wh-" form)
 					wh_found = True
 			if wh_found: # if that's a question
-				return self.db_getter(subject) # return the answer from the database
+				straight = self.db_getter(subject) # get the answer from the database
+				if straight is None:
+					return self.db_getter(subject, True) # if nothing found then invert
+				return straight
 			else:
 				verb_found = False
 				verbtense = None # verbtense is the am/is/are of the main sentence
@@ -79,8 +84,11 @@ class Learn():
 				return(self.db_setter(subject, verbtense, clause, com)) # set the record to the database
 
 	# Function to get a record from the database
-	def db_getter(self, subject):
-		result = self.db.search(Query().subject == subject) # make a database search by giving subject string
+	def db_getter(self, subject, invert=False):
+		if invert:
+			result = self.db.search(Query().clause == subject) # make a database search by giving subject string (inverted)
+		else:
+			result = self.db.search(Query().subject == subject) # make a database search by giving subject string
 		if result: # if there is a result
 			dictionary = {}
 			for row in result: # iterate over the rows of the result
@@ -88,7 +96,10 @@ class Learn():
 					dictionary[row['verbtense']] = [] # then add it
 				if row['clause'] not in dictionary[row['verbtense']]: # if the clause is not in the value like; dictionary['is']
 					dictionary[row['verbtense']].append(row['clause']) # then append the clause
-			answer = subject # the answer we will return
+			if invert:
+				answer = row['subject'] # in WHO questions subject is actually the clause so we learn the subject from db
+			else:
+				answer = subject # the answer we will return
 			first_verbtense = False
 			for key, value in dictionary.iteritems(): # iterate over the dictionary defined and assigned on above
 				if not first_verbtense: # if the first verbtense assignment does not made yet
@@ -133,12 +144,30 @@ class Learn():
 
 
 if __name__ == "__main__":
+	import os
+	home = expanduser("~") # Get the home directory of the user
+	os.remove(home + '/.dragonfire_db.json') # This is where we store the database; /home/USERNAME/.dragonfire_db.json
 	learn_ = Learn()
 
-	print learn_.respond("THE SUN IS HOT")
-	print learn_.respond("THE SUN IS YELLOW")
-	print learn_.respond("WHAT IS THE SUN")
+	if learn_.respond("THE SUN IS HOT") != "OK, I GET IT. THE SUN IS HOT": print "THE SUN IS HOT |", learn_.respond("THE SUN IS HOT")
+	if learn_.respond("THE SUN IS YELLOW") != "OK, I GET IT. THE SUN IS YELLOW": print "THE SUN IS YELLOW |", learn_.respond("THE SUN IS YELLOW")
+	if learn_.respond("DESCRIBE THE SUN") != "THE SUN IS HOT AND YELLOW": print "DESCRIBE THE SUN |", learn_.respond("DESCRIBE THE SUN")
+	if learn_.respond("WHAT IS THE SUN") != "THE SUN IS HOT AND YELLOW": print "WHAT IS THE SUN |", learn_.respond("WHAT IS THE SUN")
 
-	print learn_.respond("YOU ARE JUST A COMPUTER PROGRAM")
-	print learn_.respond("WHAT ARE YOU")
-	print learn_.respond("FORGET EVERYTHING YOU KNOW ABOUT YOURSELF")
+	if learn_.respond("MY AGE IS 25") != "OK, I GET IT. YOUR AGE IS 25": print "MY AGE IS 25 |", learn_.respond("MY AGE IS 25")
+	if learn_.respond("WHAT IS MY AGE") != "YOUR AGE IS 25": print "WHAT IS MY AGE |", learn_.respond("WHAT IS MY AGE")
+	if learn_.respond("FORGET MY AGE") != "OK, I FORGOT EVERYTHING I KNOW ABOUT YOUR AGE": print "FORGET MY AGE |", learn_.respond("FORGET MY AGE")
+	if learn_.respond("UPDATE MY AGE") != "I WASN'T EVEN KNOW ANYTHING ABOUT YOUR AGE": print "UPDATE MY AGE |", learn_.respond("UPDATE MY AGE")
+
+	if learn_.respond("MY PLACE OF BIRTH IS TURKEY") != "OK, I GET IT. YOUR PLACE OF BIRTH IS TURKEY": print "MY PLACE OF BIRTH IS TURKEY |", learn_.respond("MY PLACE OF BIRTH IS TURKEY")
+	if learn_.respond("WHERE IS MY PLACE OF BIRTH") != "YOUR PLACE OF BIRTH IS TURKEY": print "WHERE IS MY PLACE OF BIRTH |", learn_.respond("WHERE IS MY PLACE OF BIRTH")
+
+	if learn_.respond("YOU ARE JUST A COMPUTER PROGRAM") != "OK, I GET IT. I'M JUST A COMPUTER PROGRAM": print "YOU ARE JUST A COMPUTER PROGRAM |", learn_.respond("YOU ARE JUST A COMPUTER PROGRAM")
+	if learn_.respond("WHAT ARE YOU") != "I'M JUST A COMPUTER PROGRAM": print "WHAT ARE YOU |", learn_.respond("WHAT ARE YOU")
+	if learn_.respond("FORGET EVERYTHING YOU KNOW ABOUT YOURSELF") != "OK, I FORGOT EVERYTHING I KNOW ABOUT MYSELF": print "FORGET EVERYTHING YOU KNOW ABOUT YOURSELF |", learn_.respond("FORGET EVERYTHING YOU KNOW ABOUT YOURSELF")
+
+	if learn_.respond("MINE IS GOLDEN") != "OK, I GET IT. YOURS IS GOLDEN": print "MINE IS GOLDEN |", learn_.respond("MINE IS GOLDEN")
+	if learn_.respond("HOW IS MINE") != "YOURS IS GOLDEN": print "HOW IS MINE |", learn_.respond("HOW IS MINE")
+
+	if learn_.respond("ALBERT EINSTEIN IS A PHYSICIST") != "OK, I GET IT. ALBERT EINSTEIN IS A PHYSICIST": print "ALBERT EINSTEIN IS A PHYSICIST |", learn_.respond("ALBERT EINSTEIN IS A PHYSICIST")
+	if learn_.respond("WHO IS A PHYSICIST") != "ALBERT EINSTEIN IS A PHYSICIST": print "WHO IS A PHYSICIST |", learn_.respond("WHO IS A PHYSICIST")
