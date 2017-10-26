@@ -111,21 +111,21 @@ GOODBYE | BYE BYE | SEE YOU LATER
 
 [Dragonfire DEVLOG #4 - Learning](https://youtu.be/ujmRtqf2nxQ)
 
-|                                                               |                                                                  |
-|---------------------------------------------------------------|------------------------------------------------------------------|
-| **You:** `THE SUN IS HOT`                                     | **You:** `WHERE IS MY PLACE OF BIRTH`                            |
-| **Dragonfire:** `OK, I GET IT. THE SUN IS HOT`                | **Dragonfire:** `YOUR PLACE OF BIRTH IS TURKEY`                  |
-| **You:** `THE SUN IS YELLOW`                                  | **You:** `YOU ARE JUST A COMPUTER PROGRAM`                       |
-| **Dragonfire:** `OK, I GET IT. THE SUN IS YELLOW`             | **Dragonfire:** `OK, I GET IT. I'M JUST A COMPUTER PROGRAM`      |
-| **You:** `DESCRIBE THE SUN`                                   | **You:** `WHAT ARE YOU`                                          |
-| **Dragonfire:** `THE SUN IS HOT AND YELLOW`                   | **Dragonfire:** `I'M JUST A COMPUTER PROGRAM`                    |
-| **You:** `MY AGE IS 25`                                       | **You:** `FORGET MY AGE`                                         |
-| **Dragonfire:** `OK, I GET IT. YOUR AGE IS 25`                | **Dragonfire:** `OK, I FORGOT EVERYTHING I KNOW ABOUT YOUR AGE`  |
-| **You:** `WHAT IS MY AGE`                                     | **You:** `UPDATE MY AGE`                                         |
-| **Dragonfire:** `YOUR AGE IS 25`                              | **Dragonfire:** `I WASN'T EVEN KNOW ANYTHING ABOUT YOUR AGE`     |
-| **You:** `MY PLACE OF BIRTH IS TURKEY`                        |                                                                  |
-| **Dragonfire:** `OK, I GET IT. YOUR PLACE OF BIRTH IS TURKEY` |                                                                  |
-|                                                               |                                                                  |
+|                                                                 |                                                                  |
+|-----------------------------------------------------------------|------------------------------------------------------------------|
+| **You:** `THE SUN IS HOT`                                       | **You:** `MY PLACE OF BIRTH IS TURKEY`                           |
+| **Dragonfire:** `OK, I GET IT. THE SUN IS HOT`                  | **Dragonfire:** `OK, I GET IT. YOUR PLACE OF BIRTH IS TURKEY`    |
+| **You:** `THE SUN IS YELLOW`                                    | **You:** `WHERE IS MY PLACE OF BIRTH`                            |
+| **Dragonfire:** `OK, I GET IT. THE SUN IS YELLOW`               | **Dragonfire:** `YOUR PLACE OF BIRTH IS TURKEY`                  |
+| **You:** `DESCRIBE THE SUN`                                     | **You:** `YOU ARE JUST A COMPUTER PROGRAM`                       |
+| **Dragonfire:** `THE SUN IS HOT AND YELLOW`                     | **Dragonfire:** `OK, I GET IT. I'M JUST A COMPUTER PROGRAM`      |
+| **You:** `MY AGE IS 25`                                         | **You:** `WHAT ARE YOU`                                          |
+| **Dragonfire:** `OK, I GET IT. YOUR AGE IS 25`                  | **Dragonfire:** `I'M JUST A COMPUTER PROGRAM`                    |
+| **You:** `WHAT IS MY AGE`                                       | **You:** `ALBERT EINSTEIN IS A PHYSICIST`                        |
+| **Dragonfire:** `YOUR AGE IS 25`                                | **Dragonfire:** `OK, I GET IT. ALBERT EINSTEIN IS A PHYSICIST`   |
+| **You:** `FORGET MY AGE`                                        | **You:** `WHO IS A PHYSICIST`                                    |
+| **Dragonfire:** `OK, I FORGOT EVERYTHING I KNOW ABOUT YOUR AGE` | **Dragonfire:** `ALBERT EINSTEIN IS A PHYSICIST`                 |
+|                                                                 |                                                                  |
 
 <br>
 
