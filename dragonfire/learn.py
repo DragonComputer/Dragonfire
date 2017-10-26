@@ -12,7 +12,13 @@ class Learn():
 		self.replacements["I WAS"] = "YOU WERE"
 		self.replacements["I "] = "YOU "
 		self.replacements["MY"] = "YOUR"
+		self.replacements["MINE"] = "YOURS"
 		self.replacements["MYSELF"] = "YOURSELF"
+		self.replacements["WE"] = "YOU"
+		self.replacements["US"] = "YOU"
+		self.replacements["OUR"] = "YOUR"
+		self.replacements["OURS"] = "YOURS"
+		self.replacements["OURSELVES"] = "YOURSELVES"
 		home = expanduser("~") # Get the home directory of the user
 		self.db = TinyDB(home + '/.dragonfire_db.json') # This is where we store the database; /home/USERNAME/.dragonfire_db.json
 		self.nlp = spacy.load('en') # Load en_core_web_sm, English, 50 MB, default model
@@ -27,7 +33,7 @@ class Learn():
 			else:
 				return "I WASN'T EVEN KNOW ANYTHING ABOUT " + self.mirror(capture.group('subject'))
 
-		define = "(?:PLEASE )?(?:DEFINE|EXPLAIN|TELL ME ABOUT|DESCRIBE) (?P<subject>.*)" # TODO: Extend the context of this regular expression
+		define = "(?:PLEASE |COULD YOU )?(?:DEFINE|EXPLAIN|TELL ME ABOUT|DESCRIBE) (?P<subject>.*)"
 		capture = re.search(define, com)
 		if capture:
 			return self.db_getter(capture.group('subject'))
@@ -37,13 +43,19 @@ class Learn():
 		prev_type = None # type of the previous noun phrase
 		for np in doc.noun_chunks: # Iterate over the noun phrases(chunks) TODO: Cover 'dobj' also; doc = nlp(u'DESCRIBE THE SUN') >>> (u'THE SUN', u'SUN', u'dobj', u'DESCRIBE')
 			# Purpose of this if statement is completing possessive form of nouns
-			if np.root.dep_ == 'pobj' and prev_type == 'nsubj': # if it's an object of a preposition and the previous noun phrase's type was nsubj(nominal subject) then (it's purpose is capturing subject like MY PLACE OF BIRTH)
-				subject.append(np.root.head.text.encode('utf-8')) # append the parent text from syntactic relations tree (example: while nsubj is 'MY PLACE', np.root.head.text is 'OF')
-				subject.append(np.text.encode('utf-8')) # append the text of this noun phrase (example: while nsubj is 'MY PLACE', np.text is 'BIRTH')
+			if np.root.dep_ == 'pobj': # if it's an object of a preposition
+				if prev_type == 'nsubj': # and the previous noun phrase's type was nsubj(nominal subject) then (it's purpose is capturing subject like MY PLACE OF BIRTH)
+					subject.append(np.root.head.text.encode('utf-8')) # append the parent text from syntactic relations tree (example: while nsubj is 'MY PLACE', np.root.head.text is 'OF')
+					subject.append(np.text.encode('utf-8')) # append the text of this noun phrase (example: while nsubj is 'MY PLACE', np.text is 'BIRTH')
 				prev_type = 'pobj' # assign the previous type as pobj
-			if np.root.dep_ == 'nsubj' and np.root.tag_ != 'WP' and prev_type != 'pobj': # if it's a nsubj(nominal subject). "wh-" words are also considered as nsubj(nominal subject) but they are out of scope. This is why we are excluding them.
-				subject.append(np.text.encode('utf-8')) # append the text of this noun phrase
+			if np.root.dep_ == 'nsubj': # if it's a nsubj(nominal subject)
+				if np.root.tag_ != 'WP' and prev_type not in ['pobj','nsubj']: # "wh-" words are also considered as nsubj(nominal subject) but they are out of scope. This is why we are excluding them.
+					subject.append(np.text.encode('utf-8')) # append the text of this noun phrase
 				prev_type = 'nsubj' # assign the previous type as nsubj(nominal subject)
+			if np.root.dep_ == 'attr': # if it's an attribute
+				if prev_type == 'nsubj': # and the previous noun phrase's type was nsubj(nominal subject)
+					subject.append(np.text.encode('utf-8')) # append the text of this noun phrase
+				prev_type = 'attr'
 		subject = ' '.join(subject).strip() # concatenate all noun phrases found
 		if subject: # if the subject is not empty
 			wh_found = False

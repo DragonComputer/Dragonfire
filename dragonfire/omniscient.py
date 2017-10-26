@@ -219,6 +219,7 @@ class Engine():
                 clean_phrase.append(word.text)
         return ' '.join(clean_phrase)
 
+    # this function extracts subject, subjects, focus, subject_with_objects
     def semantic_extractor(self, string):
         doc = self.nlp(string.decode('utf-8')) # The string must be decoded from utf-8 to unicode because spaCy only supports unicode strings, self.nlp() handles all parsing
         the_subject = None # Wikipedia search query variable definition (the subject)
