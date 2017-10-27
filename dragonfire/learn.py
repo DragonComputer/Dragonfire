@@ -193,7 +193,7 @@ if __name__ == "__main__":
 			  "WHAT IS THE SUN": "THE SUN IS HOT AND YELLOW",
 
 	                  "MY AGE IS 25": "OK, I GET IT. YOUR AGE IS 25",
-	                  "WHAT IS MY AGE": "YOUR AGE IS 25"
+	                  "WHAT IS MY AGE": "YOUR AGE IS 25",
 			  "FORGET MY AGE": "OK, I FORGOT EVERYTHING I KNOW ABOUT YOUR AGE",
 			  "UPDATE MY AGE": "I WASN'T EVEN KNOW ANYTHING ABOUT YOUR AGE",
 
