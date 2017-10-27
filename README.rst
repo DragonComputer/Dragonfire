@@ -133,7 +133,7 @@ Learning examples
 | **You:** ``WHAT IS MY AGE``         | **You:** ``UPDATE MY AGE``           |
 +-------------------------------------+--------------------------------------+
 | **Dragonfire:** ``YOUR AGE IS 25``  | **Dragonfire:**                      |
-|                                     | ``I WASN'T EVEN KNOW ANYTHING ABOUT  |
+|                                     | ``I DON'T EVEN KNOW ANYTHING ABOUT   |
 |                                     | YOUR AGE``                           |
 +-------------------------------------+--------------------------------------+
 | **You:**                            |                                      |
