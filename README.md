@@ -37,7 +37,7 @@ Feel free to join [our Gitter chat room](https://gitter.im/DragonComputer/Lobby)
 Download the [latest release](https://github.com/DragonComputer/Dragonfire/releases/latest) (the `.deb` file) and:
 
 ```Shell
-sudo dpkg -i dragonfire_0.9.6_amd64.deb
+sudo dpkg -i dragonfire_0.9.7_amd64.deb
 ```
 
 <sup><i>To install the dependencies run `sudo apt-get -f install` right after the `dpkg -i` command. The installation will take roughly 20-30 minutes because it will compile and install [Kaldi](https://github.com/kaldi-asr/kaldi) under `/usr/share/kaldi` directory.</i></sup>
