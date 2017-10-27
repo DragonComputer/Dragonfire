@@ -385,8 +385,8 @@ if __name__ == "__main__":
         if EngineObj.respond("What is the lowest point in the ocean") == "the Mariana Trench": score += 1
 
         # Einstein - PERSON
-        print("\nWho invented Relativity") # TODO: change this question to "Who invented General Relativity"
-        if EngineObj.respond("Who invented Relativity") == "Einstein": score += 1
+        print("\nWho invented General Relativity")
+        if EngineObj.respond("Who invented General Relativity") == "Einstein": score += 1
 
         # 1945 - DATE TIME
         print("\nWhen United Nations was formed")

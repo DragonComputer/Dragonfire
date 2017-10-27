@@ -8,7 +8,7 @@ import subprocess
 import time
 import os
 import inspect
-from . import realhud
+import realhud
 from multiprocessing import Pool
 
 DRAGONFIRE_PATH = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
