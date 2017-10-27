@@ -20,7 +20,7 @@ class Engine():
                 'WHEN': ['DATE','TIME','EVENT'],
                 'WHERE': ['FACILITY','GPE','LOC']
         } # Map wh question words to entity categories
-        self.coefficient = {'frequency': 0.4, 'precedence': 0.13, 'proximity': 0.21, 'mention': 0.26} # Coefficients for scoring
+        self.coefficient = {'frequency': 0.36, 'precedence': 0.13, 'proximity': 0.21, 'mention': 0.30} # Coefficients for scoring
 
     # Entry function for this class. Dragonfire calls only this function. Unlike Learn.respond() it executes TTS because of its late reponse nature.
     def respond(self, com, tts_output=False, userin=None, user_prefix=None):
@@ -380,7 +380,7 @@ if __name__ == "__main__":
         if EngineObj.respond("What is the lowest point in the ocean") == "the Mariana Trench": score += 1
 
         # Einstein - PERSON
-        print "\nWho invented Relativity"
+        print "\nWho invented Relativity" # TODO: change this question to "Who invented General Relativity"
         if EngineObj.respond("Who invented Relativity") == "Einstein": score += 1
 
         # 1945 - DATE TIME
