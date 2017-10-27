@@ -16,8 +16,7 @@ import pyaudio  # Provides Python bindings for PortAudio, the cross platform aud
 import pyqtgraph as pg  # A pure-python graphics and GUI library built on PyQt4 / PySide and numpy
 from PyQt4 import QtCore  # A comprehensive set of Python bindings for Digia's Qt cross platform GUI toolkit.
 
-from .nnet import \
-    RNN  # Import the Recurrent Neural Network class from Dragonfire's Neural Network Library
+from .nnet import RNN  # Import the Recurrent Neural Network class from Dragonfire's Neural Network Library
 
 __author__ = 'Mehmet Mert Yildiran, mert.yildiran@bil.omu.edu.tr'
 # This submodule is experimental and not functional
