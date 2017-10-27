@@ -103,6 +103,7 @@ GOODBYE | BYE BYE | SEE YOU LATER
 (SEARCH|FIND) * (IN|ON|AT|USING) YOUTUBE
 (SEARCH|FIND) * (IN|ON|AT|USING) (GOOGLE|WEB)
 (SEARCH IMAGES OF|FIND IMAGES OF|SEARCH|FIND) * (IN|ON|AT|USING) (GOOGLE|WEB|GOOGLE IMAGES|WEB IMAGES)
+WHAT'S THE TEMPERATURE IN *
 ```
 
 <br>
@@ -131,31 +132,31 @@ GOODBYE | BYE BYE | SEE YOU LATER
 
 #### Omniscient Q&A Engine examples
 
-[Dragonfire DEVLOG #5 - YodaQA](https://youtu.be/FafUcxC0puM) (Old video - YodaQA is deprecated)
+[Dragonfire DEVLOG #5 - YodaQA](https://youtu.be/FafUcxC0puM) (Old video - YodaQA is superseded by Omniscient)
 
-|                                                                   |                                                                         |
-|-------------------------------------------------------------------|-------------------------------------------------------------------------|
-| **You:** `WHERE IS THE TIMES SQUARE`                              | **You:** `WHEN WAS CONSTANTINOPLE CONQUERED`                            |
-| **Dragonfire:** `PLEASE WAIT... NEW YORK CITY` :white_check_mark: | **Dragonfire:** `PLEASE WAIT... THE 5TH CENTURY` :no_entry:             |
-| **You:** `WHAT IS THE HEIGHT OF BURJ KHALIFA`                     | **You:** `WHAT IS THE CAPITAL OF TURKEY`                                |
-| **Dragonfire:** `PLEASE WAIT... 1,680 FT` :no_entry:              | **Dragonfire:** `PLEASE WAIT... ROME` :no_entry:                        |
-| **You:** `WHERE IS BURJ KHALIFA`                                  | **You:** `WHAT IS THE LARGEST CITY OF TURKEY`                           |
-| **Dragonfire:** `PLEASE WAIT... DUBAI` :white_check_mark:         | **Dragonfire:** `PLEASE WAIT... ISTANBUL` :white_check_mark:            |
-| **You:** `WHAT IS THE HEIGHT OF GREAT PYRAMID OF GIZA`            | **You:** `WHAT IS THE OLDEST RELIGION`                                  |
-| **Dragonfire:** `PLEASE WAIT... (481 FEET` :white_check_mark:     | **Dragonfire:** `PLEASE WAIT... GERMAN` :no_entry:                      |
-| **You:** `WHO IS PLAYING JON SNOW IN GAME OF THRONES`             | **You:** `WHAT IS THE WORLD'S BUSIEST AIRPORT`                          |
-| **Dragonfire:** `PLEASE WAIT... NED` :no_entry:                   | **Dragonfire:** `PLEASE WAIT... THE AIRPORTS COUNCIL INTERNATIONAL`     |
-| **You:** `WHAT IS THE ATOMIC NUMBER OF OXYGEN`                    | **You:** `WHAT IS THE NAME OF THE WORLD'S BEST UNIVERSITY`              |
-| **Dragonfire:** `PLEASE WAIT... 8` :white_check_mark:             | **Dragonfire:** `PLEASE WAIT... U.S. NEWS` :no_entry:                   |
-| **You:** `WHAT IS THE POPULATION OF CHINA`                        | **You:** `WHAT IS THE NAME OF THE WORLD'S LONGEST RIVER`                |
-| **Dragonfire:** `PLEASE WAIT... 66,537,177` :no_entry:            | **Dragonfire:** `PLEASE WAIT... THE NORTH SEA` :no_entry:               |
-| **You:** `WHAT IS THE OFFICIAL LANGUAGE OF JAPAN`                 | **You:** `WHAT IS THE BRAND OF THE WORLD'S MOST EXPENSIVE CAR`          |
-| **Dragonfire:** `PLEASE WAIT... JAPANESE` :white_check_mark:      | **Dragonfire:** `PLEASE WAIT... MERCEDES-BENZ` :no_entry:               |
-| **You:** `WHAT IS THE REAL NAME OF IRON MAN`                      | **You:** `WHAT IS THE BLOODIEST WAR IN HUMAN HISTORY`                   |
-| **Dragonfire:** `PLEASE WAIT... STARK` :white_check_mark:         | **Dragonfire:** `PLEASE WAIT... THE "EUROPEAN AGE"` :no_entry:          |
-| **You:** `WHO IS THE CONQUEROR OF CONSTANTINOPLE`                 | **You:** `WHAT IS THE NAME OF THE BEST SELLER BOOK`                     |
-| **Dragonfire:** `PLEASE WAIT... HAGIA SOPHIA` :no_entry:          | **Dragonfire** `PLEASE WAIT... THE "CHILDREN'S BEST SELLERS` :no_entry: |
-|                                                                   |                                                                         |
+|                                                                   |                                                                             |
+|-------------------------------------------------------------------|-----------------------------------------------------------------------------|
+| **You:** `WHERE IS THE TIMES SQUARE`                              | **You:** `WHEN WAS CONSTANTINOPLE CONQUERED`                                |
+| **Dragonfire:** `PLEASE WAIT... NEW YORK CITY` :white_check_mark: | **Dragonfire:** `PLEASE WAIT... 1453` :white_check_mark:                    |
+| **You:** `WHAT IS THE HEIGHT OF BURJ KHALIFA`                     | **You:** `WHAT IS THE CAPITAL OF TURKEY`                                    |
+| **Dragonfire:** `PLEASE WAIT... 1,680 FT` :no_entry:              | **Dragonfire:** `PLEASE WAIT... ISTANBUL` :no_entry:                        |
+| **You:** `WHERE IS BURJ KHALIFA`                                  | **You:** `WHAT IS THE LARGEST CITY OF TURKEY`                               |
+| **Dragonfire:** `PLEASE WAIT... DUBAI` :white_check_mark:         | **Dragonfire:** `PLEASE WAIT... ISTANBUL` :white_check_mark:                |
+| **You:** `WHAT IS THE HEIGHT OF GREAT PYRAMID OF GIZA`            | **You:** `WHAT IS THE NAME OF THE WORLD'S BEST UNIVERSITY`                  |
+| **Dragonfire:** `PLEASE WAIT... (481 FEET` :white_check_mark:     | **Dragonfire:** `PLEASE WAIT... UNIVERSITIES ALUMNI ASSOCIATION` :no_entry: |
+| **You:** `WHO IS PLAYING JON SNOW IN GAME OF THRONES`             | **You:** `WHO INVENTED GENERAL RELATIVITY`                                  |
+| **Dragonfire:** `PLEASE WAIT... NED` :no_entry:                   | **Dragonfire:** `PLEASE WAIT... EINSTEIN` :white_check_mark:                |
+| **You:** `WHAT IS THE ATOMIC NUMBER OF OXYGEN`                    | **You:** `WHEN UNITED NATIONS WAS FORMED`                                   |
+| **Dragonfire:** `PLEASE WAIT... 8` :white_check_mark:             | **Dragonfire:** `PLEASE WAIT... 2017` :no_entry:                            |
+| **You:** `WHAT IS THE LOWEST POINT IN THE OCEAN`                  | **You:** `WHAT IS THE NAME OF THE WORLD'S LONGEST RIVER`                    |
+| **Dragonfire:** `PLEASE WAIT... EARTH` :no_entry:                 | **Dragonfire:** `PLEASE WAIT... AMAZON` :white_check_mark:                  |
+| **You:** `WHAT IS THE OFFICIAL LANGUAGE OF JAPAN`                 | **You:** `WHAT IS THE BRAND OF THE WORLD'S MOST EXPENSIVE CAR`              |
+| **Dragonfire:** `PLEASE WAIT... ENGLISH` :no_entry:               | **Dragonfire:** `PLEASE WAIT... MERCEDES-BENZ` :no_entry:                   |
+| **You:** `WHAT IS THE REAL NAME OF IRON MAN`                      | **You:** `WHAT IS THE BLOODIEST WAR IN HUMAN HISTORY`                       |
+| **Dragonfire:** `PLEASE WAIT... STARK` :white_check_mark:         | **Dragonfire:** `PLEASE WAIT... WORLD WAR II` :white_check_mark:            |
+| **You:** `WHO IS THE CONQUEROR OF CONSTANTINOPLE`                 | **You:** `WHAT IS THE NAME OF THE BEST SELLER BOOK`                         |
+| **Dragonfire:** `PLEASE WAIT... BYZANTIUM` :no_entry:             | **Dragonfire** `PLEASE WAIT... THE DISCIPLINE OF MARKET LEADERS` :no_entry: |
+|                                                                   |                                                                             |
 
 <br>
 
