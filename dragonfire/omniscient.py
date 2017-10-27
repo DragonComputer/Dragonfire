@@ -20,7 +20,7 @@ class Engine():
                 'WHEN': ['DATE','TIME','EVENT'],
                 'WHERE': ['FACILITY','GPE','LOC']
         } # Map wh question words to entity categories
-        self.coefficient = {'frequency': 0.27, 'precedence': 0.27, 'proximity': 0.23, 'mention': 0.23} # Coefficients for scoring
+        self.coefficient = {'frequency': 0.4, 'precedence': 0.13, 'proximity': 0.21, 'mention': 0.26} # Coefficients for scoring
 
     # Entry function for this class. Dragonfire calls only this function. Unlike Learn.respond() it executes TTS because of its late reponse nature.
     def respond(self, com, tts_output=False, userin=None, user_prefix=None):
@@ -329,14 +329,11 @@ if __name__ == "__main__":
 
         # Stark - PERSON
         print "\nWhat is the real name of Iron Man"
-        if EngineObj.respond("What is the real name of Iron Man") == "Stark": score += 1
-        if EngineObj.respond("What is the real name of Iron Man") == "Tony Stark": score += 1
+        if EngineObj.respond("What is the real name of Iron Man") in ["Stark", "Tony Stark"]: score += 1
 
         # Mehmed The Conqueror - PERSON
         print "\nWho is the conqueror of Constantinople"
-        if EngineObj.respond("Who is the conqueror of Constantinople") == "Mehmed II": score += 1
-        if EngineObj.respond("Who is the conqueror of Constantinople") == "Mehmet II": score += 1
-        if EngineObj.respond("Who is the conqueror of Constantinople") == "Mehmet": score += 1
+        if EngineObj.respond("Who is the conqueror of Constantinople") in ["Mehmed II", "Mehmet II", "Mehmet"]: score += 1
 
         # 1453 - DATE TIME
         print "\nWhen Constantinople was conquered"
@@ -360,13 +357,11 @@ if __name__ == "__main__":
 
         # Harvard University - ORG
         print "\nWhat is the name of the world's best university"
-        if EngineObj.respond("What is the name of the world's best university") == "Harvard": score += 1
-        if EngineObj.respond("What is the name of the world's best university") == "Peking University": score += 1
+        if EngineObj.respond("What is the name of the world's best university") in ["Harvard", "Peking University"]: score += 1
 
         # Nile river - LOC
         print "\nWhat is the name of the world's longest river"
-        if EngineObj.respond("What is the name of the world's longest river") == "Nile": score += 1
-        if EngineObj.respond("What is the name of the world's longest river") == "Amazon": score += 1
+        if EngineObj.respond("What is the name of the world's longest river") in ["Nile", "Amazon"]: score += 1
 
         # Rolls-Royce - PRODUCT
         print "\nWhat is the brand of the world's most expensive car"
@@ -374,13 +369,11 @@ if __name__ == "__main__":
 
         # World War II - EVENT
         print "\nWhat is the bloodiest war in human history"
-        if EngineObj.respond("What is the bloodiest war in human history") == "World War II": score += 1
-        if EngineObj.respond("What is the bloodiest war in human history") == "World War I": score += 1
+        if EngineObj.respond("What is the bloodiest war in human history") in ["World War II", "World War I"]: score += 1
 
         # Da Vinci Code - WORK_OF_ART
         print "\nWhat is the name of the best seller book"
-        if EngineObj.respond("What is the name of the best seller book") == "Real Marriage": score += 1
-        if EngineObj.respond("What is the name of the best seller book") == "'Real Marriage' on": score += 1
+        if EngineObj.respond("What is the name of the best seller book") == ["Real Marriage", "'Real Marriage' on"]: score += 1
 
         # the Mariana Trench - LOC
         print "\nWhat is the lowest point in the ocean"
