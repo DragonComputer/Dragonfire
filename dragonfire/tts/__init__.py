@@ -1,3 +1,4 @@
+from __future__ import print_function
 __author__ = 'Mehmet Mert Yildiran, mert.yildiran@bil.omu.edu.tr'
 # This submodule is experimental and not functional
 
@@ -48,7 +49,7 @@ class Synthesizer():
                     rate=RATE,
                     output=True)
         words = self.string_to_phonemes(string)
-        print words
+        print(words)
         for word in words:
             audio += ('\x00' * 20000)
             i = 0

@@ -1,10 +1,12 @@
 # -*- coding: UTF-8 -*-
 
+from __future__ import print_function
+from __future__ import absolute_import
 import unittest
 from gi.repository import GObject
 import thread
 import logging
-from decoder import DecoderPipeline
+from .decoder import DecoderPipeline
 import time
 import pyaudio # Provides Python bindings for PortAudio, the cross platform audio API
 
@@ -78,7 +80,7 @@ class DecoderPipelineTests(unittest.TestCase):
         self.decoder_pipeline.end_request()
         while not self.finished:
             time.sleep(1)
-        print self.words
+        print(self.words)
 
 
     def testWav(self):

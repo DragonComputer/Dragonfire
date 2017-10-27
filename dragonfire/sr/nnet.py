@@ -1,7 +1,15 @@
+from __future__ import print_function
+
+import matplotlib.pyplot as plt
+import numpy as np
 import theano
 import theano.tensor as T
-import numpy as np
-import matplotlib.pyplot as plt
+
+try:
+    xrange          # Python 2
+except NameError:
+    xrange = range  # Python 3
+
 
 class RNN():
 
@@ -77,7 +85,7 @@ if __name__ == '__main__':
 		u = np.random.rand(10,2)
 		t = np.dot(u[:,0], u[:,1])
 		c = rnn.train_step(u, t, lr)
-		print "iteration {0}: {1}".format(i, np.sqrt(c))
+		print("iteration {0}: {1}".format(i, np.sqrt(c)))
 		e = 0.1*np.sqrt(c) + 0.9*e
 		if i % 1000 == 0:
 			vals.append(e)

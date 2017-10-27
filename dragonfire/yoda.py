@@ -1,11 +1,19 @@
-import json
-import urllib
-import urllib2
-import time
-import sys
+from __future__ import print_function
+
 import contextlib
 import cStringIO
+import json
+import sys
+import time
+import urllib
+import urllib2
 from random import randint
+
+try:
+    unichr
+except NameError:
+    unichr = chr
+
 
 class YodaQA():
 
@@ -76,4 +84,4 @@ def nostderr():
 	sys.stderr = save_stderr
 
 if __name__ == "__main__":
-	print YodaQA.answer("http://localhost:4567", "When was Albert Einstein born", "sir")
+	print(YodaQA.answer("http://localhost:4567", "When was Albert Einstein born", "sir"))
