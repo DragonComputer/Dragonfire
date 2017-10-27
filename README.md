@@ -146,7 +146,7 @@ WHAT'S THE TEMPERATURE IN *
 | **Dragonfire:** `PLEASE WAIT... (481 FEET` :white_check_mark:     | **Dragonfire:** `PLEASE WAIT... UNIVERSITIES ALUMNI ASSOCIATION` :no_entry: |
 | **You:** `WHO IS PLAYING JON SNOW IN GAME OF THRONES`             | **You:** `WHO INVENTED GENERAL RELATIVITY`                                  |
 | **Dragonfire:** `PLEASE WAIT... NED` :no_entry:                   | **Dragonfire:** `PLEASE WAIT... EINSTEIN` :white_check_mark:                |
-| **You:** `WHAT IS THE ATOMIC NUMBER OF OXYGEN`                    | **You:** `WHEN UNITED NATIONS WAS FORMED`                                   |
+| **You:** `WHAT IS THE ATOMIC NUMBER OF OXYGEN`                    | **You:** `WHEN WAS UNITED NATIONS FORMED`                                   |
 | **Dragonfire:** `PLEASE WAIT... 8` :white_check_mark:             | **Dragonfire:** `PLEASE WAIT... 2017` :no_entry:                            |
 | **You:** `WHAT IS THE LOWEST POINT IN THE OCEAN`                  | **You:** `WHAT IS THE NAME OF THE WORLD'S LONGEST RIVER`                    |
 | **Dragonfire:** `PLEASE WAIT... EARTH` :no_entry:                 | **Dragonfire:** `PLEASE WAIT... AMAZON` :white_check_mark:                  |

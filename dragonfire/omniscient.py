@@ -389,8 +389,8 @@ if __name__ == "__main__":
         if EngineObj.respond("Who invented General Relativity") == "Einstein": score += 1
 
         # 1945 - DATE TIME
-        print("\nWhen United Nations was formed")
-        if EngineObj.respond("When United Nations was formed") == "1945": score += 1
+        print("\nWhen was United Nations formed")
+        if EngineObj.respond("When was United Nations formed") == "1945": score += 1
 
         # purpose of this block is finding the optimum value for coefficients
         if score > best_score:
