@@ -373,7 +373,7 @@ if __name__ == "__main__":
 
         # Da Vinci Code - WORK_OF_ART
         print "\nWhat is the name of the best seller book"
-        if EngineObj.respond("What is the name of the best seller book") == ["Real Marriage", "'Real Marriage' on"]: score += 1
+        if EngineObj.respond("What is the name of the best seller book") in ["Real Marriage", "'Real Marriage' on"]: score += 1
 
         # the Mariana Trench - LOC
         print "\nWhat is the lowest point in the ocean"
@@ -394,4 +394,4 @@ if __name__ == "__main__":
             best_coefficient = EngineObj.coefficient
             print str(best_score) + ' / 20'
             print best_coefficient
-            print "--- !!! NEW BEST !!! ---\n"
+            print "------------------------\n"
