@@ -1,3 +1,15 @@
+dragonfire (0.9.7) unstable; urgency=medium
+
+  * Python3 support added
+  * Omniscient Q&A Engine success rate is improved by ~40%
+  * The learning capabilities are improved by including the inverted case
+  * Wikipedia connection and disambiguation errors are fixed
+  * Several minor bugs are fixed
+  * Missing package dependencies are added
+  * Post-installation scripts are fixed
+
+ -- Mehmet Mert Yildiran <mehmetmertyildiran@gmail.com>  Sat, 28 Oct 2017 02:39:47 +0000
+
 dragonfire (0.9.6) unstable; urgency=medium
 
   * Migrated from PyPI SpeechRecognition package to Kaldi Speech Recognition Toolkit
