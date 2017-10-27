@@ -1,3 +1,4 @@
+from __future__ import print_function
 import collections # Imported to support ordered dictionaries in Python
 import re # Regular expression operations library of Python
 from tinydb import TinyDB, Query # TinyDB is a lightweight document oriented database
@@ -212,4 +213,3 @@ if __name__ == "__main__":
 
 	for give, get in gives_and_gets.items():
 		give_and_get(give, get)
-			  
