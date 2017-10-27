@@ -28,7 +28,7 @@ class Learn():
 			if self.db.remove(Query().subject == self.pronoun_fixer(capture.group('subject'))): # if there is a record about the subject in the database then remove that record and...
 				return "OK, I FORGOT EVERYTHING I KNOW ABOUT " + self.mirror(capture.group('subject'))
 			else:
-				return "I WASN'T EVEN KNOW ANYTHING ABOUT " + self.mirror(capture.group('subject'))
+				return "I DON'T EVEN KNOW ANYTHING ABOUT " + self.mirror(capture.group('subject'))
 
 		define = "(?:PLEASE |COULD YOU )?(?:DEFINE|EXPLAIN|TELL ME ABOUT|DESCRIBE) (?P<subject>.*)"
 		capture = re.search(define, com)
@@ -195,7 +195,7 @@ if __name__ == "__main__":
 	gives_and_gets["MY AGE IS 25"] = "OK, I GET IT. YOUR AGE IS 25"
 	gives_and_gets["WHAT IS MY AGE"] = "YOUR AGE IS 25"
 	gives_and_gets["FORGET MY AGE"] = "OK, I FORGOT EVERYTHING I KNOW ABOUT YOUR AGE"
-	gives_and_gets["UPDATE MY AGE"] = "I WASN'T EVEN KNOW ANYTHING ABOUT YOUR AGE"
+	gives_and_gets["UPDATE MY AGE"] = "I DON'T EVEN KNOW ANYTHING ABOUT YOUR AGE"
 	gives_and_gets["MY PLACE OF BIRTH IS TURKEY"] = "OK, I GET IT. YOUR PLACE OF BIRTH IS TURKEY"
 	gives_and_gets["WHERE IS MY PLACE OF BIRTH"] = "YOUR PLACE OF BIRTH IS TURKEY"
 	gives_and_gets["YOU ARE JUST A COMPUTER PROGRAM"] = "OK, I GET IT. I'M JUST A COMPUTER PROGRAM"
