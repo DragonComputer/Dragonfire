@@ -185,7 +185,7 @@ if __name__ == "__main__":
 		get = get or "OK, I GET IT. " + give
 		result = learn_.respond(give)
 		if result != get:
-		    print("{} | {}".format(give, result)
+		    print("{} | {}".format(give, result))
 
         gives_and_gets = {"THE SUN IS HOT": None,
 			  "THE SUN IS YELLOW": None,
