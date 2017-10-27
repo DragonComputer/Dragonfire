@@ -1,8 +1,9 @@
 # -*- coding: UTF-8 -*-
 
+from __future__ import absolute_import
 from gi.repository import GObject
 from threading import Thread
-from decoder import DecoderPipeline
+from .decoder import DecoderPipeline
 import time
 import pyaudio # Provides Python bindings for PortAudio, the cross platform audio API
 import audioop # Operates on sound fragments consisting of signed integer samples 8, 16 or 32 bits wide, stored in Python strings.
