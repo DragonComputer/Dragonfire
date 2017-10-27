@@ -1,14 +1,19 @@
-import wikipedia # Provides and API-like functionality to search and access Wikipedia data
-import spacy # Most powerful NLP library available - spaCy
-import collections # Imported to support ordered dictionaries in Python
-from nltk.corpus import wordnet as wn # WordNet
-import random
-import sys
+from __future__ import print_function
+
+import collections  # Imported to support ordered dictionaries in Python
 import contextlib
 import cStringIO
+import random
+import sys
+
 import requests.exceptions
+
+import spacy  # Most powerful NLP library available - spaCy
+import wikipedia  # Provides and API-like functionality to search and access Wikipedia data
 import wikipedia.exceptions
+from nltk.corpus import wordnet as wn  # WordNet
 from nltk.corpus.reader.wordnet import WordNetError
+
 
 class Engine():
 
@@ -28,7 +33,7 @@ class Engine():
         if subject is 1:
             userin.define([""],'You said: "' + com + '"')
             userin.execute(0)
-            if not tts_output: print "Sorry, " + user_prefix + ". But I didn't even understand the subject." # if tts_output is enabled then it does not print
+            if not tts_output: print("Sorry, " + user_prefix + ". But I didn't even understand the subject.") # if tts_output is enabled then it does not print
             if tts_output: userin.say("Sorry, " + user_prefix + ". But I didn't even understand the subject.") # if tts_output is enabled then it executes TTS
             return False
 
@@ -36,30 +41,30 @@ class Engine():
         query = subject # Wikipedia search query (same as the subject)
         # This is where the real search begins
         if query: # If there is a Wikipedia query determined
-            if not tts_output: print "Please wait..."
+            if not tts_output: print("Please wait...")
             if tts_output: userin.say("Please wait...", True, False) # Gain a few more seconds by saying Please wait...
             wh_question = []
             for word in doc: # Iterate over the words in the command(user's speech)
-				if word.tag_ in ['WDT','WP','WP$','WRB']: # if there is a wh word then
-					wh_question.append(word.text.upper()) # append it by converting to uppercase
+                if word.tag_ in ['WDT','WP','WP$','WRB']: # if there is a wh word then
+                    wh_question.append(word.text.upper()) # append it by converting to uppercase
             with nostderr():
                 try:
                     wikiresult = wikipedia.search(query) # run a Wikipedia search with the query
                     if len(wikiresult) == 0: # if there are no results
-                        if not tts_output: print "Sorry, " + user_prefix + ". But I couldn't find anything about " + query + " in Wikipedia."
+                        if not tts_output: print("Sorry, " + user_prefix + ". But I couldn't find anything about " + query + " in Wikipedia.")
                         if tts_output: userin.say("Sorry, " + user_prefix + ". But I couldn't find anything about " + query + " in Wikipedia.")
                         return True
                     wikipedia.page(wikiresult[0])
                 except requests.exceptions.ConnectionError: # if there is a connection error
                     userin.define([" "],"Wikipedia connection error.")
                     userin.execute(0)
-                    if not tts_output: print "Sorry, " + user_prefix + ". But I'm unable to connect to Wikipedia servers."
+                    if not tts_output: print("Sorry, " + user_prefix + ". But I'm unable to connect to Wikipedia servers.")
                     if tts_output: userin.say("Sorry, " + user_prefix + ". But I'm unable to connect to Wikipedia servers.")
                     return True
                 except wikipedia.exceptions.DisambiguationError as disambiguation: # if there is a disambiguation
                     wikiresult = wikipedia.search(disambiguation.options[0]) # run Wikipedia search again with the most common option
                 except:
-                    if not tts_output: print "Sorry, " + user_prefix + ". But something went horribly wrong while I'm searching Wikipedia."
+                    if not tts_output: print("Sorry, " + user_prefix + ". But something went horribly wrong while I'm searching Wikipedia.")
                     if tts_output: userin.say("Sorry, " + user_prefix + ". But something went horribly wrong while I'm searching Wikipedia.")
                     return True
             findings = [] # empty findings list for scoring
@@ -73,11 +78,11 @@ class Engine():
                     except requests.exceptions.ConnectionError: # if there is a connection error
                         userin.define([" "],"Wikipedia connection error.")
                         userin.execute(0)
-                        if not tts_output: print "Sorry, " + user_prefix + ". But I'm unable to connect to Wikipedia servers."
+                        if not tts_output: print("Sorry, " + user_prefix + ". But I'm unable to connect to Wikipedia servers.")
                         if tts_output: userin.say("Sorry, " + user_prefix + ". But I'm unable to connect to Wikipedia servers.")
                         return True
                     except:
-                        if not tts_output: print "Sorry, " + user_prefix + ". But something went horribly wrong while I'm searching Wikipedia."
+                        if not tts_output: print("Sorry, " + user_prefix + ". But something went horribly wrong while I'm searching Wikipedia.")
                         if tts_output: userin.say("Sorry, " + user_prefix + ". But something went horribly wrong while I'm searching Wikipedia.")
                         return True
                 nth_page += 1 # increase the visited page/article count
@@ -98,7 +103,7 @@ class Engine():
                         all_entities.append(ent.text) # append the entity to all_entities
                         mention[ent.text] = 0.0 # the value if focus not even defined or the focus is NOT even mentioned
                         for wh in wh_question: # iterate over the all wh questions have been found in the Command(user's speech)
-                            if self.entity_map.has_key(wh.upper()): # if the wh question is defined in entity_map (on top) then
+                            if wh.upper() in self.entity_map: # if the wh question is defined in entity_map (on top) then
                                 target_entities = self.entity_map[wh.upper()] # get the target entities from the entity_map
                                 if wh.upper() == 'WHAT': # if the question is WHAT then
                                     target_entities = [] # empty the target entities because we will replace them with the result of wordnet_entity_determiner()
@@ -131,22 +136,22 @@ class Engine():
                 for i in range(len(all_entities)): # iterate over the all entities, again
                     for index in subject_indices: # for each index
                         inverse_distance = float((len(all_entities) - 1) - abs(i - index)) / (len(all_entities) - 1) # calculate the proximity of the entity to the subject
-                        if proximity.has_key(all_entities[i]): # if the entity is already appended then
+                        if all_entities[i] in proximity: # if the entity is already appended then
                             proximity[all_entities[i]] = (proximity[all_entities[i]] + inverse_distance) / 2 # assign the proximity by calculating the average
                         else:
                             proximity[all_entities[i]] = inverse_distance # otherwise assign the proximity directly
-                    if not proximity.has_key(all_entities[i]): # if it's somehow not appended then
+                    if all_entities[i] not in proximity: # if it's somehow not appended then
                             proximity[all_entities[i]] = 0 # give it a zero score
 
                 ranked = {} # the eventual ranking/scoring
                 for key, value in frequency.iteritems(): # iterate over the all findings (frequency, precedence, proximity, mention all of them holds all findings)
                     if key not in query: # eliminate the findings that already inside of the Wikipedia query
                         ranked[key] = value * self.coefficient['frequency'] + precedence[key] * self.coefficient['precedence'] + proximity[key] * self.coefficient['proximity'] + mention[key] * self.coefficient['mention'] # calculate the absolute score
-                if not tts_output: print sorted(ranked.items(), key=lambda x:x[1])[::-1][:5] # if not tts_output print the best 5 result
+                if not tts_output: print(sorted(ranked.items(), key=lambda x:x[1])[::-1][:5]) # if not tts_output print the best 5 result
                 if tts_output: userin.say(sorted(ranked.items(), key=lambda x:x[1])[::-1][0][0], True, True) # if tts_output say the best result (via TTS obviously)
                 return sorted(ranked.items(), key=lambda x:x[1])[::-1][0][0] # also return the best result
             else: # if no any findings
-                if not tts_output: print "Sorry, I couldn't find anything worthy to answer your question." # if tts_output is enabled then it does not print
+                if not tts_output: print("Sorry, I couldn't find anything worthy to answer your question.") # if tts_output is enabled then it does not print
                 if tts_output: userin.say("Sorry, I couldn't find anything worthy to answer your question.", True, True) # if tts_output is enabled then it executes TTS
                 return False # in case of no any findings return False
 
@@ -190,11 +195,11 @@ class Engine():
                     except WordNetError:
                         userin.define([" "],"NLP(WordNet) error. Unrecognized word: " + word)
                         userin.execute(0)
-                        if not tts_output: print "Sorry, " + user_prefix + ". But I'm unable to understand the word '" + word + "'."
+                        if not tts_output: print("Sorry, " + user_prefix + ". But I'm unable to understand the word '" + word + "'.")
                         if tts_output: userin.say("Sorry, " + user_prefix + ". But I'm unable to understand the word '" + word + "'.")
                         return 1
             entity_scores[entity] = entity_scores[entity] / len(samples) # to calculate the average; divide the total by the amount of samples
-        if not tts_output: print sorted(entity_scores.items(), key=lambda x:x[1])[::-1][:3] # if not tts_output print the best 3 result
+        if not tts_output: print(sorted(entity_scores.items(), key=lambda x:x[1])[::-1][:3]) # if not tts_output print the best 3 result
         result = sorted(entity_scores.items(), key=lambda x:x[1])[::-1][0][0] # assign the best result
         if result == 'FACILITY': return [result,'ORG'] # currently, spaCy is incorrectly classifying many entities that belongs to FACILITY as ORG. Because of that include ORG to the return
         if result == 'PRODUCT': return [result,'ORG'] # currently, spaCy is incorrectly classifying many entities that belongs to PRODUCT as ORG. Because of that include ORG to the return
@@ -269,17 +274,17 @@ class Engine():
 
 @contextlib.contextmanager
 def nostdout():
-	save_stdout = sys.stdout
-	sys.stdout = cStringIO.StringIO()
-	yield
-	sys.stdout = save_stdout
+    save_stdout = sys.stdout
+    sys.stdout = cStringIO.StringIO()
+    yield
+    sys.stdout = save_stdout
 
 @contextlib.contextmanager
 def nostderr():
-	save_stderr = sys.stderr
-	sys.stderr = cStringIO.StringIO()
-	yield
-	sys.stderr = save_stderr
+    save_stderr = sys.stderr
+    sys.stderr = cStringIO.StringIO()
+    yield
+    sys.stderr = save_stderr
 
 
 if __name__ == "__main__":
@@ -290,33 +295,33 @@ if __name__ == "__main__":
     i = 0
     while True:
         i += 1
-        print "Counter: " + str(i)
+        print("Counter: " + str(i))
         score = 0
         EngineObj.randomize_coefficients()
-        print EngineObj.coefficient
+        print(EngineObj.coefficient)
 
         # New York City
-        print "\nWhere is the Times Square"
+        print("\nWhere is the Times Square")
         if EngineObj.respond("Where is the Times Square") == "New York City": score += 1
 
         # 2,720 ft - QUANTITY
-        print "\nWhat is the height of Burj Khalifa"
+        print("\nWhat is the height of Burj Khalifa")
         if EngineObj.respond("What is the height of Burj Khalifa") == "(2,717 feet": score += 1
 
         # Dubai
-        print "\nWhere is Burj Khalifa"
+        print("\nWhere is Burj Khalifa")
         if EngineObj.respond("Where is Burj Khalifa") == "Dubai": score += 1
 
         # 481 feet - QUANTITY
-        print "\nWhat is the height of Great Pyramid of Giza"
+        print("\nWhat is the height of Great Pyramid of Giza")
         if EngineObj.respond("What is the height of Great Pyramid of Giza") == "(481 feet": score += 1
 
         # Kit Harington
-        print "\nWho is playing Jon Snow in Game of Thrones"
+        print("\nWho is playing Jon Snow in Game of Thrones")
         if EngineObj.respond("Who is playing Jon Snow in Game of Thrones") == "Kit Harington": score += 1
 
         # 8 - CARDINAL
-        print "\nWhat is the atomic number of oxygen"
+        print("\nWhat is the atomic number of oxygen")
         if EngineObj.respond("What is the atomic number of oxygen") == "8": score += 1
 
         # 1.371 billion - QUANTITY
@@ -324,27 +329,27 @@ if __name__ == "__main__":
         #if EngineObj.respond("What is the population of China") == "1.371 billion": score += 1
 
         # Japanese - LANGUAGE
-        print "\nWhat is the official language of Japan"
+        print("\nWhat is the official language of Japan")
         if EngineObj.respond("What is the official language of Japan") == "Japanese": score += 1
 
         # Stark - PERSON
-        print "\nWhat is the real name of Iron Man"
+        print("\nWhat is the real name of Iron Man")
         if EngineObj.respond("What is the real name of Iron Man") in ["Stark", "Tony Stark"]: score += 1
 
         # Mehmed The Conqueror - PERSON
-        print "\nWho is the conqueror of Constantinople"
+        print("\nWho is the conqueror of Constantinople")
         if EngineObj.respond("Who is the conqueror of Constantinople") in ["Mehmed II", "Mehmet II", "Mehmet"]: score += 1
 
         # 1453 - DATE TIME
-        print "\nWhen Constantinople was conquered"
+        print("\nWhen Constantinople was conquered")
         if EngineObj.respond("When Constantinople was conquered") == "1453": score += 1
 
         # Ankara - GPE
-        print "\nWhat is the capital of Turkey"
+        print("\nWhat is the capital of Turkey")
         if EngineObj.respond("What is the capital of Turkey") == "Ankara": score += 1
 
         # Istanbul - GPE
-        print "\nWhat is the largest city of Turkey"
+        print("\nWhat is the largest city of Turkey")
         if EngineObj.respond("What is the largest city of Turkey") == "Istanbul": score += 1
 
         # Hinduism - NORP
@@ -356,42 +361,42 @@ if __name__ == "__main__":
         #if EngineObj.respond("What is the name of the world's busiest airport") == "Hartsfield Jackson Atlanta International Airport": score += 1
 
         # Harvard University - ORG
-        print "\nWhat is the name of the world's best university"
+        print("\nWhat is the name of the world's best university")
         if EngineObj.respond("What is the name of the world's best university") in ["Harvard", "Peking University"]: score += 1
 
         # Nile river - LOC
-        print "\nWhat is the name of the world's longest river"
+        print("\nWhat is the name of the world's longest river")
         if EngineObj.respond("What is the name of the world's longest river") in ["Nile", "Amazon"]: score += 1
 
         # Rolls-Royce - PRODUCT
-        print "\nWhat is the brand of the world's most expensive car"
+        print("\nWhat is the brand of the world's most expensive car")
         if EngineObj.respond("What is the brand of the world's most expensive car") == "Rolls-Royce": score += 1
 
         # World War II - EVENT
-        print "\nWhat is the bloodiest war in human history"
+        print("\nWhat is the bloodiest war in human history")
         if EngineObj.respond("What is the bloodiest war in human history") in ["World War II", "World War I"]: score += 1
 
         # Da Vinci Code - WORK_OF_ART
-        print "\nWhat is the name of the best seller book"
+        print("\nWhat is the name of the best seller book")
         if EngineObj.respond("What is the name of the best seller book") in ["Real Marriage", "'Real Marriage' on"]: score += 1
 
         # the Mariana Trench - LOC
-        print "\nWhat is the lowest point in the ocean"
+        print("\nWhat is the lowest point in the ocean")
         if EngineObj.respond("What is the lowest point in the ocean") == "the Mariana Trench": score += 1
 
         # Einstein - PERSON
-        print "\nWho invented Relativity" # TODO: change this question to "Who invented General Relativity"
+        print("\nWho invented Relativity") # TODO: change this question to "Who invented General Relativity"
         if EngineObj.respond("Who invented Relativity") == "Einstein": score += 1
 
         # 1945 - DATE TIME
-        print "\nWhen United Nations was formed"
+        print("\nWhen United Nations was formed")
         if EngineObj.respond("When United Nations was formed") == "1945": score += 1
 
         # purpose of this block is finding the optimum value for coefficients
         if score > best_score:
-            print "\n--- !!! NEW BEST !!! ---"
+            print("\n--- !!! NEW BEST !!! ---")
             best_score = score
             best_coefficient = EngineObj.coefficient
-            print str(best_score) + ' / 20'
-            print best_coefficient
-            print "------------------------\n"
+            print(str(best_score) + ' / 20')
+            print(best_coefficient)
+            print("------------------------\n")

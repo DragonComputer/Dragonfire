@@ -1,3 +1,4 @@
+from __future__ import print_function
 import wx
 import os
 
@@ -39,10 +40,10 @@ class TaskBarIcon(wx.TaskBarIcon):
         self.SetIcon(icon, TRAY_TOOLTIP)
 
     def on_left_down(self, event):
-        print 'Tray icon was left-clicked.'
+        print('Tray icon was left-clicked.')
 
     def on_hello(self, event):
-        print 'Hello, world!'
+        print('Hello, world!')
 
     def on_exit(self, event):
         wx.CallAfter(self.Destroy)
@@ -76,6 +77,6 @@ if __name__ == '__main__':
     Process(target=SystemTrayInit).start()
     while (1):
         time.sleep(1)
-        print e.is_set()
+        print(e.is_set())
         if (e.is_set()):
             break

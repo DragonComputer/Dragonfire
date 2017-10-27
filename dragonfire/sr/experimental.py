@@ -1,21 +1,27 @@
+from __future__ import absolute_import, print_function
+
+import audioop  # Operates on sound fragments consisting of signed integer samples 8, 16 or 32 bits wide, stored in Python strings.
+import datetime  # Supplies classes for manipulating dates and times in both simple and complex ways
+import multiprocessing  # A package that supports spawning processes using an API similar to the threading module.
+import os  # The path module suitable for the operating system Python is running on, and therefore usable for local paths
+# import peakutils.peak # Peak detection utilities for 1D data
+import random  # Pseudo-random number generators for various distributions
+import time  # Provides various time-related functions.
+import Tkinter  # Python's de-facto standard GUI (Graphical User Interface) package
+import wave  # Provides a convenient interface to the WAV sound format
+
+import matplotlib.pyplot as plt  # Simple graph plotting library
+import numpy  # The fundamental package for scientific computing with Python.
+import pyaudio  # Provides Python bindings for PortAudio, the cross platform audio API
+import pyqtgraph as pg  # A pure-python graphics and GUI library built on PyQt4 / PySide and numpy
+from PyQt4 import QtCore  # A comprehensive set of Python bindings for Digia's Qt cross platform GUI toolkit.
+
+from .nnet import \
+    RNN  # Import the Recurrent Neural Network class from Dragonfire's Neural Network Library
+
 __author__ = 'Mehmet Mert Yildiran, mert.yildiran@bil.omu.edu.tr'
 # This submodule is experimental and not functional
 
-import pyaudio # Provides Python bindings for PortAudio, the cross platform audio API
-import wave # Provides a convenient interface to the WAV sound format
-import datetime # Supplies classes for manipulating dates and times in both simple and complex ways
-import os # The path module suitable for the operating system Python is running on, and therefore usable for local paths
-import audioop # Operates on sound fragments consisting of signed integer samples 8, 16 or 32 bits wide, stored in Python strings.
-import numpy # The fundamental package for scientific computing with Python.
-import multiprocessing # A package that supports spawning processes using an API similar to the threading module.
-import pyqtgraph as pg # A pure-python graphics and GUI library built on PyQt4 / PySide and numpy
-from PyQt4 import QtCore, QtGui # A comprehensive set of Python bindings for Digia's Qt cross platform GUI toolkit.
-import time # Provides various time-related functions.
-import Tkinter # Python's de-facto standard GUI (Graphical User Interface) package
-#import peakutils.peak # Peak detection utilities for 1D data
-import random # Pseudo-random number generators for various distributions
-from nnet import RNN # Import the Recurrent Neural Network class from Dragonfire's Neural Network Library
-import matplotlib.pyplot as plt # Simple graph plotting library
 
 CHUNK = 1024 # Smallest unit of audio. 1024 bytes
 FORMAT = pyaudio.paInt16 # Data format
@@ -34,6 +40,16 @@ SCREEN_HEIGHT = root.winfo_screenheight()
 HIDDEN_NEURON = 20 # Hidden neuron count in the network
 REPEAT_N_TIMES = 10 # How many times repeated? For 3 for example; one, one, one, two, two, two, three, ...
 TRAINING_ITERATION = 1000 # How many iterations for training
+
+try:
+    raw_input          # Python 2
+except NameError:
+    raw_input = input  # Python 3
+try:
+    xrange             # Python 2
+except NameError:
+    xrange = range     # Python 3
+
 
 class SpeechRecognition():
 
@@ -254,7 +270,7 @@ class SpeechRecognition():
 				word_data = numpy.asarray(word_data) # Convert the word data into numpy array
 				word_data = word_data / word_data.max() # Normalize the input
 				output = rnn.run(word_data) # Run the network to get the output/result (feedforward)
-				print words[numpy.argmax(output)] + '\t\t', output # Print the best guess
+				print(words[numpy.argmax(output)] + '\t\t', output) # Print the best guess
 
 
 		if graphs:
@@ -283,7 +299,7 @@ class SpeechRecognition():
 			words_data[i] = numpy.asarray(words_data[i]) # Convert the word data into numpy array
 			words_data[i] = words_data[i] / words_data[i].max() # Normalize the input
 		for i in xrange(len(words_data)):
-			print words[i/REPEAT_N_TIMES] + '\t\t', rnn.run(words_data[i])
+			print(words[i/REPEAT_N_TIMES] + '\t\t', rnn.run(words_data[i]))
 
 	@staticmethod
 	def extract_words_from_audio(audio_input,graphs=False,verbose=False):
@@ -381,7 +397,7 @@ class SpeechRecognition():
 					#ending_time = datetime.datetime.now() # Ending time of the training
 					words_data.append(word_data)
 					if verbose:
-						print len(words_data)
+						print(len(words_data))
 
 
 			if graphs:
@@ -412,7 +428,7 @@ class SpeechRecognition():
 				training_data = [frame for word_data in words_data for frame in word_data] # Flatten the words data into single big array of frames
 				SpeechRecognition.save_training_data(training_data,words) # Then save it
 			else:
-				print "Sorry, word counts don't match. Please try again."
+				print("Sorry, word counts don't match. Please try again.")
 
 	@staticmethod
 	def load_training_data():
@@ -453,7 +469,7 @@ class SpeechRecognition():
 				u = words_data[j] # Input (2048)
 				t = target[j] # Target (word count)
 				c = rnn.train_step(u, t, lr) # Cost
-				print "iteration {0}: {1}".format(i, numpy.sqrt(c))
+				print("iteration {0}: {1}".format(i, numpy.sqrt(c)))
 				e = (1.0/len(words_data))*numpy.sqrt(c) + ((len(words_data) - 1.0)/len(words_data))*e # Contributes to error 1 / word count
 				if i % (n_iteration/100) == 0:
 					vals.append(e)
@@ -461,25 +477,25 @@ class SpeechRecognition():
 		if not os.path.exists(OUT_DIRECTORY): # Check whether the directory is exist or not
 			os.makedirs(OUT_DIRECTORY) # If there is none then create one
 		rnn.dump(OUT_DIRECTORY) # Dump model.npz (reusable training result) to out/ directory
-		print "The neural network dump saved into: " + OUT_DIRECTORY + "model.npz"
+		print("The neural network dump saved into: " + OUT_DIRECTORY + "model.npz")
 
 		with open(OUT_DIRECTORY + "words.txt", "w") as thefile:
 			for word in words:
 				thefile.write("%s\n" % word) # Dump the words line by line
-		print "The word list saved into: " + OUT_DIRECTORY + "words.txt"
+		print("The word list saved into: " + OUT_DIRECTORY + "words.txt")
 
 		plt.plot(vals) # Plot the graph
 		if not os.path.exists(PLOTS_DIRECTORY): # Check whether the directory is exist or not
 			os.makedirs(PLOTS_DIRECTORY) # If there is none then create one
 		plt.savefig(PLOTS_DIRECTORY + 'error.png') # Save the graph
-		print "Graph of the decline of error by the time is saved as: " + PLOTS_DIRECTORY + "error.png"
+		print("Graph of the decline of error by the time is saved as: " + PLOTS_DIRECTORY + "error.png")
 
-		print "--- TESTING ---"
+		print("--- TESTING ---")
 		del rnn
 		rnn = RNN(len(words_data[0][0]), HIDDEN_NEURON, len(words))
 		rnn.importdump(OUT_DIRECTORY + "model.npz")
 		for i in xrange(len(words_data)):
-			print words[i/REPEAT_N_TIMES] + '\t\t', rnn.run(words_data[i])
+			print(words[i/REPEAT_N_TIMES] + '\t\t', rnn.run(words_data[i]))
 
 
 if __name__ == "__main__":
@@ -497,4 +513,4 @@ if __name__ == "__main__":
 	elif args["audio"]:
 		SpeechRecognition.start(args["audio"])
 	else:
-		print "You tried to use it with a wrong combination. Check out --help"
+		print("You tried to use it with a wrong combination. Check out --help")
