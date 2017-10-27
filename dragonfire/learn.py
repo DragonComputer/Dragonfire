@@ -182,34 +182,29 @@ if __name__ == "__main__":
 	os.remove(home + '/.dragonfire_db.json') # This is where we store the database; /home/USERNAME/.dragonfire_db.json
 	learn_ = Learn()
 
-	def give_and_get(give, get=None):
-		get = get or "OK, I GET IT. " + give
+	def give_and_get(give, get):
 		result = learn_.respond(give)
 		if result != get:
 		    print("{} | {}".format(give, result))
 
-        gives_and_gets = {"THE SUN IS HOT": None,
-			  "THE SUN IS YELLOW": None,
-			  "DESCRIBE THE SUN": "THE SUN IS HOT AND YELLOW",
-			  "WHAT IS THE SUN": "THE SUN IS HOT AND YELLOW",
-
-	                  "MY AGE IS 25": "OK, I GET IT. YOUR AGE IS 25",
-	                  "WHAT IS MY AGE": "YOUR AGE IS 25",
-			  "FORGET MY AGE": "OK, I FORGOT EVERYTHING I KNOW ABOUT YOUR AGE",
-			  "UPDATE MY AGE": "I WASN'T EVEN KNOW ANYTHING ABOUT YOUR AGE",
-
-			  "MY PLACE OF BIRTH IS TURKEY": "OK, I GET IT. YOUR PLACE OF BIRTH IS TURKEY",
-			  "WHERE IS MY PLACE OF BIRTH": "YOUR PLACE OF BIRTH IS TURKEY",
-			  
-	                  "YOU ARE JUST A COMPUTER PROGRAM": "OK, I GET IT. I'M JUST A COMPUTER PROGRAM",
-			  "WHAT ARE YOU": "I'M JUST A COMPUTER PROGRAM",
-	                  "FORGET EVERYTHING YOU KNOW ABOUT YOURSELF": "OK, I FORGOT EVERYTHING I KNOW ABOUT MYSELF",
-
-	                  "MINE IS GOLDEN": "OK, I GET IT. YOURS IS GOLDEN",
-			  "HOW IS MINE": "YOURS IS GOLDEN",
-
-	                  "ALBERT EINSTEIN IS A PHYSICIST": None,
-			  "WHO IS A PHYSICIST": "ALBERT EINSTEIN IS A PHYSICIST"}
+	gives_and_gets = collections.OrderedDict()
+	gives_and_gets["THE SUN IS HOT"] = "OK, I GET IT. THE SUN IS HOT"
+	gives_and_gets["THE SUN IS YELLOW"] = "OK, I GET IT. THE SUN IS YELLOW"
+	gives_and_gets["DESCRIBE THE SUN"] = "THE SUN IS HOT AND YELLOW"
+	gives_and_gets["WHAT IS THE SUN"] = "THE SUN IS HOT AND YELLOW"
+	gives_and_gets["MY AGE IS 25"] = "OK, I GET IT. YOUR AGE IS 25"
+	gives_and_gets["WHAT IS MY AGE"] = "YOUR AGE IS 25"
+	gives_and_gets["FORGET MY AGE"] = "OK, I FORGOT EVERYTHING I KNOW ABOUT YOUR AGE"
+	gives_and_gets["UPDATE MY AGE"] = "I WASN'T EVEN KNOW ANYTHING ABOUT YOUR AGE"
+	gives_and_gets["MY PLACE OF BIRTH IS TURKEY"] = "OK, I GET IT. YOUR PLACE OF BIRTH IS TURKEY"
+	gives_and_gets["WHERE IS MY PLACE OF BIRTH"] = "YOUR PLACE OF BIRTH IS TURKEY"
+	gives_and_gets["YOU ARE JUST A COMPUTER PROGRAM"] = "OK, I GET IT. I'M JUST A COMPUTER PROGRAM"
+	gives_and_gets["WHAT ARE YOU"] = "I'M JUST A COMPUTER PROGRAM"
+	gives_and_gets["FORGET EVERYTHING YOU KNOW ABOUT YOURSELF"] = "OK, I FORGOT EVERYTHING I KNOW ABOUT MYSELF"
+	gives_and_gets["MINE IS GOLDEN"] = "OK, I GET IT. YOURS IS GOLDEN"
+	gives_and_gets["HOW IS MINE"] = "YOURS IS GOLDEN"
+	gives_and_gets["ALBERT EINSTEIN IS A PHYSICIST"] = "OK, I GET IT. ALBERT EINSTEIN IS A PHYSICIST"
+	gives_and_gets["WHO IS A PHYSICIST"] = "ALBERT EINSTEIN IS A PHYSICIST"
 
 	for give, get in gives_and_gets.items():
 		give_and_get(give, get)
