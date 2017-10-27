@@ -182,25 +182,34 @@ if __name__ == "__main__":
 	os.remove(home + '/.dragonfire_db.json') # This is where we store the database; /home/USERNAME/.dragonfire_db.json
 	learn_ = Learn()
 
-	if learn_.respond("THE SUN IS HOT") != "OK, I GET IT. THE SUN IS HOT": print("THE SUN IS HOT |", learn_.respond("THE SUN IS HOT"))
-	if learn_.respond("THE SUN IS YELLOW") != "OK, I GET IT. THE SUN IS YELLOW": print("THE SUN IS YELLOW |", learn_.respond("THE SUN IS YELLOW"))
-	if learn_.respond("DESCRIBE THE SUN") != "THE SUN IS HOT AND YELLOW": print("DESCRIBE THE SUN |", learn_.respond("DESCRIBE THE SUN"))
-	if learn_.respond("WHAT IS THE SUN") != "THE SUN IS HOT AND YELLOW": print("WHAT IS THE SUN |", learn_.respond("WHAT IS THE SUN"))
+	def give_and_get(give, get=None):
+		get = get or "OK, I GET IT. " + give
+		result = learn_.respond(give)
+		if result != get:
+		    print("{} | {}".format(give, result))
 
-	if learn_.respond("MY AGE IS 25") != "OK, I GET IT. YOUR AGE IS 25": print("MY AGE IS 25 |", learn_.respond("MY AGE IS 25"))
-	if learn_.respond("WHAT IS MY AGE") != "YOUR AGE IS 25": print("WHAT IS MY AGE |", learn_.respond("WHAT IS MY AGE"))
-	if learn_.respond("FORGET MY AGE") != "OK, I FORGOT EVERYTHING I KNOW ABOUT YOUR AGE": print("FORGET MY AGE |", learn_.respond("FORGET MY AGE"))
-	if learn_.respond("UPDATE MY AGE") != "I WASN'T EVEN KNOW ANYTHING ABOUT YOUR AGE": print("UPDATE MY AGE |", learn_.respond("UPDATE MY AGE"))
+        gives_and_gets = {"THE SUN IS HOT": None,
+			  "THE SUN IS YELLOW": None,
+			  "DESCRIBE THE SUN": "THE SUN IS HOT AND YELLOW",
+			  "WHAT IS THE SUN": "THE SUN IS HOT AND YELLOW",
 
-	if learn_.respond("MY PLACE OF BIRTH IS TURKEY") != "OK, I GET IT. YOUR PLACE OF BIRTH IS TURKEY": print("MY PLACE OF BIRTH IS TURKEY |", learn_.respond("MY PLACE OF BIRTH IS TURKEY"))
-	if learn_.respond("WHERE IS MY PLACE OF BIRTH") != "YOUR PLACE OF BIRTH IS TURKEY": print("WHERE IS MY PLACE OF BIRTH |", learn_.respond("WHERE IS MY PLACE OF BIRTH"))
+	                  "MY AGE IS 25": "OK, I GET IT. YOUR AGE IS 25",
+	                  "WHAT IS MY AGE": "YOUR AGE IS 25",
+			  "FORGET MY AGE": "OK, I FORGOT EVERYTHING I KNOW ABOUT YOUR AGE",
+			  "UPDATE MY AGE": "I WASN'T EVEN KNOW ANYTHING ABOUT YOUR AGE",
 
-	if learn_.respond("YOU ARE JUST A COMPUTER PROGRAM") != "OK, I GET IT. I'M JUST A COMPUTER PROGRAM": print("YOU ARE JUST A COMPUTER PROGRAM |", learn_.respond("YOU ARE JUST A COMPUTER PROGRAM"))
-	if learn_.respond("WHAT ARE YOU") != "I'M JUST A COMPUTER PROGRAM": print("WHAT ARE YOU |", learn_.respond("WHAT ARE YOU"))
-	if learn_.respond("FORGET EVERYTHING YOU KNOW ABOUT YOURSELF") != "OK, I FORGOT EVERYTHING I KNOW ABOUT MYSELF": print("FORGET EVERYTHING YOU KNOW ABOUT YOURSELF |", learn_.respond("FORGET EVERYTHING YOU KNOW ABOUT YOURSELF"))
+			  "MY PLACE OF BIRTH IS TURKEY": "OK, I GET IT. YOUR PLACE OF BIRTH IS TURKEY",
+			  "WHERE IS MY PLACE OF BIRTH": "YOUR PLACE OF BIRTH IS TURKEY",
+			  
+	                  "YOU ARE JUST A COMPUTER PROGRAM": "OK, I GET IT. I'M JUST A COMPUTER PROGRAM",
+			  "WHAT ARE YOU": "I'M JUST A COMPUTER PROGRAM",
+	                  "FORGET EVERYTHING YOU KNOW ABOUT YOURSELF": "OK, I FORGOT EVERYTHING I KNOW ABOUT MYSELF",
 
-	if learn_.respond("MINE IS GOLDEN") != "OK, I GET IT. YOURS IS GOLDEN": print("MINE IS GOLDEN |", learn_.respond("MINE IS GOLDEN"))
-	if learn_.respond("HOW IS MINE") != "YOURS IS GOLDEN": print("HOW IS MINE |", learn_.respond("HOW IS MINE"))
+	                  "MINE IS GOLDEN": "OK, I GET IT. YOURS IS GOLDEN",
+			  "HOW IS MINE": "YOURS IS GOLDEN",
 
-	if learn_.respond("ALBERT EINSTEIN IS A PHYSICIST") != "OK, I GET IT. ALBERT EINSTEIN IS A PHYSICIST": print("ALBERT EINSTEIN IS A PHYSICIST |", learn_.respond("ALBERT EINSTEIN IS A PHYSICIST"))
-	if learn_.respond("WHO IS A PHYSICIST") != "ALBERT EINSTEIN IS A PHYSICIST": print("WHO IS A PHYSICIST |", learn_.respond("WHO IS A PHYSICIST"))
+	                  "ALBERT EINSTEIN IS A PHYSICIST": None,
+			  "WHO IS A PHYSICIST": "ALBERT EINSTEIN IS A PHYSICIST"}
+
+	for give, get in gives_and_gets.items():
+		give_and_get(give, get)
