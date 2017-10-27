@@ -1,12 +1,14 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
+from __future__ import print_function
+from __future__ import absolute_import
 from sys import stdout
 import subprocess
 import time
 import os
 import inspect
-import realhud
+from . import realhud
 from multiprocessing import Pool
 
 DRAGONFIRE_PATH = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
@@ -46,14 +48,14 @@ class TTA:
 		if len(message) < 10000:
 			if dynamic:
 				if end:
-					print message.upper()
-					print "_______________________________________________________________\n"
+					print(message.upper())
+					print("_______________________________________________________________\n")
 				else:
-					print "Dragonfire: " + message.upper(),
+					print("Dragonfire: " + message.upper(), end=' ')
 					stdout.flush()
 			else:
-				print "Dragonfire: " + message.upper()
-				print "_______________________________________________________________\n"
+				print("Dragonfire: " + message.upper())
+				print("_______________________________________________________________\n")
 		if not self.silent:
 			tts_proc = subprocess.Popen("flite -voice slt -f /dev/stdin", stdin=subprocess.PIPE, stdout=FNULL, stderr=FNULL, shell=True)
 			message = "".join([i if ord(i) < 128 else ' ' for i in message])
