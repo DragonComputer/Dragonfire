@@ -68,7 +68,7 @@ To kill her say *GOODBYE* or *BYE BYE* or *SEE YOU LATER*.
 
 <br>
 
-:warning: Facing with a problem? Take a look at the [Troubleshooting](https://github.com/DragonComputer/Dragonfire/blob/master/CONTRIBUTING.md#troubleshooting):hammer_and_wrench: section.
+:warning: Facing with a problem? Take a look at the [Troubleshooting](https://github.com/DragonComputer/Dragonfire/blob/master/docs/TROUBLESHOOTING.md#troubleshooting):hammer_and_wrench: section.
 
 <br>
 
@@ -164,7 +164,7 @@ WHAT'S THE TEMPERATURE IN *
 
 ### Contribute
 
-If you want to contribute to Dragonfire then please read [this guide](https://github.com/DragonComputer/Dragonfire/blob/master/CONTRIBUTING.md).
+If you want to contribute to Dragonfire then please read [this guide](https://github.com/DragonComputer/Dragonfire/blob/master/CONTRIBUTING.md#contributing-to-dragonfire).
 
 Please consider to support us on Patreon:
 
