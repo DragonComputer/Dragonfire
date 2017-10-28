@@ -1,15 +1,16 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-from __future__ import print_function
-from __future__ import absolute_import
-from sys import stdout
+from __future__ import absolute_import, print_function
+
+import inspect
+import os
 import subprocess
 import time
-import os
-import inspect
-import realhud
 from multiprocessing import Pool
+from sys import stdout
+
+import realhud
 
 DRAGONFIRE_PATH = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 FNULL = open(os.devnull, 'w')
@@ -27,7 +28,7 @@ class TTA:
 		self.message = msg
 		self.speak = sp
 
-	def execute(self,duration):
+	def execute(self, duration):
 		try:
 			subprocess.Popen(["notify-send","Dragonfire", self.message])
 		except:
@@ -38,30 +39,35 @@ class TTA:
 				subprocess.Popen(self.command, stdout=FNULL, stderr=FNULL)
 			except:
 				pass
-		#if self.speak == True:
+		# if self.speak == True:
 		#	self.say(self.message)
-		#else:
+		# else:
+
+	def define_and_execute(self, com="", msg="", sp="False", duration=0):
+		self.define(com=com, msg=msg, sp=sp)
+		self.execute(duration=duration)
 
 	def say(self,message,dynamic=False,end=False):
-		#if songRunning == True:
+		# if songRunning == True:
 		#	subprocess.Popen(["rhythmbox-client","--pause"])
 		if len(message) < 10000:
 			if dynamic:
 				if end:
 					print(message.upper())
-					print("_______________________________________________________________\n")
+					print("_" * 63 + "\n")
 				else:
 					print("Dragonfire: " + message.upper(), end=' ')
 					stdout.flush()
 			else:
 				print("Dragonfire: " + message.upper())
-				print("_______________________________________________________________\n")
+				print("_" * 63 + "\n")
 		if not self.silent:
-			tts_proc = subprocess.Popen("flite -voice slt -f /dev/stdin", stdin=subprocess.PIPE, stdout=FNULL, stderr=FNULL, shell=True)
+			command = "flite -voice slt -f /dev/stdin"
+			tts_proc = subprocess.Popen(command, stdin=subprocess.PIPE, stdout=FNULL, stderr=FNULL, shell=True)
 			message = "".join([i if ord(i) < 128 else ' ' for i in message])
 			tts_proc.stdin.write(message)
 			tts_proc.stdin.close()
-			#print "TTS process started."
+			# print "TTS process started."
 
 		pool = Pool(processes=1)
 		if not self.headless:
@@ -71,7 +77,7 @@ class TTA:
 		if not self.silent:
 			tts_proc.wait()
 		pool.terminate()
-		#if songRunning == True:
+		# if songRunning == True:
 		#	subprocess.Popen(["rhythmbox-client","--play"])
 
 	def espeak(self,message):
