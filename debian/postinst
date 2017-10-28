@@ -37,4 +37,4 @@ make depend -j $AVAILABLE_CORES
 make -j $AVAILABLE_CORES
 
 pip install wikipedia PyUserInput tinydb youtube_dl spacy pyowm && sudo pip install -U PyAudio && python -m spacy download en \
-&& printf "import nltk\nnltk.download('names')\nnltk.download('brown')\nnltk.download('wordnet')" | python && echo "\n\n${GREEN}Dragonfire is successfully installed to your computer.${NC}\n"
+&& printf "import nltk\nnltk.download('names')\nnltk.download('brown')\nnltk.download('wordnet')" | python && echo -e "\n\n${GREEN}Dragonfire is successfully installed to your computer.${NC}\n"
