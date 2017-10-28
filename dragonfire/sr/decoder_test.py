@@ -6,7 +6,7 @@ import unittest
 from gi.repository import GObject
 import thread
 import logging
-from .decoder import DecoderPipeline
+from decoder import DecoderPipeline
 import time
 import pyaudio # Provides Python bindings for PortAudio, the cross platform audio API
 
