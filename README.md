@@ -1,5 +1,7 @@
 # Dragonfire
 
+<img src="https://travis-ci.org/DragonComputer/Dragonfire.svg?branch=master" align="right" />
+
 Dragonfire is an open source virtual assistant project for Ubuntu based Linux distributions.
 
 ![Dragonfire](https://raw.githubusercontent.com/DragonComputer/Dragonfire/master/docs/img/demo.gif)
@@ -25,7 +27,7 @@ Feel free to join [our Gitter chat room](https://gitter.im/DragonComputer/Lobby)
 |                         |                                   |
 |-------------------------|-----------------------------------|
 | **Operating systems**   | Linux                             |
-| **Python versions**     | CPython 2.7. Only 64 bit.         |
+| **Python versions**     | CPython 2.7, 3.6 (64-bit)         |
 | **Distros**             | KDE neon, elementary OS, Ubuntu   |
 | **Package managers**    | APT, pip                          |
 | **Languages**           | English                           |
