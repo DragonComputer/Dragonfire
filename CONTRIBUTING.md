@@ -56,7 +56,7 @@ We have an official [chat room on Gitter](https://gitter.im/DragonComputer/Lobby
 |                         |                                   |
 |-------------------------|-----------------------------------|
 | **Operating systems**   | Linux                             |
-| **Python versions**     | CPython 2.7. Only 64 bit.         |
+| **Python versions**     | CPython 2.7, 3.6 (64-bit)         |
 | **Distros**             | KDE neon, elementary OS, Ubuntu   |
 | **Package managers**    | APT, pip                          |
 | **Languages**           | English                           |
@@ -110,33 +110,24 @@ Checking connectivity... done.
 
 ### Install Dragonfire in Development Mode
 
-You need to install Dragonfire with `sudo` rights, even if you are installing editable/development mode because there is a post-installation script needs `sudo` rights.
+You need to install Dragonfire with `sudo` rights, even if you are installing editable/development mode because there is a [post-installation script](https://github.com/DragonComputer/Dragonfire/blob/master/debian/postinst) that needs `sudo` rights.
 
 ```Shell
 git clone https://github.com/YOUR-USERNAME/Dragonfire.git
 cd Dragonfire/
-sudo pip install -e .
+chmod +x install-dev.sh
+sudo ./install-dev.sh
 ```
-
-alternatively you can install it with:
-
-```
-sudo pip install -Uve .
-```
-
-which means: `-U` (upgrade), `-v` (verbose), `-e` (editable/development mode)
-
-Post-installation script consists of the [these lines](https://github.com/DragonComputer/Dragonfire/blob/master/setup.py#L19-L51). It's important to know it for troubleshooting installation problems.
 
 #### Use It
 
-Try to experience every command listed in [README.md](https://github.com/DragonComputer/Dragonfire#built-in-commands). Please watch [this playlist](https://www.youtube.com/playlist?list=PLwnH1TEQvAWddw8iTwCJ333fwygL2-tWD) if you do not understand how to use Dragonfire.
+Try to experience every command listed in [README.md](https://github.com/DragonComputer/Dragonfire#built-in-commands). Please watch [this playlist](https://www.youtube.com/playlist?list=PLwnH1TEQvAWddw8iTwCJ333fwygL2-tWD) if you did not understand how to use Dragonfire.
 
-If you face with a problem while installing or using Dragonfire then please take a look to the [Troubleshooting](#troubleshooting) section for cases that fitting to you situation. Our [chat room on Gitter](https://gitter.im/DragonComputer/Lobby) is also a viable option for support requests.
+If you face with a problem while installing or using Dragonfire then please take a look at the [Troubleshooting](https://github.com/DragonComputer/Dragonfire/blob/master/docs/TROUBLESHOOTING.md#troubleshooting) section for the cases that fitting to your situation. Our [chat room on Gitter](https://gitter.im/DragonComputer/Lobby) is also a viable option for support requests.
 
 #### Missing Software Packages (Optional)
 
-There could be missing software packages on your system like **blender**, **gimp**, **inkscape**, **kdenlive**, etc. So Dragonfire will be unable to open them. If you want to use commands like `PHOTO EDITOR`, `INKSCAPE` install the necessary software on your system. You can see the list of built-in commands [here](https://github.com/DragonComputer/Dragonfire/blob/master/dragonfire/__init__.py#L80-L395).
+There could be missing software packages on your system like **blender**, **gimp**, **inkscape**, **kdenlive**, etc. So Dragonfire will be unable to open them. If you want to use the commands like `PHOTO EDITOR`, `INKSCAPE` install the necessary software to your system. You can see the list of built-in commands [here](https://github.com/DragonComputer/Dragonfire/blob/78adeedf7a278bcb26786130c0c6dd46d914fc95/dragonfire/__init__.py#L126-L463).
 
 #### Choice for Code Editor
 
@@ -153,7 +144,7 @@ If you are wondering about the package structure and distribution then please ta
 
 #### Reporting Bugs
 
-If you think you found a bug in Dragonfire then frist please check the all cases listed in [Troubleshooting](#troubleshooting) section. If you still think that's a bug then please [file an issue](https://github.com/DragonComputer/Dragonfire/issues/new) immediately. Don't forget to mention that it's a bug or something going on very wrong.
+If you think you found a bug in Dragonfire then frist please check the all cases listed in [Troubleshooting](https://github.com/DragonComputer/Dragonfire/blob/master/docs/TROUBLESHOOTING.md#troubleshooting) section. If you still think that's a bug then please [file an issue](https://github.com/DragonComputer/Dragonfire/issues/new) immediately. Don't forget to mention that it's a bug or something going on very wrong.
 
 <!-- This section guides you through submitting a bug report for Dragonfire. Following these guidelines helps maintainers and the community understand your report :pencil:, reproduce the behavior :computer: :computer:, and find related reports :mag_right:. -->
 
@@ -161,7 +152,7 @@ If you think you found a bug in Dragonfire then frist please check the all cases
 
 #### Suggesting Enhancements
 
-If you have a enhancement idea or you are not happy with an ugly piece of code then please [file an issue](https://github.com/DragonComputer/Dragonfire/issues/new) and mention that it's an enhancement proposal.
+If you have an enhancement idea or you are not happy with an ugly piece of code then please [file an issue](https://github.com/DragonComputer/Dragonfire/issues/new) and mention that it's an enhancement proposal.
 
 <!-- This section guides you through submitting an enhancement suggestion for Dragonfire, including completely new features and minor improvements to existing functionality. Following these guidelines helps maintainers and the community understand your suggestion :pencil: and find related suggestions :mag_right:. -->
 
@@ -205,7 +196,7 @@ git pull origin master
 
 At this step you are free to make any changes inside the local clone of your fork. Make sure that your changes serve to **single well defined goal** which will be your commit message. **DO NOT** try to achieve multiple (and unrelated) tasks with a single commit.
 
-Before proceeding to Step 4, make sure that you have done all tests and you did not break any existing feature of Dragonfire.
+Before proceeding to Step 4, make sure that you have done all the tests and you did not break any existing feature of Dragonfire.
 
 #### Step 4: Push To Your Fork
 
@@ -280,4 +271,4 @@ cd Dragonfire/
 dpkg-buildpackage -us -uc
 ```
 
-It will save the `.deb` file into parent directory. `debian` directory is the directory contains all the configuration files and pre/post installation scripts related to Debian packaging.
+It will save the `.deb` file into parent directory. `debian/` directory is the directory contains all the configuration files and pre/post-installation scripts related to Debian packaging.
