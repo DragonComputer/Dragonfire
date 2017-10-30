@@ -54,13 +54,13 @@ class TTA:
 			if dynamic:
 				if end:
 					print(message.upper())
-					print("_" * 63 + "\n")
+					print("_______________________________________________________________\n")
 				else:
 					print("Dragonfire: " + message.upper(), end=' ')
 					stdout.flush()
 			else:
 				print("Dragonfire: " + message.upper())
-				print("_" * 63 + "\n")
+				print("_______________________________________________________________\n")
 		if not self.silent:
 			command = "flite -voice slt -f /dev/stdin"
 			tts_proc = subprocess.Popen(command, stdin=subprocess.PIPE, stdout=FNULL, stderr=FNULL, shell=True)
