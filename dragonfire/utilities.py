@@ -39,16 +39,16 @@ class TTA:
 				subprocess.Popen(self.command, stdout=FNULL, stderr=FNULL)
 			except:
 				pass
-		# if self.speak == True:
+		#if self.speak == True:
 		#	self.say(self.message)
-		# else:
+		#else:
 
 	def define_and_execute(self, com="", msg="", sp="False", duration=0):
 		self.define(com=com, msg=msg, sp=sp)
 		self.execute(duration=duration)
 
 	def say(self,message,dynamic=False,end=False):
-		# if songRunning == True:
+		#if songRunning == True:
 		#	subprocess.Popen(["rhythmbox-client","--pause"])
 		if len(message) < 10000:
 			if dynamic:
@@ -67,7 +67,7 @@ class TTA:
 			message = "".join([i if ord(i) < 128 else ' ' for i in message])
 			tts_proc.stdin.write(message)
 			tts_proc.stdin.close()
-			# print "TTS process started."
+			#print "TTS process started."
 
 		pool = Pool(processes=1)
 		if not self.headless:
@@ -77,7 +77,7 @@ class TTA:
 		if not self.silent:
 			tts_proc.wait()
 		pool.terminate()
-		# if songRunning == True:
+		#if songRunning == True:
 		#	subprocess.Popen(["rhythmbox-client","--play"])
 
 	def espeak(self,message):
