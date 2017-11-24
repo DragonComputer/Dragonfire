@@ -371,7 +371,7 @@ class VirtualAssistant():
 			userin.define(["sudo","poweroff"],"Shutting down")
 			userin.say("Shutting down")
 			userin.execute(3)
-		elif com in ("GOODBYE", "BYE BYE", "SEE YOU LATER"):
+		elif com in ("GOODBYE", "BYE BYE", "SEE YOU LATER", "CATCH YOU LATER"):
 			tts_kill()
 			userin.define([" "]," ")
 			userin.say("Goodbye, " + user_prefix)
