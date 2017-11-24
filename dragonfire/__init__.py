@@ -1,36 +1,38 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-# from __future__ import unicode_literals
-from __future__ import print_function
-import sys
-import pyowm
-from dragonfire.utilities import TTA
-from dragonfire.nlplib import Classifiers
-from dragonfire.omniscient import Engine
-from dragonfire.stray import SystemTrayInit, SystemTrayExitListenerSet
-from multiprocessing import Process, Event
-import time
-import subprocess
-import wikipedia
-from random import randint
-import os
-import re
-from pykeyboard import PyKeyboard
-from pymouse import PyMouse
-import datetime
-import inspect
+from __future__ import print_function  # , unicode_literals
+
+import argparse
 import contextlib
 import cStringIO
-from dragonfire.learn import Learn
-import uuid
-import youtube_dl
-from tinydb import TinyDB, Query
-from os.path import expanduser
-import argparse
+import datetime
+import inspect
+import os
+import re
+import subprocess
+import sys
 import thread
+import time
+import uuid
+from multiprocessing import Event, Process
+from os.path import expanduser
+from random import choice
+
 import requests.exceptions
+
+import pyowm
+import wikipedia
 import wikipedia.exceptions
+import youtube_dl
+from dragonfire.learn import Learn
+from dragonfire.nlplib import Classifiers
+from dragonfire.omniscient import Engine
+from dragonfire.stray import SystemTrayExitListenerSet, SystemTrayInit
+from dragonfire.utilities import TTA
+from pykeyboard import PyKeyboard
+from pymouse import PyMouse
+from tinydb import Query, TinyDB
 
 DRAGONFIRE_PATH = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 FNULL = open(os.devnull, 'w')
@@ -72,7 +74,7 @@ class VirtualAssistant():
 	@staticmethod
 	def command(com, args):
 
-		if (type(com) is not str) or com == "":
+		if not com or not isinstance(com, str):
 			return False
 
 		original_com = com
@@ -92,17 +94,17 @@ class VirtualAssistant():
 		if USER_ANSWERING['status']:
 			if com.startswith("FIRST") or com.startswith("THE FIRST") or com.startswith("SECOND") or com.startswith("THE SECOND") or com.startswith("THIRD") or com.startswith("THE THIRD"):
 				USER_ANSWERING['status'] = False
-				choice = None
+				selection = None
 				if com.startswith("FIRST") or com.startswith("THE FIRST"):
-					choice = 0
+					selection = 0
 				elif com.startswith("SECOND") or com.startswith("THE SECOND"):
-					choice = 1
+					selection = 1
 				elif com.startswith("THIRD") or com.startswith("THE THIRD"):
-					choice = 2
+					selection = 2
 
 				if USER_ANSWERING['for'] == 'wikipedia':
 					with nostderr():
-						search_query = USER_ANSWERING['options'][choice]
+						search_query = USER_ANSWERING['options'][selection]
 						try:
 							wikiresult = wikipedia.search(search_query)
 							if len(wikiresult) == 0:
@@ -111,13 +113,11 @@ class VirtualAssistant():
 							wikipage = wikipedia.page(wikiresult[0])
 							wikicontent = "".join([i if ord(i) < 128 else ' ' for i in wikipage.content])
 							wikicontent = re.sub(r'\([^)]*\)', '', wikicontent)
-							userin.define(["sensible-browser",wikipage.url],search_query)
-							userin.execute(0)
+							userin.define_and_execute(["sensible-browser",wikipage.url],search_query)
 							userin.say(wikicontent)
 							return True
 						except requests.exceptions.ConnectionError:
-							userin.define([" "],"Wikipedia connection error.")
-							userin.execute(0)
+							userin.define_and_execute([" "],"Wikipedia connection error.")
 							userin.say("Sorry, " + user_prefix + ". But I'm unable to connect to Wikipedia servers.")
 							return True
 						except:
@@ -127,25 +127,19 @@ class VirtualAssistant():
 			tts_kill()
 			inactive = 0
 			userin.define([" "]," ")
-			words_dragonfire = {
-				0 : "Yes, " + user_prefix + ".",
-				1 : "Yes. I'm waiting.",
-				2 : "What is your orders?"
-			}
-			userin.say(words_dragonfire[randint(0,2)])
+			words_dragonfire = ("Yes, " + user_prefix + ".", "Yes. I'm waiting.", "What is your orders?")
+			userin.say(choice(words_dragonfire))
 		elif "GO TO SLEEP" == com:
 			tts_kill()
 			inactive = 1
-			userin.define(["echo"],"Dragonfire deactivated. To reactivate say 'Dragonfire!' or 'Wake Up!'")
-			userin.execute(0)
+			userin.define_and_execute(["echo"],"Dragonfire deactivated. To reactivate say 'Dragonfire!' or 'Wake Up!'")
 			userin.say("I'm going to sleep")
 		elif com in ("ENOUGH", "SHUT UP"):
 			print("Dragonfire quiets.")
 			tts_kill()
 		elif com in ("WHO AM I", "SAY MY NAME"):
 			tts_kill()
-			userin.define([" "], user_full_name)
-			userin.execute(0)
+			userin.define_and_execute([" "], user_full_name)
 			userin.say("Your name is " + user_full_name + ", " + user_prefix + ".")
 		elif com in ("MY TITLE IS LADY", "I'M A LADY", "I'M A WOMAN", "I'M A GIRL"):
 			tts_kill()
@@ -171,8 +165,7 @@ class VirtualAssistant():
 			userin.say("Pardon, " + user_prefix + ".")
 		elif "WHAT IS YOUR NAME" == com:
 			tts_kill()
-			userin.define([" "],"My name is Dragonfire.")
-			userin.execute(0)
+			userin.define_and_execute([" "],"My name is Dragonfire.")
 			userin.say("My name is Dragon Fire.")
 		elif "WHAT" in com and "TEMPERATURE" in com: # only for The United States today but prepared for all countries. Also only for celsius degrees today. --> by Radan Liska :-)
 			tts_kill()
@@ -182,8 +175,7 @@ class VirtualAssistant():
 				owm = pyowm.OWM("16d66c84e82424f0f8e62c3e3b27b574")
 				reg = owm.city_id_registry()
 				weather = owm.weather_at_id(reg.ids_for(city)[0][0]).get_weather()
-				userin.define([" "],"The temperature in " + city + " is " + str(weather.get_temperature('celsius')['temp']) + " degrees celsius")
-				userin.execute(0)
+				userin.define_and_execute([" "],"The temperature in " + city + " is " + str(weather.get_temperature('celsius')['temp']) + " degrees celsius")
 				userin.say("The temperature in " + city + " is " + str(weather.get_temperature('celsius')['temp']) + " degrees celsius")
 		elif "WHAT IS YOUR GENDER" == com:
 			tts_kill()
@@ -191,105 +183,78 @@ class VirtualAssistant():
 			userin.say("I have a female voice but I don't have a gender identity. I'm a computer program, " + user_prefix + ".")
 		elif "FILE MANAGER" in com or "OPEN FILES" == com:
 			tts_kill()
-			userin.define(["dolphin"],"File Manager") # KDE neon
-			userin.execute(0)
-			userin.define(["pantheon-files"],"File Manager") # elementary OS
-			userin.execute(0)
-			userin.define(["nautilus","--browser"],"File Manager") # Ubuntu
-			userin.execute(0)
+			userin.define_and_execute(["dolphin"],"File Manager") # KDE neon
+			userin.define_and_execute(["pantheon-files"],"File Manager") # elementary OS
+			userin.define_and_execute(["nautilus","--browser"],"File Manager") # Ubuntu
 			userin.say("File Manager")
 		elif "WEB BROWSER" in com:
 			tts_kill()
-			userin.define(["sensible-browser"],"Web Browser")
-			userin.execute(0)
+			userin.define_and_execute(["sensible-browser"],"Web Browser")
 			userin.say("Web Browser")
 		elif "OPEN BLENDER" == com:
 			tts_kill()
-			userin.define(["blender"],"Blender")
-			userin.execute(0)
+			userin.define_and_execute(["blender"],"Blender")
 			userin.say("Blender 3D computer graphics software")
 		elif "PHOTO SHOP" in com or "PHOTO EDITOR" in com or "GIMP" in com:
 			tts_kill()
-			userin.define(["gimp"],"GIMP")
-			userin.execute(0)
+			userin.define_and_execute(["gimp"],"GIMP")
 			userin.say("Photo editor")
 		elif "INKSCAPE" in com or "VECTOR GRAPHICS" in com or "VECTORIAL DRAWING" in com:
 			tts_kill()
-			userin.define(["inkscape"],"Inkscape")
-			userin.execute(0)
+			userin.define_and_execute(["inkscape"],"Inkscape")
 			userin.say("Inkscape")
 		elif "VIDEO EDITOR" in com:
 			tts_kill()
-			#userin.define(["openshot"],"Openshot")
-			#userin.execute(0)
-			#userin.define(["lightworks"],"Lightworks")
-			#userin.execute(0)
-			userin.define(["kdenlive"],"Kdenlive")
-			userin.execute(0)
+			#userin.define_and_execute(["openshot"],"Openshot")
+			#userin.define_and_execute(["lightworks"],"Lightworks")
+			userin.define_and_execute(["kdenlive"],"Kdenlive")
 			userin.say("Video editor")
 		elif "OPEN CAMERA" == com:
 			tts_kill()
-			userin.define(["kamoso"],"Camera") # KDE neon
-			userin.execute(0)
-			userin.define(["snap-photobooth"],"Camera") # elementary OS
-			userin.execute(0)
-			userin.define(["cheese"],"Camera") # Ubuntu
-			userin.execute(0)
+			userin.define_and_execute(["kamoso"],"Camera") # KDE neon
+			userin.define_and_execute(["snap-photobooth"],"Camera") # elementary OS
+			userin.define_and_execute(["cheese"],"Camera") # Ubuntu
 			userin.say("Camera")
 		elif "OPEN CALENDAR" == com:
 			tts_kill()
-			userin.define(["korganizer"],"Calendar") # KDE neon
-			userin.execute(0)
-			userin.define(["maya-calendar"],"Calendar") # elementary OS
-			userin.execute(0)
-			userin.define(["orage"],"Calendar") # Ubuntu
-			userin.execute(0)
+			userin.define_and_execute(["korganizer"],"Calendar") # KDE neon
+			userin.define_and_execute(["maya-calendar"],"Calendar") # elementary OS
+			userin.define_and_execute(["orage"],"Calendar") # Ubuntu
 			userin.say("Calendar")
 		elif "OPEN CALCULATOR" == com:
 			tts_kill()
-			userin.define(["kcalc"],"Calculator") # KDE neon
-			userin.execute(0)
-			userin.define(["pantheon-calculator"],"Calculator") # elementary OS
-			userin.execute(0)
-			userin.define(["gnome-calculator"],"Calculator") # Ubuntu
-			userin.execute(0)
+			userin.define_and_execute(["kcalc"],"Calculator") # KDE neon
+			userin.define_and_execute(["pantheon-calculator"],"Calculator") # elementary OS
+			userin.define_and_execute(["gnome-calculator"],"Calculator") # Ubuntu
 			userin.say("Calculator")
 		elif "OPEN STEAM" == com:
 			tts_kill()
-			userin.define(["steam"],"Steam")
-			userin.execute(0)
+			userin.define_and_execute(["steam"],"Steam")
 			userin.say("Steam Game Store")
 		elif "SOFTWARE CENTER" in com:
 			tts_kill()
-			userin.define(["plasma-discover"],"Software Center") # KDE neon
-			userin.execute(0)
-			userin.define(["software-center"],"Software Center") # elementary OS & Ubuntu
-			userin.execute(0)
+			userin.define_and_execute(["plasma-discover"],"Software Center") # KDE neon
+			userin.define_and_execute(["software-center"],"Software Center") # elementary OS & Ubuntu
 			userin.say("Software Center")
 		elif "OFFICE SUITE" in com:
 			tts_kill()
-			userin.define(["libreoffice"],"LibreOffice")
-			userin.execute(0)
+			userin.define_and_execute(["libreoffice"],"LibreOffice")
 			userin.say("Office Suite")
 		elif "OPEN WRITER" == com:
 			tts_kill()
-			userin.define(["libreoffice","--writer"],"LibreOffice Writer")
-			userin.execute(0)
+			userin.define_and_execute(["libreoffice","--writer"],"LibreOffice Writer")
 			userin.say("Writer")
 		elif "OPEN MATH" == com:
 			tts_kill()
-			userin.define(["libreoffice","--math"],"LibreOffice Math")
-			userin.execute(0)
+			userin.define_and_execute(["libreoffice","--math"],"LibreOffice Math")
 			userin.say("Math")
 		elif "OPEN IMPRESS" == com:
 			tts_kill()
-			userin.define(["libreoffice","--impress"],"LibreOffice Impress")
-			userin.execute(0)
+			userin.define_and_execute(["libreoffice","--impress"],"LibreOffice Impress")
 			userin.say("Impress")
 		elif "OPEN DRAW" == com:
 			tts_kill()
-			userin.define(["libreoffice","--draw"],"LibreOffice Draw")
-			userin.execute(0)
+			userin.define_and_execute(["libreoffice","--draw"],"LibreOffice Draw")
 			userin.say("Draw")
 		elif com.startswith("KEYBOARD "):
 			tts_kill()
@@ -391,12 +356,10 @@ class VirtualAssistant():
 						wikipage = wikipedia.page(wikiresult[0])
 						wikicontent = "".join([i if ord(i) < 128 else ' ' for i in wikipage.content])
 						wikicontent = re.sub(r'\([^)]*\)', '', wikicontent)
-						userin.define(["sensible-browser",wikipage.url],search_query)
-						userin.execute(0)
+						userin.define_and_execute(["sensible-browser",wikipage.url],search_query)
 						userin.say(wikicontent)
 					except requests.exceptions.ConnectionError:
-						userin.define([" "],"Wikipedia connection error.")
-						userin.execute(0)
+						userin.define_and_execute([" "],"Wikipedia connection error.")
 						userin.say("Sorry, " + user_prefix + ". But I'm unable to connect to Wikipedia servers.")
 					except wikipedia.exceptions.DisambiguationError as disambiguation:
 						USER_ANSWERING['status'] = True
@@ -409,8 +372,7 @@ class VirtualAssistant():
 							message += ", or " + option
 							notify += "\n - " + option
 						notify += '\nSay, for example: "THE FIRST ONE" to choose.'
-						userin.define([" "],notify)
-						userin.execute(0)
+						userin.define_and_execute([" "],notify)
 						userin.say(message)
 					except:
 						pass
@@ -447,8 +409,7 @@ class VirtualAssistant():
 					if capture:
 						search_query = capture.group('query')
 						tab_url = "http://google.com/?#q=" + search_query
-						userin.define(["sensible-browser",tab_url],search_query)
-						userin.execute(0)
+						userin.define_and_execute(["sensible-browser",tab_url],search_query)
 						userin.say(search_query)
 		elif ("GOOGLE" in com or "WEB" in com) and "IMAGE" in com and ("SEARCH" in com or "FIND" in com):
 			tts_kill()
@@ -458,8 +419,7 @@ class VirtualAssistant():
 					if capture:
 						search_query = capture.group('query')
 						tab_url = "http://google.com/?#q=" + search_query + "&tbm=isch"
-						userin.define(["sensible-browser",tab_url],search_query)
-						userin.execute(0)
+						userin.define_and_execute(["sensible-browser",tab_url],search_query)
 						userin.say(search_query)
 		else:
 			tts_kill()
@@ -500,23 +460,18 @@ def dragon_greet():
 			config_file.insert({'datatype': 'gender', 'gender': gender})
 			user_prefix = GENDER_PREFIX[gender]
 
-	if time < datetime.time(12):
-		userin.define(["echo"],"To activate say 'Dragonfire!' or 'Wake Up!'")
-		userin.execute(0)
-		userin.say("Good morning " + user_prefix)
-	elif datetime.time(12) < time  and time < datetime.time(18):
-		userin.define(["echo"],"To activate say 'Dragonfire!' or 'Wake Up!'")
-		userin.execute(0)
-		userin.say("Good afternoon " + user_prefix)
+	if time < datetime.time(12):	
+		time_of_day = "morning"
+	elif datetime.time(12) < time < datetime.time(18):
+		time_of_day = "afternoon"
 	else:
-		userin.define(["echo"],"To activate say 'Dragonfire!' or 'Wake Up!'")
-		userin.execute(0)
-		userin.say("Good evening " + user_prefix)
+		time_of_day = "evening"
+	userin.define_and_execute(["echo"],"To activate say 'Dragonfire!' or 'Wake Up!'")
+	userin.say(" ".join(["Good", time_of_day, user_prefix]))
 
 def speech_error():
 	tts_kill()
-	userin.define(["echo"],"An error occurred")
-	userin.execute(0)
+	userin.define_and_execute(["echo"],"An error occurred")
 	userin.say("I couldn't understand, please repeat again")
 
 @contextlib.contextmanager

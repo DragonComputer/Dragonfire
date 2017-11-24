@@ -1,15 +1,16 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-from __future__ import print_function
-from __future__ import absolute_import
-from sys import stdout
+from __future__ import absolute_import, print_function
+
+import inspect
+import os
 import subprocess
 import time
-import os
-import inspect
-import realhud
 from multiprocessing import Pool
+from sys import stdout
+
+import realhud
 
 DRAGONFIRE_PATH = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 FNULL = open(os.devnull, 'w')
@@ -27,7 +28,7 @@ class TTA:
 		self.message = msg
 		self.speak = sp
 
-	def execute(self,duration):
+	def execute(self, duration):
 		try:
 			subprocess.Popen(["notify-send","Dragonfire", self.message])
 		except:
@@ -41,6 +42,10 @@ class TTA:
 		#if self.speak == True:
 		#	self.say(self.message)
 		#else:
+
+	def define_and_execute(self, com="", msg="", sp="False", duration=0):
+		self.define(com=com, msg=msg, sp=sp)
+		self.execute(duration=duration)
 
 	def say(self,message,dynamic=False,end=False):
 		#if songRunning == True:
@@ -57,7 +62,8 @@ class TTA:
 				print("Dragonfire: " + message.upper())
 				print("_______________________________________________________________\n")
 		if not self.silent:
-			tts_proc = subprocess.Popen("flite -voice slt -f /dev/stdin", stdin=subprocess.PIPE, stdout=FNULL, stderr=FNULL, shell=True)
+			command = "flite -voice slt -f /dev/stdin"
+			tts_proc = subprocess.Popen(command, stdin=subprocess.PIPE, stdout=FNULL, stderr=FNULL, shell=True)
 			message = "".join([i if ord(i) < 128 else ' ' for i in message])
 			tts_proc.stdin.write(message)
 			tts_proc.stdin.close()
