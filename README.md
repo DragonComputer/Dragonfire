@@ -66,7 +66,7 @@ To deactivate her say *GO TO SLEEP*.
 
 To silence her say *ENOUGH* or *SHUT UP*.
 
-To kill her say *GOODBYE* or *BYE BYE* or *SEE YOU LATER*.
+To kill her say *GOODBYE* or *BYE BYE* or *SEE YOU LATER* or *CATCH YOU LATER*.
 
 <br>
 
