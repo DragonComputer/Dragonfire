@@ -107,7 +107,7 @@ class VirtualAssistant():
 			"VIDEO EDITOR": (["kdenlive"], "Kdenlive", "Video editor"),
 			"WEB BROWSER": (["sensible-browser"], "Web Browser", "Web Browser")
 		}
-		for app_name, app_info in apps:
+		for app_name, app_info in apps.items():
 			if app_name in com:
 				tts_kill()
 				commands, message, say_text = app_info
