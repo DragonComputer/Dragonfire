@@ -1,15 +1,16 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-from __future__ import print_function
-from __future__ import absolute_import
-from sys import stdout
+from __future__ import absolute_import, print_function
+
+import inspect
+import os
 import subprocess
 import time
-import os
-import inspect
-import realhud
 from multiprocessing import Pool
+from sys import stdout
+
+import realhud
 
 DRAGONFIRE_PATH = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 FNULL = open(os.devnull, 'w')
