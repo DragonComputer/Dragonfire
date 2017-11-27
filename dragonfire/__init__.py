@@ -117,7 +117,7 @@ class VirtualAssistant():
 		return False
 
 	@staticmethod
-	def re_match(com):  # if re.search(r"string", com): ...
+	def regex_match(com):  # if re.search(r"string", com): ...
 		return False    # not yet implemented
 
 	@staticmethod
