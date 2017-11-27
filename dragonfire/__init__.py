@@ -91,7 +91,7 @@ class VirtualAssistant():
 			tts_kill()
 			commands, message, say_text = app_info
 			userin.define_and_execute(commands, message)
-			userin.say()
+			userin.say(say_text)
 		return bool(app_info)
 
 	@staticmethod
@@ -112,7 +112,7 @@ class VirtualAssistant():
 				tts_kill()
 				commands, message, say_text = app_info
 				userin.define_and_execute(commands, message)
-				userin.say()
+				userin.say(say_text)
 				return True
 		return False
 
