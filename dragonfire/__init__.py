@@ -91,7 +91,7 @@ class VirtualAssistant():
 			tts_kill()
 			commands, message, say_text = app_info
 			userin.define_and_execute(commands, message)
-			userin.say()
+			userin.say(say_text)
 		return bool(app_info)
 
 	@staticmethod
@@ -112,12 +112,12 @@ class VirtualAssistant():
 				tts_kill()
 				commands, message, say_text = app_info
 				userin.define_and_execute(commands, message)
-				userin.say()
+				userin.say(say_text)
 				return True
 		return False
 
 	@staticmethod
-	def re_match(com):  # if re.search(r"string", com): ...
+	def regex_match(com):  # if re.search(r"string", com): ...
 		return False    # not yet implemented
 
 	@staticmethod
