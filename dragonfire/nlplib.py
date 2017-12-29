@@ -30,11 +30,19 @@ class Classifiers():
 #############################################################################
 brown_train = brown.tagged_sents(categories='news')
 regexp_tagger = nltk.RegexpTagger(
-    [(r'^-?[0-9]+(.[0-9]+)?$', 'CD'), (r'(-|:|;)$', ':'), (r'\'*$', 'MD'),
-     (r'(The|the|A|a|An|an)$',
-      'AT'), (r'.*able$', 'JJ'), (r'^[A-Z].*$',
-                                  'NNP'), (r'.*ness$', 'NN'), (r'.*ly$', 'RB'),
-     (r'.*s$', 'NNS'), (r'.*ing$', 'VBG'), (r'.*ed$', 'VBD'), (r'.*', 'NN')])
+    [(r'^-?[0-9]+(.[0-9]+)?$', 'CD'),
+	 (r'(-|:|;)$', ':'),
+	 (r'\'*$', 'MD'),
+	 (r'(The|the|A|a|An|an)$', 'AT'),
+	 (r'.*able$', 'JJ'),
+	 (r'^[A-Z].*$', 'NNP'),
+	 (r'.*ness$', 'NN'),
+	 (r'.*ly$', 'RB'),
+	 (r'.*s$', 'NNS'),
+	 (r'.*ing$', 'VBG'),
+	 (r'.*ed$', 'VBD'),
+	 (r'.*', 'NN')
+])
 unigram_tagger = nltk.UnigramTagger(brown_train, backoff=regexp_tagger)
 bigram_tagger = nltk.BigramTagger(brown_train, backoff=unigram_tagger)
 #############################################################################
@@ -64,7 +72,7 @@ class TopicExtractor(object):
     def normalize_tags(self, tagged):
         n_tagged = []
         for t in tagged:
-            if t[1] == "NP-TL" or t[1] == "NP":
+            if t[1] in ("NP-TL", "NP"):
                 n_tagged.append((t[0], "NNP"))
                 continue
             if t[1].endswith("-TL"):
