@@ -5,7 +5,8 @@ import os
 TRAY_TOOLTIP = 'System Tray Demo'
 TRAY_ICON = '/usr/share/icons/hicolor/48x48/apps/dragonfire_icon.png'
 TRAY_ICON_ALT = 'debian/dragonfire_icon.png'
-DEVELOPMENT_DIR = os.path.abspath(os.path.join(os.path.dirname(os.path.realpath(__file__)), os.pardir)) + '/'
+DEVELOPMENT_DIR = os.path.abspath(
+    os.path.join(os.path.dirname(os.path.realpath(__file__)), os.pardir)) + '/'
 global_event_holder = ''
 
 
@@ -15,13 +16,14 @@ def create_menu_item(menu, label, func):
     menu.AppendItem(item)
     return item
 
+
 class TaskBarIcon(wx.TaskBarIcon):
     def __init__(self, frame):
         self.frame = frame
         super(TaskBarIcon, self).__init__()
         try:
             self.set_icon(TRAY_ICON)
-        except:
+        except BaseException:
             self.set_icon(DEVELOPMENT_DIR + TRAY_ICON_ALT)
         self.Bind(wx.EVT_TASKBAR_LEFT_DOWN, self.on_left_down)
 
@@ -30,7 +32,7 @@ class TaskBarIcon(wx.TaskBarIcon):
         menu_title = wx.MenuItem(menu, 0, 'Dragonfire')
         menu.AppendItem(menu_title)
         menu.Enable(menu_title.Id, enable=False)
-        #create_menu_item(menu, 'Say Hello', self.on_hello)
+        # create_menu_item(menu, 'Say Hello', self.on_hello)
         menu.AppendSeparator()
         create_menu_item(menu, 'Exit', self.on_exit)
         return menu
@@ -50,26 +52,31 @@ class TaskBarIcon(wx.TaskBarIcon):
         self.frame.Close()
         global_event_holder.set()
 
+
 class App(wx.App):
     def OnInit(self):
-        frame=wx.Frame(None)
+        frame = wx.Frame(None)
         self.SetTopWindow(frame)
         TaskBarIcon(frame)
         return True
+
 
 def SystemTrayExitListenerSet(e):
     global global_event_holder
     global_event_holder = e
 
+
 def SystemTrayInit():
-    os.close(1) # close C's stdout stream
-    os.close(2) # close C's stderr stream
+    os.close(1)  # close C's stdout stream
+    os.close(2)  # close C's stderr stream
     app = App(False)
     app.MainLoop()
 
 
 if __name__ == '__main__':
-    DEVELOPMENT_DIR = os.path.abspath(os.path.join(os.path.dirname(os.path.realpath(__file__)), os.pardir)) + '/'
+    DEVELOPMENT_DIR = os.path.abspath(
+        os.path.join(os.path.dirname(os.path.realpath(__file__)),
+                     os.pardir)) + '/'
     from multiprocessing import Process, Event
     import time
     e = Event()
