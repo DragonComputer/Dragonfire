@@ -12,10 +12,11 @@ from ctypes import CFUNCTYPE, c_char_p, c_int, cdll
 from threading import Thread
 
 import pyaudio  # Provides Python bindings for PortAudio, the cross platform audio API
-from dragonfire import VirtualAssistant
-from gi.repository import GObject
+#from dragonfire import VirtualAssistant
 
-from .decoder import DecoderPipeline
+from config import ConfigDeepSpeech
+from server import SpeechServerMain
+import scipy.io.wavfile as wav
 
 CHUNK = 8000  # Smallest unit of audio. 1024 bytes
 FORMAT = pyaudio.paInt16  # Data format
@@ -28,40 +29,16 @@ ENGLISH_MODEL_PATH = os.path.dirname(
     os.path.realpath(__file__)) + "/models/english/"
 
 
-class KaldiRecognizer():
+class DeepSpeechRecognizer():
     def __init__(self):
         # logging.basicConfig(level=logging.INFO)
-
-        # voxforge/tri2b_mmi_b0.05 model:
-        decoder_conf = {
-            "model": ENGLISH_MODEL_PATH + "final.mdl",
-            "lda-mat": ENGLISH_MODEL_PATH + "final.mat",
-            "word-syms": ENGLISH_MODEL_PATH + "words.txt",
-            "fst": ENGLISH_MODEL_PATH + "HCLG.fst",
-            "silence-phones": "6"
-        }
-        self.decoder_pipeline = DecoderPipeline({"decoder": decoder_conf})
-        self.__class__.words = []
         self.__class__.finished = False
-
-        self.decoder_pipeline.set_word_handler(self.word_getter)
-        self.decoder_pipeline.set_eos_handler(self.set_finished, self.finished)
-
-        GObject.threads_init()
-        self.loop = GObject.MainLoop()
-        self.gi_thread = Thread(target=self.loop.run, args=())
-        self.gi_thread.start()
-
-    @classmethod
-    def word_getter(self, word):
-        self.words.append(word)
 
     @classmethod
     def set_finished(self, finished):
         self.finished = True
 
     def reset(self):
-        self.__class__.words = []
         self.__class__.finished = False
 
     def recognize(self, args):
@@ -81,15 +58,13 @@ class KaldiRecognizer():
             data = stream.read(
                 CHUNK)  # Get first data frame from the microphone
             # Loop over the frames of the audio / data chunks
+            audio = None
+            print("START LISTENNING")
             while data != '':
                 rms = audioop.rms(
                     data, 2)  # Calculate Root Mean Square of current chunk
                 if rms >= THRESHOLD:  # If Root Mean Square value is greater than THRESHOLD constant
-                    self.decoder_pipeline.init_request(
-                        "recognize",
-                        "audio/x-raw, layout=(string)interleaved, rate=(int)16000, format=(string)S16LE, channels=(int)1"
-                    )
-                    self.decoder_pipeline.process_data(data)
+                    audio = data
                     silence_counter = 0  # Define silence counter
                     # While silence counter value less than SILENCE_DETECTION constant
                     while silence_counter < SILENCE_DETECTION:
@@ -97,7 +72,7 @@ class KaldiRecognizer():
                             CHUNK)  # Read a new chunk from the stream
                         if LISTENING:
                             stream.write(data, CHUNK)
-                        self.decoder_pipeline.process_data(data)
+                        audio = audio + data
 
                         rms = audioop.rms(
                             data, 2
@@ -107,18 +82,11 @@ class KaldiRecognizer():
                         else:  # Else
                             silence_counter = 0  # Assign zero value to silence counter
 
+                    print("BOOM!")
                     stream.stop_stream()
-                    self.decoder_pipeline.end_request()
-                    while not self.finished:
-                        time.sleep(0.1)
                     stream.start_stream()
-                    words = self.words
-                    words = [x for x in words if x != '<#s>']
-                    com = ' '.join(words)
-                    t = Thread(
-                        target=VirtualAssistant.command, args=(com, args))
-                    t.start()
-                    self.reset()
+                    com = SpeechServerMain.ds.stt(audio, RATE) # TODO: audio has a wrong data type
+                    print(com)
 
                 data = stream.read(CHUNK)  # Read a new chunk from the stream
                 if LISTENING:
@@ -152,5 +120,5 @@ def noalsaerr():
 
 
 if __name__ == '__main__':
-    recognizer = KaldiRecognizer()
-    recognizer.recognize()
+    recognizer = DeepSpeechRecognizer()
+    recognizer.recognize([])

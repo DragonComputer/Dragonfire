@@ -1,10 +1,10 @@
 import os
 import json
-from functools import lru_cache
+#from functools import lru_cache
 
 class ConfigDeepSpeech:
 
-    @lru_cache(maxsize=32)
+    #@lru_cache(maxsize=32)
     def get_config(self, key):
         print('inside module')
         module_dir = os.path.dirname(__file__)  # get current directory
@@ -37,4 +37,3 @@ class ConfigDeepSpeech:
             return debug
         else:
             raise Exception('Invalid key value.')
-        
