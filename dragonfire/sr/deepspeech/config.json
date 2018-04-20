@@ -1,0 +1,11 @@
+{
+  "deepspeech": {
+    "model" :"/home/mertyildiran/Documents/DeepSpeech/models/output_graph.pb",
+    "alphabet": "/home/mertyildiran/Documents/DeepSpeech/models/alphabet.txt",
+    "lm": "/home/mertyildiran/Documents/DeepSpeech/models/lm.binary",
+    "trie": "/home/mertyildiran/Documents/DeepSpeech/models/trie",
+    "audiofiledir": "/home/mertyildiran/Documents/DeepSpeech/audio/",
+    "audiofilelength": "10",
+    "debug": "1"
+  }
+}
