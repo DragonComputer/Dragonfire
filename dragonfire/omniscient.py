@@ -4,9 +4,9 @@ import collections  # Imported to support ordered dictionaries in Python
 import contextlib
 
 try:
-    import StringIO
+    import cStringIO
 except ImportError:
-    import io as StringIO
+    import io as cStringIO
 
 import random
 import sys
