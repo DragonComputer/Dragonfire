@@ -32,6 +32,7 @@ def pkgconfig(*packages):
     config = {}
 
     for token in output.split():
+        token = token.decode('ascii')
         if token != '-pthread':
             flag, value = token[:2], token[2:]
             config.setdefault(flags[flag], []).append(value)

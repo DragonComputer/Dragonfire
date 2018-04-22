@@ -7,9 +7,9 @@ import argparse
 import contextlib
 
 try:
-    import StringIO
+    import cStringIO
 except ImportError:
-    import io as StringIO
+    import io as cStringIO
 
 import datetime
 import inspect
