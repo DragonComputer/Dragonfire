@@ -16,14 +16,14 @@ import pyaudio  # Provides Python bindings for PortAudio, the cross platform aud
 
 from config import ConfigDeepSpeech
 from server import SpeechServerMain
-import scipy.io.wavfile as wav
+import numpy as np
 
 CHUNK = 8000  # Smallest unit of audio. 1024 bytes
 FORMAT = pyaudio.paInt16  # Data format
 CHANNELS = 1  # Number of channels
 RATE = 16000  # Bit Rate of audio stream / Frame Rate
 THRESHOLD = 1000  # Threshhold value for detecting stimulant
-SILENCE_DETECTION = 5  # Wait number of frames to decide whether it fell silent or not
+SILENCE_DETECTION = 1  # Wait number of frames to decide whether it fell silent or not
 LISTENING = False
 ENGLISH_MODEL_PATH = os.path.dirname(
     os.path.realpath(__file__)) + "/models/english/"
@@ -82,10 +82,11 @@ class DeepSpeechRecognizer():
                         else:  # Else
                             silence_counter = 0  # Assign zero value to silence counter
 
-                    print("BOOM!")
+                    print("Analyzing...")
                     stream.stop_stream()
                     stream.start_stream()
-                    com = SpeechServerMain.ds.stt(audio, RATE) # TODO: audio has a wrong data type
+                    audio = np.fromstring(audio, dtype=np.int16) # Fix data type
+                    com = SpeechServerMain.ds.stt(audio, RATE)
                     print(com)
 
                 data = stream.read(CHUNK)  # Read a new chunk from the stream
@@ -96,7 +97,7 @@ class DeepSpeechRecognizer():
             stream.stop_stream()
             stream.close()
             p.terminate()
-            self.loop.quit()
+            #self.loop.quit()
             raise KeyboardInterrupt
 
 
