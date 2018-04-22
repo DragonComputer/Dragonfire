@@ -1,6 +1,10 @@
 from __future__ import print_function
 import wx
 import os
+try:
+    import wx.adv
+except:
+    pass
 
 TRAY_TOOLTIP = 'System Tray Demo'
 TRAY_ICON = '/usr/share/icons/hicolor/48x48/apps/dragonfire_icon.png'
@@ -8,6 +12,11 @@ TRAY_ICON_ALT = 'debian/dragonfire_icon.png'
 DEVELOPMENT_DIR = os.path.abspath(
     os.path.join(os.path.dirname(os.path.realpath(__file__)), os.pardir)) + '/'
 global_event_holder = ''
+
+try:
+    TBI = wx.TaskBarIcon
+except AttributeError:
+    TBI = wx.adv.TaskBarIcon
 
 
 def create_menu_item(menu, label, func):
@@ -17,7 +26,7 @@ def create_menu_item(menu, label, func):
     return item
 
 
-class TaskBarIcon(wx.TaskBarIcon):
+class TaskBarIcon(TBI):
     def __init__(self, frame):
         self.frame = frame
         super(TaskBarIcon, self).__init__()
