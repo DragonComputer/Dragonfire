@@ -260,10 +260,26 @@ static PyMethodDef realhud_funcs[] = {
     {NULL}
 };
 
+static struct PyModuleDef moduledef = {
+    PyModuleDef_HEAD_INIT,
+    "realhud", /* name of module */
+    "",          /* module documentation, may be NULL */
+    -1,          /* size of per-interpreter state of the module, or -1 if the module keeps state in global variables. */
+    realhud_funcs
+};
+
+PyMODINIT_FUNC PyInit_realhud(void) {
+    return PyModule_Create(&moduledef);
+}
+
 void initrealhud(void)
 {
+    #if PY_MAJOR_VERSION >= 3
+    PyInit_realhud();
+    #else
     Py_InitModule3("realhud", realhud_funcs,
                    "Extension module example!");
+    #endif
 }
 
 int main(int argc, char *argv[])
