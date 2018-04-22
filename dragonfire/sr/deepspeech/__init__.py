@@ -12,7 +12,7 @@ from ctypes import CFUNCTYPE, c_char_p, c_int, cdll
 from threading import Thread
 
 import pyaudio  # Provides Python bindings for PortAudio, the cross platform audio API
-#from dragonfire import VirtualAssistant        TODO: Add Python 3 support project-wide
+from dragonfire import VirtualAssistant
 
 from config import ConfigDeepSpeech
 from server import SpeechServerMain
