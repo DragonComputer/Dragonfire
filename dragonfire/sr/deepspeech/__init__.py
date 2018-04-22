@@ -12,7 +12,7 @@ from ctypes import CFUNCTYPE, c_char_p, c_int, cdll
 from threading import Thread
 
 import pyaudio  # Provides Python bindings for PortAudio, the cross platform audio API
-#from dragonfire import VirtualAssistant
+#from dragonfire import VirtualAssistant        TODO: Add Python 3 support project-wide
 
 from config import ConfigDeepSpeech
 from server import SpeechServerMain
@@ -84,10 +84,12 @@ class DeepSpeechRecognizer():
 
                     print("Analyzing...")
                     stream.stop_stream()
-                    stream.start_stream()
                     audio = np.fromstring(audio, dtype=np.int16) # Fix data type
                     com = SpeechServerMain.ds.stt(audio, RATE)
+                    stream.start_stream()
                     print(com)
+
+                    self.reset()
 
                 data = stream.read(CHUNK)  # Read a new chunk from the stream
                 if LISTENING:

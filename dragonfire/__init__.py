@@ -5,14 +5,24 @@ from __future__ import print_function  # , unicode_literals
 
 import argparse
 import contextlib
-import cStringIO
+
+try:
+    import StringIO
+except ImportError:
+    import io as StringIO
+
 import datetime
 import inspect
 import os
 import re
 import subprocess
 import sys
-import thread
+
+try:
+    import thread
+except ImportError:
+    import _thread as thread
+
 import time
 import uuid
 from multiprocessing import Event, Process
