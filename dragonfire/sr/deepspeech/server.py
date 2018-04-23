@@ -1,6 +1,6 @@
 from django.apps import AppConfig
 from deepspeech.model import Model
-import config
+from .config import ConfigDeepSpeech
 
 # These constants control the beam search decoder
 
@@ -31,7 +31,7 @@ N_CONTEXT = 9
 
 class SpeechServerMain(AppConfig):
     name = 'speech_server_main'
-    conf = config.ConfigDeepSpeech()
+    conf = ConfigDeepSpeech()
     model = conf.get_config('model')
     alphabet = conf.get_config('alphabet')
     lm = conf.get_config('lm')
