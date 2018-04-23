@@ -14,8 +14,8 @@ from threading import Thread
 import pyaudio  # Provides Python bindings for PortAudio, the cross platform audio API
 from dragonfire import VirtualAssistant
 
-from config import ConfigDeepSpeech
-from server import SpeechServerMain
+from .config import ConfigDeepSpeech
+from .server import SpeechServerMain
 import numpy as np
 
 CHUNK = 8000  # Smallest unit of audio. 1024 bytes
@@ -88,7 +88,9 @@ class DeepSpeechRecognizer():
                     com = SpeechServerMain.ds.stt(audio, RATE)
                     stream.start_stream()
                     print(com)
-
+                    t = Thread(
+                        target=VirtualAssistant.command, args=(com, args))
+                    t.start()
                     self.reset()
 
                 data = stream.read(CHUNK)  # Read a new chunk from the stream

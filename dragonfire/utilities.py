@@ -45,6 +45,21 @@ class TTA:
         #   self.say(self.message)
         # else:
 
+    def define_and_execute(self, com="", msg="", sp="False", duration=0):
+        self.command = com
+        self.message = msg
+        self.speak = sp
+        try:
+            subprocess.Popen(["notify-send", "Dragonfire", self.message])
+        except BaseException:
+            pass
+        if self.command != "":
+            time.sleep(duration)
+            try:
+                subprocess.Popen(self.command, stdout=FNULL, stderr=FNULL)
+            except BaseException:
+                pass
+
     def say(self, message, dynamic=False, end=False):
         # if songRunning == True:
         #   subprocess.Popen(["rhythmbox-client","--pause"])
@@ -71,7 +86,7 @@ class TTA:
                 stderr=FNULL,
                 shell=True)
             message = "".join([i if ord(i) < 128 else ' ' for i in message])
-            tts_proc.stdin.write(message)
+            tts_proc.stdin.write(message.encode())
             tts_proc.stdin.close()
             # print "TTS process started."
 

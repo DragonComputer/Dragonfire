@@ -81,8 +81,8 @@ def start(args):
             time.sleep(0.5)
     else:
         os.environ["GST_PLUGIN_PATH"] = "/usr/share/kaldi/src/gst-plugin"
-        from dragonfire.sr import KaldiRecognizer
-        recognizer = KaldiRecognizer()
+        from dragonfire.sr.deepspeech import DeepSpeechRecognizer
+        recognizer = DeepSpeechRecognizer()
         recognizer.recognize(args)
 
 
@@ -556,7 +556,7 @@ def dragon_greet():
 
     command = "getent passwd $LOGNAME | cut -d: -f5 | cut -d, -f1"
     user_full_name = os.popen(command).read()
-    user_full_name = user_full_name[:-1].decode("utf8")
+    user_full_name = user_full_name[:-1]#.decode("utf8")
     home = expanduser("~")
     config_file = TinyDB(home + '/.dragonfire_config.json')
     callme_config = config_file.search(Query().datatype == 'callme')
