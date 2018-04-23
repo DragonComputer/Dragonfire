@@ -6,7 +6,6 @@ class ConfigDeepSpeech:
 
     #@lru_cache(maxsize=32)
     def get_config(self, key):
-        print('inside module')
         module_dir = os.path.dirname(__file__)  # get current directory
         file_path = os.path.join(module_dir, 'config.json')
 
