@@ -59,7 +59,7 @@ class DeepSpeechRecognizer():
                 CHUNK)  # Get first data frame from the microphone
             # Loop over the frames of the audio / data chunks
             audio = None
-            print("START LISTENNING")
+            #print("START LISTENNING")
             while data != '':
                 rms = audioop.rms(
                     data, 2)  # Calculate Root Mean Square of current chunk
@@ -82,12 +82,12 @@ class DeepSpeechRecognizer():
                         else:  # Else
                             silence_counter = 0  # Assign zero value to silence counter
 
-                    print("Analyzing...")
+                    #print("Analyzing...")
                     stream.stop_stream()
                     audio = np.fromstring(audio, dtype=np.int16) # Fix data type
                     com = SpeechServerMain.ds.stt(audio, RATE)
                     stream.start_stream()
-                    print(com)
+                    #print(com)
                     t = Thread(
                         target=VirtualAssistant.command, args=(com, args))
                     t.start()

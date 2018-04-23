@@ -49,7 +49,7 @@ class Learn():
 
         # Command(user's speech) must be decoded from utf-8 to unicode because
         # spaCy only supports unicode strings, self.nlp() handles all parsing
-        doc = self.nlp(com.decode('utf-8'))
+        doc = self.nlp(com)
         # subject list (subjects here usually are; I'M, YOU, HE, SHE, IT, etc.)
         subject = []
         prev_type = None  # type of the previous noun phrase
@@ -89,6 +89,7 @@ class Learn():
                     subject.append(np.text.encode(
                         'utf-8'))  # append the text of this noun phrase
                 prev_type = 'attr'
+        subject = [x.decode('utf-8') for x in subject]
         subject = ' '.join(
             subject).strip()  # concatenate all noun phrases found
         if subject:  # if the subject is not empty
@@ -119,6 +120,7 @@ class Learn():
                         verb_found = True  # verb is found
                         verbtense = word.text.encode(
                             'utf-8')  # append it to verbtense
+                clause = [x.decode('utf-8') for x in clause]
                 clause = ' '.join(clause).strip()  # concatenate the clause
                 return self.db_setter(subject, verbtense, clause,
                                       com)  # set the record to the database
@@ -150,7 +152,7 @@ class Learn():
             else:
                 answer = subject  # the answer we will return
             first_verbtense = False
-            for key, value in dictionary.iteritems(
+            for key, value in dictionary.items(
             ):  # iterate over the dictionary defined and assigned on above
                 if not first_verbtense:  # if the first verbtense assignment does not made yet
                     answer += ' ' + str(key)  # concatenate with a whitespace
@@ -191,7 +193,7 @@ class Learn():
         result = []
         for word in answer.split():  # for each word in the answer
             replaced = False
-            for key, value in self.replacements.iteritems(
+            for key, value in self.replacements.items(
             ):  # iterate over the replacements
                 if word == key:  # if the word is equal to key
                     result.append(value)  # append the value
@@ -212,7 +214,7 @@ class Learn():
         result = []
         for word in answer.split():  # for each word in the answer
             replaced = False
-            for value, key in self.replacements.iteritems(
+            for value, key in self.replacements.items(
             ):  # invert the process above
                 if word == key:  # if the word is equal to key
                     result.append(value)  # append the value
