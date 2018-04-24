@@ -62,7 +62,7 @@ class Engine():
 
         # Command(user's speech) must be decoded from utf-8 to unicode because
         # spaCy only supports unicode strings, self.nlp() handles all parsing
-        doc = self.nlp(com.decode('utf-8'))
+        doc = self.nlp(com)
         query = subject  # Wikipedia search query (same as the subject)
         # This is where the real search begins
         if query:  # If there is a Wikipedia query determined
@@ -228,7 +228,7 @@ class Engine():
                 # unique dictionary. High frequency means high score
                 frequency = collections.Counter(findings)
                 max_freq = max(frequency.values())  # max occurrence
-                for key, value in frequency.iteritems(
+                for key, value in frequency.items(
                 ):  # iterate over the unique dictionary
                     # divide the occurence by max occurence to find the real
                     # frequency value
@@ -275,7 +275,7 @@ class Engine():
                         proximity[all_entities[i]] = 0  # give it a zero score
 
                 ranked = {}  # the eventual ranking/scoring
-                for key, value in frequency.iteritems(
+                for key, value in frequency.items(
                 ):  # iterate over the all findings (frequency, precedence, proximity, mention all of them holds all findings)
                     if key not in query:  # eliminate the findings that already inside of the Wikipedia query
                         ranked[key] = (value * self.coefficient['frequency'] +
@@ -344,7 +344,7 @@ class Engine():
                 subject.append(
                     word.text.lower())  # convert it to lowercase and append it
         entity_scores = {}  # empty dictionary to hold entity scores
-        for entity, samples in entity_samples_map.iteritems(
+        for entity, samples in entity_samples_map.items(
         ):  # iterate over the entity_samples_map
             entity_scores[entity] = 0  # initial score of the entity is 0
             for sample in samples:  # for each sample in the samples
@@ -417,7 +417,7 @@ class Engine():
     # subordinating or preposition and space)
     def phrase_cleaner(self, phrase):
         clean_phrase = []
-        for word in self.nlp(phrase.decode('utf-8')):
+        for word in self.nlp(phrase):
             if word.pos_ not in [
                     'PUNCT', 'SYM', 'X', 'CONJ', 'DET', 'ADP', 'SPACE'
             ]:
@@ -428,7 +428,7 @@ class Engine():
     def semantic_extractor(self, string):
         # The string must be decoded from utf-8 to unicode because spaCy only
         # supports unicode strings, self.nlp() handles all parsing
-        doc = self.nlp(string.decode('utf-8'))
+        doc = self.nlp(string)
         # Wikipedia search query variable definition (the subject)
         the_subject = None
         # Followings are lists because it could be multiple of them in a
@@ -456,6 +456,9 @@ class Engine():
         # This block determines the Wikipedia query (the subject) by relying on
         # this priority: [Object of a preposition] > [Subject] > [Direct
         # object]
+        pobjects = [x.decode('utf-8') for x in pobjects]
+        subjects = [x.decode('utf-8') for x in subjects]
+        dobjects = [x.decode('utf-8') for x in dobjects]
         if pobjects:
             the_subject = ' '.join(pobjects)
         elif subjects:
