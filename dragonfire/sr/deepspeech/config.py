@@ -1,25 +1,25 @@
 import os
 import json
-#from functools import lru_cache
 
 class ConfigDeepSpeech:
 
-    #@lru_cache(maxsize=32)
     def get_config(self, key):
-        module_dir = os.path.dirname(__file__)  # get current directory
-        file_path = os.path.join(module_dir, 'config.json')
+        config = {}
+        config['model'] = "/usr/share/deepspeech/models/output_graph.pb"
+        config['alphabet'] = "/usr/share/deepspeech/models/alphabet.txt"
+        config['lm'] = "/usr/share/deepspeech/models/lm.binary"
+        config['trie'] = "/usr/share/deepspeech/models/trie"
+        config['audiofiledir'] = "/usr/share/deepspeech/audio/"
+        config['audiofilelength'] = "10"
+        config['debug'] = "1"
 
-        with open(file_path, 'r') as f:
-            config = json.load(f)
-
-        ds_config = config['deepspeech']
-        model = ds_config['model']
-        alphabet = ds_config['alphabet']
-        lm = ds_config['lm']
-        trie = ds_config['trie']
-        audiofiledir = ds_config['audiofiledir']
-        audiofilelength = ds_config['audiofilelength']
-        debug = ds_config['debug']
+        model = config['model']
+        alphabet = config['alphabet']
+        lm = config['lm']
+        trie = config['trie']
+        audiofiledir = config['audiofiledir']
+        audiofilelength = config['audiofilelength']
+        debug = config['debug']
         if key == 'model':
             return model
         elif key == 'alphabet':
