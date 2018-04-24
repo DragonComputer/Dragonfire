@@ -4,37 +4,16 @@ RED='\033[0;31m'
 GREEN='\033[0;32m'
 NC='\033[0m' # No Color
 
-KALDI_DIRECTORY=/usr/share/kaldi
+DEEPSPEECH_DIR=/usr/share/deepspeech
 
-AVAILABLE_CORES=$(getconf _NPROCESSORS_ONLN)
-if ! [[ $AVAILABLE_CORES =~ ^-?[0-9]+$ ]] || ! [ $AVAILABLE_CORES -gt 0 ]; then
-  AVAILABLE_CORES=1
+if [ ! -d "$DEEPSPEECH_DIR" ]; then
+  mkdir $DEEPSPEECH_DIR
 fi
-if [ $AVAILABLE_CORES -gt 1 ]; then
-  AVAILABLE_CORES=$(expr $AVAILABLE_CORES - 1)
+if [ ! -d "${DEEPSPEECH_DIR}/models" ]; then
+  cd $DEEPSPEECH_DIR
+  wget -nc -O - https://github.com/mozilla/DeepSpeech/releases/download/v0.1.1/deepspeech-0.1.1-models.tar.gz | tar xvfz -
 fi
 
-if [ -d "$KALDI_DIRECTORY" ]; then
-  rm -rf $KALDI_DIRECTORY
-fi
-mkdir $KALDI_DIRECTORY
-cd $KALDI_DIRECTORY
-git clone https://github.com/kaldi-asr/kaldi.git .
 
-cd tools/
-extras/check_dependencies.sh
-make -j $AVAILABLE_CORES
-
-cd ../
-cd src/
-./configure --shared
-make depend -j $AVAILABLE_CORES
-make -j $AVAILABLE_CORES
-
-make ext -j $AVAILABLE_CORES
-cd gst-plugin/
-make depend -j $AVAILABLE_CORES
-make -j $AVAILABLE_CORES
-
-pip install wikipedia PyUserInput tinydb youtube_dl spacy pyowm && sudo pip install -U PyAudio && python -m spacy download en \
-&& printf "import nltk\nnltk.download('names')\nnltk.download('brown')\nnltk.download('wordnet')" | python && echo -e "\n\n${GREEN}Dragonfire is successfully installed to your computer.${NC}\n"
+pip3 install wikipedia PyUserInput tinydb youtube_dl spacy pyowm && pip3 install -U PyAudio && python3 -m spacy download en \
+&& printf "import nltk\nnltk.download('names')\nnltk.download('brown')\nnltk.download('wordnet')" | python3 && echo -e "\n\n${GREEN}Dragonfire is successfully installed to your computer.${NC}\n"

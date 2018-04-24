@@ -1,2 +1,2 @@
-KALDI_DIRECTORY=/usr/share/kaldi
-rm -rf $KALDI_DIRECTORY
+DEEPSPEECH_DIR=/usr/share/deepspeech
+rm -rf $DEEPSPEECH_DIR
