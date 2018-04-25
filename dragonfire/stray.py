@@ -4,7 +4,7 @@ import os
 
 import gi
 gi.require_version('Gtk', '3.0')
-from gi.repository import Gtk as gtk
+from gi.repository import Gtk
 
 TRAY_TOOLTIP = 'System Tray Icon'
 TRAY_ICON = '/usr/share/icons/hicolor/48x48/apps/dragonfire_icon.png'
@@ -16,41 +16,36 @@ global_event_holder = ''
 class SystemTrayIcon:
 
     def __init__(self):
-        self.icon = gtk.StatusIcon()
+        self.icon = Gtk.StatusIcon()
+        self.icon.set_title("Dragonfire")
         if os.path.isfile(TRAY_ICON):
             self.icon.set_from_file(TRAY_ICON)
         else:
             self.icon.set_from_file(DEVELOPMENT_DIR + TRAY_ICON_ALT)
-        self.icon.connect('popup-menu', self.on_right_click)
-        gtk.main()
+        self.icon.connect('popup-menu', self.popup_menu)
+        Gtk.main()
 
     def exit(self, data=None):
-        gtk.main_quit()
+        Gtk.main_quit()
+        global global_event_holder
         global_event_holder.set()
 
-    def make_menu(self, event_button, event_time, data=None):
-        menu = gtk.Menu()
-        dragon_item = gtk.MenuItem("Dragonfire")
-        sep_item = gtk.SeparatorMenuItem()
-        exit_item = gtk.MenuItem("Exit")
+    def popup_menu(self, icon, button, time):
+        self.menu = Gtk.Menu()
 
-        #Append the menu items
-        menu.append(dragon_item)
-        menu.append(sep_item)
-        menu.append(exit_item)
-        #add callbacks
-        exit_item.connect_object("activate", exit, "Exit")
-        #Show the menu items
-        dragon_item.show()
-        dragon_item.set_sensitive(False)
-        sep_item.show()
-        exit_item.show()
+        menuitemDragonfire = Gtk.MenuItem(label="Dragonfire")
+        self.menu.append(menuitemDragonfire)
+        menuitemDragonfire.set_sensitive(False)
 
-        #Popup the menu
-        menu.popup(None, None, None, None, event_button, event_time)
+        menuitemSeperator = Gtk.SeparatorMenuItem()
+        self.menu.append(menuitemSeperator)
 
-    def on_right_click(self, data, event_button, event_time):
-        self.make_menu(event_button, event_time)
+        menuitemExit = Gtk.MenuItem(label="Exit")
+        menuitemExit.connect_object("activate", self.exit, "Exit")
+        self.menu.append(menuitemExit)
+        self.menu.show_all()
+
+        self.menu.popup(None, None, None, None, button, time)
 
 
 def SystemTrayExitListenerSet(e):

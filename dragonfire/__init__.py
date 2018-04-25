@@ -69,11 +69,6 @@ except NameError:
 
 def start(args):
 
-    global e
-
-    if (e.is_set()):  # System Tray Icon exit must trigger this
-        raise KeyboardInterrupt
-
     if args["cli"]:
         while (True):
             com = raw_input("Enter your command: ")
@@ -154,6 +149,10 @@ class VirtualAssistant():
     @staticmethod
     def command(com, args):
 
+        global e
+        if (e.is_set()):  # System Tray Icon exit must trigger this
+            exit(0)
+
         if not com or not isinstance(com, str):
             return False
 
@@ -163,7 +162,6 @@ class VirtualAssistant():
         global user_full_name
         global user_prefix
         global config_file
-        global e
 
         com = com.upper()
         print("You: " + com)
