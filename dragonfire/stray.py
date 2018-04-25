@@ -1,74 +1,49 @@
 from __future__ import print_function
-import wx
+import sys
 import os
-try:
-    import wx.adv
-except:
-    pass
 
-TRAY_TOOLTIP = 'System Tray Demo'
+if sys.version_info[0] < 3:
+    import gtk
+else:
+    import gi
+    gi.require_version('Gtk', '3.0')
+    from gi.repository import Gtk as gtk
+
+TRAY_TOOLTIP = 'System Tray Icon'
 TRAY_ICON = '/usr/share/icons/hicolor/48x48/apps/dragonfire_icon.png'
 TRAY_ICON_ALT = 'debian/dragonfire_icon.png'
 DEVELOPMENT_DIR = os.path.abspath(
     os.path.join(os.path.dirname(os.path.realpath(__file__)), os.pardir)) + '/'
 global_event_holder = ''
 
-try:
-    TBI = wx.TaskBarIcon
-except AttributeError:
-    TBI = wx.adv.TaskBarIcon
 
+def exit(data=None):
+    gtk.main_quit()
+    global_event_holder.set()
 
-def create_menu_item(menu, label, func):
-    item = wx.MenuItem(menu, -1, label)
-    menu.Bind(wx.EVT_MENU, func, id=item.GetId())
-    menu.AppendItem(item)
-    return item
+def make_menu(event_button, event_time, data=None):
+    menu = gtk.Menu()
+    dragon_item = gtk.MenuItem("Dragonfire")
+    sep_item = gtk.SeparatorMenuItem()
+    exit_item = gtk.MenuItem("Exit")
 
+    #Append the menu items
+    menu.append(dragon_item)
+    menu.append(sep_item)
+    menu.append(exit_item)
+    #add callbacks
+    exit_item.connect_object("activate", exit, "Exit")
+    #Show the menu items
+    dragon_item.show()
+    dragon_item.set_sensitive(False)
+    sep_item.show()
+    exit_item.show()
 
-class TaskBarIcon(TBI):
-    def __init__(self, frame):
-        self.frame = frame
-        super(TaskBarIcon, self).__init__()
-        try:
-            self.set_icon(TRAY_ICON)
-        except BaseException:
-            self.set_icon(DEVELOPMENT_DIR + TRAY_ICON_ALT)
-        self.Bind(wx.EVT_TASKBAR_LEFT_DOWN, self.on_left_down)
+    #Popup the menu
+    menu.popup(None, None, None, event_button, event_time)
 
-    def CreatePopupMenu(self):
-        menu = wx.Menu()
-        menu_title = wx.MenuItem(menu, 0, 'Dragonfire')
-        menu.AppendItem(menu_title)
-        menu.Enable(menu_title.Id, enable=False)
-        # create_menu_item(menu, 'Say Hello', self.on_hello)
-        menu.AppendSeparator()
-        create_menu_item(menu, 'Exit', self.on_exit)
-        return menu
-
-    def set_icon(self, path):
-        icon = wx.IconFromBitmap(wx.Bitmap(path))
-        self.SetIcon(icon, TRAY_TOOLTIP)
-
-    def on_left_down(self, event):
-        print('Tray icon was left-clicked.')
-
-    def on_hello(self, event):
-        print('Hello, world!')
-
-    def on_exit(self, event):
-        wx.CallAfter(self.Destroy)
-        self.frame.Close()
-        global_event_holder.set()
-
-
-class App(wx.App):
-    def OnInit(self):
-        frame = wx.Frame(None)
-        self.SetTopWindow(frame)
-        TaskBarIcon(frame)
-        return True
-
+def on_right_click(data, event_button, event_time):
+    make_menu(event_button, event_time)
 
 def SystemTrayExitListenerSet(e):
     global global_event_holder
@@ -78,8 +53,12 @@ def SystemTrayExitListenerSet(e):
 def SystemTrayInit():
     os.close(1)  # close C's stdout stream
     os.close(2)  # close C's stderr stream
-    app = App(False)
-    app.MainLoop()
+    if os.path.isfile(TRAY_ICON):
+        icon = gtk.status_icon_new_from_file(TRAY_ICON)
+    else:
+        icon = gtk.status_icon_new_from_file(DEVELOPMENT_DIR + TRAY_ICON_ALT)
+    icon.connect('popup-menu', on_right_click)
+    gtk.main()
 
 
 if __name__ == '__main__':
