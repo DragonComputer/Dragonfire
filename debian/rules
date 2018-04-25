@@ -2,3 +2,6 @@
 
 %:
 	dh $@ --with=python3
+
+override_dh_installman:
+	dh_installman debian/dragonfire.1
