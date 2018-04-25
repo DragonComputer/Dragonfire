@@ -260,6 +260,7 @@ static PyMethodDef realhud_funcs[] = {
     {NULL}
 };
 
+#if PY_MAJOR_VERSION >= 3
 static struct PyModuleDef moduledef = {
     PyModuleDef_HEAD_INIT,
     "realhud", /* name of module */
@@ -271,6 +272,7 @@ static struct PyModuleDef moduledef = {
 PyMODINIT_FUNC PyInit_realhud(void) {
     return PyModule_Create(&moduledef);
 }
+#endif
 
 void initrealhud(void)
 {
