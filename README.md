@@ -24,22 +24,22 @@ Feel free to join [our Gitter chat room](https://gitter.im/DragonComputer/Lobby)
 
 #### Supported Environments
 
-|                         |                                   |
-|-------------------------|-----------------------------------|
-| **Operating systems**   | Linux                             |
-| **Python versions**     | Python 3.x (64-bit)               |
-| **Distros**             | KDE neon, elementary OS, Ubuntu   |
-| **Package managers**    | APT, pip                          |
-| **Languages**           | English                           |
-| **System requirements** | A decent GPU, 2GB free RAM        |
-|                         |                                   |
+|                         |                                         |
+|-------------------------|-----------------------------------------|
+| **Operating systems**   | Linux                                   |
+| **Python versions**     | Python 3.x (64-bit)                     |
+| **Distros**             | KDE neon, elementary OS, Ubuntu         |
+| **Package managers**    | APT, pip                                |
+| **Languages**           | English                                 |
+| **System requirements** | a [CUDA supported GPU](https://www.geforce.com/hardware/technology/cuda/supported-gpus), 2GB of free RAM   |
+|                         |                                         |
 
 ### Installation
 
 Download the [latest release](https://github.com/DragonComputer/Dragonfire/releases/latest) (the `.deb` file) and:
 
 ```Shell
-sudo dpkg -i dragonfire_0.9.7_amd64.deb
+sudo dpkg -i dragonfire_0.9.8_amd64.deb
 ```
 
 <sup><i>To install the dependencies run `sudo apt-get -f install` right after the `dpkg -i` command. The installation will automatically download the pre-trained English model of Mozilla DeepSpeech (1.31 GB download size) and will place it under `/usr/share/deepspeech/models` directory. You can manually [download the model](https://github.com/mozilla/DeepSpeech/releases/download/v0.1.1/deepspeech-0.1.1-models.tar.gz) if you want.</i></sup>

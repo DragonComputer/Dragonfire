@@ -53,15 +53,15 @@ We have an official [chat room on Gitter](https://gitter.im/DragonComputer/Lobby
 
 ## Getting Started
 
-|                         |                                   |
-|-------------------------|-----------------------------------|
-| **Operating systems**   | Linux                             |
-| **Python versions**     | Python 3.x (64-bit)               |
-| **Distros**             | KDE neon, elementary OS, Ubuntu   |
-| **Package managers**    | APT, pip                          |
-| **Languages**           | English                           |
-| **System requirements** | A decent GPU, 2GB free RAM        |
-|                         |                                   |
+|                         |                                         |
+|-------------------------|-----------------------------------------|
+| **Operating systems**   | Linux                                   |
+| **Python versions**     | Python 3.x (64-bit)                     |
+| **Distros**             | KDE neon, elementary OS, Ubuntu         |
+| **Package managers**    | APT, pip                                |
+| **Languages**           | English                                 |
+| **System requirements** | a [CUDA supported GPU](https://www.geforce.com/hardware/technology/cuda/supported-gpus), 2GB of free RAM   |
+|                         |                                         |
 
 **Supported Distributions:** KDE neon, elementary OS and Ubuntu. All modern releases (Ubuntu 12.04 LTS and above) of these distributions are fully supported. Any other Ubuntu based distributions are partially supported.
 
