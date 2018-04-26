@@ -56,11 +56,11 @@ We have an official [chat room on Gitter](https://gitter.im/DragonComputer/Lobby
 |                         |                                   |
 |-------------------------|-----------------------------------|
 | **Operating systems**   | Linux                             |
-| **Python versions**     | CPython 2.7, 3.6 (64-bit)         |
+| **Python versions**     | Python 3.x (64-bit)               |
 | **Distros**             | KDE neon, elementary OS, Ubuntu   |
 | **Package managers**    | APT, pip                          |
 | **Languages**           | English                           |
-| **System requirements** | Minimally 1 Core, 2GB free RAM    |
+| **System requirements** | A decent GPU, 2GB free RAM        |
 |                         |                                   |
 
 **Supported Distributions:** KDE neon, elementary OS and Ubuntu. All modern releases (Ubuntu 12.04 LTS and above) of these distributions are fully supported. Any other Ubuntu based distributions are partially supported.
@@ -261,7 +261,7 @@ All Python must adhere to [PEP 8](https://www.python.org/dev/peps/pep-0008/).
 Install build dependencies:
 
 ```
-sudo apt-get install debhelper python dh-virtualenv python-all-dev libglib2.0-dev libcairo2-dev libgtk2.0-dev python-wxgtk3.0
+sudo apt-get install debhelper python3 python3-all-dev libglib2.0-dev libcairo2-dev libgtk2.0-dev
 ```
 
 To building the Debian package simply run:
