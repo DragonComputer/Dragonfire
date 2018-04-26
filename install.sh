@@ -9,14 +9,16 @@ pip3 install .
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 NC='\033[0m' # No Color
+CHECKSUM="1449d83e0a0b834c033067bf62f06277"
 
 DEEPSPEECH_DIR=/usr/share/deepspeech
 
 if [ ! -d "$DEEPSPEECH_DIR" ]; then
   mkdir $DEEPSPEECH_DIR
 fi
-if [ ! -d "${DEEPSPEECH_DIR}/models" ]; then
-  cd $DEEPSPEECH_DIR
+cd $DEEPSPEECH_DIR
+verified=$(md5sum models/* | md5sum)
+if [ ! ${verified::-3} = "$CHECKSUM" ]; then
   wget -nc -O - https://github.com/mozilla/DeepSpeech/releases/download/v0.1.1/deepspeech-0.1.1-models.tar.gz | tar xvfz -
 fi
 
