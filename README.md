@@ -18,7 +18,7 @@ Dragonfire goes through these steps for each one of your commands, respectively:
 
 <br>
 
-Dragonfire uses [Kaldi Speech Recognition Toolkit](https://github.com/kaldi-asr/kaldi) to understand your voice commands and [Festival Speech Synthesis System](http://www.cstr.ed.ac.uk/projects/festival/) to handle text-to-speech tasks.
+Dragonfire uses [Mozilla DeepSpeech](https://github.com/mozilla/DeepSpeech) to understand your voice commands and [Festival Speech Synthesis System](http://www.cstr.ed.ac.uk/projects/festival/) to handle text-to-speech tasks.
 
 Feel free to join [our Gitter chat room](https://gitter.im/DragonComputer/Lobby).
 
@@ -27,11 +27,11 @@ Feel free to join [our Gitter chat room](https://gitter.im/DragonComputer/Lobby)
 |                         |                                   |
 |-------------------------|-----------------------------------|
 | **Operating systems**   | Linux                             |
-| **Python versions**     | CPython 2.7, 3.6 (64-bit)         |
+| **Python versions**     | Python 3.x (64-bit)               |
 | **Distros**             | KDE neon, elementary OS, Ubuntu   |
 | **Package managers**    | APT, pip                          |
 | **Languages**           | English                           |
-| **System requirements** | Minimally 1 Core, 2GB free RAM    |
+| **System requirements** | A decent GPU, 2GB free RAM        |
 |                         |                                   |
 
 ### Installation
@@ -42,7 +42,7 @@ Download the [latest release](https://github.com/DragonComputer/Dragonfire/relea
 sudo dpkg -i dragonfire_0.9.7_amd64.deb
 ```
 
-<sup><i>To install the dependencies run `sudo apt-get -f install` right after the `dpkg -i` command. The installation will take roughly 20-30 minutes because it will compile and install [Kaldi](https://github.com/kaldi-asr/kaldi) under `/usr/share/kaldi` directory.</i></sup>
+<sup><i>To install the dependencies run `sudo apt-get -f install` right after the `dpkg -i` command. The installation will automatically download the pre-trained English model of Mozilla DeepSpeech (1.31 GB download size) and will place it under `/usr/share/deepspeech/models` directory. You can manually [download the model](https://github.com/mozilla/DeepSpeech/releases/download/v0.1.1/deepspeech-0.1.1-models.tar.gz) if you want.</i></sup>
 
 ### Usage
 
@@ -139,23 +139,23 @@ WHAT'S THE TEMPERATURE IN *
 |                                                                   |                                                                             |
 |-------------------------------------------------------------------|-----------------------------------------------------------------------------|
 | **You:** `WHERE IS THE TIMES SQUARE`                              | **You:** `WHEN WAS CONSTANTINOPLE CONQUERED`                                |
-| **Dragonfire:** `PLEASE WAIT... NEW YORK CITY` :white_check_mark: | **Dragonfire:** `PLEASE WAIT... 1453` :white_check_mark:                    |
+| **Dragonfire:** `PLEASE WAIT... NEW YORK CITY` :heavy_check_mark: | **Dragonfire:** `PLEASE WAIT... 1453` :heavy_check_mark:                    |
 | **You:** `WHAT IS THE HEIGHT OF BURJ KHALIFA`                     | **You:** `WHAT IS THE CAPITAL OF TURKEY`                                    |
 | **Dragonfire:** `PLEASE WAIT... 1,680 FT` :no_entry:              | **Dragonfire:** `PLEASE WAIT... ISTANBUL` :no_entry:                        |
 | **You:** `WHERE IS BURJ KHALIFA`                                  | **You:** `WHAT IS THE LARGEST CITY OF TURKEY`                               |
-| **Dragonfire:** `PLEASE WAIT... DUBAI` :white_check_mark:         | **Dragonfire:** `PLEASE WAIT... ISTANBUL` :white_check_mark:                |
+| **Dragonfire:** `PLEASE WAIT... DUBAI` :heavy_check_mark:         | **Dragonfire:** `PLEASE WAIT... ISTANBUL` :heavy_check_mark:                |
 | **You:** `WHAT IS THE HEIGHT OF GREAT PYRAMID OF GIZA`            | **You:** `WHAT IS THE NAME OF THE WORLD'S BEST UNIVERSITY`                  |
-| **Dragonfire:** `PLEASE WAIT... (481 FEET` :white_check_mark:     | **Dragonfire:** `PLEASE WAIT... UNIVERSITIES ALUMNI ASSOCIATION` :no_entry: |
+| **Dragonfire:** `PLEASE WAIT... (481 FEET` :heavy_check_mark:     | **Dragonfire:** `PLEASE WAIT... UNIVERSITIES ALUMNI ASSOCIATION` :no_entry: |
 | **You:** `WHO IS PLAYING JON SNOW IN GAME OF THRONES`             | **You:** `WHO INVENTED GENERAL RELATIVITY`                                  |
-| **Dragonfire:** `PLEASE WAIT... NED` :no_entry:                   | **Dragonfire:** `PLEASE WAIT... EINSTEIN` :white_check_mark:                |
+| **Dragonfire:** `PLEASE WAIT... NED` :no_entry:                   | **Dragonfire:** `PLEASE WAIT... EINSTEIN` :heavy_check_mark:                |
 | **You:** `WHAT IS THE ATOMIC NUMBER OF OXYGEN`                    | **You:** `WHEN WAS UNITED NATIONS FORMED`                                   |
-| **Dragonfire:** `PLEASE WAIT... 8` :white_check_mark:             | **Dragonfire:** `PLEASE WAIT... 2017` :no_entry:                            |
+| **Dragonfire:** `PLEASE WAIT... 8` :heavy_check_mark:             | **Dragonfire:** `PLEASE WAIT... 2017` :no_entry:                            |
 | **You:** `WHAT IS THE LOWEST POINT IN THE OCEAN`                  | **You:** `WHAT IS THE NAME OF THE WORLD'S LONGEST RIVER`                    |
-| **Dragonfire:** `PLEASE WAIT... EARTH` :no_entry:                 | **Dragonfire:** `PLEASE WAIT... AMAZON` :white_check_mark:                  |
+| **Dragonfire:** `PLEASE WAIT... EARTH` :no_entry:                 | **Dragonfire:** `PLEASE WAIT... AMAZON` :heavy_check_mark:                  |
 | **You:** `WHAT IS THE OFFICIAL LANGUAGE OF JAPAN`                 | **You:** `WHAT IS THE BRAND OF THE WORLD'S MOST EXPENSIVE CAR`              |
 | **Dragonfire:** `PLEASE WAIT... ENGLISH` :no_entry:               | **Dragonfire:** `PLEASE WAIT... MERCEDES-BENZ` :no_entry:                   |
 | **You:** `WHAT IS THE REAL NAME OF IRON MAN`                      | **You:** `WHAT IS THE BLOODIEST WAR IN HUMAN HISTORY`                       |
-| **Dragonfire:** `PLEASE WAIT... STARK` :white_check_mark:         | **Dragonfire:** `PLEASE WAIT... WORLD WAR II` :white_check_mark:            |
+| **Dragonfire:** `PLEASE WAIT... STARK` :heavy_check_mark:         | **Dragonfire:** `PLEASE WAIT... WORLD WAR II` :heavy_check_mark:            |
 | **You:** `WHO IS THE CONQUEROR OF CONSTANTINOPLE`                 | **You:** `WHAT IS THE NAME OF THE BEST SELLER BOOK`                         |
 | **Dragonfire:** `PLEASE WAIT... BYZANTIUM` :no_entry:             | **Dragonfire** `PLEASE WAIT... THE DISCIPLINE OF MARKET LEADERS` :no_entry: |
 |                                                                   |                                                                             |
