@@ -2,10 +2,6 @@ from __future__ import print_function
 import sys
 import os
 
-import gi
-gi.require_version('Gtk', '3.0')
-from gi.repository import Gtk
-
 TRAY_TOOLTIP = 'System Tray Icon'
 TRAY_ICON = '/usr/share/icons/hicolor/48x48/apps/dragonfire_icon.png'
 TRAY_ICON_ALT = 'debian/dragonfire_icon.png'
@@ -16,31 +12,36 @@ global_event_holder = ''
 class SystemTrayIcon:
 
     def __init__(self):
-        self.icon = Gtk.StatusIcon()
+        import gi
+        gi.require_version('Gtk', '3.0')
+        from gi.repository import Gtk
+        self.Gtk = Gtk
+
+        self.icon = self.Gtk.StatusIcon()
         self.icon.set_title("Dragonfire")
         if os.path.isfile(TRAY_ICON):
             self.icon.set_from_file(TRAY_ICON)
         else:
             self.icon.set_from_file(DEVELOPMENT_DIR + TRAY_ICON_ALT)
         self.icon.connect('popup-menu', self.popup_menu)
-        Gtk.main()
+        self.Gtk.main()
 
     def exit(self, data=None):
-        Gtk.main_quit()
+        self.Gtk.main_quit()
         global global_event_holder
         global_event_holder.set()
 
     def popup_menu(self, icon, button, time):
-        self.menu = Gtk.Menu()
+        self.menu = self.Gtk.Menu()
 
-        menuitemDragonfire = Gtk.MenuItem(label="Dragonfire")
+        menuitemDragonfire = self.Gtk.MenuItem(label="Dragonfire")
         self.menu.append(menuitemDragonfire)
         menuitemDragonfire.set_sensitive(False)
 
-        menuitemSeperator = Gtk.SeparatorMenuItem()
+        menuitemSeperator = self.Gtk.SeparatorMenuItem()
         self.menu.append(menuitemSeperator)
 
-        menuitemExit = Gtk.MenuItem(label="Exit")
+        menuitemExit = self.Gtk.MenuItem(label="Exit")
         menuitemExit.connect_object("activate", self.exit, "Exit")
         self.menu.append(menuitemExit)
         self.menu.show_all()
