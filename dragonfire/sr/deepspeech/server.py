@@ -1,4 +1,3 @@
-from django.apps import AppConfig
 from deepspeech.model import Model
 from .config import ConfigDeepSpeech
 
@@ -29,7 +28,7 @@ N_FEATURES = 26
 N_CONTEXT = 9
 
 
-class SpeechServerMain(AppConfig):
+class SpeechServerMain:
     name = 'speech_server_main'
     conf = ConfigDeepSpeech()
     model = conf.get_config('model')

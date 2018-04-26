@@ -110,7 +110,8 @@ setup(
     # requirements files see:
     # https://packaging.python.org/en/latest/requirements.html
     install_requires=[
-        'wikipedia', 'PyUserInput', 'tinydb', 'youtube_dl', 'spacy', 'pyowm'
+        'wikipedia', 'PyUserInput', 'tinydb', 'youtube_dl', 'spacy', 'pyowm',
+        'tensorflow-gpu', 'deepspeech-gpu'
     ],
 
     # List additional groups of dependencies here (e.g. development

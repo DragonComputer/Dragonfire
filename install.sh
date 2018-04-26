@@ -20,5 +20,5 @@ if [ ! -d "${DEEPSPEECH_DIR}/models" ]; then
   wget -nc -O - https://github.com/mozilla/DeepSpeech/releases/download/v0.1.1/deepspeech-0.1.1-models.tar.gz | tar xvfz -
 fi
 
-pip3 install wikipedia PyUserInput tinydb youtube_dl spacy pyowm && pip3 install -U PyAudio && python3 -m spacy download en \
+pip3 install wikipedia PyUserInput tinydb youtube_dl spacy pyowm tensorflow-gpu deepspeech-gpu && pip3 install -U PyAudio && python3 -m spacy download en \
 && printf "import nltk\nnltk.download('names')\nnltk.download('brown')\nnltk.download('wordnet')" | python3 && echo -e "\n\n${GREEN}Dragonfire is successfully installed to your computer.${NC}\n"

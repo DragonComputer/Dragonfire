@@ -25,8 +25,6 @@ RATE = 16000  # Bit Rate of audio stream / Frame Rate
 THRESHOLD = 1000  # Threshhold value for detecting stimulant
 SILENCE_DETECTION = 1  # Wait number of frames to decide whether it fell silent or not
 LISTENING = False
-ENGLISH_MODEL_PATH = os.path.dirname(
-    os.path.realpath(__file__)) + "/models/english/"
 
 
 class DeepSpeechRecognizer():
