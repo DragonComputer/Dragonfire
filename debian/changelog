@@ -1,3 +1,11 @@
+dragonfire (0.9.8) unstable; urgency=medium
+
+  * Migrated from Kaldi Speech Recognition Toolkit to Mozilla DeepSpeech
+  * Python3 compatibility improved
+  * System tray icon is now GTK+ based instead of wxPython
+
+ -- Mehmet Mert Yildiran <mehmetmertyildiran@gmail.com>  Thu, 26 Apr 2018 21:33:21 +0000
+
 dragonfire (0.9.7) unstable; urgency=medium
 
   * Python3 support added
