@@ -1,4 +1,18 @@
 #!/bin/bash
+OPTS=`getopt -o n --long no-model -- "$@"`
+if [ $? != 0 ] ; then echo "Failed parsing options." >&2 ; exit 1 ; fi
+eval set -- "$OPTS"
+
+NO_MODEL=false
+while true; do
+  case "$1" in
+    -n | --no-model ) NO_MODEL=true; shift ;;
+    -- ) shift; break ;;
+    * ) break ;;
+  esac
+done
+NO_MODEL=$NO_MODEL
+
 apt-get -y install python3 python3-all-dev libglib2.0-dev libcairo2-dev libgtk2.0-dev && \
 apt-get -y install python3-minimal ${misc:Pre-Depends} && \
 apt-get -y install ${python3:Depends} ${misc:Depends} flite python3-xlib portaudio19-dev python3-all-dev flac libnotify-bin python-egenix-mx-base-dev python3-lxml python3-nltk python3-pyaudio python3-httplib2 python3-pip libgstreamer1.0-dev gstreamer1.0-plugins-good gstreamer1.0-tools subversion libatlas-base-dev automake autoconf libtool && \
@@ -12,14 +26,15 @@ NC='\033[0m' # No Color
 CHECKSUM="1449d83e0a0b834c033067bf62f06277"
 
 DEEPSPEECH_DIR=/usr/share/deepspeech
-
-if [ ! -d "$DEEPSPEECH_DIR" ]; then
-  mkdir $DEEPSPEECH_DIR
-fi
-cd $DEEPSPEECH_DIR
-verified=$(md5sum models/* | md5sum)
-if [ ! ${verified::-3} = "$CHECKSUM" ]; then
-  wget -nc -O - https://github.com/mozilla/DeepSpeech/releases/download/v0.1.1/deepspeech-0.1.1-models.tar.gz | tar xvfz -
+if [ "$NO_MODEL" = false ] ; then
+    if [ ! -d "$DEEPSPEECH_DIR" ]; then
+      mkdir $DEEPSPEECH_DIR
+    fi
+    cd $DEEPSPEECH_DIR
+    verified=$(md5sum models/* | md5sum)
+    if [ ! ${verified::-3} = "$CHECKSUM" ]; then
+      wget -nc -O - https://github.com/mozilla/DeepSpeech/releases/download/v0.1.1/deepspeech-0.1.1-models.tar.gz | tar xvfz -
+    fi
 fi
 
 pip3 install wikipedia PyUserInput tinydb youtube_dl spacy pyowm tensorflow-gpu deepspeech-gpu && pip3 install -U PyAudio && python3 -m spacy download en \
