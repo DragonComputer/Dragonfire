@@ -44,6 +44,11 @@ from pykeyboard import PyKeyboard
 from pymouse import PyMouse
 from tinydb import Query, TinyDB
 
+from tweepy.streaming import StreamListener
+from tweepy import OAuthHandler
+from tweepy import Stream
+import json
+
 DRAGONFIRE_PATH = os.path.dirname(
     os.path.abspath(inspect.getfile(inspect.currentframe())))
 FNULL = open(os.devnull, 'w')
@@ -61,6 +66,12 @@ USER_ANSWERING = {
     'options': None
 }
 
+# Twitter Credentials
+CONSUMER_KEY = 'CONSUMER_KEY'
+CONSUMER_SECRET = 'CONSUMER_SECRET'
+ACCESS_KEY = 'ACCESS_KEY'
+ACCESS_SECRET = 'ACCESS_SECRET'
+
 try:
     raw_input  # Python 2
 except NameError:
@@ -69,7 +80,20 @@ except NameError:
 
 def start(args):
 
-    if args["cli"]:
+    if args["twitter"]:
+        userin.headless = True
+        userin.silent = True
+
+        auth = OAuthHandler(CONSUMER_KEY, CONSUMER_SECRET)
+        auth.set_access_token(ACCESS_KEY, ACCESS_SECRET)
+        #api = tweepy.API(auth)
+
+        print("Listening Twitter mentions...")
+        l = MentionListener()
+        stream = Stream(auth, l)
+        stream.filter(track=['NicolleDWallace'])
+        #api.update_status("Twitter API integration test")
+    elif args["cli"]:
         while (True):
             com = raw_input("Enter your command: ")
             thread.start_new_thread(VirtualAssistant.command, (com, args))
@@ -538,6 +562,27 @@ class VirtualAssistant():
                                     user_prefix)
 
 
+
+class MentionListener(StreamListener):
+    """ A listener handles tweets that are received from the stream.
+    This is a basic listener that just prints received tweets to stdout.
+
+    """
+    def on_data(self, data):
+        mention = json.loads(data)
+        #print(json.dumps(mention, indent=4, sort_keys=True))
+        if 'retweeted_status' not in mention:
+            tw_text = mention['text']
+            tw_user = mention['user']['screen_name']
+            print("\n@" + tw_user + " said:")
+            print(tw_text)
+            tw_text = tw_text.replace("@NicolleDWallace", "")
+        return True
+
+    def on_error(self, status):
+        print(status)
+
+
 def tts_kill():
     subprocess.call(["pkill", "flite"], stdout=FNULL, stderr=FNULL)
 
@@ -610,19 +655,24 @@ def initiate():
     ap.add_argument("-s", "--silent", help=help_msg, action="store_true")
     help_msg = "Headless mode. Do not display an avatar animation on the screen. Disable the female head model."
     ap.add_argument("--headless", help=help_msg, action="store_true")
+    help_msg = "Tweet-bot mode. Disable any audio functionality and become a Twitter integrated chatbot."
+    ap.add_argument("-t", "--twitter", help=help_msg, action="store_true")
     args = vars(ap.parse_args())
     global userin
     userin = TTA(args)
     try:
         global inactive
-        inactive = True
-        SystemTrayExitListenerSet(e)
-        stray_proc = Process(target=SystemTrayInit)
-        stray_proc.start()
-        dragon_greet()
+        inactive = False
+        if not args["twitter"]:
+            inactive = True
+            SystemTrayExitListenerSet(e)
+            stray_proc = Process(target=SystemTrayInit)
+            stray_proc.start()
+            dragon_greet()
         start(args)
     except KeyboardInterrupt:
-        stray_proc.terminate()
+        if not args["twitter"]:
+            stray_proc.terminate()
         sys.exit(1)
 
 
