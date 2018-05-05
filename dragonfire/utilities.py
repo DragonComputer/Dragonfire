@@ -9,6 +9,7 @@ import subprocess
 import time
 from multiprocessing import Pool
 from sys import stdout
+from random import randint
 
 import realhud
 
@@ -23,6 +24,9 @@ songRunning = False
 
 class TTA:
     def __init__(self, args):
+        self.command = None
+        self.message = None
+
         self.headless = args["headless"]
         self.silent = args["silent"]
         self.twitter = args["twitter"]
@@ -76,8 +80,13 @@ class TTA:
         if self.twitter:
             text = "@" + self.twitter_user + " " + message.upper()
             text = (text[:280]) if len(text) > 280 else text
+            if len(self.command) > 1:
+                if self.command[0] == "sensible-browser":
+                    text = text[:((len(self.command[1])+1)*(-1))] + " " + self.command[1]
             try:
                 self.twitter_api.update_status(text)
+                if randint(1,3) == 1:
+                    self.twitter_api.create_friendship(self.twitter_user, follow=True)
             except TweepError as e:
                 print("Warning: " + e.response.text)
             return True
