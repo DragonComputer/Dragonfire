@@ -12,6 +12,8 @@ from sys import stdout
 
 import realhud
 
+from tweepy.error import TweepError
+
 DRAGONFIRE_PATH = os.path.dirname(
     os.path.abspath(inspect.getfile(inspect.currentframe())))
 FNULL = open(os.devnull, 'w')
@@ -23,6 +25,12 @@ class TTA:
     def __init__(self, args):
         self.headless = args["headless"]
         self.silent = args["silent"]
+        self.twitter = args["twitter"]
+        if self.twitter:
+            self.headless = True
+            self.silent = True
+        self.twitter_api = None
+        self.twitter_user = None
         realhud.load_gif(DRAGONFIRE_PATH + "/realhud/animation/avatar.gif")
 
     def define(self, com="", msg="", sp="False"):
@@ -31,6 +39,8 @@ class TTA:
         self.speak = sp
 
     def execute(self, duration):
+        if self.twitter:
+            return True
         try:
             subprocess.Popen(["notify-send", "Dragonfire", self.message])
         except BaseException:
@@ -49,6 +59,8 @@ class TTA:
         self.command = com
         self.message = msg
         self.speak = sp
+        if self.twitter:
+            return True
         try:
             subprocess.Popen(["notify-send", "Dragonfire", self.message])
         except BaseException:
@@ -61,6 +73,12 @@ class TTA:
                 pass
 
     def say(self, message, dynamic=False, end=False):
+        if self.twitter:
+            try:
+                self.twitter_api.update_status("@" + self.twitter_user + " " + message.upper())
+            except TweepError as e:
+                print("Warning: " + e.response.text)
+            return True
         # if songRunning == True:
         #   subprocess.Popen(["rhythmbox-client","--pause"])
         if len(message) < 10000:
