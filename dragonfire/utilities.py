@@ -74,8 +74,10 @@ class TTA:
 
     def say(self, message, dynamic=False, end=False):
         if self.twitter:
+            text = "@" + self.twitter_user + " " + message.upper()
+            text = (text[:280]) if len(text) > 280 else text
             try:
-                self.twitter_api.update_status("@" + self.twitter_user + " " + message.upper())
+                self.twitter_api.update_status(text)
             except TweepError as e:
                 print("Warning: " + e.response.text)
             return True
