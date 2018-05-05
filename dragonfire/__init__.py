@@ -92,7 +92,7 @@ def start(args):
         print("Listening Twitter mentions...")
         l = MentionListener()
         stream = Stream(auth, l)
-        stream.filter(track=['DragonfireAI'])
+        stream.filter(track=['DragonfireAI'], async=True)
     elif args["cli"]:
         while (True):
             com = raw_input("Enter your command: ")
@@ -579,6 +579,8 @@ class MentionListener(StreamListener):
         if 'retweeted_status' not in mention:
             tw_text = mention['text']
             tw_user = mention['user']['screen_name']
+            if tw_user == "DragonfireAI":
+                return True
             user_full_name = mention['user']['name']
             user_prefix = mention['user']['name'].split()[0]
             print("\n@" + tw_user + " said:")
