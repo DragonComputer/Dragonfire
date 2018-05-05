@@ -583,7 +583,8 @@ class MentionListener(StreamListener):
             user_prefix = mention['user']['name'].split()[0]
             print("\n@" + tw_user + " said:")
             print(tw_text)
-            tw_text = tw_text.replace("@DragonfireAI", "").strip()
+            tw_text = tw_text.replace("@DragonfireAI", "")
+            tw_text = re.sub(r'([^\s\w]|_)+', '', tw_text).strip()
             thread.start_new_thread(VirtualAssistant.command, (tw_text, global_args, tw_user))
         return True
 
