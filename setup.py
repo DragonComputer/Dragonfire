@@ -121,7 +121,7 @@ setup(
     extras_require={
         'optionals': [
             'egenix-mx-base', 'lxml', 'nltk', 'pyaudio', 'httplib2>=0.9.1',
-            'imutils', 'pyqtgraph', 'PeakUtils', 'tweepy'
+            'imutils', 'pyqtgraph', 'PeakUtils', 'tweepy', 'metadata_parser'
         ]
     },
 
