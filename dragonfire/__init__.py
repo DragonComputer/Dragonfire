@@ -47,6 +47,7 @@ from tinydb import Query, TinyDB
 from tweepy.streaming import StreamListener
 from tweepy import OAuthHandler
 from tweepy import Stream
+import tweepy
 import json
 
 DRAGONFIRE_PATH = os.path.dirname(
@@ -58,6 +59,7 @@ userin = None
 learn_ = Learn()
 omniscient_ = Engine()
 e = Event()
+global_args = None
 
 USER_ANSWERING = {
     'status': False,
@@ -81,18 +83,16 @@ except NameError:
 def start(args):
 
     if args["twitter"]:
-        userin.headless = True
-        userin.silent = True
+        global_args = args
 
         auth = OAuthHandler(CONSUMER_KEY, CONSUMER_SECRET)
         auth.set_access_token(ACCESS_KEY, ACCESS_SECRET)
-        #api = tweepy.API(auth)
+        userin.twitter_api = tweepy.API(auth)
 
         print("Listening Twitter mentions...")
         l = MentionListener()
         stream = Stream(auth, l)
-        stream.filter(track=['NicolleDWallace'])
-        #api.update_status("Twitter API integration test")
+        stream.filter(track=['DragonfireAI'])
     elif args["cli"]:
         while (True):
             com = raw_input("Enter your command: ")
@@ -170,7 +170,7 @@ class VirtualAssistant():
         return False  # not yet implemented
 
     @staticmethod
-    def command(com, args):
+    def command(com, args, tw_user=None):
 
         global e
         if (e.is_set()):  # System Tray Icon exit must trigger this
@@ -185,6 +185,8 @@ class VirtualAssistant():
         global user_full_name
         global user_prefix
         global config_file
+
+        userin.twitter_user = tw_user
 
         com = com.upper()
         print("You: " + com)
@@ -258,9 +260,9 @@ class VirtualAssistant():
             print("Dragonfire quiets.")
             tts_kill()
         elif VirtualAssistant.exact_match(com):
-            pass  # the request has been handled
+            return True  # the request has been handled
         elif VirtualAssistant.in_match(com):
-            pass  # the request has been handled
+            return True  # the request has been handled
         elif ("SEARCH" in com
               or "FIND" in com) and VirtualAssistant.search_command(com):
             pass  # the request has been handled
@@ -569,14 +571,20 @@ class MentionListener(StreamListener):
 
     """
     def on_data(self, data):
+        global user_full_name
+        global user_prefix
+
         mention = json.loads(data)
         #print(json.dumps(mention, indent=4, sort_keys=True))
         if 'retweeted_status' not in mention:
             tw_text = mention['text']
             tw_user = mention['user']['screen_name']
+            user_full_name = mention['user']['name']
+            user_prefix = mention['user']['name'].split()[0]
             print("\n@" + tw_user + " said:")
             print(tw_text)
-            tw_text = tw_text.replace("@NicolleDWallace", "")
+            tw_text = tw_text.replace("@DragonfireAI", "").strip()
+            thread.start_new_thread(VirtualAssistant.command, (tw_text, global_args, tw_user))
         return True
 
     def on_error(self, status):
