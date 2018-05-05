@@ -22,6 +22,7 @@ import uuid
 DRAGONFIRE_PATH = os.path.dirname(
     os.path.abspath(inspect.getfile(inspect.currentframe())))
 FNULL = open(os.devnull, 'w')
+TWITTER_CHAR_LIMIT = 280
 
 songRunning = False
 
@@ -83,10 +84,13 @@ class TTA:
     def say(self, message, dynamic=False, end=False):
         if self.twitter:
             text = "@" + self.twitter_user + " " + message#.upper()
-            text = (text[:280]) if len(text) > 280 else text
+            text = (text[:TWITTER_CHAR_LIMIT]) if len(text) > TWITTER_CHAR_LIMIT else text
             if len(self.command) > 1:
                 if self.command[0] == "sensible-browser":
-                    text = text[:((len(self.command[1])+1)*(-1))] + " " + self.command[1]
+                    reduction = len(text + " " + self.command[1]) - TWITTER_CHAR_LIMIT
+                    if reduction < 1:
+                        reduction = None
+                    text = text[:reduction] + " " + self.command[1]
                     page = metadata_parser.MetadataParser(url=self.command[1])
                     img_url = page.get_metadata_link('image')
                     if img_url:
