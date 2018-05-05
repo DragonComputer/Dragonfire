@@ -14,6 +14,10 @@ from random import randint
 import realhud
 
 from tweepy.error import TweepError
+import metadata_parser
+import urllib.request
+import mimetypes
+import uuid
 
 DRAGONFIRE_PATH = os.path.dirname(
     os.path.abspath(inspect.getfile(inspect.currentframe())))
@@ -78,11 +82,30 @@ class TTA:
 
     def say(self, message, dynamic=False, end=False):
         if self.twitter:
-            text = "@" + self.twitter_user + " " + message.upper()
+            text = "@" + self.twitter_user + " " + message#.upper()
             text = (text[:280]) if len(text) > 280 else text
             if len(self.command) > 1:
                 if self.command[0] == "sensible-browser":
                     text = text[:((len(self.command[1])+1)*(-1))] + " " + self.command[1]
+                    page = metadata_parser.MetadataParser(url=self.command[1])
+                    img_url = page.get_metadata_link('image')
+                    if img_url:
+                        response = urllib.request.urlopen(img_url)
+                        img_data = response.read()
+                        img_extension = mimetypes.guess_extension(response.headers['content-type'])
+                        filename = "/tmp/tmp" + uuid.uuid4().hex + img_extension
+                        with open(filename, 'wb') as f:
+                            f.write(img_data)
+
+                        try:
+                            self.twitter_api.update_with_media(filename, text)
+                            if randint(1,3) == 1:
+                                self.twitter_api.create_friendship(self.twitter_user, follow=True)
+                        except TweepError as e:
+                            print("Warning: " + e.response.text)
+                        finally:
+                            os.remove(filename)
+                        return True
             try:
                 self.twitter_api.update_status(text)
                 if randint(1,3) == 1:
