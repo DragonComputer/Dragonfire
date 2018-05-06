@@ -1,6 +1,5 @@
 from __future__ import print_function
 import collections  # Imported to support ordered dictionaries in Python
-import re  # Regular expression operations library of Python
 from tinydb import TinyDB, Query # TinyDB is a lightweight document oriented database
 from os.path import expanduser  # Imported to get the home directory
 
@@ -39,20 +38,6 @@ class Learn():
 
     # Entry function for this class. Dragonfire calls only this function. It does not handle TTS.
     def respond(self, com):
-        forget = "^(?:FORGET|UPDATE) (?:EVERYTHING YOU KNOW ABOUT |ABOUT )?(?P<subject>.*)"
-        capture = re.search(forget, com)
-        if capture:
-            if self.db.remove(Query().subject == self.pronoun_fixer(capture.group('subject'))): # if there is a record about the subject in the database then remove that record and...
-                return "OK, I forget everything I know about " + self.mirror(capture.group('subject'))
-            else:
-                return "I don't even know anything about " + self.mirror(
-                    capture.group('subject'))
-
-        define = "(?:PLEASE |COULD YOU )?(?:DEFINE|EXPLAIN|TELL ME ABOUT|DESCRIBE) (?P<subject>.*)"
-        capture = re.search(define, com)
-        if capture:
-            return self.db_getter(capture.group('subject'))
-
         doc = self.nlp(com) # Command(user's speech) must be decoded from utf-8 to unicode because spaCy only supports unicode strings, self.nlp() handles all parsing
         subject = [] # subject list (subjects here usually are; I'M, YOU, HE, SHE, IT, etc.)
         types = [] # types of the previous noun phrases
@@ -91,9 +76,20 @@ class Learn():
                             clause.append(word.text.encode('utf-8'))
                     if word.pos_ == 'VERB' and not verb_found: # if that's a verb and verb does not found yet then
                         verb_found = True # verb is found
-                        verbtense = word.text.encode('utf-8') # append it to verbtense
+                        verbtense = word.text # append it to verbtense
                 clause = [x.decode('utf-8') for x in clause]
                 clause = ' '.join(clause).strip() # concatenate the clause
+
+                # keywords to order get and remove operations on the database
+                if verbtense in self.capitalizer(["forget", "remove", "delete", "update"]):
+                    if self.db.remove(Query().subject == self.pronoun_fixer(subject)): # if there is a record about the subject in the database then remove that record and...
+                        return "OK, I forget everything I know about " + self.mirror(subject)
+                    else:
+                        return "I don't even know anything about " + self.mirror(subject)
+
+                if verbtense in self.capitalizer(["define", "explain", "tell", "describe"]):
+                    return self.db_getter(subject)
+
                 return self.db_setter(subject, verbtense, clause,com)  # set the record to the database
 
     # Function to get a record from the database
@@ -172,8 +168,22 @@ class Learn():
 
     # Pronoun fixer to handle situations like YOU and YOURSELF
     def pronoun_fixer(self, subject):  # TODO: Extend the context of this function
-        if subject in ["yourself", "Yourself", "YOURSELF"]:
+        if subject == "yourself":
             return "you"
+        elif subject == "Yourself":
+            return "You"
+        elif subject == "YOURSELF":
+            return "YOU"
+        else:
+            return subject
+
+    def capitalizer(self, array):
+        result = []
+        for word in array:
+            result.append(word)
+            result.append(word.capitalize())
+            result.append(word.upper())
+        return result
 
 
 if __name__ == "__main__":
