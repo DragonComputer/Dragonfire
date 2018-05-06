@@ -55,24 +55,20 @@ class Learn():
 
         doc = self.nlp(com) # Command(user's speech) must be decoded from utf-8 to unicode because spaCy only supports unicode strings, self.nlp() handles all parsing
         subject = [] # subject list (subjects here usually are; I'M, YOU, HE, SHE, IT, etc.)
-        prev_type = None  # type of the previous noun phrase
+        types = [] # types of the previous noun phrases
+        types.append("")
         for np in doc.noun_chunks: # Iterate over the noun phrases(chunks) TODO: Cover 'dobj' also; doc = nlp(u'DESCRIBE THE SUN') >>> (u'THE SUN', u'SUN', u'dobj', u'DESCRIBE')
+            types.append(np.root.dep_)
             # Purpose of this if statement is completing possessive form of nouns
-            if np.root.dep_ == 'pobj':  # if it's an object of a preposition
-                if prev_type == 'nsubj': # and the previous noun phrase's type was nsubj(nominal subject) then (it's purpose is capturing subject like MY PLACE OF BIRTH)
-                    subject.append(np.root.head.text.encode('utf-8')) # append the parent text from syntactic relations tree (example: while nsubj is 'MY PLACE', np.root.head.text is 'OF')
-                    subject.append(np.text.encode('utf-8')) # append the text of this noun phrase (example: while nsubj is 'MY PLACE', np.text is 'BIRTH')
-                prev_type = 'pobj'  # assign the previous type as pobj
-            if np.root.dep_ == 'nsubj':  # if it's a nsubj(nominal subject)
-                if prev_type not in ['pobj', 'nsubj'] and np.root.tag_ not in ['WDT', 'WP', 'WP$', 'WRB']: # "wh-" words are also considered as nsubj(nominal subject) but they are out of scope.  This is why we are excluding them.
-                    subject.append(np.text.encode('utf-8'))  # append the text of this noun phrase
-                prev_type = 'nsubj' # assign the previous type as nsubj(nominal subject)
-                if np.root.tag_ == 'WP':
-                    prev_type = 'WP'
-            if np.root.dep_ == 'attr':  # if it's an attribute
-                if prev_type not in ['pobj', 'nsubj'] and np.root.tag_ not in ['WDT', 'WP', 'WP$', 'WRB']:  # and the previous noun phrase's type was nsubj(nominal subject)
-                    subject.append(np.text.encode('utf-8'))  # append the text of this noun phrase
-                prev_type = 'attr'
+            if np.root.dep_ == 'pobj' and types[-2] == 'nsubj':  # if it's an object of a preposition and the previous noun phrase's type was nsubj(nominal subject) then (it's purpose is capturing subject like MY PLACE OF BIRTH)
+                subject.append(np.root.head.text.encode('utf-8')) # append the parent text from syntactic relations tree (example: while nsubj is 'MY PLACE', np.root.head.text is 'OF')
+                subject.append(np.text.encode('utf-8')) # append the text of this noun phrase (example: while nsubj is 'MY PLACE', np.text is 'BIRTH')
+            if np.root.dep_ == 'nsubj' and types[-2] not in ['pobj', 'nsubj'] and np.root.tag_ not in ['WDT', 'WP', 'WP$', 'WRB']:  # if it's a nsubj(nominal subject) ("wh-" words can be considered as nsubj(nominal subject) but they are out of scope.  This is why we are excluding them.)
+                subject.append(np.text.encode('utf-8'))  # append the text of this noun phrase
+            if np.root.dep_ == 'attr' and types[-2] not in ['pobj', 'nsubj'] and np.root.tag_ not in ['WDT', 'WP', 'WP$', 'WRB']: # if it's an attribute and the previous noun phrase's type was not nsubj(nominal subject)
+                subject.append(np.text.encode('utf-8'))  # append the text of this noun phrase
+            if np.root.dep_ == 'dobj' and types[-2] not in ['pobj', 'nsubj'] and np.root.tag_ not in ['WDT', 'WP', 'WP$', 'WRB']:  # if it's a dobj(direct object) and the previous noun phrase's type was not nsubj(nominal subject)
+                subject.append(np.text.encode('utf-8'))  # append the text of this noun phrase
         subject = [x.decode('utf-8') for x in subject]
         subject = ' '.join(subject).strip() # concatenate all noun phrases found
         if subject: # if the subject is not empty
@@ -151,6 +147,7 @@ class Learn():
     def mirror(self, answer):
         result = []
         types = []
+        types.append("")
         doc = self.nlp(answer)
         for token in doc:
             types.append(token.lemma_)
