@@ -91,19 +91,15 @@ class Learn():
             if np.root.dep_ == 'nsubj':  # if it's a nsubj(nominal subject)
                 # "wh-" words are also considered as nsubj(nominal subject) but
                 # they are out of scope.  This is why we are excluding them.
-                if np.root.tag_ != 'WP' and prev_type not in ['pobj', 'nsubj']:
-                    subject.append(np.text.encode(
-                        'utf-8'))  # append the text of this noun phrase
+                if prev_type not in ['pobj', 'nsubj'] and np.root.tag_ not in ['WDT', 'WP', 'WP$', 'WRB']:
+                    subject.append(np.text.encode('utf-8'))  # append the text of this noun phrase
                 # assign the previous type as nsubj(nominal subject)
                 prev_type = 'nsubj'
                 if np.root.tag_ == 'WP':
                     prev_type = 'WP'
             if np.root.dep_ == 'attr':  # if it's an attribute
-                if prev_type not in [
-                        'pobj', 'nsubj'
-                ]:  # and the previous noun phrase's type was nsubj(nominal subject)
-                    subject.append(np.text.encode(
-                        'utf-8'))  # append the text of this noun phrase
+                if prev_type not in ['pobj', 'nsubj'] and np.root.tag_ not in ['WDT', 'WP', 'WP$', 'WRB']:  # and the previous noun phrase's type was nsubj(nominal subject)
+                    subject.append(np.text.encode('utf-8'))  # append the text of this noun phrase
                 prev_type = 'attr'
         subject = [x.decode('utf-8') for x in subject]
         subject = ' '.join(
