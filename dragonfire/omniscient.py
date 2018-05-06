@@ -13,7 +13,6 @@ import sys
 
 import requests.exceptions
 
-import spacy  # Most powerful NLP library available - spaCy
 import wikipedia  # Provides and API-like functionality to search and access Wikipedia data
 import wikipedia.exceptions
 from nltk.corpus import wordnet as wn  # WordNet
@@ -21,9 +20,8 @@ from nltk.corpus.reader.wordnet import WordNetError
 
 
 class Engine():
-    def __init__(self):
-        self.nlp = spacy.load(
-            'en')  # Load en_core_web_sm, English, 50 MB, default model
+    def __init__(self, nlp):
+        self.nlp = nlp  # Load en_core_web_sm, English, 50 MB, default model
         self.entity_map = {
             'WHO': ['PERSON'],
             'WHAT': [

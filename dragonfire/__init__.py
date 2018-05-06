@@ -31,6 +31,7 @@ from random import choice
 
 import requests.exceptions
 
+import spacy  # Most powerful NLP library available - spaCy
 import pyowm
 import wikipedia
 import wikipedia.exceptions
@@ -56,8 +57,9 @@ FNULL = open(os.devnull, 'w')
 GENDER_PREFIX = {'male': 'Sir', 'female': 'My Lady'}
 CONVERSATION_ID = uuid.uuid4()
 userin = None
-learn_ = Learn()
-omniscient_ = Engine()
+nlp = spacy.load('en')  # Load en_core_web_sm, English, 50 MB, default model
+learn_ = Learn(nlp)
+omniscient_ = Engine(nlp)
 e = Event()
 
 USER_ANSWERING = {
