@@ -244,7 +244,7 @@ class VirtualAssistant():
             inactive = False
             userin.define([" "], " ")
             words_dragonfire = ("Yes, " + user_prefix + ".",
-                                "Yes. I'm waiting.", "What is your orders?")
+                                "Yes. I'm waiting.", "What is your order?")
             userin.say(choice(words_dragonfire))
         elif "GO TO SLEEP" == com:
             tts_kill()
@@ -552,7 +552,7 @@ class VirtualAssistant():
                         userin.say(search_query)
         else:
             tts_kill()
-            learn_response = learn_.respond(com)
+            learn_response = learn_.respond(original_com)
             if learn_response:
                 userin.define([" "], " ")
                 userin.say(learn_response)

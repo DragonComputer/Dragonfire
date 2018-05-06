@@ -9,15 +9,32 @@ import spacy  # Most powerful NLP library available - spaCy
 
 class Learn():
     def __init__(self):
-        self.replacements = collections.OrderedDict(
-        )  # Create an ordered dictionary
-        self.replacements["I'M"] = "YOU-ARE"
-        self.replacements["I-WAS"] = "YOU-WERE"
-        self.replacements["I"] = "YOU"
-        self.replacements["MY"] = "YOUR"
-        self.replacements["MINE"] = "YOURS"
-        self.replacements["MYSELF"] = "YOURSELF"
-        self.replacements["OURSELVES"] = "YOURSELVES"
+        self.pronouns = collections.OrderedDict()  # Create an ordered dictionary
+        self.pronouns["I"] = "YOU"
+        self.pronouns["ME"] = "YOU"
+        self.pronouns["MY"] = "YOUR"
+        self.pronouns["MINE"] = "YOURS"
+        self.pronouns["MYSELF"] = "YOURSELF"
+        self.pronouns["OUR"] = "YOUR"
+        self.pronouns["OURS"] = "YOURS"
+        self.pronouns["OURSELVES"] = "YOURSELVES"
+        self.pronouns["WE"] = "YOU"
+        self.pronouns["US"] = "YOU"
+        self.inv_pronouns = collections.OrderedDict()  # Create an ordered dictionary
+        self.inv_pronouns["YOU"] = "I"
+        self.inv_pronouns["YOUR"] = "MY"
+        self.inv_pronouns["YOURS"] = "MINE"
+        self.inv_pronouns["YOURSELF"] = "MYSELF"
+        self.inv_pronouns["YOURSELVES"] = "OURSELVES"
+
+        self.auxiliaries = collections.OrderedDict()  # Create an ordered dictionary
+        self.auxiliaries["AM"] = "ARE"
+        self.auxiliaries["'M"] = " ARE"
+        self.auxiliaries["WAS"] = "WERE"
+        self.inv_auxiliaries = collections.OrderedDict()  # Create an ordered dictionary
+        self.inv_auxiliaries["ARE"] = "AM"
+        self.inv_auxiliaries["WERE"] = "WAS"
+
         home = expanduser("~")  # Get the home directory of the user
         # This is where we store the database;
         # /home/USERNAME/.dragonfire_db.json
@@ -36,10 +53,9 @@ class Learn():
             if self.db.remove(
                 Query().subject == self.pronoun_fixer(
                     capture.group('subject'))):
-                return "OK, I FORGOT EVERYTHING I KNOW ABOUT " + self.mirror(
-                    capture.group('subject'))
+                return "OK, I forget everything I know about " + self.mirror(capture.group('subject'))
             else:
-                return "I DON'T EVEN KNOW ANYTHING ABOUT " + self.mirror(
+                return "I don't even know anything about " + self.mirror(
                     capture.group('subject'))
 
         define = "(?:PLEASE |COULD YOU )?(?:DEFINE|EXPLAIN|TELL ME ABOUT|DESCRIBE) (?P<subject>.*)"
@@ -166,7 +182,7 @@ class Learn():
                         answer += ' ' + clause  # concatenate with a whitespace
                         first_clause = True
                     else:
-                        answer += ' AND ' + clause  # otherwise concatenate with ' AND '
+                        answer += ' and ' + clause  # otherwise concatenate with ' AND '
             return self.mirror(
                 answer)  # mirror the answer (for example: I'M to YOU ARE)
         else:
@@ -183,66 +199,39 @@ class Learn():
                 'verbtense': verbtense,
                 'clause': clause
             })  # insert the given data
-        return "OK, I GET IT. " + self.mirror(
+        return "OK, I get it. " + self.mirror(
             com)  # mirror the command(user's speech) and return it to say
 
     # Function to mirror the answer (for example: I'M to YOU ARE)
     def mirror(self, answer):
-        answer = answer.upper()  # make the given string fully uppercase
-        answer = self.forward_replace(answer)
         result = []
-        for word in answer.split():  # for each word in the answer
-            replaced = False
-            for key, value in self.replacements.items(
-            ):  # iterate over the replacements
-                if word == key:  # if the word is equal to key
-                    result.append(value)  # append the value
-                    replaced = True
-            if word in ["WE", "US"]:
-                result.append("YOU")
-                replaced = True
-            elif word == "OUR":
-                result.append("YOUR")
-                replaced = True
-            elif word == "OURS":
-                result.append("YOURS")
-                replaced = True
-            if not replaced:
-                result.append(word)  # otherwise append the word
-        if ' '.join(result) != answer:  # if there is a replacement
-            return self.backward_replace(' '.join(result))  # return the result
-        result = []
-        for word in answer.split():  # for each word in the answer
-            replaced = False
-            for value, key in self.replacements.items(
-            ):  # invert the process above
-                if word == key:  # if the word is equal to key
-                    result.append(value)  # append the value
-                    replaced = True
-            if not replaced:
-                result.append(word)  # otherwise append the word
-        return self.backward_replace(
-            ' '.join(result))  # return the result anyway
-
-    def forward_replace(self, string):
-        string = string.replace("I WAS", "I-WAS")
-        string = string.replace("YOU ARE", "YOU-ARE")
-        string = string.replace("YOU WERE", "YOU-WERE")
-        return string
-
-    def backward_replace(self, string):
-        string = string.replace("I-WAS", "I WAS")
-        string = string.replace("YOU-ARE", "YOU ARE")
-        string = string.replace("YOU-WERE", "YOU WERE")
-        return string
+        types = []
+        doc = self.nlp(answer)
+        for token in doc:
+            types.append(token.lemma_)
+            if token.lemma_ == "-PRON-":
+                if token.text.upper() in self.pronouns:
+                    result.append(self.pronouns[token.text.upper()].lower())
+                    continue
+                if token.text.upper() in self.inv_pronouns:
+                    result.append(self.inv_pronouns[token.text.upper()].lower())
+                    continue
+            if (token.lemma_ == "be" or token.dep_ == "aux") and types[-2] == "-PRON-":
+                if token.text.upper() in self.auxiliaries:
+                    result.append(self.auxiliaries[token.text.upper()].lower())
+                    continue
+                if token.text.upper() in self.inv_auxiliaries:
+                    result.append(self.inv_auxiliaries[token.text.upper()].lower())
+                    continue
+            result.append(token.text)
+        result = ' '.join(result)
+        result = result.replace(" '", "'")
+        return result
 
     # Pronoun fixer to handle situations like YOU and YOURSELF
-    def pronoun_fixer(self,
-                      subject):  # TODO: Extend the context of this function
-        subject = subject.upper()
-        if 'YOURSELF' in subject:
-            subject = subject.replace('YOURSELF', 'YOU')
-        return subject
+    def pronoun_fixer(self, subject):  # TODO: Extend the context of this function
+        if subject in ["yourself", "Yourself", "YOURSELF"]:
+            return "you"
 
 
 if __name__ == "__main__":
@@ -253,7 +242,7 @@ if __name__ == "__main__":
     learn_ = Learn()
 
     def give_and_get(give, get):
-        result = learn_.respond(give)
+        result = learn_.respond(give).upper()
         if result != get:
             print("{} | {}".format(give, result))
 
