@@ -59,7 +59,6 @@ userin = None
 learn_ = Learn()
 omniscient_ = Engine()
 e = Event()
-global_args = None
 
 USER_ANSWERING = {
     'status': False,
@@ -83,14 +82,12 @@ except NameError:
 def start(args):
 
     if args["twitter"]:
-        global_args = args
-
         auth = OAuthHandler(CONSUMER_KEY, CONSUMER_SECRET)
         auth.set_access_token(ACCESS_KEY, ACCESS_SECRET)
         userin.twitter_api = tweepy.API(auth)
 
         print("Listening Twitter mentions...")
-        l = MentionListener()
+        l = MentionListener(args)
         stream = Stream(auth, l)
         stream.filter(track=['DragonfireAI'], async=True)
     elif args["cli"]:
@@ -561,7 +558,7 @@ class VirtualAssistant():
                 userin.say(learn_response)
             else:
                 omniscient_.respond(original_com, not args["silent"], userin,
-                                    user_prefix)
+                                    user_prefix, args["twitter"])
 
 
 
@@ -570,6 +567,9 @@ class MentionListener(StreamListener):
     This is a basic listener that just prints received tweets to stdout.
 
     """
+    def __init__(self, args):
+        self.args = args
+
     def on_data(self, data):
         global user_full_name
         global user_prefix
@@ -587,7 +587,7 @@ class MentionListener(StreamListener):
             print(tw_text)
             tw_text = tw_text.replace("@DragonfireAI", "")
             tw_text = re.sub(r'([^\s\w]|_)+', '', tw_text).strip()
-            thread.start_new_thread(VirtualAssistant.command, (tw_text, global_args, tw_user))
+            thread.start_new_thread(VirtualAssistant.command, (tw_text, self.args, tw_user))
         return True
 
     def on_error(self, status):
