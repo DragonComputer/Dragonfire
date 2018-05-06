@@ -4,11 +4,10 @@ import re  # Regular expression operations library of Python
 # TinyDB is a lightweight document oriented database
 from tinydb import TinyDB, Query
 from os.path import expanduser  # Imported to get the home directory
-import spacy  # Most powerful NLP library available - spaCy
 
 
 class Learn():
-    def __init__(self):
+    def __init__(self, nlp):
         self.pronouns = collections.OrderedDict()  # Create an ordered dictionary
         self.pronouns["I"] = "YOU"
         self.pronouns["ME"] = "YOU"
@@ -39,8 +38,7 @@ class Learn():
         # This is where we store the database;
         # /home/USERNAME/.dragonfire_db.json
         self.db = TinyDB(home + '/.dragonfire_db.json')
-        self.nlp = spacy.load(
-            'en')  # Load en_core_web_sm, English, 50 MB, default model
+        self.nlp = nlp  # Load en_core_web_sm, English, 50 MB, default model
 
     # Entry function for this class. Dragonfire calls only this function. It
     # does not handle TTS.
