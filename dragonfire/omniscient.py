@@ -44,7 +44,7 @@ class Engine():
     # Entry function for this class. Dragonfire calls only this function.
     # Unlike Learn.respond() it executes TTS because of its late reponse
     # nature.
-    def respond(self, com, tts_output=False, userin=None, user_prefix=None):
+    def respond(self, com, tts_output=False, userin=None, user_prefix=None, is_twitter=None):
         subject, subjects, focus, subject_with_objects = self.semantic_extractor(
             com)  # Extract the subject, focus, objects etc.
         if subject is 1:
@@ -68,7 +68,7 @@ class Engine():
         if query:  # If there is a Wikipedia query determined
             if not tts_output:
                 print("Please wait...")
-            if tts_output:
+            if tts_output and not is_twitter:
                 userin.say(
                     "Please wait...", True,
                     False)  # Gain a few more seconds by saying Please wait...
