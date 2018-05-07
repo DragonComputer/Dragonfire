@@ -46,15 +46,15 @@ class Learn():
             types.append(np.root.dep_)
             # Purpose of this if statement is completing possessive form of nouns
             if np.root.dep_ == 'pobj' and types[-2] == 'nsubj':  # if it's an object of a preposition and the previous noun phrase's type was nsubj(nominal subject) then (it's purpose is capturing subject like MY PLACE OF BIRTH)
-                subject.append(np.root.head.text.encode('utf-8')) # append the parent text from syntactic relations tree (example: while nsubj is 'MY PLACE', np.root.head.text is 'OF')
-                subject.append(np.text.encode('utf-8')) # append the text of this noun phrase (example: while nsubj is 'MY PLACE', np.text is 'BIRTH')
+                subject.append(np.root.head.text) # append the parent text from syntactic relations tree (example: while nsubj is 'MY PLACE', np.root.head.text is 'OF')
+                subject.append(np.text) # append the text of this noun phrase (example: while nsubj is 'MY PLACE', np.text is 'BIRTH')
             if np.root.dep_ == 'nsubj' and types[-2] not in ['pobj', 'nsubj'] and np.root.tag_ not in ['WDT', 'WP', 'WP$', 'WRB']:  # if it's a nsubj(nominal subject) ("wh-" words can be considered as nsubj(nominal subject) but they are out of scope.  This is why we are excluding them.)
-                subject.append(np.text.encode('utf-8'))  # append the text of this noun phrase
+                subject.append(np.text)  # append the text of this noun phrase
             if np.root.dep_ == 'attr' and types[-2] not in ['pobj', 'nsubj'] and np.root.tag_ not in ['WDT', 'WP', 'WP$', 'WRB']: # if it's an attribute and the previous noun phrase's type was not nsubj(nominal subject)
-                subject.append(np.text.encode('utf-8'))  # append the text of this noun phrase
+                subject.append(np.text)  # append the text of this noun phrase
             if np.root.dep_ == 'dobj' and types[-2] not in ['pobj', 'nsubj'] and np.root.tag_ not in ['WDT', 'WP', 'WP$', 'WRB']:  # if it's a dobj(direct object) and the previous noun phrase's type was not nsubj(nominal subject)
-                subject.append(np.text.encode('utf-8'))  # append the text of this noun phrase
-        subject = [x.decode('utf-8') for x in subject]
+                subject.append(np.text)  # append the text of this noun phrase
+        subject = [x for x in subject]
         subject = ' '.join(subject).strip() # concatenate all noun phrases found
         if subject: # if the subject is not empty
             wh_found = False
@@ -73,17 +73,17 @@ class Learn():
                 for word in doc:
                     if verb_found: # get the all words comes after the first verb which will be our verbtense
                         if word.pos_ != 'PUNCT': # exclude punctuations
-                            clause.append(word.text.encode('utf-8'))
+                            clause.append(word.text)
                     if word.pos_ == 'VERB' and not verb_found: # if that's a verb and verb does not found yet then
                         verb_found = True # verb is found
                         verbtense = word.text # append it to verbtense
-                clause = [x.decode('utf-8') for x in clause]
+                clause = [x for x in clause]
                 clause = ' '.join(clause).strip() # concatenate the clause
 
                 # keywords to order get and remove operations on the database
                 if verbtense in self.capitalizer(["forget", "remove", "delete", "update"]):
                     if self.db.remove(Query().subject == self.pronoun_fixer(subject)): # if there is a record about the subject in the database then remove that record and...
-                        return "OK, I forget everything I know about " + self.mirror(subject)
+                        return "OK, I forgot everything I know about " + self.mirror(subject)
                     else:
                         return "I don't even know anything about " + self.mirror(subject)
 
@@ -162,6 +162,9 @@ class Learn():
                     result.append(self.inv_auxiliaries[token.text.upper()].lower())
                     continue
             result.append(token.text)
+        for i in range(len(result)):
+            if result[i] == "i":
+                result[i] = "I"
         result = ' '.join(result) # concatenate the result
         result = result.replace(" '", "'") # fix for situations like "I 'AM", "YOU 'LL"
         return result
@@ -187,34 +190,46 @@ class Learn():
 
 
 if __name__ == "__main__":
+    # TESTS
     import os
+    import spacy
     home = expanduser("~") # Get the home directory of the user
-    os.remove(home + '/.dragonfire_db.json') # This is where we store the database; /home/USERNAME/.dragonfire_db.json
-    learn_ = Learn()
+    if os.path.exists(home + '/.dragonfire_db.json'):
+        os.remove(home + '/.dragonfire_db.json') # This is where we store the database; /home/USERNAME/.dragonfire_db.json
+    learn_ = Learn(spacy.load('en'))
 
     def give_and_get(give, get):
-        result = learn_.respond(give).upper()
+        result = learn_.respond(give)
+        if not result:
+            print("{} | {}".format(give, result))
+            return False
         if result != get:
             print("{} | {}".format(give, result))
+            return False
+        return True
 
     gives_and_gets = collections.OrderedDict()
-    gives_and_gets["THE SUN IS HOT"] = "OK, I GET IT. THE SUN IS HOT"
-    gives_and_gets["THE SUN IS YELLOW"] = "OK, I GET IT. THE SUN IS YELLOW"
-    gives_and_gets["DESCRIBE THE SUN"] = "THE SUN IS HOT AND YELLOW"
-    gives_and_gets["WHAT IS THE SUN"] = "THE SUN IS HOT AND YELLOW"
-    gives_and_gets["MY AGE IS 25"] = "OK, I GET IT. YOUR AGE IS 25"
-    gives_and_gets["WHAT IS MY AGE"] = "YOUR AGE IS 25"
-    gives_and_gets["FORGET MY AGE"] = "OK, I FORGOT EVERYTHING I KNOW ABOUT YOUR AGE"
-    gives_and_gets["UPDATE MY AGE"] = "I DON'T EVEN KNOW ANYTHING ABOUT YOUR AGE"
-    gives_and_gets["MY PLACE OF BIRTH IS TURKEY"] = "OK, I GET IT. YOUR PLACE OF BIRTH IS TURKEY"
-    gives_and_gets["WHERE IS MY PLACE OF BIRTH"] = "YOUR PLACE OF BIRTH IS TURKEY"
-    gives_and_gets["YOU ARE JUST A COMPUTER PROGRAM"] = "OK, I GET IT. I'M JUST A COMPUTER PROGRAM"
-    gives_and_gets["WHAT ARE YOU"] = "I'M JUST A COMPUTER PROGRAM"
-    gives_and_gets["FORGET EVERYTHING YOU KNOW ABOUT YOURSELF"] = "OK, I FORGOT EVERYTHING I KNOW ABOUT MYSELF"
-    gives_and_gets["MINE IS GOLDEN"] = "OK, I GET IT. YOURS IS GOLDEN"
-    gives_and_gets["HOW IS MINE"] = "YOURS IS GOLDEN"
-    gives_and_gets["ALBERT EINSTEIN IS A PHYSICIST"] = "OK, I GET IT. ALBERT EINSTEIN IS A PHYSICIST"
-    gives_and_gets["WHO IS A PHYSICIST"] = "ALBERT EINSTEIN IS A PHYSICIST"
+    gives_and_gets["the Sun is hot"] = "OK, I get it. the Sun is hot"
+    gives_and_gets["the Sun is yellow"] = "OK, I get it. the Sun is yellow"
+    gives_and_gets["Describe the Sun"] = "the Sun is hot and yellow"
+    gives_and_gets["What is the Sun"] = "the Sun is hot and yellow"
+    gives_and_gets["my age is 25"] = "OK, I get it. your age is 25"
+    gives_and_gets["What is my age"] = "your age is 25"
+    gives_and_gets["forget my age"] = "OK, I forgot everything I know about your age"
+    gives_and_gets["update my age"] = "I don't even know anything about your age"
+    gives_and_gets["my place of birth is Turkey"] = "OK, I get it. your place of birth is Turkey"
+    gives_and_gets["Where is my place of birth"] = "your place of birth is Turkey"
+    gives_and_gets["you are just a computer program"] = "OK, I get it. I am just a computer program"
+    gives_and_gets["What are you"] = "I am just a computer program"
+    gives_and_gets["mine is golden"] = "OK, I get it. yours is golden"
+    gives_and_gets["how is mine"] = "yours is golden"
+    gives_and_gets["Albert Einstein is a Physicist"] = "OK, I get it. Albert Einstein is a Physicist"
+    gives_and_gets["Who is a Physicist"] = "Albert Einstein is a Physicist"
 
+    tests_ok = True
     for give, get in gives_and_gets.items():
-        give_and_get(give, get)
+        if not give_and_get(give, get):
+            tests_ok = False
+
+    if tests_ok:
+        print("All of " + str(len(gives_and_gets)) + " tests were OK.")
