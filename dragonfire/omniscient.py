@@ -333,7 +333,7 @@ class Engine():
         }  # entity samples to use it in WordNet similarity
         # The subject must be decoded from utf-8 to unicode because spaCy only
         # supports unicode strings, self.nlp() handles all parsing
-        doc = self.nlp(subject.decode('utf-8'))
+        doc = self.nlp(subject)
         subject = []  # empty list to hold the nouns in the subject string
         for word in doc:  # for each word in the subject string
             # if word.pos_ not in
@@ -442,21 +442,18 @@ class Engine():
             # subject) then
             if (np.root.dep_ == 'nsubj' or np.root.dep_ ==
                     'nsubjpass') and np.root.tag_ != 'WP':
-                subjects.append(
-                    np.text.encode('utf-8'))  # append it to subjects
+                subjects.append(np.text)  # append it to subjects
             if np.root.dep_ == 'pobj':  # if it's an object of a preposition then
-                pobjects.append(
-                    np.text.encode('utf-8'))  # append it to pobjects
+                pobjects.append(np.text)  # append it to pobjects
             if np.root.dep_ == 'dobj':  # if it's a direct object then
-                dobjects.append(
-                    np.text.encode('utf-8'))  # append it to direct objects
+                dobjects.append(np.text)  # append it to direct objects
 
         # This block determines the Wikipedia query (the subject) by relying on
         # this priority: [Object of a preposition] > [Subject] > [Direct
         # object]
-        pobjects = [x.decode('utf-8') for x in pobjects]
-        subjects = [x.decode('utf-8') for x in subjects]
-        dobjects = [x.decode('utf-8') for x in dobjects]
+        pobjects = [x for x in pobjects]
+        subjects = [x for x in subjects]
+        dobjects = [x for x in dobjects]
         if pobjects:
             the_subject = ' '.join(pobjects)
         elif subjects:
@@ -508,8 +505,9 @@ def nostderr():
 
 
 if __name__ == "__main__":
-
-    EngineObj = Engine()
+    # TESTS
+    import spacy
+    EngineObj = Engine(spacy.load('en'))
     best_score = 0
     best_coefficient = None
     i = 0
