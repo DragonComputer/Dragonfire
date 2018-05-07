@@ -113,7 +113,7 @@ class TTA:
                             return True
             try:
                 self.twitter_api.update_status(text)
-                if randint(1,3) == 1:
+                if randint(1,10) == 1:
                     self.twitter_api.create_friendship(self.twitter_user, follow=True)
             except TweepError as e:
                 print("Warning: " + e.response.text)
