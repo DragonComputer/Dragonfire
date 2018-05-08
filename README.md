@@ -20,7 +20,7 @@ Dragonfire goes through these steps for each one of your commands, respectively:
 
 Dragonfire uses [Mozilla DeepSpeech](https://github.com/mozilla/DeepSpeech) to understand your voice commands and [Festival Speech Synthesis System](http://www.cstr.ed.ac.uk/projects/festival/) to handle text-to-speech tasks.
 
-Feel free to join [our Gitter chat room](https://gitter.im/DragonComputer/Lobby).
+Feel free to join [our Gitter chat room](https://gitter.im/DragonComputer/Lobby). Also you can directly talk with Dragonfire's herself via [her Twitter account](https://twitter.com/DragonfireAI).
 
 #### Supported Environments
 
