@@ -41,6 +41,7 @@ from dragonfire.nlplib import Classifiers
 from dragonfire.omniscient import Engine
 from dragonfire.stray import SystemTrayExitListenerSet, SystemTrayInit
 from dragonfire.utilities import TTA
+from dragonfire.arithmetic import arithmeticParser
 from pykeyboard import PyKeyboard
 from pymouse import PyMouse
 from tinydb import Query, TinyDB
@@ -554,8 +555,10 @@ class VirtualAssistant():
                         userin.say(search_query)
         else:
             tts_kill()
-            if any(e in com for e in ['+', '-', '/', '*', '^', '=', 'x', 'y', 'z', 'PLUS', 'MINUS', 'DIVIDED BY', 'MULTIPLIED BY', 'TIMES', 'TO THE POWER OF', 'EQUAL']):
-                pass
+            arithmetic_response = arithmeticParser(com)
+            if arithmetic_response:
+                userin.define([" "], " ")
+                userin.say(arithmetic_response)
             else:
                 learn_response = learn_.respond(original_com)
                 if learn_response:
