@@ -554,13 +554,15 @@ class VirtualAssistant():
                         userin.say(search_query)
         else:
             tts_kill()
-            learn_response = learn_.respond(original_com)
-            if learn_response:
-                userin.define([" "], " ")
-                userin.say(learn_response)
+            if any(e in com for e in ['+', '-', '/', '*', '^', '=', 'x', 'y', 'z', 'PLUS', 'MINUS', 'DIVIDED BY', 'MULTIPLIED BY', 'TIMES', 'TO THE POWER OF', 'EQUAL']):
+                pass
             else:
-                omniscient_.respond(original_com, not args["silent"], userin,
-                                    user_prefix, args["twitter"])
+                learn_response = learn_.respond(original_com)
+                if learn_response:
+                    userin.define([" "], " ")
+                    userin.say(learn_response)
+                else:
+                    omniscient_.respond(original_com, not args["silent"], userin, user_prefix, args["twitter"])
 
 
 
