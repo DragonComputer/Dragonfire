@@ -11,6 +11,7 @@ import os  # Files management
 import tensorflow as tf
 import numpy as np
 import math
+from random import choice
 
 from tqdm import tqdm  # Progress bar
 from tensorflow.python import debug as tf_debug
@@ -155,15 +156,20 @@ class DeepConversation:
         if self.initEmbeddings:
             self.loadEmbedding(self.sess)
 
-    def respond(self, question):
+    def respond(self, question, user_prefix=None):
         answer = self.singlePredict(question)
         if not answer:
-            print('Warning: sentence too long, sorry. Maybe try a simpler sentence.')
-            return False
+            return choice([
+                    "Sorry, " + user_prefix + ". But it's beyond my intelligence.",
+                    "I'm too primitive to answer that.",
+                    "Unfortunately, I am not capable to give a respond to such a hard question.",
+                    user_prefix + ", I beg your pardon. But I'm not a human equivalent entity, yet...",
+                    "Wow, that's a new level. My circuits are burned."
+                ])
 
         #self.sess.close()
         #print("The End! Thanks for using this program")
-        return self.textData.sequence2str(answer, clean=True)
+        return self.textData.sequence2str(answer, clean=True).replace("n't", "not")
 
     def mainTrain(self, sess):
         """ Training loop
@@ -610,3 +616,4 @@ if __name__ == "__main__":
     print(dc.respond("What color?"))
     print(dc.respond("What is immoral?"))
     print(dc.respond("Are you evil?"))
+    print(dc.respond("Are you happy?"))

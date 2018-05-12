@@ -468,6 +468,13 @@ class Engine():
             subject_with_objects.append(pobject)
         subject_with_objects = ' '.join(subject_with_objects)
 
+        wh_found = False
+        for word in doc: # iterate over the each word in the given command(user's speech)
+            if word.tag_ in ['WDT', 'WP', 'WP$', 'WRB']: # check if there is a "wh-" question (we are determining that if it's a question or not, so only accepting questions with "wh-" form)
+                wh_found = True
+        if not wh_found:
+            return None, None, None, None
+
         return the_subject, subjects, focus, subject_with_objects
 
 

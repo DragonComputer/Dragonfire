@@ -70,27 +70,32 @@ class Learn():
                 verb_found = False
                 verbtense = None # verbtense is the am/is/are of the main sentence
                 clause = [] # is the information that we need to acknowledge
+                verbs = []
                 for word in doc:
+                    #print(word.text, word.lemma_, word.pos_, word.tag_, word.dep_, word.shape_, word.is_alpha, word.is_stop)
                     if verb_found: # get the all words comes after the first verb which will be our verbtense
                         if word.pos_ != 'PUNCT': # exclude punctuations
                             clause.append(word.text)
-                    if word.pos_ == 'VERB' and not verb_found: # if that's a verb and verb does not found yet then
+                    if word.pos_ == 'VERB' and word.is_stop and not verb_found: # if that's a verb and verb does not found yet then
                         verb_found = True # verb is found
                         verbtense = word.text # append it to verbtense
+                    if word.pos_ == 'VERB':
+                        verbs.append(word.text)
                 clause = [x for x in clause]
                 clause = ' '.join(clause).strip() # concatenate the clause
 
                 # keywords to order get and remove operations on the database
-                if verbtense in self.capitalizer(["forget", "remove", "delete", "update"]):
+                if any(verb in verbs for verb in self.capitalizer(["forget", "remove", "delete", "update"])):
                     if self.db.remove(Query().subject == self.pronoun_fixer(subject)): # if there is a record about the subject in the database then remove that record and...
                         return "OK, I forgot everything I know about " + self.mirror(subject)
                     else:
                         return "I don't even know anything about " + self.mirror(subject)
 
-                if verbtense in self.capitalizer(["define", "explain", "tell", "describe"]):
+                if any(verb in verbs for verb in self.capitalizer(["define", "explain", "tell", "describe"])):
                     return self.db_getter(subject)
 
-                return self.db_setter(subject, verbtense, clause,com)  # set the record to the database
+                if verbtense:
+                    return self.db_setter(subject, verbtense, clause,com)  # set the record to the database
 
     # Function to get a record from the database
     def db_getter(self, subject, invert=False):
@@ -225,6 +230,7 @@ if __name__ == "__main__":
     gives_and_gets["how is mine"] = "yours is golden"
     gives_and_gets["Albert Einstein is a Physicist"] = "OK, I get it. Albert Einstein is a Physicist"
     gives_and_gets["Who is a Physicist"] = "Albert Einstein is a Physicist"
+    #gives_and_gets["Are you evil"] = None
 
     tests_ok = True
     for give, get in gives_and_gets.items():
