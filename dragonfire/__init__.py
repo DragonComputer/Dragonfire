@@ -42,6 +42,7 @@ from dragonfire.omniscient import Engine
 from dragonfire.stray import SystemTrayExitListenerSet, SystemTrayInit
 from dragonfire.utilities import TTA
 from dragonfire.arithmetic import arithmeticParser
+from dragonfire.conversational import DeepConversation
 from pykeyboard import PyKeyboard
 from pymouse import PyMouse
 from tinydb import Query, TinyDB
@@ -61,6 +62,7 @@ userin = None
 nlp = spacy.load('en')  # Load en_core_web_sm, English, 50 MB, default model
 learn_ = Learn(nlp)
 omniscient_ = Engine(nlp)
+dc = DeepConversation()
 e = Event()
 
 USER_ANSWERING = {
@@ -565,7 +567,11 @@ class VirtualAssistant():
                     userin.define([" "], " ")
                     userin.say(learn_response)
                 else:
-                    omniscient_.respond(original_com, not args["silent"], userin, user_prefix, args["twitter"])
+                    if not omniscient_.respond(original_com, not args["silent"], userin, user_prefix, args["twitter"]):
+                        dc_response = dc.respond(original_com)
+                        if dc_response:
+                            userin.define([" "], " ")
+                            userin.say(dc_response)
 
 
 

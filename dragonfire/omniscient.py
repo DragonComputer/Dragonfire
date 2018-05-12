@@ -48,14 +48,6 @@ class Engine():
         if subject is 1:
             userin.define([""], 'You said: "' + com + '"')
             userin.execute(0)
-            if not tts_output:
-                print("Sorry, " + user_prefix +
-                      ". But I didn't even understand the subject."
-                      )  # if tts_output is enabled then it does not print
-            if tts_output:
-                userin.say("Sorry, " + user_prefix +
-                           ". But I didn't even understand the subject."
-                           )  # if tts_output is enabled then it executes TTS
             return False
 
         # Command(user's speech) must be decoded from utf-8 to unicode because
@@ -293,15 +285,6 @@ class Engine():
                     ranked.items(), key=lambda x: x[1])[::-1][0][
                         0]  # also return the best result
             else:  # if no any findings
-                if not tts_output:
-                    print(
-                        "Sorry, I couldn't find anything worthy to answer your question."
-                    )  # if tts_output is enabled then it does not print
-                if tts_output:
-                    userin.say(
-                        "Sorry, I couldn't find anything worthy to answer your question.",
-                        True,
-                        True)  # if tts_output is enabled then it executes TTS
                 return False  # in case of no any findings return False
 
     # function to determine the entity of the subject
