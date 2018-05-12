@@ -5,11 +5,11 @@ class ConfigDeepSpeech:
 
     def get_config(self, key):
         config = {}
-        config['model'] = "/usr/share/deepspeech/models/output_graph.pb"
-        config['alphabet'] = "/usr/share/deepspeech/models/alphabet.txt"
-        config['lm'] = "/usr/share/deepspeech/models/lm.binary"
-        config['trie'] = "/usr/share/deepspeech/models/trie"
-        config['audiofiledir'] = "/usr/share/deepspeech/audio/"
+        config['model'] = "/usr/share/dragonfire/deepspeech/models/output_graph.pb"
+        config['alphabet'] = "/usr/share/dragonfire/deepspeech/models/alphabet.txt"
+        config['lm'] = "/usr/share/dragonfire/deepspeech/models/lm.binary"
+        config['trie'] = "/usr/share/dragonfire/deepspeech/models/trie"
+        config['audiofiledir'] = "/usr/share/dragonfire/deepspeech/audio/"
         config['audiofilelength'] = "10"
         config['debug'] = "1"
 

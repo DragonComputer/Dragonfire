@@ -1,2 +1,2 @@
-DEEPSPEECH_DIR=/usr/share/deepspeech
-rm -rf $DEEPSPEECH_DIR
+DRAGONFIRE_DIR=/usr/share/dragonfire
+rm -rf $DRAGONFIRE_DIR

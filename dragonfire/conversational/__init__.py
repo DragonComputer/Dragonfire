@@ -1,9 +1,4 @@
-"""
-Main script. See README.md for more information
-
-Use python 3
-"""
-
+from __future__ import print_function
 import argparse  # Command line parsing
 import configparser  # Saving the models parameters
 import datetime  # Chronometer
