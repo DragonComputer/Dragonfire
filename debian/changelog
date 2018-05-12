@@ -1,3 +1,11 @@
+dragonfire (0.9.9) unstable; urgency=medium
+
+  * Twitter integration implemented
+  * Ability to answer arithmetic questions added
+  * A fourth way to respond, Deep Conversation system added
+
+ -- Mehmet Mert Yildiran <mehmetmertyildiran@gmail.com>  Sat, 12 May 2018 14:59:20 +0000
+
 dragonfire (0.9.8) unstable; urgency=medium
 
   * Migrated from Kaldi Speech Recognition Toolkit to Mozilla DeepSpeech
