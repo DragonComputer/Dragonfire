@@ -248,9 +248,13 @@ class VirtualAssistant():
             tts_kill()
             inactive = False
             userin.define([" "], " ")
-            words_dragonfire = ("Yes, " + user_prefix + ".",
-                                "Yes. I'm waiting.", "What is your order?")
-            userin.say(choice(words_dragonfire))
+            userin.say(choice([
+                        "Yes, " + user_prefix + ".",
+                        "Yes. I'm waiting.",
+                        "What is your order?",
+                        "Ready for the orders!",
+                        user_prefix + ", tell me your wish."
+                    ]))
         elif "GO TO SLEEP" == com:
             tts_kill()
             inactive = True
@@ -568,7 +572,7 @@ class VirtualAssistant():
                     userin.say(learn_response)
                 else:
                     if not omniscient_.respond(original_com, not args["silent"], userin, user_prefix, args["twitter"]):
-                        dc_response = dc.respond(original_com)
+                        dc_response = dc.respond(original_com, user_prefix)
                         if dc_response:
                             userin.define([" "], " ")
                             userin.say(dc_response)
