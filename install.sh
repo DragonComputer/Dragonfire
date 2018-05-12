@@ -25,7 +25,12 @@ GREEN='\033[0;32m'
 NC='\033[0m' # No Color
 CHECKSUM="1449d83e0a0b834c033067bf62f06277"
 
-DEEPSPEECH_DIR=/usr/share/deepspeech
+DRAGONFIRE_DIR=/usr/share/dragonfire
+if [ ! -d "$DRAGONFIRE_DIR" ]; then
+  mkdir $DRAGONFIRE_DIR
+fi
+
+DEEPSPEECH_DIR=/usr/share/dragonfire/deepspeech
 if [ "$NO_MODEL" = false ] ; then
     if [ ! -d "$DEEPSPEECH_DIR" ]; then
       mkdir $DEEPSPEECH_DIR

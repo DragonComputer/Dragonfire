@@ -42,7 +42,7 @@ Download the [latest release](https://github.com/DragonComputer/Dragonfire/relea
 sudo dpkg -i dragonfire_0.9.8_amd64.deb
 ```
 
-<sup><i>To install the dependencies run `sudo apt-get -f install` right after the `dpkg -i` command. The installation will automatically download the pre-trained English model of Mozilla DeepSpeech (1.31 GB download size) and will place it under `/usr/share/deepspeech/models` directory. You can manually [download the model](https://github.com/mozilla/DeepSpeech/releases/download/v0.1.1/deepspeech-0.1.1-models.tar.gz) if you want.</i></sup>
+<sup><i>To install the dependencies run `sudo apt-get -f install` right after the `dpkg -i` command. The installation will automatically download the pre-trained English model of Mozilla DeepSpeech (1.31 GB download size) and will place it under `/usr/share/dragonfire/deepspeech/models` directory. You can manually [download the model](https://github.com/mozilla/DeepSpeech/releases/download/v0.1.1/deepspeech-0.1.1-models.tar.gz) if you want.</i></sup>
 
 ### Usage
 
