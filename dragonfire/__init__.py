@@ -191,6 +191,7 @@ class VirtualAssistant():
         userin.twitter_user = tw_user
 
         com = com.upper()
+        com = re.sub(r'([^\s\w]|_)+', '', com).strip()
         print("You: " + com)
 
         if inactive and com not in ("DRAGONFIRE", "DRAGON FIRE", "WAKE UP",
@@ -603,7 +604,7 @@ class MentionListener(StreamListener):
             print("\n@" + tw_user + " said:")
             print(tw_text)
             tw_text = tw_text.replace("@DragonfireAI", "")
-            tw_text = re.sub(r'([^\s\w]|_)+', '', tw_text).strip()
+            tw_text = re.sub(r'([^\s\w\?]|_)+', '', tw_text).strip()
             thread.start_new_thread(VirtualAssistant.command, (tw_text, self.args, tw_user))
         return True
 
