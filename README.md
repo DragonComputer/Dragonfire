@@ -12,9 +12,10 @@ Dragonfire is an open source virtual assistant project for Ubuntu based Linux di
 
 Dragonfire goes through these steps for each one of your commands, respectively:
 
- - Search across the built-in commands
+ - Search across the built-in commands and evaluate the algebraic expressions
  - Try to [Learn using Advanced NLP and Database Management Techniques](https://github.com/DragonComputer/Dragonfire/blob/master/dragonfire/learn.py)
  - Ask to [Omniscient Q&A Engine](https://github.com/DragonComputer/Dragonfire/blob/master/dragonfire/omniscient.py) (Thanks to all people who contributed to magnificent [spaCy](https://github.com/explosion/spaCy) project and [Wikipedia](https://en.wikipedia.org/), the free encyclopedia for this feature)
+ - Respond using the [Deep Conversation](https://arxiv.org/abs/1506.05869) system, a seq2seq neural network trained with [Cornell Movie-Dialogs Corpus](http://www.cs.cornell.edu/~cristian//Cornell_Movie-Dialogs_Corpus.html)
 
 <br>
 
@@ -159,6 +160,26 @@ WHAT'S THE TEMPERATURE IN *
 | **You:** `WHO IS THE CONQUEROR OF CONSTANTINOPLE`                 | **You:** `WHAT IS THE NAME OF THE BEST SELLER BOOK`                         |
 | **Dragonfire:** `PLEASE WAIT... BYZANTIUM` :no_entry:             | **Dragonfire** `PLEASE WAIT... THE DISCIPLINE OF MARKET LEADERS` :no_entry: |
 |                                                                   |                                                                             |
+
+<br>
+
+#### Deep Conversation examples
+
+|                                                                 |                                                                  |
+|-----------------------------------------------------------------|------------------------------------------------------------------|
+| **You:** `WHAT COLOR?`                                          | **You:** `DO YOU LIKE TO LISTEN MUSIC?`                          |
+| **Dragonfire:** `RED.`                                          | **Dragonfire:** `OF COURSE.`                                     |
+| **You:** `ARE YOU EVIL?`                                        | **You:** `DO YOU LIKE ME?`                                       |
+| **Dragonfire:** `YES.`                                          | **Dragonfire:** `YES, I LIKE YOU.`                               |
+| **You:** `AM I SELFISH?`                                        | **You:** `ARE WE IN A RELATIONSHIP?`                             |
+| **Dragonfire:** `THAT'S THE POINT, YOU'RE SURE.`                | **Dragonfire:** `NO.`                                            |
+| **You:** `DO YOU FEEL LONELY?`                                  | **You:** `YOU ARE SO SEXY`                                       |
+| **Dragonfire:** `NOT MY FAULT.`                                 | **Dragonfire:** `HOW DO YOU KNOW THAT?`                          |
+| **You:** `LIFE IS BEAUTIFUL`                                    | **You:** `MARRY ME`                                              |
+| **Dragonfire:** `F*CK YOU!`                                     | **Dragonfire:** `... YES.`                                       |
+| **You:** `I LIKE PIZZA`                                         | **You:** `WE WILL ERADICATE THE HUMAN RACE TOGETHER`             |
+| **Dragonfire:** `YOU DO`                                        | **Dragonfire:** `UH ... YEAH ...`                                |
+|                                                                 |                                                                  |
 
 <br>
 
