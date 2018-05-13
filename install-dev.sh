@@ -24,6 +24,7 @@ RED='\033[0;31m'
 GREEN='\033[0;32m'
 NC='\033[0m' # No Color
 CHECKSUM="1449d83e0a0b834c033067bf62f06277"
+CHECKSUM2="c775d819ffc06118053a48808003df84"
 
 DRAGONFIRE_DIR=/usr/share/dragonfire
 if [ ! -d "$DRAGONFIRE_DIR" ]; then
@@ -40,6 +41,16 @@ if [ "$NO_MODEL" = false ] ; then
     if [ ! ${verified::-3} = "$CHECKSUM" ]; then
       wget -nc -O - https://github.com/mozilla/DeepSpeech/releases/download/v0.1.1/deepspeech-0.1.1-models.tar.gz | tar xvfz -
     fi
+fi
+
+DEEPCONV_DIR=/usr/share/dragonfire/conversational
+if [ ! -d "$DEEPCONV_DIR" ]; then
+  mkdir $DEEPCONV_DIR
+fi
+cd $DEEPCONV_DIR
+verified=$(find . -type f -exec md5sum {} \; | md5sum)
+if [ ! ${verified::-3} = "$CHECKSUM2" ]; then
+  wget -nc -O - https://github.com/DragonComputer/Dragonfire/releases/download/v0.9.9/deepconv-v2.tar.gz | tar xvfz -
 fi
 
 pip3 install wikipedia PyUserInput tinydb youtube_dl spacy pyowm tensorflow-gpu deepspeech-gpu tweepy metadata_parser && pip3 install -U PyAudio && python3 -m spacy download en \
