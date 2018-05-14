@@ -32,7 +32,7 @@ Feel free to join [our Gitter chat room](https://gitter.im/DragonComputer/Lobby)
 | **Distros**             | KDE neon, elementary OS, Ubuntu         |
 | **Package managers**    | APT, pip                                |
 | **Languages**           | English                                 |
-| **System requirements** | a [CUDA supported GPU](https://www.geforce.com/hardware/technology/cuda/supported-gpus), 2GB of free RAM   |
+| **System requirements** | preferably a [CUDA supported GPU](https://www.geforce.com/hardware/technology/cuda/supported-gpus), 2GB of free RAM   |
 |                         |                                         |
 
 ### Installation
