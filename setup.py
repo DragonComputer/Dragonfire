@@ -111,7 +111,7 @@ setup(
     # https://packaging.python.org/en/latest/requirements.html
     install_requires=[
         'wikipedia', 'PyUserInput', 'tinydb', 'youtube_dl', 'spacy', 'pyowm',
-        'tensorflow-gpu', 'deepspeech-gpu'
+        'tensorflow==1.0.0', 'deepspeech==0.2.0a5'
     ],
 
     # List additional groups of dependencies here (e.g. development
