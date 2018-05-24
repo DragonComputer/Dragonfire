@@ -34,8 +34,8 @@ class TTA:
 
         self.headless = args["headless"]
         self.silent = args["silent"]
-        self.twitter = args["twitter"]
-        if self.twitter:
+        self.server = args["server"]
+        if self.server:
             self.headless = True
             self.silent = True
         self.twitter_api = None
@@ -48,7 +48,7 @@ class TTA:
         self.speak = sp
 
     def execute(self, duration):
-        if self.twitter:
+        if self.server:
             return True
         try:
             subprocess.Popen(["notify-send", "Dragonfire", self.message])
@@ -68,7 +68,7 @@ class TTA:
         self.command = com
         self.message = msg
         self.speak = sp
-        if self.twitter:
+        if self.server:
             return True
         try:
             subprocess.Popen(["notify-send", "Dragonfire", self.message])
@@ -82,7 +82,7 @@ class TTA:
                 pass
 
     def say(self, message, dynamic=False, end=False):
-        if self.twitter:
+        if self.server:
             text = "@" + self.twitter_user + " " + message#.upper()
             text = (text[:TWITTER_CHAR_LIMIT]) if len(text) > TWITTER_CHAR_LIMIT else text
             if self.command:
