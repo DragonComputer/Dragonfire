@@ -86,7 +86,7 @@ except NameError:
 
 def start(args):
 
-    if args["twitter"]:
+    if args["server"]:
         auth = OAuthHandler(CONSUMER_KEY, CONSUMER_SECRET)
         auth.set_access_token(ACCESS_KEY, ACCESS_SECRET)
         userin.twitter_api = tweepy.API(auth)
@@ -572,7 +572,7 @@ class VirtualAssistant():
                     userin.define([" "], " ")
                     userin.say(learn_response)
                 else:
-                    if not omniscient_.respond(original_com, not args["silent"], userin, user_prefix, args["twitter"]):
+                    if not omniscient_.respond(original_com, not args["silent"], userin, user_prefix, args["server"]):
                         dc_response = dc.respond(original_com, user_prefix)
                         if dc_response:
                             userin.define([" "], " ")
@@ -684,15 +684,15 @@ def initiate():
     ap.add_argument("-s", "--silent", help=help_msg, action="store_true")
     help_msg = "Headless mode. Do not display an avatar animation on the screen. Disable the female head model."
     ap.add_argument("--headless", help=help_msg, action="store_true")
-    help_msg = "Tweet-bot mode. Disable any audio functionality and become a Twitter integrated chatbot."
-    ap.add_argument("-t", "--twitter", help=help_msg, action="store_true")
+    help_msg = "Server mode. Disable any audio functionality, serve a RESTful spaCy API and become a Twitter integrated chatbot."
+    ap.add_argument("--server", help=help_msg, action="store_true")
     args = vars(ap.parse_args())
     global userin
     userin = TTA(args)
     try:
         global inactive
         inactive = False
-        if not args["twitter"]:
+        if not args["server"]:
             inactive = True
             SystemTrayExitListenerSet(e)
             stray_proc = Process(target=SystemTrayInit)
@@ -700,7 +700,7 @@ def initiate():
             dragon_greet()
         start(args)
     except KeyboardInterrupt:
-        if not args["twitter"]:
+        if not args["server"]:
             stray_proc.terminate()
         sys.exit(1)
 
