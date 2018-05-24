@@ -43,6 +43,7 @@ from dragonfire.stray import SystemTrayExitListenerSet, SystemTrayInit
 from dragonfire.utilities import TTA
 from dragonfire.arithmetic import arithmeticParser
 from dragonfire.conversational import DeepConversation
+import dragonfire.api as api
 from pykeyboard import PyKeyboard
 from pymouse import PyMouse
 from tinydb import Query, TinyDB
@@ -87,14 +88,16 @@ except NameError:
 def start(args):
 
     if args["server"]:
-        auth = OAuthHandler(CONSUMER_KEY, CONSUMER_SECRET)
-        auth.set_access_token(ACCESS_KEY, ACCESS_SECRET)
-        userin.twitter_api = tweepy.API(auth)
+        api.Run(nlp)
+        if CONSUMER_KEY != 'CONSUMER_KEY':
+            auth = OAuthHandler(CONSUMER_KEY, CONSUMER_SECRET)
+            auth.set_access_token(ACCESS_KEY, ACCESS_SECRET)
+            userin.twitter_api = tweepy.API(auth)
 
-        print("Listening Twitter mentions...")
-        l = MentionListener(args)
-        stream = Stream(auth, l)
-        stream.filter(track=['DragonfireAI'], async=True)
+            print("Listening Twitter mentions...")
+            l = MentionListener(args)
+            stream = Stream(auth, l)
+            stream.filter(track=['DragonfireAI'], async=True)
     elif args["cli"]:
         while (True):
             com = raw_input("Enter your command: ")
