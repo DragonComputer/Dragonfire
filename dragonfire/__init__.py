@@ -63,7 +63,7 @@ userin = None
 nlp = spacy.load('en')  # Load en_core_web_sm, English, 50 MB, default model
 learn_ = Learn(nlp)
 omniscient_ = Engine(nlp)
-dc = DeepConversation()
+dc = None
 e = Event()
 
 USER_ANSWERING = {
@@ -694,8 +694,10 @@ def initiate():
     userin = TTA(args)
     try:
         global inactive
+        global dc
         inactive = False
         if not args["server"]:
+            dc = DeepConversation()
             inactive = True
             SystemTrayExitListenerSet(e)
             stray_proc = Process(target=SystemTrayInit)

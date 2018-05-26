@@ -6,10 +6,12 @@ import waitress
 from threading import Thread
 import json
 from dragonfire.omniscient import Engine
+from dragonfire.conversational import DeepConversation
 
 nlp = None
 omniscient = None
 userin = None
+dc = None
 
 @hug.get('/tag')
 def tagger_end(text):
@@ -103,6 +105,13 @@ def all_in_one(text):
 @hug.get('/omni')
 def omni(text, gender_prefix):
     answer = omniscient.respond(text, userin=userin, user_prefix=gender_prefix, is_server=True)
+    if not answer:
+        answer = ""
+    return json.dumps(answer, indent=4)
+
+@hug.get('/deep')
+def deep(text, gender_prefix):
+    answer = dc.respond(text, user_prefix=gender_prefix)
     return json.dumps(answer, indent=4)
 
 
@@ -111,8 +120,10 @@ class Run():
         global nlp
         global omniscient
         global userin
+        global dc
         nlp = nlpRef  # Load en_core_web_sm, English, 50 MB, default model
         omniscient = Engine(nlp)
+        dc = DeepConversation()
         userin = userinRef
         app = hug.API(__name__)
         app.http.output_format = hug.output_format.text
