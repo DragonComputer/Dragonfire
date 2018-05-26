@@ -88,7 +88,7 @@ except NameError:
 def start(args):
 
     if args["server"]:
-        api.Run(nlp)
+        api.Run(nlp, userin)
         if CONSUMER_KEY != 'CONSUMER_KEY':
             auth = OAuthHandler(CONSUMER_KEY, CONSUMER_SECRET)
             auth.set_access_token(ACCESS_KEY, ACCESS_SECRET)

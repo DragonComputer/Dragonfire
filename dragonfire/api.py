@@ -5,8 +5,11 @@ from hug_middleware_cors import CORSMiddleware
 import waitress
 from threading import Thread
 import json
+from dragonfire.omniscient import Engine
 
 nlp = None
+omniscient = None
+userin = None
 
 @hug.get('/tag')
 def tagger_end(text):
@@ -97,10 +100,20 @@ def all_in_one(text):
         data.append(sent_data)
     return data
 
+@hug.get('/omni')
+def omni(text, gender_prefix):
+    answer = omniscient.respond(text, userin=userin, user_prefix=gender_prefix, is_server=True)
+    return json.dumps(answer, indent=4)
+
+
 class Run():
-    def __init__(self, nlpRef):
+    def __init__(self, nlpRef, userinRef):
         global nlp
+        global omniscient
+        global userin
         nlp = nlpRef  # Load en_core_web_sm, English, 50 MB, default model
+        omniscient = Engine(nlp)
+        userin = userinRef
         app = hug.API(__name__)
         app.http.output_format = hug.output_format.text
         app.http.add_middleware(CORSMiddleware(app))
