@@ -88,7 +88,7 @@ except NameError:
 def start(args):
 
     if args["server"]:
-        api.Run(nlp, userin)
+        api.Run(nlp, userin, args["server"])
         if CONSUMER_KEY != 'CONSUMER_KEY':
             auth = OAuthHandler(CONSUMER_KEY, CONSUMER_SECRET)
             auth.set_access_token(ACCESS_KEY, ACCESS_SECRET)
@@ -688,7 +688,7 @@ def initiate():
     help_msg = "Headless mode. Do not display an avatar animation on the screen. Disable the female head model."
     ap.add_argument("--headless", help=help_msg, action="store_true")
     help_msg = "Server mode. Disable any audio functionality, serve a RESTful spaCy API and become a Twitter integrated chatbot."
-    ap.add_argument("--server", help=help_msg, action="store_true")
+    ap.add_argument("--server", help=help_msg)
     args = vars(ap.parse_args())
     global userin
     userin = TTA(args)

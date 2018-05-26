@@ -12,8 +12,14 @@ nlp = None
 omniscient = None
 userin = None
 dc = None
+precomptoken = None
 
-@hug.get('/tag')
+@hug.authentication.token
+def token_authentication(token):
+    if token == precomptoken:
+        return True
+
+@hug.get('/tag', requires=token_authentication)
 def tagger_end(text):
     return json.dumps(tagger(text), indent=4)
 
@@ -33,7 +39,7 @@ def tagger(text):
         data[token.text] = parse
     return data
 
-@hug.get('/dep')
+@hug.get('/dep', requires=token_authentication)
 def dependency_parser_end(text):
     return json.dumps(dependency_parser(text), indent=4)
 
@@ -49,7 +55,7 @@ def dependency_parser(text):
         data[chunk.text] = parse
     return data
 
-@hug.get('/ner')
+@hug.get('/ner', requires=token_authentication)
 def entity_recognizer_end(text):
     return json.dumps(entity_recognizer(text), indent=4)
 
@@ -65,7 +71,7 @@ def entity_recognizer(text):
         data[ent.text] = parse
     return data
 
-@hug.get('/token')
+@hug.get('/token', requires=token_authentication)
 def tokenizer_end(text):
     return json.dumps(tokenizer(text), indent=4)
 
@@ -76,7 +82,7 @@ def tokenizer(text):
         data.append(token.text)
     return data
 
-@hug.get('/sent')
+@hug.get('/sent', requires=token_authentication)
 def sentence_segmenter_end(text):
     return json.dumps(sentence_segmenter(text), indent=4)
 
@@ -87,7 +93,7 @@ def sentence_segmenter(text):
         data.append(sent.text)
     return data
 
-@hug.get('/cmd')
+@hug.get('/cmd', requires=token_authentication)
 def cmd(text):
     return json.dumps(all_in_one(text), indent=4)
 
@@ -102,29 +108,31 @@ def all_in_one(text):
         data.append(sent_data)
     return data
 
-@hug.get('/omni')
+@hug.get('/omni', requires=token_authentication)
 def omni(text, gender_prefix):
     answer = omniscient.respond(text, userin=userin, user_prefix=gender_prefix, is_server=True)
     if not answer:
         answer = ""
     return json.dumps(answer, indent=4)
 
-@hug.get('/deep')
+@hug.get('/deep', requires=token_authentication)
 def deep(text, gender_prefix):
     answer = dc.respond(text, user_prefix=gender_prefix)
     return json.dumps(answer, indent=4)
 
 
 class Run():
-    def __init__(self, nlpRef, userinRef):
+    def __init__(self, nlpRef, userinRef, token):
         global nlp
         global omniscient
         global userin
         global dc
+        global precomptoken
         nlp = nlpRef  # Load en_core_web_sm, English, 50 MB, default model
         omniscient = Engine(nlp)
         dc = DeepConversation()
         userin = userinRef
+        precomptoken = token
         app = hug.API(__name__)
         app.http.output_format = hug.output_format.text
         app.http.add_middleware(CORSMiddleware(app))
