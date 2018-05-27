@@ -24,10 +24,11 @@ def tagger_end(text):
     return json.dumps(tagger(text), indent=4)
 
 def tagger(text):
-    data = collections.OrderedDict()
+    data = []
     doc = nlp(text)
     for token in doc:
         parse = {
+            'text': token.text,
             'lemma': token.lemma_,
             'pos': token.pos_,
             'tag': token.tag_,
@@ -36,7 +37,7 @@ def tagger(text):
             'is_alpha': token.is_alpha,
             'is_stop': token.is_stop
             }
-        data[token.text] = parse
+        data.append(parse)
     return data
 
 @hug.post('/dep', requires=token_authentication)
@@ -44,15 +45,16 @@ def dependency_parser_end(text):
     return json.dumps(dependency_parser(text), indent=4)
 
 def dependency_parser(text):
-    data = collections.OrderedDict()
+    data = []
     doc = nlp(text)
     for chunk in doc.noun_chunks:
         parse = {
+            'text': chunk.text,
             'root_text': chunk.root.text,
             'root_dep': chunk.root.dep_,
             'root_head_text': chunk.root.head.text,
             }
-        data[chunk.text] = parse
+        data.append(parse)
     return data
 
 @hug.post('/ner', requires=token_authentication)
@@ -60,15 +62,16 @@ def entity_recognizer_end(text):
     return json.dumps(entity_recognizer(text), indent=4)
 
 def entity_recognizer(text):
-    data = collections.OrderedDict()
+    data = []
     doc = nlp(text)
     for ent in doc.ents:
         parse = {
+            'text': ent.text,
             'start_char': ent.start_char,
             'end_char': ent.end_char,
             'label': ent.label_,
             }
-        data[ent.text] = parse
+        data.append(parse)
     return data
 
 @hug.post('/token', requires=token_authentication)
