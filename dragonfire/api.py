@@ -10,6 +10,7 @@ from dragonfire.conversational import DeepConversation
 from dragonfire.learn import Learn
 import wikipedia
 import re
+import youtube_dl
 
 nlp = None
 omniscient = None
@@ -143,6 +144,25 @@ def wiki(query, gender_prefix):
         wikicontent = re.sub(r'\([^)]*\)', '', wikicontent)
         response = " ".join(sentence_segmenter(wikicontent)[:3])
         url = wikipage.url
+    data = {}
+    data['response'] = response
+    data['url'] = url
+    return json.dumps(data, indent=4)
+
+@hug.post('/youtube', requires=token_authentication)
+def youtube(query, gender_prefix):
+    response = ""
+    url = ""
+    info = youtube_dl.YoutubeDL({}).extract_info('ytsearch:' + query, download=False, ie_key='YoutubeSearch')
+    if len(info['entries']) > 0:
+        response = info['entries'][0]['title']
+        url = "https://www.youtube.com/watch?v=%s" % (info['entries'][0]['id'])
+        response = "".join([
+            i if ord(i) < 128 else ' '
+            for i in response
+        ])
+    else:
+        response = "No video found, " + gender_prefix + "."
     data = {}
     data['response'] = response
     data['url'] = url
