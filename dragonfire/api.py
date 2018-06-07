@@ -8,7 +8,7 @@ import json
 from dragonfire.omniscient import Engine
 from dragonfire.conversational import DeepConversation
 from dragonfire.learn import Learn
-import wikipedia
+import wikipedia as wikipedia_lib
 import re
 import youtube_dl
 
@@ -128,15 +128,15 @@ def deep(text, gender_prefix):
     answer = dc.respond(text, user_prefix=gender_prefix)
     return json.dumps(answer, indent=4)
 
-@hug.post('/wiki', requires=token_authentication)
-def wiki(query, gender_prefix):
+@hug.post('/wikipedia', requires=token_authentication)
+def wikipedia(query, gender_prefix):
     response = ""
     url = ""
-    wikiresult = wikipedia.search(query)
+    wikiresult = wikipedia_lib.search(query)
     if len(wikiresult) == 0:
         response = "Sorry, " + gender_prefix + ". But I couldn't find anything about " + query + " in Wikipedia."
     else:
-        wikipage = wikipedia.page(wikiresult[0])
+        wikipage = wikipedia_lib.page(wikiresult[0])
         wikicontent = "".join([
             i if ord(i) < 128 else ' '
             for i in wikipage.content
