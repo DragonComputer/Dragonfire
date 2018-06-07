@@ -7,6 +7,7 @@ from threading import Thread
 import json
 from dragonfire.omniscient import Engine
 from dragonfire.conversational import DeepConversation
+from dragonfire.learn import Learn
 import wikipedia
 import re
 
@@ -14,6 +15,7 @@ nlp = None
 omniscient = None
 userin = None
 dc = None
+learner = None
 precomptoken = None
 
 @hug.authentication.token
@@ -146,6 +148,11 @@ def wiki(query, gender_prefix):
     data['url'] = url
     return json.dumps(data, indent=4)
 
+@hug.post('/learn', requires=token_authentication)
+def learn(text):
+    response = learner.respond(text)
+    return json.dumps(response, indent=4)
+
 
 class Run():
     def __init__(self, nlpRef, userinRef, token):
@@ -154,9 +161,11 @@ class Run():
         global userin
         global dc
         global precomptoken
+        global learner
         nlp = nlpRef  # Load en_core_web_sm, English, 50 MB, default model
         omniscient = Engine(nlp)
         dc = DeepConversation()
+        learner = Learn(nlp)
         userin = userinRef
         precomptoken = token
         app = hug.API(__name__)
