@@ -151,6 +151,8 @@ def wiki(query, gender_prefix):
 @hug.post('/learn', requires=token_authentication)
 def learn(text):
     response = learner.respond(text)
+    if not response:
+        response = ""
     return json.dumps(response, indent=4)
 
 
