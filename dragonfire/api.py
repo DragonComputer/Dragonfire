@@ -7,6 +7,8 @@ from threading import Thread
 import json
 from dragonfire.omniscient import Engine
 from dragonfire.conversational import DeepConversation
+import wikipedia
+import re
 
 nlp = None
 omniscient = None
@@ -122,6 +124,27 @@ def omni(text, gender_prefix):
 def deep(text, gender_prefix):
     answer = dc.respond(text, user_prefix=gender_prefix)
     return json.dumps(answer, indent=4)
+
+@hug.post('/wiki', requires=token_authentication)
+def wiki(query, gender_prefix):
+    response = ""
+    url = ""
+    wikiresult = wikipedia.search(query)
+    if len(wikiresult) == 0:
+        response = "Sorry, " + gender_prefix + ". But I couldn't find anything about " + query + " in Wikipedia."
+    else:
+        wikipage = wikipedia.page(wikiresult[0])
+        wikicontent = "".join([
+            i if ord(i) < 128 else ' '
+            for i in wikipage.content
+        ])
+        wikicontent = re.sub(r'\([^)]*\)', '', wikicontent)
+        response = " ".join(sentence_segmenter(wikicontent)[:3])
+        url = wikipage.url
+    data = {}
+    data['response'] = response
+    data['url'] = url
+    return json.dumps(data, indent=4)
 
 
 class Run():
