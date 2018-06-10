@@ -21,7 +21,6 @@ userin = None
 dc = None
 learner = None
 precomptoken = None
-db = None
 
 @hug.authentication.token
 def token_authentication(token):
@@ -185,6 +184,7 @@ def notification(name, gender, birth_date, location, gender_prefix):
     title = ""
     message = ""
 
+    db = pymysql.connect(Config.MYSQL_HOST, Config.MYSQL_USER, Config.MYSQL_PASS, Config.MYSQL_DB)
     cursor = db.cursor(pymysql.cursors.DictCursor)
     sql = "SELECT * FROM notifications"
     try:
@@ -199,6 +199,7 @@ def notification(name, gender, birth_date, location, gender_prefix):
     except pymysql.InternalError as error:
         code, message = error.args
         print (">>>>>>>>>>>>>", code, message)
+    db.close()
 
     data = {}
     data['url'] = url
@@ -215,12 +216,10 @@ class Run():
         global dc
         global precomptoken
         global learner
-        global db
         nlp = nlpRef  # Load en_core_web_sm, English, 50 MB, default model
         omniscient = Engine(nlp)
         dc = DeepConversation()
         learner = Learn(nlp)
-        db = pymysql.connect(Config.MYSQL_HOST, Config.MYSQL_USER, Config.MYSQL_PASS, Config.MYSQL_DB)
         userin = userinRef
         precomptoken = token
         app = hug.API(__name__)

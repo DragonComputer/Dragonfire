@@ -205,6 +205,6 @@ We have also a collective which you can donate:
 
 Maybe you may want to become a backer or a sponsor:
 
-<a href="https://opencollective.com/dragonfire/order/4784" target="_blank"><img src="https://opencollective.com/dragonfire/backers.svg?width=890"></a>
+<a href="https://opencollective.com/dragonfire/order/4784" target="_blank"><img src="https://opencollective.com/dragonfire/backers.svg?width=890" /></a>
 
-<a href="https://opencollective.com/dragonfire/order/4785" target="_blank"><img src="https://opencollective.com/dragonfire/sponsors.svg?width=890"></a>
+<a href="https://opencollective.com/dragonfire/order/4785" target="_blank"><img src="https://opencollective.com/dragonfire/sponsors.svg?width=890" align="right" /></a>
