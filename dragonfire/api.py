@@ -8,9 +8,12 @@ import json
 from dragonfire.omniscient import Engine
 from dragonfire.conversational import DeepConversation
 from dragonfire.learn import Learn
+from dragonfire.config import Config
 import wikipedia as wikipedia_lib
 import re
 import youtube_dl
+import pymysql
+import random
 
 nlp = None
 omniscient = None
@@ -18,6 +21,7 @@ userin = None
 dc = None
 learner = None
 precomptoken = None
+db = None
 
 @hug.authentication.token
 def token_authentication(token):
@@ -175,6 +179,33 @@ def learn(text):
         response = ""
     return json.dumps(response, indent=4)
 
+@hug.post('/notification', requires=token_authentication)
+def notification(name, gender, birth_date, location, gender_prefix):
+    url = ""
+    title = ""
+    message = ""
+
+    cursor = db.cursor(pymysql.cursors.DictCursor)
+    sql = "SELECT * FROM notifications"
+    try:
+        cursor.execute(sql)
+        results = cursor.fetchall()
+        row = random.choice(results)
+        if row['capitalize'] == 1:
+            gender_prefix = gender_prefix.capitalize()
+        url = row["url"]
+        title = row["title"]
+        message = row["message"].format(gender_prefix, name)
+    except pymysql.InternalError as error:
+        code, message = error.args
+        print (">>>>>>>>>>>>>", code, message)
+
+    data = {}
+    data['url'] = url
+    data['title'] = title
+    data['message'] = message
+    return json.dumps(data, indent=4)
+
 
 class Run():
     def __init__(self, nlpRef, userinRef, token):
@@ -184,10 +215,12 @@ class Run():
         global dc
         global precomptoken
         global learner
+        global db
         nlp = nlpRef  # Load en_core_web_sm, English, 50 MB, default model
         omniscient = Engine(nlp)
         dc = DeepConversation()
         learner = Learn(nlp)
+        db = pymysql.connect(Config.MYSQL_HOST, Config.MYSQL_USER, Config.MYSQL_PASS, Config.MYSQL_DB)
         userin = userinRef
         precomptoken = token
         app = hug.API(__name__)
