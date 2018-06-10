@@ -32,5 +32,5 @@ if [ ! ${verified::-3} = "$CHECKSUM2" ]; then
 fi
 
 
-pip3 install --upgrade PyAudio wikipedia PyUserInput tinydb youtube_dl spacy pyowm tensorflow==1.0.0 deepspeech==0.2.0a5 tweepy metadata_parser hug hug-middleware-cors waitress && python3 -m spacy download en \
+pip3 install --upgrade PyAudio wikipedia PyUserInput tinydb youtube_dl spacy pyowm tensorflow==1.0.0 deepspeech==0.2.0a5 tweepy metadata_parser hug hug-middleware-cors waitress PyMySQL && python3 -m spacy download en \
 && printf "import nltk\nnltk.download('names')\nnltk.download('brown')\nnltk.download('wordnet')\nnltk.download('punkt')" | python3 && echo -e "\n\n${GREEN}Dragonfire is successfully installed to your computer.${NC}\n"
