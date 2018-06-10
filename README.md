@@ -189,10 +189,6 @@ WHAT'S THE TEMPERATURE IN *
 
 If you want to contribute to Dragonfire then please read [this guide](https://github.com/DragonComputer/Dragonfire/blob/master/CONTRIBUTING.md#contributing-to-dragonfire).
 
-Please consider to support us on Patreon:
+Please consider to support us with buying a coffee:
 
-<a href="https://www.patreon.com/DragonComputer">
-  <p align="center">
-    <img src="https://i.imgur.com/KDVHXg0.png" alt="Become a patron" height="80px"/>
-  </p>
-</a>
+<a href="https://www.buymeacoffee.com/Dragonfire" target="_blank"><img src="https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png" alt="Buy Me A Coffee" style="height: auto !important;width: auto !important;" ></a>
