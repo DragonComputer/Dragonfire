@@ -43,6 +43,7 @@ from dragonfire.stray import SystemTrayExitListenerSet, SystemTrayInit
 from dragonfire.utilities import TTA
 from dragonfire.arithmetic import arithmeticParser
 from dragonfire.conversational import DeepConversation
+from dragonfire.config import Config
 import dragonfire.api as api
 from pykeyboard import PyKeyboard
 from pymouse import PyMouse
@@ -73,12 +74,6 @@ USER_ANSWERING = {
     'options': None
 }
 
-# Twitter Credentials
-CONSUMER_KEY = 'CONSUMER_KEY'
-CONSUMER_SECRET = 'CONSUMER_SECRET'
-ACCESS_KEY = 'ACCESS_KEY'
-ACCESS_SECRET = 'ACCESS_SECRET'
-
 try:
     raw_input  # Python 2
 except NameError:
@@ -89,9 +84,9 @@ def start(args):
 
     if args["server"]:
         api.Run(nlp, userin, args["server"])
-        if CONSUMER_KEY != 'CONSUMER_KEY':
-            auth = OAuthHandler(CONSUMER_KEY, CONSUMER_SECRET)
-            auth.set_access_token(ACCESS_KEY, ACCESS_SECRET)
+        if Config.TWITTER_CONSUMER_KEY != 'CONSUMER_KEY':
+            auth = OAuthHandler(Config.TWITTER_CONSUMER_KEY, Config.TWITTER_CONSUMER_SECRET)
+            auth.set_access_token(Config.TWITTER_ACCESS_KEY, Config.TWITTER_ACCESS_SECRET)
             userin.twitter_api = tweepy.API(auth)
 
             print("Listening Twitter mentions...")
