@@ -2,7 +2,11 @@
 
 <img src="https://travis-ci.org/DragonComputer/Dragonfire.svg?branch=master" align="right" />
 
-Dragonfire is an open source virtual assistant project for Ubuntu based Linux distributions.
+<img src="https://opencollective.com/dragonfire/tiers/backer/badge.svg?label=backer&color=brightgreen" align="right" />
+
+<img src="https://opencollective.com/dragonfire/tiers/sponsor/badge.svg?label=sponsor&color=brightgreen" align="right" />
+
+an open source virtual assistant project for Ubuntu based Linux distributions
 
 ![Dragonfire](https://raw.githubusercontent.com/DragonComputer/Dragonfire/master/docs/img/demo.gif)
 
@@ -192,3 +196,15 @@ If you want to contribute to Dragonfire then please read [this guide](https://gi
 Please consider to support us with buying a coffee:
 
 <a href="https://www.buymeacoffee.com/Dragonfire" target="_blank"><img src="https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png" alt="Buy Me A Coffee" style="height: auto !important;width: auto !important;" ></a>
+
+We have also a collective which you can donate:
+
+<a href="https://opencollective.com/dragonfire/donate" target="_blank">
+  <img src="https://opencollective.com/dragonfire/donate/button@2x.png?color=blue" width=300 />
+</a>
+
+Maybe you may want to become a backer or a sponsor:
+
+<object type="image/svg+xml" data="https://opencollective.com/dragonfire/tiers/backer.svg?avatarHeight=36&width=600"></object>
+
+<object type="image/svg+xml" data="https://opencollective.com/dragonfire/tiers/sponsor.svg?avatarHeight=36&width=600"></object>
