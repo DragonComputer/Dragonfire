@@ -36,8 +36,8 @@ import pyowm
 import wikipedia
 import wikipedia.exceptions
 import youtube_dl
-from dragonfire.learn import Learn
-from dragonfire.nlplib import Classifiers
+from dragonfire.learn import Learner
+from dragonfire.nlplib import Classifier
 from dragonfire.omniscient import Engine
 from dragonfire.stray import SystemTrayExitListenerSet, SystemTrayInit
 from dragonfire.utilities import TTA
@@ -62,8 +62,8 @@ GENDER_PREFIX = {'male': 'Sir', 'female': 'My Lady'}
 CONVERSATION_ID = uuid.uuid4()
 userin = None
 nlp = spacy.load('en')  # Load en_core_web_sm, English, 50 MB, default model
-learn_ = Learn(nlp)
-omniscient_ = Engine(nlp)
+learner = Learner(nlp)
+omniscient = Engine(nlp)
 dc = None
 e = Event()
 
@@ -565,12 +565,12 @@ class VirtualAssistant():
                 userin.define([" "], " ")
                 userin.say(arithmetic_response)
             else:
-                learn_response = learn_.respond(original_com)
-                if learn_response:
+                learnerresponse = learner.respond(original_com)
+                if learnerresponse:
                     userin.define([" "], " ")
-                    userin.say(learn_response)
+                    userin.say(learnerresponse)
                 else:
-                    if not omniscient_.respond(original_com, not args["silent"], userin, user_prefix, args["server"]):
+                    if not omniscient.respond(original_com, not args["silent"], userin, user_prefix, args["server"]):
                         dc_response = dc.respond(original_com, user_prefix)
                         if dc_response:
                             userin.define([" "], " ")
@@ -636,7 +636,7 @@ def dragon_greet():
         if gender_config:
             user_prefix = GENDER_PREFIX[gender_config[0]['gender']]
         else:
-            gender = Classifiers.gender(user_full_name.split(' ', 1)[0])
+            gender = Classifier.gender(user_full_name.split(' ', 1)[0])
             config_file.insert({'datatype': 'gender', 'gender': gender})
             user_prefix = GENDER_PREFIX[gender]
 

@@ -4,7 +4,7 @@ from tinydb import TinyDB, Query # TinyDB is a lightweight document oriented dat
 from os.path import expanduser  # Imported to get the home directory
 
 
-class Learn():
+class Learner():
     def __init__(self, nlp):
         self.pronouns = collections.OrderedDict()  # Create an ordered dictionary
         self.pronouns["I"] = "YOU"
@@ -201,10 +201,10 @@ if __name__ == "__main__":
     home = expanduser("~") # Get the home directory of the user
     if os.path.exists(home + '/.dragonfire_db.json'):
         os.remove(home + '/.dragonfire_db.json') # This is where we store the database; /home/USERNAME/.dragonfire_db.json
-    learn_ = Learn(spacy.load('en'))
+    learner = Learner(spacy.load('en'))
 
     def give_and_get(give, get):
-        result = learn_.respond(give)
+        result = learner.respond(give)
         if not result:
             print("{} | {}".format(give, result))
             return False

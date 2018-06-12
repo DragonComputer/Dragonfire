@@ -30,7 +30,7 @@ class Engine():
         }  # Map wh question words to entity categories
         self.coefficient = {'frequency': 0.36, 'precedence': 0.13, 'proximity': 0.21, 'mention': 0.30}  # Coefficients for scoring
 
-    # Entry function for this class. Dragonfire calls only this function. Unlike Learn.respond() it executes TTS because of its late reponse nature.
+    # Entry function for this class. Dragonfire calls only this function. Unlike Learner.respond() it executes TTS because of its late reponse nature.
     def respond(self, com, tts_output=False, userin=None, user_prefix=None, is_server=False):
         result = None
         subject, subjects, focus, subject_with_objects = self.semantic_extractor(com)  # Extract the subject, focus, objects etc.
