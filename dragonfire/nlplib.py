@@ -8,7 +8,7 @@ from nltk.corpus import brown
 import random
 
 
-class Classifiers():
+class Classifier():
     @staticmethod
     def gender_features(word):
         return {'last_letter': word[-1]}
@@ -19,11 +19,11 @@ class Classifiers():
                          [(name, 'female')
                           for name in names.words('female.txt')])
         random.shuffle(labeled_names)
-        featuresets = [(Classifiers.gender_features(n), gender)
+        featuresets = [(Classifier.gender_features(n), gender)
                        for (n, gender) in labeled_names]
         train_set = featuresets[500:]
         classifier = nltk.NaiveBayesClassifier.train(train_set)
-        return classifier.classify(Classifiers.gender_features(word))
+        return classifier.classify(Classifier.gender_features(word))
 
 
 # This is our fast Part of Speech tagger
@@ -116,10 +116,10 @@ class TopicExtractor(object):
 
 
 if __name__ == "__main__":
-    print(Classifiers.gender("Mehmet"))
-    print(Classifiers.gender("Ayşe"))
-    print(Classifiers.gender("İsmail"))
-    print(Classifiers.gender("Berna"))
+    print(Classifier.gender("Mehmet"))
+    print(Classifier.gender("Ayşe"))
+    print(Classifier.gender("İsmail"))
+    print(Classifier.gender("Berna"))
 
     sentence = "Do you know the birthdate of Barrack Obama"
     topic_obj = TopicExtractor(sentence)

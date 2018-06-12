@@ -7,7 +7,7 @@ from threading import Thread
 import json
 from dragonfire.omniscient import Engine
 from dragonfire.conversational import DeepConversation
-from dragonfire.learn import Learn
+from dragonfire.learn import Learner
 from dragonfire.config import Config
 import wikipedia as wikipedia_lib
 import re
@@ -219,7 +219,7 @@ class Run():
         nlp = nlpRef  # Load en_core_web_sm, English, 50 MB, default model
         omniscient = Engine(nlp)
         dc = DeepConversation()
-        learner = Learn(nlp)
+        learner = Learner(nlp)
         userin = userinRef
         precomptoken = token
         app = hug.API(__name__)
