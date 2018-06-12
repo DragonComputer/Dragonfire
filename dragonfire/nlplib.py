@@ -128,15 +128,15 @@ class Helper():
     def check_nth_lemma(self, n, word):
         return self.doc[n].lemma_ == word
 
-    def check_verb_lemma(self, word):
+    def check_verb_lemma(self, verb):
         for token in doc:
-            if token.pos_ == "VERB" and token.lemma_ == word:
+            if token.pos_ == "VERB" and token.lemma_ == verb:
                 return True
         return False
 
-    def check_wh_lemma(self, word):
+    def check_wh_lemma(self, wh):
         for token in doc:
-            if token.tag_ in ['WDT', 'WP', 'WP$', 'WRB'] and token.lemma_ == word:
+            if token.tag_ in ['WDT', 'WP', 'WP$', 'WRB'] and token.lemma_ == wh:
                 return True
         return False
 
@@ -148,6 +148,24 @@ class Helper():
 
     def check_only_dep_is(self, phrase):
         return len(doc.noun_chunks) == 1 and doc.noun_chunks[0].text == phrase
+
+    def check_noun_lemma(self, noun):
+        for token in doc:
+            if (token.pos_ == "NOUN" or token.pos_ == "PROPN") and token.lemma_ == noun:
+                return True
+        return False
+
+    def check_adj_lemma(self, adj):
+        for token in doc:
+            if token.pos_ == "ADJ" and token.lemma_ == adj:
+                return True
+        return False
+
+    def check_lemma(self, lemma):
+        for token in doc:
+            if token.lemma_ == lemma:
+                return True
+        return False
 
 
 if __name__ == "__main__":
