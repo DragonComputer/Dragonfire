@@ -134,6 +134,21 @@ class Helper():
                 return True
         return False
 
+    def check_wh_lemma(self, word):
+        for token in doc:
+            if token.tag_ in ['WDT', 'WP', 'WP$', 'WRB'] and token.lemma_ == word:
+                return True
+        return False
+
+    def check_deps_contains(self, phrase):
+        for chunk in doc.noun_chunks:
+            if chunk.text == phrase:
+                return True
+        return False
+
+    def check_only_dep_is(self, phrase):
+        return len(doc.noun_chunks) == 1 and doc.noun_chunks[0].text == phrase
+
 
 if __name__ == "__main__":
     print(Classifier.gender("Mehmet"))
