@@ -27,6 +27,10 @@ Dragonfire uses [Mozilla DeepSpeech](https://github.com/mozilla/DeepSpeech) to u
 
 Feel free to join [our Gitter chat room](https://gitter.im/DragonComputer/Lobby). Also you can directly talk with Dragonfire's herself via [her Twitter account](https://twitter.com/DragonfireAI).
 
+#### Android Client
+
+<a href="https://play.google.com/store/apps/details?id=computer.dragon.dragonfire&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1"><img alt="Get it on Google Play" src="https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png" height="100px" /></a>
+
 #### Supported Environments
 
 |                         |                                         |
@@ -205,6 +209,9 @@ We have also a collective which you can donate:
 
 Maybe you may want to become a backer or a sponsor:
 
-<a href="https://opencollective.com/dragonfire/order/4784" target="_blank"><img src="https://opencollective.com/dragonfire/backers.svg?width=890" /></a>
-
-<a href="https://opencollective.com/dragonfire/order/4785" target="_blank"><img src="https://opencollective.com/dragonfire/sponsors.svg?width=890" align="right" /></a>
+<a href="https://opencollective.com/dragonfire" target="_blank">
+    <p align="left">
+        <img src="https://opencollective.com/dragonfire/backers.svg?width=890" />
+        <img src="https://opencollective.com/dragonfire/sponsors.svg?width=890" />
+    </p>
+</a>
