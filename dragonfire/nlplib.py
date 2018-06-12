@@ -121,7 +121,16 @@ class Helper():
 
     def directly_equal(self, words):
         for word in words:
-            if doc[0].lemma_ == word and len(doc) == 1:
+            if self.doc[0].lemma_ == word and len(self.doc) == 1:
+                return True
+        return False
+
+    def check_nth_lemma(self, n, word):
+        return self.doc[n].lemma_ == word
+
+    def check_verb_lemma(self, word):
+        for token in doc:
+            if token.pos_ == "VERB" and token.lemma_ == word:
                 return True
         return False
 
