@@ -114,6 +114,17 @@ class TopicExtractor(object):
                 matches.append(t[0])
         return matches
 
+class Helper():
+
+    def __init__(self, doc):
+        self.doc = doc
+
+    def directly_equal(self, words):
+        for word in words:
+            if doc[0].lemma_ == word and len(doc) == 1:
+                return True
+        return False
+
 
 if __name__ == "__main__":
     print(Classifier.gender("Mehmet"))
