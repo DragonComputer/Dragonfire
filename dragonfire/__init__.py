@@ -110,26 +110,15 @@ class VirtualAssistant():
         if com == "WHO AM I":
             com = "SAY MY NAME"
         app_info = {
-            "OPEN BLENDER": (["blender"], "Blender",
-                             "Blender 3D computer graphics software"),
-            "OPEN DRAW": (["libreoffice", "--draw"], "LibreOffice Draw",
-                          "Draw"),
-            "OPEN IMPRESS": (["libreoffice", "--impress"],
-                             "LibreOffice Impress", "Impress"),
-            "OPEN MATH": (["libreoffice", "--math"], "LibreOffice Math",
-                          "Math"),
+            "OPEN BLENDER": (["blender"], "Blender", "Blender 3D computer graphics software"),
+            "OPEN DRAW": (["libreoffice", "--draw"], "LibreOffice Draw", "Draw"),
+            "OPEN IMPRESS": (["libreoffice", "--impress"], "LibreOffice Impress", "Impress"),
+            "OPEN MATH": (["libreoffice", "--math"], "LibreOffice Math", "Math"),
             "OPEN STREAM": (["steam"], "Steam", "Steam Game Store"),
-            "OPEN WRITER": (["libreoffice", "--writer"], "LibreOffice Writer",
-                            "Writer"),
-            "SAY MY NAME":
-            ([" "], user_full_name,
-             "Your name is " + user_full_name + ", " + user_prefix + "."),
-            "WHAT IS YOUR GENDER":
-            ([" "], " ",
-             "I have a female voice but I don't have a gender identity. I'm a computer program, "
-             + user_prefix + "."),
-            "WHAT IS YOUR NAME": ([" "], "My name is Dragonfire.",
-                                  "My name is Dragonfire."),
+            "OPEN WRITER": (["libreoffice", "--writer"], "LibreOffice Writer", "Writer"),
+            "SAY MY NAME": ([" "], user_full_name, "Your name is " + user_full_name + ", " + user_prefix + "."),
+            "WHAT IS YOUR GENDER": ([" "], " ", "I have a female voice but I don't have a gender identity. I'm a computer program, " + user_prefix + "."),
+            "WHAT IS YOUR NAME": ([" "], "My name is Dragonfire.", "My name is Dragonfire."),
         }.get(com)
         if app_info:
             tts_kill()
@@ -192,15 +181,11 @@ class VirtualAssistant():
         com = re.sub(r'([^\s\w]|_)+', '', com).strip()
         print("You: " + com)
 
-        if inactive and com not in ("DRAGONFIRE", "DRAGON FIRE", "WAKE UP",
-                                    "HEY"):
+        if inactive and com not in ("DRAGONFIRE", "DRAGON FIRE", "WAKE UP", "HEY"):
             return True
 
         if USER_ANSWERING['status']:
-            if com.startswith("FIRST") or com.startswith(
-                    "THE FIRST") or com.startswith("SECOND") or com.startswith(
-                        "THE SECOND") or com.startswith(
-                            "THIRD") or com.startswith("THE THIRD"):
+            if com.startswith("FIRST") or com.startswith("THE FIRST") or com.startswith("SECOND") or com.startswith("THE SECOND") or com.startswith("THIRD") or com.startswith("THE THIRD"):
                 USER_ANSWERING['status'] = False
                 selection = None
                 if com.startswith("FIRST") or com.startswith("THE FIRST"):
@@ -216,29 +201,17 @@ class VirtualAssistant():
                         try:
                             wikiresult = wikipedia.search(search_query)
                             if len(wikiresult) == 0:
-                                userin.say(
-                                    "Sorry, " + user_prefix +
-                                    ". But I couldn't find anything about " +
-                                    search_query + " in Wikipedia.")
+                                userin.say("Sorry, " + user_prefix + ". But I couldn't find anything about " + search_query + " in Wikipedia.")
                                 return True
                             wikipage = wikipedia.page(wikiresult[0])
-                            wikicontent = "".join([
-                                i if ord(i) < 128 else ' '
-                                for i in wikipage.content
-                            ])
+                            wikicontent = "".join([i if ord(i) < 128 else ' ' for i in wikipage.content])
                             wikicontent = re.sub(r'\([^)]*\)', '', wikicontent)
-                            userin.define_and_execute(
-                                ["sensible-browser", wikipage.url],
-                                search_query)
+                            userin.define_and_execute(["sensible-browser", wikipage.url], search_query)
                             userin.say(wikicontent)
                             return True
                         except requests.exceptions.ConnectionError:
-                            userin.define_and_execute(
-                                [" "], "Wikipedia connection error.")
-                            userin.say(
-                                "Sorry, " +
-                                user_prefix +
-                                ". But I'm unable to connect to Wikipedia servers.")
+                            userin.define_and_execute([" "], "Wikipedia connection error.")
+                            userin.say("Sorry, " + user_prefix + ". But I'm unable to connect to Wikipedia servers.")
                             return True
                         except Exception:
                             return True
@@ -257,9 +230,7 @@ class VirtualAssistant():
         elif "GO TO SLEEP" == com:
             tts_kill()
             inactive = True
-            userin.define_and_execute(
-                ["echo"],
-                "Dragonfire deactivated. To reactivate say 'Dragonfire!' or 'Wake Up!'")
+            userin.define_and_execute(["echo"], "Dragonfire deactivated. To reactivate say 'Dragonfire!' or 'Wake Up!'")
             userin.say("I'm going to sleep")
         elif com in ("ENOUGH", "SHUT UP"):
             print("Dragonfire quiets.")
@@ -268,25 +239,17 @@ class VirtualAssistant():
             return True  # the request has been handled
         elif VirtualAssistant.in_match(com):
             return True  # the request has been handled
-        elif ("SEARCH" in com
-              or "FIND" in com) and VirtualAssistant.search_command(com):
+        elif ("SEARCH" in com or "FIND" in com) and VirtualAssistant.search_command(com):
             pass  # the request has been handled
-        elif com in ("MY TITLE IS LADY", "I'M A LADY", "I'M A WOMAN",
-                     "I'M A GIRL"):
+        elif com in ("MY TITLE IS LADY", "I'M A LADY", "I'M A WOMAN", "I'M A GIRL"):
             tts_kill()
-            config_file.update({
-                'gender': 'female'
-            },
-                Query().datatype == 'gender')
+            config_file.update({'gender': 'female'}, Query().datatype == 'gender')
             user_prefix = "My Lady"
             userin.define([" "], " ")
             userin.say("Pardon, " + user_prefix + ".")
         elif com in ("MY TITLE IS SIR", "I'M A MAN", "I'M A BOY"):
             tts_kill()
-            config_file.update({
-                'gender': 'male'
-            },
-                Query().datatype == 'gender')
+            config_file.update({'gender': 'male'}, Query().datatype == 'gender')
             user_prefix = "Sir"
             userin.define([" "], " ")
             userin.say("Pardon, " + user_prefix + ".")
@@ -294,15 +257,9 @@ class VirtualAssistant():
             tts_kill()
             callme_config = config_file.search(Query().datatype == 'callme')
             if callme_config:
-                config_file.update({
-                    'title': original_com[8:].lower()
-                },
-                    Query().datatype == 'callme')
+                config_file.update({'title': original_com[8:].lower()}, Query().datatype == 'callme')
             else:
-                config_file.insert({
-                    'datatype': 'callme',
-                    'title': original_com[8:].lower()
-                })
+                config_file.insert({'datatype': 'callme', 'title': original_com[8:].lower()})
             user_prefix = original_com[8:].lower().encode("utf8")
             userin.define([" "], " ")
             userin.say("Pardon, " + user_prefix + ".")
@@ -310,56 +267,44 @@ class VirtualAssistant():
         # only for celsius degrees today. --> by Radan Liska :-)
         elif "WHAT" in com and "TEMPERATURE" in com:
             tts_kill()
-            capture = re.search(
-                "(?:WHAT IS|WHAT'S) THE TEMPERATURE (?:IN|ON|AT|OF)? (?P<city>.*)", com)
+            capture = re.search("(?:WHAT IS|WHAT'S) THE TEMPERATURE (?:IN|ON|AT|OF)? (?P<city>.*)", com)
             if capture:
                 city = capture.group('city')
                 owm = pyowm.OWM("16d66c84e82424f0f8e62c3e3b27b574")
                 reg = owm.city_id_registry()
-                weather = owm.weather_at_id(
-                    reg.ids_for(city)[0][0]).get_weather()
+                weather = owm.weather_at_id(reg.ids_for(city)[0][0]).get_weather()
                 fmt = "The temperature in {} is {} degrees celsius"
-                msg = fmt.format(city,
-                                 weather.get_temperature('celsius')['temp'])
+                msg = fmt.format(city, weather.get_temperature('celsius')['temp'])
                 userin.define_and_execute([" "], msg)
                 userin.say(msg)
         elif "FILE MANAGER" in com or "OPEN FILES" == com:
             tts_kill()
             userin.define_and_execute(["dolphin"], "File Manager")  # KDE neon
-            userin.define_and_execute(["pantheon-files"],
-                                      "File Manager")  # elementary OS
-            userin.define_and_execute(["nautilus", "--browser"],
-                                      "File Manager")  # Ubuntu
+            userin.define_and_execute(["pantheon-files"], "File Manager")  # elementary OS
+            userin.define_and_execute(["nautilus", "--browser"], "File Manager")  # Ubuntu
             userin.say("File Manager")
         elif "OPEN CAMERA" == com:
             tts_kill()
             userin.define_and_execute(["kamoso"], "Camera")  # KDE neon
-            userin.define_and_execute(["snap-photobooth"],
-                                      "Camera")  # elementary OS
+            userin.define_and_execute(["snap-photobooth"], "Camera")  # elementary OS
             userin.define_and_execute(["cheese"], "Camera")  # Ubuntu
             userin.say("Camera")
         elif "OPEN CALENDAR" == com:
             tts_kill()
             userin.define_and_execute(["korganizer"], "Calendar")  # KDE neon
-            userin.define_and_execute(["maya-calendar"],
-                                      "Calendar")  # elementary OS
+            userin.define_and_execute(["maya-calendar"], "Calendar")  # elementary OS
             userin.define_and_execute(["orage"], "Calendar")  # Ubuntu
             userin.say("Calendar")
         elif "OPEN CALCULATOR" == com:
             tts_kill()
             userin.define_and_execute(["kcalc"], "Calculator")  # KDE neon
-            userin.define_and_execute(["pantheon-calculator"],
-                                      "Calculator")  # elementary OS
-            userin.define_and_execute(["gnome-calculator"],
-                                      "Calculator")  # Ubuntu
+            userin.define_and_execute(["pantheon-calculator"], "Calculator")  # elementary OS
+            userin.define_and_execute(["gnome-calculator"], "Calculator")  # Ubuntu
             userin.say("Calculator")
         elif "SOFTWARE CENTER" in com:
             tts_kill()
-            userin.define_and_execute(["plasma-discover"],
-                                      "Software Center")  # KDE neon
-            userin.define_and_execute(
-                ["software-center"],
-                "Software Center")  # elementary OS & Ubuntu
+            userin.define_and_execute(["plasma-discover"], "Software Center")  # KDE neon
+            userin.define_and_execute(["software-center"], "Software Center")  # elementary OS & Ubuntu
             userin.say("Software Center")
         elif com.startswith("KEYBOARD "):
             tts_kill()
@@ -457,35 +402,23 @@ class VirtualAssistant():
                     try:
                         wikiresult = wikipedia.search(search_query)
                         if len(wikiresult) == 0:
-                            userin.say("Sorry, " + user_prefix +
-                                       ". But I couldn't find anything about "
-                                       + search_query + " in Wikipedia.")
+                            userin.say("Sorry, " + user_prefix + ". But I couldn't find anything about " + search_query + " in Wikipedia.")
                             return True
                         wikipage = wikipedia.page(wikiresult[0])
-                        wikicontent = "".join([
-                            i if ord(i) < 128 else ' '
-                            for i in wikipage.content
-                        ])
+                        wikicontent = "".join([i if ord(i) < 128 else ' ' for i in wikipage.content])
                         wikicontent = re.sub(r'\([^)]*\)', '', wikicontent)
-                        userin.define_and_execute(
-                            ["sensible-browser", wikipage.url], search_query)
+                        userin.define_and_execute(["sensible-browser", wikipage.url], search_query)
                         userin.say(wikicontent)
                     except requests.exceptions.ConnectionError:
-                        userin.define_and_execute(
-                            [" "], "Wikipedia connection error.")
-                        userin.say(
-                            "Sorry, " + user_prefix +
-                            ". But I'm unable to connect to Wikipedia servers."
-                        )
+                        userin.define_and_execute([" "], "Wikipedia connection error.")
+                        userin.say("Sorry, " + user_prefix + ". But I'm unable to connect to Wikipedia servers.")
                     except wikipedia.exceptions.DisambiguationError as disambiguation:
                         USER_ANSWERING['status'] = True
                         USER_ANSWERING['for'] = 'wikipedia'
                         USER_ANSWERING['reason'] = 'disambiguation'
                         USER_ANSWERING['options'] = disambiguation.options[:3]
-                        notify = "Wikipedia disambiguation. Which one of these you meant?:\n - " + \
-                            disambiguation.options[0]
-                        message = user_prefix + ", there is a disambiguation. Which one of these you meant? " + \
-                            disambiguation.options[0]
+                        notify = "Wikipedia disambiguation. Which one of these you meant?:\n - " + disambiguation.options[0]
+                        message = user_prefix + ", there is a disambiguation. Which one of these you meant? " + disambiguation.options[0]
                         for option in disambiguation.options[1:3]:
                             message += ", or " + option
                             notify += "\n - " + option
@@ -502,20 +435,12 @@ class VirtualAssistant():
                         "(?:SEARCH|FIND) (?P<query>.*) (?:IN|ON|AT|USING)? YOUTUBE", com)
                     if capture:
                         search_query = capture.group('query')
-                        info = youtube_dl.YoutubeDL({}).extract_info(
-                            'ytsearch:' + search_query,
-                            download=False,
-                            ie_key='YoutubeSearch')
+                        info = youtube_dl.YoutubeDL({}).extract_info('ytsearch:' + search_query, download=False, ie_key='YoutubeSearch')
                         if len(info['entries']) > 0:
                             youtube_title = info['entries'][0]['title']
-                            youtube_url = "https://www.youtube.com/watch?v=%s" % (
-                                info['entries'][0]['id'])
-                            userin.define(["sensible-browser", youtube_url],
-                                          youtube_title)
-                            youtube_title = "".join([
-                                i if ord(i) < 128 else ' '
-                                for i in youtube_title
-                            ])
+                            youtube_url = "https://www.youtube.com/watch?v=%s" % (info['entries'][0]['id'])
+                            userin.define(["sensible-browser", youtube_url], youtube_title)
+                            youtube_title = "".join([i if ord(i) < 128 else ' ' for i in youtube_title])
                         else:
                             youtube_title = "No video found, " + user_prefix + "."
                             userin.define(" ", " ")
@@ -528,9 +453,7 @@ class VirtualAssistant():
                         k.tap_key(k.tab_key)
                         k.tap_key(k.tab_key)
                         k.tap_key('f')
-        elif ("GOOGLE" in com
-              or "WEB" in com) and "IMAGE" not in com and ("SEARCH" in com
-                                                           or "FIND" in com):
+        elif ("GOOGLE" in com or "WEB" in com) and "IMAGE" not in com and ("SEARCH" in com or "FIND" in com):
             tts_kill()
             with nostdout():
                 with nostderr():
@@ -539,23 +462,17 @@ class VirtualAssistant():
                     if capture:
                         search_query = capture.group('query')
                         tab_url = "http://google.com/?#q=" + search_query
-                        userin.define_and_execute(
-                            ["sensible-browser", tab_url], search_query)
+                        userin.define_and_execute(["sensible-browser", tab_url], search_query)
                         userin.say(search_query)
-        elif ("GOOGLE" in com
-              or "WEB" in com) and "IMAGE" in com and ("SEARCH" in com
-                                                       or "FIND" in com):
+        elif ("GOOGLE" in com or "WEB" in com) and "IMAGE" in com and ("SEARCH" in com or "FIND" in com):
             tts_kill()
             with nostdout():
                 with nostderr():
-                    capture = re.search("(?:SEARCH IMAGES OF|FIND IMAGES OF|SEARCH|FIND) "
-                                        "(?P<query>.*) (?:IN|ON|AT|USING)? "
-                                        "(?:GOOGLE|WEB|GOOGLE IMAGES|WEB IMAGES)?", com)
+                    capture = re.search("(?:SEARCH IMAGES OF|FIND IMAGES OF|SEARCH|FIND) (?P<query>.*) (?:IN|ON|AT|USING)? (?:GOOGLE|WEB|GOOGLE IMAGES|WEB IMAGES)?", com)
                     if capture:
                         search_query = capture.group('query')
                         tab_url = "http://google.com/?#q=" + search_query + "&tbm=isch"
-                        userin.define(["sensible-browser", tab_url],
-                                      search_query)
+                        userin.define(["sensible-browser", tab_url], search_query)
                         userin.execute(0)
                         userin.say(search_query)
         else:
@@ -577,12 +494,12 @@ class VirtualAssistant():
                             userin.say(dc_response)
 
 
-
 class MentionListener(StreamListener):
     """ A listener handles tweets that are received from the stream.
     This is a basic listener that just prints received tweets to stdout.
 
     """
+
     def __init__(self, args):
         self.args = args
 
@@ -591,7 +508,7 @@ class MentionListener(StreamListener):
         global user_prefix
 
         mention = json.loads(data)
-        #print(json.dumps(mention, indent=4, sort_keys=True))
+        # print(json.dumps(mention, indent=4, sort_keys=True))
         if 'retweeted_status' not in mention:
             tw_text = mention['text']
             tw_user = mention['user']['screen_name']
@@ -625,7 +542,7 @@ def dragon_greet():
 
     command = "getent passwd $LOGNAME | cut -d: -f5 | cut -d, -f1"
     user_full_name = os.popen(command).read()
-    user_full_name = user_full_name[:-1]#.decode("utf8")
+    user_full_name = user_full_name[:-1]  # .decode("utf8")
     home = expanduser("~")
     config_file = TinyDB(home + '/.dragonfire_config.json')
     callme_config = config_file.search(Query().datatype == 'callme')
@@ -646,8 +563,7 @@ def dragon_greet():
         time_of_day = "afternoon"
     else:
         time_of_day = "evening"
-    userin.define_and_execute(["echo"],
-                              "To activate say 'Dragonfire!' or 'Wake Up!'")
+    userin.define_and_execute(["echo"], "To activate say 'Dragonfire!' or 'Wake Up!'")
     userin.say(" ".join(["Good", time_of_day, user_prefix]))
 
 
