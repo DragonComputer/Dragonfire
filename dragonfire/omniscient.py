@@ -61,8 +61,7 @@ class Engine():
                 except requests.exceptions.ConnectionError:  # if there is a connection error
                     result = "Sorry, " + user_prefix + ". But I'm unable to connect to Wikipedia servers."
                     if not is_server:
-                        userin.define([" "], "Wikipedia connection error.")
-                        userin.execute(0)
+                        userin.execute([" "], "Wikipedia connection error.")
                         if not tts_output: print(result)
                         if tts_output: userin.say(result)
                     return result
@@ -84,8 +83,7 @@ class Engine():
                     except requests.exceptions.ConnectionError:  # if there is a connection error
                         result = "Sorry, " + user_prefix + ". But I'm unable to connect to Wikipedia servers."
                         if not is_server:
-                            userin.define([" "], "Wikipedia connection error.")
-                            userin.execute(0)
+                            userin.execute([" "], "Wikipedia connection error.")
                             if not tts_output: print(result)
                             if tts_output: userin.say(result)
                         return result
@@ -205,8 +203,7 @@ class Engine():
                     except WordNetError:
                         if not is_server:
                             message = "Sorry, " + user_prefix + ". But I'm unable to understand the word '" + word + "'."
-                            userin.define([" "], "NLP(WordNet) error. Unrecognized word: " + word)
-                            userin.execute(0)
+                            userin.execute([" "], "NLP(WordNet) error. Unrecognized word: " + word)
                             if not tts_output: print(message)
                             if tts_output: userin.say(message)
                             return False

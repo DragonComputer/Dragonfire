@@ -42,34 +42,15 @@ class TTA:
         self.twitter_user = None
         realhud.load_gif(DRAGONFIRE_PATH + "/realhud/animation/avatar.gif")
 
-    def define(self, com="", msg="", sp="False"):
+    def execute(self, com="", msg="", speak=False, duration=0):
         self.command = com
         self.message = msg
-        self.speak = sp
+        self.speak = speak
 
-    def execute(self, duration):
         if self.server:
             return True
-        try:
-            subprocess.Popen(["notify-send", "Dragonfire", self.message])
-        except BaseException:
-            pass
-        if self.command != "":
-            time.sleep(duration)
-            try:
-                subprocess.Popen(self.command, stdout=FNULL, stderr=FNULL)
-            except BaseException:
-                pass
-        # if self.speak == True:
-        #   self.say(self.message)
-        # else:
-
-    def define_and_execute(self, com="", msg="", sp="False", duration=0):
-        self.command = com
-        self.message = msg
-        self.speak = sp
-        if self.server:
-            return True
+        if self.speak == True:
+            self.say(self.message)
         try:
             subprocess.Popen(["notify-send", "Dragonfire", self.message])
         except BaseException:
@@ -164,5 +145,4 @@ class TTA:
 
 if __name__ == "__main__":
     userin = TTA()
-    userin.define([" "], " ")
     userin.say("Hello world!")

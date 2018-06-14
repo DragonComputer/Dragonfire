@@ -123,7 +123,7 @@ class VirtualAssistant():
         if app_info:
             tts_kill()
             commands, message, say_text = app_info
-            userin.define_and_execute(commands, message)
+            userin.execute(commands, message)
             userin.say(say_text)
         return bool(app_info)
 
@@ -144,7 +144,7 @@ class VirtualAssistant():
             if app_name in com:
                 tts_kill()
                 commands, message, say_text = app_info
-                userin.define_and_execute(commands, message)
+                userin.execute(commands, message)
                 userin.say(say_text)
                 return True
         return False
@@ -206,11 +206,11 @@ class VirtualAssistant():
                             wikipage = wikipedia.page(wikiresult[0])
                             wikicontent = "".join([i if ord(i) < 128 else ' ' for i in wikipage.content])
                             wikicontent = re.sub(r'\([^)]*\)', '', wikicontent)
-                            userin.define_and_execute(["sensible-browser", wikipage.url], search_query)
+                            userin.execute(["sensible-browser", wikipage.url], search_query)
                             userin.say(wikicontent)
                             return True
                         except requests.exceptions.ConnectionError:
-                            userin.define_and_execute([" "], "Wikipedia connection error.")
+                            userin.execute([" "], "Wikipedia connection error.")
                             userin.say("Sorry, " + user_prefix + ". But I'm unable to connect to Wikipedia servers.")
                             return True
                         except Exception:
@@ -219,7 +219,6 @@ class VirtualAssistant():
         if com in ("DRAGONFIRE", "DRAGON FIRE", "WAKE UP", "HEY"):
             tts_kill()
             inactive = False
-            userin.define([" "], " ")
             userin.say(choice([
                         "Yes, " + user_prefix + ".",
                         "Yes. I'm waiting.",
@@ -230,7 +229,7 @@ class VirtualAssistant():
         elif "GO TO SLEEP" == com:
             tts_kill()
             inactive = True
-            userin.define_and_execute(["echo"], "Dragonfire deactivated. To reactivate say 'Dragonfire!' or 'Wake Up!'")
+            userin.execute(["echo"], "Dragonfire deactivated. To reactivate say 'Dragonfire!' or 'Wake Up!'")
             userin.say("I'm going to sleep")
         elif com in ("ENOUGH", "SHUT UP"):
             print("Dragonfire quiets.")
@@ -245,13 +244,11 @@ class VirtualAssistant():
             tts_kill()
             config_file.update({'gender': 'female'}, Query().datatype == 'gender')
             user_prefix = "My Lady"
-            userin.define([" "], " ")
             userin.say("Pardon, " + user_prefix + ".")
         elif com in ("MY TITLE IS SIR", "I'M A MAN", "I'M A BOY"):
             tts_kill()
             config_file.update({'gender': 'male'}, Query().datatype == 'gender')
             user_prefix = "Sir"
-            userin.define([" "], " ")
             userin.say("Pardon, " + user_prefix + ".")
         elif com.startswith("CALL ME "):
             tts_kill()
@@ -261,7 +258,6 @@ class VirtualAssistant():
             else:
                 config_file.insert({'datatype': 'callme', 'title': original_com[8:].lower()})
             user_prefix = original_com[8:].lower().encode("utf8")
-            userin.define([" "], " ")
             userin.say("Pardon, " + user_prefix + ".")
         # only for The United States today but prepared for all countries. Also
         # only for celsius degrees today. --> by Radan Liska :-)
@@ -275,36 +271,36 @@ class VirtualAssistant():
                 weather = owm.weather_at_id(reg.ids_for(city)[0][0]).get_weather()
                 fmt = "The temperature in {} is {} degrees celsius"
                 msg = fmt.format(city, weather.get_temperature('celsius')['temp'])
-                userin.define_and_execute([" "], msg)
+                userin.execute([" "], msg)
                 userin.say(msg)
         elif "FILE MANAGER" in com or "OPEN FILES" == com:
             tts_kill()
-            userin.define_and_execute(["dolphin"], "File Manager")  # KDE neon
-            userin.define_and_execute(["pantheon-files"], "File Manager")  # elementary OS
-            userin.define_and_execute(["nautilus", "--browser"], "File Manager")  # Ubuntu
+            userin.execute(["dolphin"], "File Manager")  # KDE neon
+            userin.execute(["pantheon-files"], "File Manager")  # elementary OS
+            userin.execute(["nautilus", "--browser"], "File Manager")  # Ubuntu
             userin.say("File Manager")
         elif "OPEN CAMERA" == com:
             tts_kill()
-            userin.define_and_execute(["kamoso"], "Camera")  # KDE neon
-            userin.define_and_execute(["snap-photobooth"], "Camera")  # elementary OS
-            userin.define_and_execute(["cheese"], "Camera")  # Ubuntu
+            userin.execute(["kamoso"], "Camera")  # KDE neon
+            userin.execute(["snap-photobooth"], "Camera")  # elementary OS
+            userin.execute(["cheese"], "Camera")  # Ubuntu
             userin.say("Camera")
         elif "OPEN CALENDAR" == com:
             tts_kill()
-            userin.define_and_execute(["korganizer"], "Calendar")  # KDE neon
-            userin.define_and_execute(["maya-calendar"], "Calendar")  # elementary OS
-            userin.define_and_execute(["orage"], "Calendar")  # Ubuntu
+            userin.execute(["korganizer"], "Calendar")  # KDE neon
+            userin.execute(["maya-calendar"], "Calendar")  # elementary OS
+            userin.execute(["orage"], "Calendar")  # Ubuntu
             userin.say("Calendar")
         elif "OPEN CALCULATOR" == com:
             tts_kill()
-            userin.define_and_execute(["kcalc"], "Calculator")  # KDE neon
-            userin.define_and_execute(["pantheon-calculator"], "Calculator")  # elementary OS
-            userin.define_and_execute(["gnome-calculator"], "Calculator")  # Ubuntu
+            userin.execute(["kcalc"], "Calculator")  # KDE neon
+            userin.execute(["pantheon-calculator"], "Calculator")  # elementary OS
+            userin.execute(["gnome-calculator"], "Calculator")  # Ubuntu
             userin.say("Calculator")
         elif "SOFTWARE CENTER" in com:
             tts_kill()
-            userin.define_and_execute(["plasma-discover"], "Software Center")  # KDE neon
-            userin.define_and_execute(["software-center"], "Software Center")  # elementary OS & Ubuntu
+            userin.execute(["plasma-discover"], "Software Center")  # KDE neon
+            userin.execute(["software-center"], "Software Center")  # elementary OS & Ubuntu
             userin.say("Software Center")
         elif com.startswith("KEYBOARD "):
             tts_kill()
@@ -383,12 +379,9 @@ class VirtualAssistant():
                     k.tap_key(" ")
         elif "SHUTDOWN THE COMPUTER" == com:
             tts_kill()
-            userin.define(["sudo", "poweroff"], "Shutting down")
-            userin.say("Shutting down")
-            userin.execute(3)
+            userin.execute(["sudo", "poweroff"], "Shutting down", True, 3)
         elif com in ("GOODBYE", "GOOD BYE", "BYE BYE", "SEE YOU LATER", "CATCH YOU LATER"):
             tts_kill()
-            userin.define([" "], " ")
             userin.say("Goodbye, " + user_prefix)
             # raise KeyboardInterrupt
             thread.interrupt_main()
@@ -407,10 +400,10 @@ class VirtualAssistant():
                         wikipage = wikipedia.page(wikiresult[0])
                         wikicontent = "".join([i if ord(i) < 128 else ' ' for i in wikipage.content])
                         wikicontent = re.sub(r'\([^)]*\)', '', wikicontent)
-                        userin.define_and_execute(["sensible-browser", wikipage.url], search_query)
+                        userin.execute(["sensible-browser", wikipage.url], search_query)
                         userin.say(wikicontent)
                     except requests.exceptions.ConnectionError:
-                        userin.define_and_execute([" "], "Wikipedia connection error.")
+                        userin.execute([" "], "Wikipedia connection error.")
                         userin.say("Sorry, " + user_prefix + ". But I'm unable to connect to Wikipedia servers.")
                     except wikipedia.exceptions.DisambiguationError as disambiguation:
                         USER_ANSWERING['status'] = True
@@ -423,7 +416,7 @@ class VirtualAssistant():
                             message += ", or " + option
                             notify += "\n - " + option
                         notify += '\nSay, for example: "THE FIRST ONE" to choose.'
-                        userin.define_and_execute([" "], notify)
+                        userin.execute([" "], notify)
                         userin.say(message)
                     except BaseException:
                         pass
@@ -439,12 +432,10 @@ class VirtualAssistant():
                         if len(info['entries']) > 0:
                             youtube_title = info['entries'][0]['title']
                             youtube_url = "https://www.youtube.com/watch?v=%s" % (info['entries'][0]['id'])
-                            userin.define(["sensible-browser", youtube_url], youtube_title)
+                            userin.execute(["sensible-browser", youtube_url], youtube_title)
                             youtube_title = "".join([i if ord(i) < 128 else ' ' for i in youtube_title])
                         else:
                             youtube_title = "No video found, " + user_prefix + "."
-                            userin.define(" ", " ")
-                        userin.execute(0)
                         userin.say(youtube_title)
                         time.sleep(5)
                         k = PyKeyboard()
@@ -462,8 +453,7 @@ class VirtualAssistant():
                     if capture:
                         search_query = capture.group('query')
                         tab_url = "http://google.com/?#q=" + search_query
-                        userin.define_and_execute(["sensible-browser", tab_url], search_query)
-                        userin.say(search_query)
+                        userin.execute(["sensible-browser", tab_url], search_query, True)
         elif ("GOOGLE" in com or "WEB" in com) and "IMAGE" in com and ("SEARCH" in com or "FIND" in com):
             tts_kill()
             with nostdout():
@@ -472,25 +462,20 @@ class VirtualAssistant():
                     if capture:
                         search_query = capture.group('query')
                         tab_url = "http://google.com/?#q=" + search_query + "&tbm=isch"
-                        userin.define(["sensible-browser", tab_url], search_query)
-                        userin.execute(0)
-                        userin.say(search_query)
+                        userin.execute(["sensible-browser", tab_url], search_query, True)
         else:
             tts_kill()
             arithmetic_response = arithmeticParser(com)
             if arithmetic_response:
-                userin.define([" "], " ")
                 userin.say(arithmetic_response)
             else:
                 learnerresponse = learner.respond(original_com)
                 if learnerresponse:
-                    userin.define([" "], " ")
                     userin.say(learnerresponse)
                 else:
                     if not omniscient.respond(original_com, not args["silent"], userin, user_prefix, args["server"]):
                         dc_response = dc.respond(original_com, user_prefix)
                         if dc_response:
-                            userin.define([" "], " ")
                             userin.say(dc_response)
 
 
@@ -563,13 +548,13 @@ def dragon_greet():
         time_of_day = "afternoon"
     else:
         time_of_day = "evening"
-    userin.define_and_execute(["echo"], "To activate say 'Dragonfire!' or 'Wake Up!'")
+    userin.execute(["echo"], "To activate say 'Dragonfire!' or 'Wake Up!'")
     userin.say(" ".join(["Good", time_of_day, user_prefix]))
 
 
 def speech_error():
     tts_kill()
-    userin.define_and_execute(["echo"], "An error occurred")
+    userin.execute(["echo"], "An error occurred")
     userin.say("I couldn't understand, please repeat again")
 
 
