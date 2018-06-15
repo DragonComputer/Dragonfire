@@ -105,58 +105,6 @@ def start(args):
 
 
 class VirtualAssistant():
-    @staticmethod
-    def exact_match(com):  # if key == com: ...
-        if com == "WHO AM I":
-            com = "SAY MY NAME"
-        app_info = {
-            "OPEN BLENDER": (["blender"], "Blender", "Blender 3D computer graphics software"),
-            "OPEN DRAW": (["libreoffice", "--draw"], "LibreOffice Draw", "Draw"),
-            "OPEN IMPRESS": (["libreoffice", "--impress"], "LibreOffice Impress", "Impress"),
-            "OPEN MATH": (["libreoffice", "--math"], "LibreOffice Math", "Math"),
-            "OPEN STREAM": (["steam"], "Steam", "Steam Game Store"),
-            "OPEN WRITER": (["libreoffice", "--writer"], "LibreOffice Writer", "Writer"),
-            "SAY MY NAME": ([" "], user_full_name, "Your name is " + user_full_name + ", " + user_prefix + "."),
-            "WHAT IS YOUR GENDER": ([" "], " ", "I have a female voice but I don't have a gender identity. I'm a computer program, " + user_prefix + "."),
-            "WHAT IS YOUR NAME": ([" "], "My name is Dragonfire.", "My name is Dragonfire."),
-        }.get(com)
-        if app_info:
-            tts_kill()
-            commands, message, say_text = app_info
-            userin.execute(commands, message)
-            userin.say(say_text)
-        return bool(app_info)
-
-    @staticmethod
-    def in_match(com):  # if key in com: ...
-        if "PHOTO SHOP" in com or "PHOTO EDITOR" in com:
-            com = "GIMP"
-        elif "VECTOR GRAPHICS" in com or "VECTORIAL DRAWING" in com:
-            com = "INKSCAPE"
-        apps = {
-            "GIMP": (["gimp"], "GIMP", "Photo editor"),
-            "INKSCAPE": (["inkscape"], "Inkscape", "Inkscape"),
-            "OFFICE SUITE": (["libreoffice"], "LibreOffice", "Office Suite"),
-            "VIDEO EDITOR": (["kdenlive"], "Kdenlive", "Video editor"),
-            "WEB BROWSER": (["sensible-browser"], "Web Browser", "Web Browser")
-        }
-        for app_name, app_info in apps.items():
-            if app_name in com:
-                tts_kill()
-                commands, message, say_text = app_info
-                userin.execute(commands, message)
-                userin.say(say_text)
-                return True
-        return False
-
-    @staticmethod
-    def regex_match(com):  # if re.search(r"string", com): ...
-        return False  # not yet implemented
-
-    @staticmethod
-    def search_command(com):  # if "SEARCH" in com or "FIND" in com: ...
-        assert "SEARCH" in com or "FIND" in com, com
-        return False  # not yet implemented
 
     @staticmethod
     def command(com, args, tw_user=None):
@@ -249,12 +197,71 @@ class VirtualAssistant():
         elif h.directly_equal(["enough"]) or (h.check_verb_lemma("shut") and h.check_nth_lemma(-1, "up")):
             print("Dragonfire quiets.")
             tts_kill()
-        elif VirtualAssistant.exact_match(com):
-            return True  # the request has been handled
-        elif VirtualAssistant.in_match(com):
-            return True  # the request has been handled
-        elif ("SEARCH" in com or "FIND" in com) and VirtualAssistant.search_command(com):
-            pass  # the request has been handled
+        elif h.check_wh_lemma("what") and h.check_deps_contains("your name"):
+            userin.execute([" "], "My name is Dragonfire.", True)
+        elif h.check_wh_lemma("what") and h.check_deps_contains("your gender"):
+            userin.say("I have a female voice but I don't have a gender identity. I'm a computer program, " + user_prefix + ".")
+        elif (h.check_wh_lemma("who") and h.check_text("I")) or (h.check_verb_lemma("say") and h.check_text("my") and check_lemma("name")):
+            userin.execute([" "], user_full_name)
+            userin.say("Your name is " + user_full_name + ", " + user_prefix + ".")
+        elif h.check_verb_lemma("open") or check_adj_lemma("open") or check_verb_lemma("run") or check_verb_lemma("start") or check_verb_lemma("show"):
+            if h.check_text("blender"):
+                userin.execute(["blender"], "Blender")
+                userin.say("Blender 3D computer graphics software")
+            elif h.check_text("draw"):
+                userin.execute(["libreoffice", "--draw"], "LibreOffice Draw")
+                userin.say("Opening LibreOffice Draw")
+            elif h.check_text("impress"):
+                userin.execute(["libreoffice", "--impress"], "LibreOffice Impress")
+                userin.say("Opening LibreOffice Impress")
+            elif h.check_text("math"):
+                userin.execute(["libreoffice", "--math"], "LibreOffice Math")
+                userin.say("Opening LibreOffice Math")
+            elif h.check_text("writer"):
+                userin.execute(["libreoffice", "--writer"], "LibreOffice Writer")
+                userin.say("Opening LibreOffice Writer")
+            elif h.check_text("gimp") or (check_noun_lemma("photo") and (check_noun_lemma("editor") or check_noun_lemma("shop"))):
+                userin.execute(["gimp"], "GIMP")
+                userin.say("Opening the photo editor software.")
+            elif h.check_text("inkscape") or (check_noun_lemma("vector") and check_noun_lemma("graphic")) or (check_text("vectorial") and check_text("drawing")):
+                userin.execute(["inkscape"], "Inkscape")
+                userin.say("Opening the vectorial drawing software.")
+            elif h.check_noun_lemma("office") and h.check_noun_lemma("suite"):
+                userin.execute(["libreoffice"], "LibreOffice")
+                userin.say("Opening LibreOffice")
+            elif h.check_text("kdenlive") or (check_noun_lemma("video") and check_noun_lemma("editor")):
+                userin.execute(["kdenlive"], "Kdenlive")
+                userin.say("Opening the video editor software.")
+            elif h.check_noun_lemma("browser") or h.check_noun_lemma("chrome") or h.check_text("firefox"):
+                userin.execute(["sensible-browser"], "Web Browser")
+                userin.say("Web browser")
+            elif h.check_text("steam"):
+                userin.execute(["steam"], "Steam")
+                userin.say("Opening Steam Game Store")
+            elif h.check_text("files") or (h.check_noun_lemma("file") and h.check_noun_lemma("manager")):
+                userin.execute(["dolphin"], "File Manager")  # KDE neon
+                userin.execute(["pantheon-files"], "File Manager")  # elementary OS
+                userin.execute(["nautilus", "--browser"], "File Manager")  # Ubuntu
+                userin.say("File Manager")
+            elif h.check_noun_lemma("camera"):
+                userin.execute(["kamoso"], "Camera")  # KDE neon
+                userin.execute(["snap-photobooth"], "Camera")  # elementary OS
+                userin.execute(["cheese"], "Camera")  # Ubuntu
+                userin.say("Camera")
+            elif h.check_noun_lemma("calendar"):
+                userin.execute(["korganizer"], "Calendar")  # KDE neon
+                userin.execute(["maya-calendar"], "Calendar")  # elementary OS
+                userin.execute(["orage"], "Calendar")  # Ubuntu
+                userin.say("Calendar")
+            elif h.check_noun_lemma("calculator"):
+                userin.execute(["kcalc"], "Calculator")  # KDE neon
+                userin.execute(["pantheon-calculator"], "Calculator")  # elementary OS
+                userin.execute(["gnome-calculator"], "Calculator")  # Ubuntu
+                userin.say("Calculator")
+            elif h.check_noun_lemma("software") and h.check_text("center"):
+                userin.execute(["plasma-discover"], "Software Center")  # KDE neon
+                userin.execute(["software-center"], "Software Center")  # elementary OS & Ubuntu
+                userin.say("Software Center")
         elif com in ("MY TITLE IS LADY", "I'M A LADY", "I'M A WOMAN", "I'M A GIRL"):
             tts_kill()
             config_file.update({'gender': 'female'}, Query().datatype == 'gender')
@@ -288,35 +295,6 @@ class VirtualAssistant():
                 msg = fmt.format(city, weather.get_temperature('celsius')['temp'])
                 userin.execute([" "], msg)
                 userin.say(msg)
-        elif "FILE MANAGER" in com or "OPEN FILES" == com:
-            tts_kill()
-            userin.execute(["dolphin"], "File Manager")  # KDE neon
-            userin.execute(["pantheon-files"], "File Manager")  # elementary OS
-            userin.execute(["nautilus", "--browser"], "File Manager")  # Ubuntu
-            userin.say("File Manager")
-        elif "OPEN CAMERA" == com:
-            tts_kill()
-            userin.execute(["kamoso"], "Camera")  # KDE neon
-            userin.execute(["snap-photobooth"], "Camera")  # elementary OS
-            userin.execute(["cheese"], "Camera")  # Ubuntu
-            userin.say("Camera")
-        elif "OPEN CALENDAR" == com:
-            tts_kill()
-            userin.execute(["korganizer"], "Calendar")  # KDE neon
-            userin.execute(["maya-calendar"], "Calendar")  # elementary OS
-            userin.execute(["orage"], "Calendar")  # Ubuntu
-            userin.say("Calendar")
-        elif "OPEN CALCULATOR" == com:
-            tts_kill()
-            userin.execute(["kcalc"], "Calculator")  # KDE neon
-            userin.execute(["pantheon-calculator"], "Calculator")  # elementary OS
-            userin.execute(["gnome-calculator"], "Calculator")  # Ubuntu
-            userin.say("Calculator")
-        elif "SOFTWARE CENTER" in com:
-            tts_kill()
-            userin.execute(["plasma-discover"], "Software Center")  # KDE neon
-            userin.execute(["software-center"], "Software Center")  # elementary OS & Ubuntu
-            userin.say("Software Center")
         elif com.startswith("KEYBOARD "):
             tts_kill()
             with nostdout():
