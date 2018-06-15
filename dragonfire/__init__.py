@@ -112,7 +112,7 @@ class VirtualAssistant():
         if (e.is_set()):  # System Tray Icon exit must trigger this
             exit(0)
 
-        if not com or not isinstance(com, str):
+        if not com.strip() or not isinstance(com, str):
             return False
 
         original_com = com
@@ -187,7 +187,7 @@ class VirtualAssistant():
                 "Ready for the orders!",
                 user_prefix + ", tell me your wish."
             ]))
-        elif h.check_verb_lemma("go") and h.check_noun_lemma("sleep"):
+        elif (h.check_verb_lemma("go") and h.check_noun_lemma("sleep")) or (h.check_verb_lemma("stop") and h.check_verb_lemma("listen")):
             inactive = True
             userin.execute(["echo"], "Dragonfire deactivated. To reactivate say 'Dragonfire!' or 'Wake Up!'")
             userin.say("I'm going to sleep")
@@ -363,9 +363,9 @@ class VirtualAssistant():
                 with nostderr():
                     k = PyKeyboard()
                     k.tap_key(" ")
-        elif "SHUTDOWN THE COMPUTER" == com:
+        elif ((h.check_text("shut") and h.check_text("down")) or (h.check_text("power") and h.check_text("off"))) and h.check_text("computer"):
             userin.execute(["sudo", "poweroff"], "Shutting down", True, 3)
-        elif com in ("GOODBYE", "GOOD BYE", "BYE BYE", "SEE YOU LATER", "CATCH YOU LATER"):
+        elif h.check_nth_lemma(0, "goodbye") or h.check_nth_lemma(0, "bye") or (h.check_verb_lemma("see") and h.check_noun_lemma("you") and h.check_noun_lemma("later")):
             userin.say("Goodbye, " + user_prefix)
             # raise KeyboardInterrupt
             thread.interrupt_main()
