@@ -115,20 +115,16 @@ class VirtualAssistant():
         if not com.strip() or not isinstance(com, str):
             return False
 
-        original_com = com
         global inactive
-
         global user_full_name
         global user_prefix
         global config_file
 
         userin.twitter_user = tw_user
 
-        com = re.sub(r'([^\s\w]|_)+', '', com).strip()
         print("You: " + com.upper())
         doc = nlp(com)
         h = Helper(doc)
-        com = com.upper()
 
         if args["verbose"]:
             if len(doc) > 0:
@@ -329,7 +325,7 @@ class VirtualAssistant():
             with nostdout():
                 with nostderr():
                     k = PyKeyboard()
-                    for character in original_com[n:]:
+                    for character in com[n:]:
                         k.tap_key(character)
                     k.tap_key(" ")
             return True
@@ -500,15 +496,16 @@ class VirtualAssistant():
                         return True
 
         arithmetic_response = arithmeticParser(com)
+        print(arithmetic_response)
         if arithmetic_response:
             userin.say(arithmetic_response)
         else:
-            learnerresponse = learner.respond(original_com)
+            learnerresponse = learner.respond(com)
             if learnerresponse:
                 userin.say(learnerresponse)
             else:
-                if not omniscient.respond(original_com, not args["silent"], userin, user_prefix, args["server"]):
-                    dc_response = dc.respond(original_com, user_prefix)
+                if not omniscient.respond(com, not args["silent"], userin, user_prefix, args["server"]):
+                    dc_response = dc.respond(com, user_prefix)
                     if dc_response:
                         userin.say(dc_response)
 
