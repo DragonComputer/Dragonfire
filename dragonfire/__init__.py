@@ -37,7 +37,7 @@ import wikipedia
 import wikipedia.exceptions
 import youtube_dl
 from dragonfire.learn import Learner
-from dragonfire.nlplib import Classifier
+from dragonfire.nlplib import Classifier, Helper
 from dragonfire.omniscient import Engine
 from dragonfire.stray import SystemTrayExitListenerSet, SystemTrayInit
 from dragonfire.utilities import TTA
@@ -177,11 +177,13 @@ class VirtualAssistant():
 
         userin.twitter_user = tw_user
 
-        com = com.upper()
         com = re.sub(r'([^\s\w]|_)+', '', com).strip()
-        print("You: " + com)
+        print("You: " + com.upper())
+        doc = nlp(com)
+        h = Helper(doc)
+        com = com.upper()
 
-        if inactive and com not in ("DRAGONFIRE", "DRAGON FIRE", "WAKE UP", "HEY"):
+        if inactive and not (h.directly_equal(["dragonfire", "hey"]) or (h.check_verb_lemma("wake") and h.check_nth_lemma(-1, "up")) or (h.check_nth_lemma(0, "dragon") and h.check_nth_lemma(1, "fire") and h.max_word_count(2))):
             return True
 
         if USER_ANSWERING['status']:
@@ -216,7 +218,7 @@ class VirtualAssistant():
                         except Exception:
                             return True
 
-        if com in ("DRAGONFIRE", "DRAGON FIRE", "WAKE UP", "HEY"):
+        if h.directly_equal(["dragonfire", "hey"]) or (h.check_verb_lemma("wake") and h.check_nth_lemma(-1, "up")) or (h.check_nth_lemma(0, "dragon") and h.check_nth_lemma(1, "fire") and h.max_word_count(2)):
             tts_kill()
             inactive = False
             userin.say(choice([
@@ -226,12 +228,12 @@ class VirtualAssistant():
                         "Ready for the orders!",
                         user_prefix + ", tell me your wish."
                     ]))
-        elif "GO TO SLEEP" == com:
+        elif h.check_verb_lemma("go") and h.check_noun_lemma("sleep"):
             tts_kill()
             inactive = True
             userin.execute(["echo"], "Dragonfire deactivated. To reactivate say 'Dragonfire!' or 'Wake Up!'")
             userin.say("I'm going to sleep")
-        elif com in ("ENOUGH", "SHUT UP"):
+        elif h.directly_equal(["enough"]) or (h.check_verb_lemma("shut") and h.check_nth_lemma(-1, "up")):
             print("Dragonfire quiets.")
             tts_kill()
         elif VirtualAssistant.exact_match(com):

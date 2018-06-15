@@ -180,6 +180,9 @@ class Helper():
                 return True
         return False
 
+    def max_word_count(self, n):
+        return len(self.doc) <= n
+
 
 if __name__ == "__main__":
     print(Classifier.gender("James"))
