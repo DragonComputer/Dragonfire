@@ -261,10 +261,12 @@ class VirtualAssistant():
                 userin.say("Software Center")
         elif h.check_lemma("be") and h.check_lemma("-PRON-") and (h.check_lemma("lady") or h.check_lemma("woman") or h.check_lemma("girl")):
             config_file.update({'gender': 'female'}, Query().datatype == 'gender')
+            config_file.remove(Query().datatype == 'callme')
             user_prefix = "My Lady"
             userin.say("Pardon, " + user_prefix + ".")
         elif h.check_lemma("be") and h.check_lemma("-PRON-") and (h.check_lemma("sir") or h.check_lemma("man") or h.check_lemma("boy")):
             config_file.update({'gender': 'male'}, Query().datatype == 'gender')
+            config_file.remove(Query().datatype == 'callme')
             user_prefix = "Sir"
             userin.say("Pardon, " + user_prefix + ".")
         elif h.check_lemma("call") and h.check_lemma("-PRON-"):
@@ -282,10 +284,13 @@ class VirtualAssistant():
             userin.say("OK, " + user_prefix + ".")
         # only for The United States today but prepared for all countries. Also
         # only for celsius degrees today. --> by Radan Liska :-)
-        elif "WHAT" in com and "TEMPERATURE" in com:
-            capture = re.search("(?:WHAT IS|WHAT'S) THE TEMPERATURE (?:IN|ON|AT|OF)? (?P<city>.*)", com)
-            if capture:
-                city = capture.group('city')
+        elif h.is_wh_question() and h.check_lemma("temperature"):
+            city = ""
+            for ent in doc.ents:
+                if ent.label_ == "GPE":
+                    city += ' ' + ent.text
+            city = city.strip()
+            if city:
                 owm = pyowm.OWM("16d66c84e82424f0f8e62c3e3b27b574")
                 reg = owm.city_id_registry()
                 weather = owm.weather_at_id(reg.ids_for(city)[0][0]).get_weather()
@@ -293,65 +298,67 @@ class VirtualAssistant():
                 msg = fmt.format(city, weather.get_temperature('celsius')['temp'])
                 userin.execute([" "], msg)
                 userin.say(msg)
-        elif com.startswith("KEYBOARD "):
+        elif h.check_nth_lemma(0, "keyboard") or h.check_nth_lemma(0, "type"):
+            n = len(doc[0].text) + 1
             with nostdout():
                 with nostderr():
                     k = PyKeyboard()
-                    for character in original_com[9:]:
+                    for character in original_com[n:]:
                         k.tap_key(character)
                     k.tap_key(" ")
-        elif com == "ENTER":
+        elif h.directly_equal(["enter"]) or (h.check_adj_lemma("new") or h.check_noun_lemma("line")):
             with nostdout():
                 with nostderr():
                     k = PyKeyboard()
                     k.tap_key(k.enter_key)
-        elif com == "NEW TAB":
+        elif h.check_adj_lemma("new") and h.check_noun_lemma("tab"):
             with nostdout():
                 with nostderr():
                     k = PyKeyboard()
                     k.press_keys([k.control_l_key, 't'])
-        elif com == "SWITCH TAB":
+        elif h.check_verb_lemma("switch") and h.check_noun_lemma("tab"):
             with nostdout():
                 with nostderr():
                     k = PyKeyboard()
                     k.press_keys([k.control_l_key, k.tab_key])
-        elif com in ("CLOSE", "ESCAPE"):
+        elif h.directly_equal(["CLOSE", "ESCAPE"]):
             with nostdout():
                 with nostderr():
                     k = PyKeyboard()
                     k.press_keys([k.control_l_key, 'w'])
                     k.tap_key(k.escape_key)
-        elif com == "GO BACK":
+        elif h.check_lemma("back") and h.max_word_count(4):
             with nostdout():
                 with nostderr():
                     k = PyKeyboard()
                     k.press_keys([k.alt_l_key, k.left_key])
-        elif com == "GO FORWARD":
+        elif h.check_lemma("forward") and h.max_word_count(4):
             with nostdout():
                 with nostderr():
                     k = PyKeyboard()
                     k.press_keys([k.alt_l_key, k.right_key])
-        elif com == "SCROLL LEFT":
-            with nostdout():
-                with nostderr():
-                    m = PyMouse()
-                    m.scroll(0, -5)
-        elif com == "SCROLL RIGHT":
-            with nostdout():
-                with nostderr():
-                    m = PyMouse()
-                    m.scroll(0, 5)
-        elif com == "SCROLL UP":
-            with nostdout():
-                with nostderr():
-                    m = PyMouse()
-                    m.scroll(5, 0)
-        elif com == "SCROLL DOWN":
-            with nostdout():
-                with nostderr():
-                    m = PyMouse()
-                    m.scroll(-5, 0)
-        elif com in ("PLAY", "PAUSE", "SPACEBAR"):
+        elif h.check_text("swipe") or h.check_text("scroll"):
+            if h.check_text("left"):
+                with nostdout():
+                    with nostderr():
+                        m = PyMouse()
+                        m.scroll(0, -5)
+            elif h.check_text("right"):
+                with nostdout():
+                    with nostderr():
+                        m = PyMouse()
+                        m.scroll(0, 5)
+            elif h.check_text("up"):
+                with nostdout():
+                    with nostderr():
+                        m = PyMouse()
+                        m.scroll(5, 0)
+            elif h.check_text("down"):
+                with nostdout():
+                    with nostderr():
+                        m = PyMouse()
+                        m.scroll(-5, 0)
+        elif h.directly_equal(["PLAY", "PAUSE", "SPACEBAR"]):
             with nostdout():
                 with nostderr():
                     k = PyKeyboard()
@@ -503,7 +510,7 @@ def dragon_greet():
     config_file = TinyDB(home + '/.dragonfire_config.json')
     callme_config = config_file.search(Query().datatype == 'callme')
     if callme_config:
-        user_prefix = callme_config[0]['title'].encode("utf8")
+        user_prefix = callme_config[0]['title']
     else:
         gender_config = config_file.search(Query().datatype == 'gender')
         if gender_config:
