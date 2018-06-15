@@ -181,12 +181,12 @@ class VirtualAssistant():
         if h.directly_equal(["dragonfire", "hey"]) or (h.check_verb_lemma("wake") and h.check_nth_lemma(-1, "up")) or (h.check_nth_lemma(0, "dragon") and h.check_nth_lemma(1, "fire") and h.max_word_count(2)):
             inactive = False
             userin.say(choice([
-                        "Yes, " + user_prefix + ".",
-                        "Yes. I'm waiting.",
-                        "What is your order?",
-                        "Ready for the orders!",
-                        user_prefix + ", tell me your wish."
-                    ]))
+                "Yes, " + user_prefix + ".",
+                "Yes. I'm waiting.",
+                "What is your order?",
+                "Ready for the orders!",
+                user_prefix + ", tell me your wish."
+            ]))
         elif h.check_verb_lemma("go") and h.check_noun_lemma("sleep"):
             inactive = True
             userin.execute(["echo"], "Dragonfire deactivated. To reactivate say 'Dragonfire!' or 'Wake Up!'")
@@ -259,22 +259,27 @@ class VirtualAssistant():
                 userin.execute(["plasma-discover"], "Software Center")  # KDE neon
                 userin.execute(["software-center"], "Software Center")  # elementary OS & Ubuntu
                 userin.say("Software Center")
-        elif com in ("MY TITLE IS LADY", "I'M A LADY", "I'M A WOMAN", "I'M A GIRL"):
+        elif h.check_lemma("be") and h.check_lemma("-PRON-") and (h.check_lemma("lady") or h.check_lemma("woman") or h.check_lemma("girl")):
             config_file.update({'gender': 'female'}, Query().datatype == 'gender')
             user_prefix = "My Lady"
             userin.say("Pardon, " + user_prefix + ".")
-        elif com in ("MY TITLE IS SIR", "I'M A MAN", "I'M A BOY"):
+        elif h.check_lemma("be") and h.check_lemma("-PRON-") and (h.check_lemma("sir") or h.check_lemma("man") or h.check_lemma("boy")):
             config_file.update({'gender': 'male'}, Query().datatype == 'gender')
             user_prefix = "Sir"
             userin.say("Pardon, " + user_prefix + ".")
-        elif com.startswith("CALL ME "):
+        elif h.check_lemma("call") and h.check_lemma("-PRON-"):
+            title = ""
+            for token in doc:
+                if token.pos_ == "NOUN":
+                    title += ' ' + token.text
+            title = title.strip()
             callme_config = config_file.search(Query().datatype == 'callme')
             if callme_config:
-                config_file.update({'title': original_com[8:].lower()}, Query().datatype == 'callme')
+                config_file.update({'title': title}, Query().datatype == 'callme')
             else:
-                config_file.insert({'datatype': 'callme', 'title': original_com[8:].lower()})
-            user_prefix = original_com[8:].lower().encode("utf8")
-            userin.say("Pardon, " + user_prefix + ".")
+                config_file.insert({'datatype': 'callme', 'title': title})
+            user_prefix = title
+            userin.say("OK, " + user_prefix + ".")
         # only for The United States today but prepared for all countries. Also
         # only for celsius degrees today. --> by Radan Liska :-)
         elif "WHAT" in com and "TEMPERATURE" in com:
