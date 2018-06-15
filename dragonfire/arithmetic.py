@@ -1,24 +1,24 @@
 def text2int(textnum, numwords={}):
     if not numwords:
-      units = [
-        "zero", "one", "two", "three", "four", "five", "six", "seven", "eight",
-        "nine", "ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen",
-        "sixteen", "seventeen", "eighteen", "nineteen",
-      ]
+        units = [
+            "zero", "one", "two", "three", "four", "five", "six", "seven", "eight",
+            "nine", "ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen",
+            "sixteen", "seventeen", "eighteen", "nineteen",
+        ]
 
-      tens = ["", "", "twenty", "thirty", "forty", "fifty", "sixty", "seventy", "eighty", "ninety"]
+        tens = ["", "", "twenty", "thirty", "forty", "fifty", "sixty", "seventy", "eighty", "ninety"]
 
-      scales = ["hundred", "thousand", "million", "billion", "trillion"]
+        scales = ["hundred", "thousand", "million", "billion", "trillion"]
 
-      numwords["and"] = (1, 0)
-      for idx, word in enumerate(units):    numwords[word] = (1, idx)
-      for idx, word in enumerate(tens):     numwords[word] = (1, idx * 10)
-      for idx, word in enumerate(scales):   numwords[word] = (10 ** (idx * 3 or 2), 0)
+        numwords["and"] = (1, 0)
+        for idx, word in enumerate(units):    numwords[word] = (1, idx)
+        for idx, word in enumerate(tens):     numwords[word] = (1, idx * 10)
+        for idx, word in enumerate(scales):   numwords[word] = (10 ** (idx * 3 or 2), 0)
 
     current = result = 0
     for word in textnum.split():
         if word not in numwords:
-          raise Exception("Illegal word: " + word)
+            raise Exception("Illegal word: " + word)
 
         scale, increment = numwords[word]
         current = current * scale + increment
@@ -28,20 +28,21 @@ def text2int(textnum, numwords={}):
 
     return result + current
 
+
 def arithmeticParser(com):
     if not any(e in com.upper() for e in ['+', '-', '/', '*', '^', '=', 'x', 'y', 'z', 'PLUS', 'MINUS', 'DIVIDED BY', 'MULTIPLIED BY', 'TIMES', 'TO THE POWER OF', 'EQUAL']):
         return False
     com = com.lower()
     numwords = [
-      "zero", "one", "two", "three", "four", "five", "six", "seven", "eight",
-      "nine", "ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen",
-      "sixteen", "seventeen", "eighteen", "nineteen",
+        "zero", "one", "two", "three", "four", "five", "six", "seven", "eight",
+        "nine", "ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen",
+        "sixteen", "seventeen", "eighteen", "nineteen",
 
-      "twenty", "thirty", "forty", "fifty", "sixty", "seventy", "eighty", "ninety",
+        "twenty", "thirty", "forty", "fifty", "sixty", "seventy", "eighty", "ninety",
 
-      "hundred", "thousand", "million", "billion", "trillion",
+        "hundred", "thousand", "million", "billion", "trillion",
 
-      "and"
+        "and"
     ]
 
     operators = {
@@ -87,7 +88,7 @@ def arithmeticParser(com):
 
 
 if __name__ == "__main__":
-    #print(text2int("seven billion one hundred million thirty one thousand three hundred thirty seven"))
+    print(text2int("seven billion one hundred million thirty one thousand three hundred thirty seven"))
     print(arithmeticParser("How much is 12 + 14?"))
     print(arithmeticParser("How much is twelve thousand three hundred four plus two hundred fifty six?"))
     print(arithmeticParser("What is five hundred eighty nine times six?"))
