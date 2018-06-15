@@ -409,12 +409,14 @@ class VirtualAssistant():
             # raise KeyboardInterrupt
             thread.interrupt_main()
             return True
-        if "WIKIPEDIA" in com and ("SEARCH" in com or "FIND" in com):
+        if (h.check_lemma("search") or h.check_lemma("find")) and h.check_lemma("wikipedia"):
             with nostderr():
-                capture = re.search(
-                    "(?:SEARCH|FIND) (?P<query>.*) (?:IN|ON|AT|USING)? WIKIPEDIA", com)
-                if capture:
-                    search_query = capture.group('query')
+                search_query = ""
+                for token in doc:
+                    if not (token.lemma_ == "search" or token.lemma_ == "find" or token.lemma_ == "wikipedia" or token.is_stop):
+                        search_query += ' ' + token.text
+                search_query = search_query.strip()
+                if search_query:
                     try:
                         wikiresult = wikipedia.search(search_query)
                         if len(wikiresult) == 0:
@@ -446,13 +448,15 @@ class VirtualAssistant():
                         return True
                     except BaseException:
                         pass
-        if "YOUTUBE" in com and ("SEARCH" in com or "FIND" in com):
+        if (h.check_lemma("search") or h.check_lemma("find")) and h.check_lemma("youtube"):
             with nostdout():
                 with nostderr():
-                    capture = re.search(
-                        "(?:SEARCH|FIND) (?P<query>.*) (?:IN|ON|AT|USING)? YOUTUBE", com)
-                    if capture:
-                        search_query = capture.group('query')
+                    search_query = ""
+                    for token in doc:
+                        if not (token.lemma_ == "search" or token.lemma_ == "find" or token.lemma_ == "youtube" or token.is_stop):
+                            search_query += ' ' + token.text
+                    search_query = search_query.strip()
+                    if search_query:
                         info = youtube_dl.YoutubeDL({}).extract_info('ytsearch:' + search_query, download=False, ie_key='YoutubeSearch')
                         if len(info['entries']) > 0:
                             youtube_title = info['entries'][0]['title']
@@ -470,22 +474,27 @@ class VirtualAssistant():
                         k.tap_key(k.tab_key)
                         k.tap_key('f')
                         return True
-        if ("GOOGLE" in com or "WEB" in com) and "IMAGE" not in com and ("SEARCH" in com or "FIND" in com):
+        if (h.check_lemma("search") or h.check_lemma("find")) and (h.check_lemma("google") or h.check_lemma("web") or h.check_lemma("internet")) and not h.check_lemma("image"):
             with nostdout():
                 with nostderr():
-                    capture = re.search(
-                        "(?:SEARCH|FIND) (?P<query>.*) (?:IN|ON|AT|USING)? (?:GOOGLE|WEB)?", com)
-                    if capture:
-                        search_query = capture.group('query')
+                    search_query = ""
+                    for token in doc:
+                        if not (token.lemma_ == "search" or token.lemma_ == "find" or token.lemma_ == "google" or token.lemma_ == "web" or token.lemma_ == "internet" or token.is_stop):
+                            search_query += ' ' + token.text
+                    search_query = search_query.strip()
+                    if search_query:
                         tab_url = "http://google.com/?#q=" + search_query
                         userin.execute(["sensible-browser", tab_url], search_query, True)
                         return True
-        if ("GOOGLE" in com or "WEB" in com) and "IMAGE" in com and ("SEARCH" in com or "FIND" in com):
+        if (h.check_lemma("search") or h.check_lemma("find")) and (h.check_lemma("google") or h.check_lemma("web") or h.check_lemma("internet")) and h.check_lemma("image"):
             with nostdout():
                 with nostderr():
-                    capture = re.search("(?:SEARCH IMAGES OF|FIND IMAGES OF|SEARCH|FIND) (?P<query>.*) (?:IN|ON|AT|USING)? (?:GOOGLE|WEB|GOOGLE IMAGES|WEB IMAGES)?", com)
-                    if capture:
-                        search_query = capture.group('query')
+                    search_query = ""
+                    for token in doc:
+                        if not (token.lemma_ == "search" or token.lemma_ == "find" or token.lemma_ == "google" or token.lemma_ == "web" or token.lemma_ == "internet" or token.lemma_ == "image" or token.is_stop):
+                            search_query += ' ' + token.text
+                    search_query = search_query.strip()
+                    if search_query:
                         tab_url = "http://google.com/?#q=" + search_query + "&tbm=isch"
                         userin.execute(["sensible-browser", tab_url], search_query, True)
                         return True
