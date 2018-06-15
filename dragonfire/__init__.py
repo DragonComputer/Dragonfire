@@ -584,10 +584,16 @@ def initiate():
     help_msg = "Silent mode. Disable Text-to-Speech output. Dragonfire won't generate any audio output."
     ap.add_argument("-s", "--silent", help=help_msg, action="store_true")
     help_msg = "Headless mode. Do not display an avatar animation on the screen. Disable the female head model."
-    ap.add_argument("--headless", help=help_msg, action="store_true")
+    ap.add_argument("-j", "--headless", help=help_msg, action="store_true")
     help_msg = "Server mode. Disable any audio functionality, serve a RESTful spaCy API and become a Twitter integrated chatbot."
     ap.add_argument("--server", help=help_msg)
+    help_msg = "Display the version number of Dragonfire."
+    ap.add_argument("--version", help=help_msg, action="store_true")
     args = vars(ap.parse_args())
+    if args["version"]:
+        import pkg_resources
+        print(pkg_resources.get_distribution("dragonfire").version)
+        sys.exit(1)
     global userin
     userin = TTA(args)
     try:
