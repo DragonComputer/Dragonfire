@@ -183,6 +183,19 @@ class VirtualAssistant():
         h = Helper(doc)
         com = com.upper()
 
+        if args["verbose"]:
+            if len(doc) > 0:
+                print("")
+                print("{:12}  {:12}  {:12}  {:12} {:12}  {:12}  {:12}  {:12}".format("TEXT", "LEMMA", "POS", "TAG", "DEP", "SHAPE", "ALPHA", "STOP"))
+                for token in doc:
+                    print("{:12}  {:12}  {:12}  {:12} {:12}  {:12}  {:12}  {:12}".format(token.text, token.lemma_, token.pos_, token.tag_, token.dep_, token.shape_, str(token.is_alpha), str(token.is_stop)))
+                print("")
+            if len(list(doc.noun_chunks)) > 0:
+                print("{:12}  {:12}  {:12}  {:12}".format("TEXT", "ROOT.TEXT", "ROOT.DEP_", "ROOT.HEAD.TEXT"))
+                for chunk in doc.noun_chunks:
+                    print("{:12}  {:12}  {:12}  {:12}".format(chunk.text, chunk.root.text, chunk.root.dep_, chunk.root.head.text))
+                print("")
+
         if inactive and not (h.directly_equal(["dragonfire", "hey"]) or (h.check_verb_lemma("wake") and h.check_nth_lemma(-1, "up")) or (h.check_nth_lemma(0, "dragon") and h.check_nth_lemma(1, "fire") and h.max_word_count(2))):
             return True
 
@@ -578,17 +591,12 @@ def nostderr():
 
 def initiate():
     ap = argparse.ArgumentParser()
-    help_msg = ("Command-line interface mode. Give commands to Dragonfire via command-line inputs (keyboard)"
-                "instead of audio inputs (microphone).")
-    ap.add_argument("-c", "--cli", help=help_msg, action="store_true")
-    help_msg = "Silent mode. Disable Text-to-Speech output. Dragonfire won't generate any audio output."
-    ap.add_argument("-s", "--silent", help=help_msg, action="store_true")
-    help_msg = "Headless mode. Do not display an avatar animation on the screen. Disable the female head model."
-    ap.add_argument("-j", "--headless", help=help_msg, action="store_true")
-    help_msg = "Server mode. Disable any audio functionality, serve a RESTful spaCy API and become a Twitter integrated chatbot."
-    ap.add_argument("--server", help=help_msg)
-    help_msg = "Display the version number of Dragonfire."
-    ap.add_argument("--version", help=help_msg, action="store_true")
+    ap.add_argument("-c", "--cli", help="Command-line interface mode. Give commands to Dragonfire via command-line inputs (keyboard) instead of audio inputs (microphone).", action="store_true")
+    ap.add_argument("-s", "--silent", help="Silent mode. Disable Text-to-Speech output. Dragonfire won't generate any audio output.", action="store_true")
+    ap.add_argument("-j", "--headless", help="Headless mode. Do not display an avatar animation on the screen. Disable the female head model.", action="store_true")
+    ap.add_argument("-v", "--verbose", help="Increase verbosity of log output.", action="store_true")
+    ap.add_argument("--server", help="Server mode. Disable any audio functionality, serve a RESTful spaCy API and become a Twitter integrated chatbot.", metavar="API_KEY")
+    ap.add_argument("--version", help="Display the version number of Dragonfire.", action="store_true")
     args = vars(ap.parse_args())
     if args["version"]:
         import pkg_resources
