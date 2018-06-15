@@ -55,8 +55,7 @@ from tweepy import Stream
 import tweepy
 import json
 
-DRAGONFIRE_PATH = os.path.dirname(
-    os.path.abspath(inspect.getfile(inspect.currentframe())))
+DRAGONFIRE_PATH = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 FNULL = open(os.devnull, 'w')
 GENDER_PREFIX = {'male': 'Sir', 'female': 'My Lady'}
 CONVERSATION_ID = uuid.uuid4()
@@ -180,7 +179,6 @@ class VirtualAssistant():
                             return True
 
         if h.directly_equal(["dragonfire", "hey"]) or (h.check_verb_lemma("wake") and h.check_nth_lemma(-1, "up")) or (h.check_nth_lemma(0, "dragon") and h.check_nth_lemma(1, "fire") and h.max_word_count(2)):
-            tts_kill()
             inactive = False
             userin.say(choice([
                         "Yes, " + user_prefix + ".",
@@ -190,13 +188,12 @@ class VirtualAssistant():
                         user_prefix + ", tell me your wish."
                     ]))
         elif h.check_verb_lemma("go") and h.check_noun_lemma("sleep"):
-            tts_kill()
             inactive = True
             userin.execute(["echo"], "Dragonfire deactivated. To reactivate say 'Dragonfire!' or 'Wake Up!'")
             userin.say("I'm going to sleep")
         elif h.directly_equal(["enough"]) or (h.check_verb_lemma("shut") and h.check_nth_lemma(-1, "up")):
-            print("Dragonfire quiets.")
             tts_kill()
+            print("Dragonfire quiets.")
         elif h.check_wh_lemma("what") and h.check_deps_contains("your name"):
             userin.execute([" "], "My name is Dragonfire.", True)
         elif h.check_wh_lemma("what") and h.check_deps_contains("your gender"):
@@ -204,7 +201,7 @@ class VirtualAssistant():
         elif (h.check_wh_lemma("who") and h.check_text("I")) or (h.check_verb_lemma("say") and h.check_text("my") and check_lemma("name")):
             userin.execute([" "], user_full_name)
             userin.say("Your name is " + user_full_name + ", " + user_prefix + ".")
-        elif h.check_verb_lemma("open") or check_adj_lemma("open") or check_verb_lemma("run") or check_verb_lemma("start") or check_verb_lemma("show"):
+        elif h.check_verb_lemma("open") or h.check_adj_lemma("open") or h.check_verb_lemma("run") or h.check_verb_lemma("start") or h.check_verb_lemma("show"):
             if h.check_text("blender"):
                 userin.execute(["blender"], "Blender")
                 userin.say("Blender 3D computer graphics software")
@@ -220,16 +217,16 @@ class VirtualAssistant():
             elif h.check_text("writer"):
                 userin.execute(["libreoffice", "--writer"], "LibreOffice Writer")
                 userin.say("Opening LibreOffice Writer")
-            elif h.check_text("gimp") or (check_noun_lemma("photo") and (check_noun_lemma("editor") or check_noun_lemma("shop"))):
+            elif h.check_text("gimp") or (h.check_noun_lemma("photo") and (h.check_noun_lemma("editor") or h.check_noun_lemma("shop"))):
                 userin.execute(["gimp"], "GIMP")
                 userin.say("Opening the photo editor software.")
-            elif h.check_text("inkscape") or (check_noun_lemma("vector") and check_noun_lemma("graphic")) or (check_text("vectorial") and check_text("drawing")):
+            elif h.check_text("inkscape") or (h.check_noun_lemma("vector") and h.check_noun_lemma("graphic")) or (h.check_text("vectorial") and h.check_text("drawing")):
                 userin.execute(["inkscape"], "Inkscape")
                 userin.say("Opening the vectorial drawing software.")
             elif h.check_noun_lemma("office") and h.check_noun_lemma("suite"):
                 userin.execute(["libreoffice"], "LibreOffice")
                 userin.say("Opening LibreOffice")
-            elif h.check_text("kdenlive") or (check_noun_lemma("video") and check_noun_lemma("editor")):
+            elif h.check_text("kdenlive") or (h.check_noun_lemma("video") and h.check_noun_lemma("editor")):
                 userin.execute(["kdenlive"], "Kdenlive")
                 userin.say("Opening the video editor software.")
             elif h.check_noun_lemma("browser") or h.check_noun_lemma("chrome") or h.check_text("firefox"):
@@ -263,17 +260,14 @@ class VirtualAssistant():
                 userin.execute(["software-center"], "Software Center")  # elementary OS & Ubuntu
                 userin.say("Software Center")
         elif com in ("MY TITLE IS LADY", "I'M A LADY", "I'M A WOMAN", "I'M A GIRL"):
-            tts_kill()
             config_file.update({'gender': 'female'}, Query().datatype == 'gender')
             user_prefix = "My Lady"
             userin.say("Pardon, " + user_prefix + ".")
         elif com in ("MY TITLE IS SIR", "I'M A MAN", "I'M A BOY"):
-            tts_kill()
             config_file.update({'gender': 'male'}, Query().datatype == 'gender')
             user_prefix = "Sir"
             userin.say("Pardon, " + user_prefix + ".")
         elif com.startswith("CALL ME "):
-            tts_kill()
             callme_config = config_file.search(Query().datatype == 'callme')
             if callme_config:
                 config_file.update({'title': original_com[8:].lower()}, Query().datatype == 'callme')
@@ -284,7 +278,6 @@ class VirtualAssistant():
         # only for The United States today but prepared for all countries. Also
         # only for celsius degrees today. --> by Radan Liska :-)
         elif "WHAT" in com and "TEMPERATURE" in com:
-            tts_kill()
             capture = re.search("(?:WHAT IS|WHAT'S) THE TEMPERATURE (?:IN|ON|AT|OF)? (?P<city>.*)", com)
             if capture:
                 city = capture.group('city')
@@ -296,7 +289,6 @@ class VirtualAssistant():
                 userin.execute([" "], msg)
                 userin.say(msg)
         elif com.startswith("KEYBOARD "):
-            tts_kill()
             with nostdout():
                 with nostderr():
                     k = PyKeyboard()
@@ -304,82 +296,68 @@ class VirtualAssistant():
                         k.tap_key(character)
                     k.tap_key(" ")
         elif com == "ENTER":
-            tts_kill()
             with nostdout():
                 with nostderr():
                     k = PyKeyboard()
                     k.tap_key(k.enter_key)
         elif com == "NEW TAB":
-            tts_kill()
             with nostdout():
                 with nostderr():
                     k = PyKeyboard()
                     k.press_keys([k.control_l_key, 't'])
         elif com == "SWITCH TAB":
-            tts_kill()
             with nostdout():
                 with nostderr():
                     k = PyKeyboard()
                     k.press_keys([k.control_l_key, k.tab_key])
         elif com in ("CLOSE", "ESCAPE"):
-            tts_kill()
             with nostdout():
                 with nostderr():
                     k = PyKeyboard()
                     k.press_keys([k.control_l_key, 'w'])
                     k.tap_key(k.escape_key)
         elif com == "GO BACK":
-            tts_kill()
             with nostdout():
                 with nostderr():
                     k = PyKeyboard()
                     k.press_keys([k.alt_l_key, k.left_key])
         elif com == "GO FORWARD":
-            tts_kill()
             with nostdout():
                 with nostderr():
                     k = PyKeyboard()
                     k.press_keys([k.alt_l_key, k.right_key])
         elif com == "SCROLL LEFT":
-            tts_kill()
             with nostdout():
                 with nostderr():
                     m = PyMouse()
                     m.scroll(0, -5)
         elif com == "SCROLL RIGHT":
-            tts_kill()
             with nostdout():
                 with nostderr():
                     m = PyMouse()
                     m.scroll(0, 5)
         elif com == "SCROLL UP":
-            tts_kill()
             with nostdout():
                 with nostderr():
                     m = PyMouse()
                     m.scroll(5, 0)
         elif com == "SCROLL DOWN":
-            tts_kill()
             with nostdout():
                 with nostderr():
                     m = PyMouse()
                     m.scroll(-5, 0)
         elif com in ("PLAY", "PAUSE", "SPACEBAR"):
-            tts_kill()
             with nostdout():
                 with nostderr():
                     k = PyKeyboard()
                     k.tap_key(" ")
         elif "SHUTDOWN THE COMPUTER" == com:
-            tts_kill()
             userin.execute(["sudo", "poweroff"], "Shutting down", True, 3)
         elif com in ("GOODBYE", "GOOD BYE", "BYE BYE", "SEE YOU LATER", "CATCH YOU LATER"):
-            tts_kill()
             userin.say("Goodbye, " + user_prefix)
             # raise KeyboardInterrupt
             thread.interrupt_main()
         elif "WIKIPEDIA" in com and ("SEARCH" in com or "FIND" in com):
-            tts_kill()
             with nostderr():
                 capture = re.search(
                     "(?:SEARCH|FIND) (?P<query>.*) (?:IN|ON|AT|USING)? WIKIPEDIA", com)
@@ -414,7 +392,6 @@ class VirtualAssistant():
                     except BaseException:
                         pass
         elif "YOUTUBE" in com and ("SEARCH" in com or "FIND" in com):
-            tts_kill()
             with nostdout():
                 with nostderr():
                     capture = re.search(
@@ -438,7 +415,6 @@ class VirtualAssistant():
                         k.tap_key(k.tab_key)
                         k.tap_key('f')
         elif ("GOOGLE" in com or "WEB" in com) and "IMAGE" not in com and ("SEARCH" in com or "FIND" in com):
-            tts_kill()
             with nostdout():
                 with nostderr():
                     capture = re.search(
@@ -448,7 +424,6 @@ class VirtualAssistant():
                         tab_url = "http://google.com/?#q=" + search_query
                         userin.execute(["sensible-browser", tab_url], search_query, True)
         elif ("GOOGLE" in com or "WEB" in com) and "IMAGE" in com and ("SEARCH" in com or "FIND" in com):
-            tts_kill()
             with nostdout():
                 with nostderr():
                     capture = re.search("(?:SEARCH IMAGES OF|FIND IMAGES OF|SEARCH|FIND) (?P<query>.*) (?:IN|ON|AT|USING)? (?:GOOGLE|WEB|GOOGLE IMAGES|WEB IMAGES)?", com)
@@ -457,7 +432,6 @@ class VirtualAssistant():
                         tab_url = "http://google.com/?#q=" + search_query + "&tbm=isch"
                         userin.execute(["sensible-browser", tab_url], search_query, True)
         else:
-            tts_kill()
             arithmetic_response = arithmeticParser(com)
             if arithmetic_response:
                 userin.say(arithmetic_response)
@@ -510,7 +484,6 @@ def tts_kill():
 
 
 def dragon_greet():
-    tts_kill()
     print("_______________________________________________________________\n")
     time = datetime.datetime.now().time()
 
@@ -546,9 +519,8 @@ def dragon_greet():
 
 
 def speech_error():
-    tts_kill()
     userin.execute(["echo"], "An error occurred")
-    userin.say("I couldn't understand, please repeat again")
+    userin.say("I couldn't understand, please repeat again.")
 
 
 @contextlib.contextmanager

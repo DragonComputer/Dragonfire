@@ -117,6 +117,7 @@ class TTA:
                     "_______________________________________________________________\n"
                 )
         if not self.silent:
+            subprocess.call(["pkill", "flite"], stdout=FNULL, stderr=FNULL)
             tts_proc = subprocess.Popen(
                 "flite -voice slt -f /dev/stdin",
                 stdin=subprocess.PIPE,
