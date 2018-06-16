@@ -41,7 +41,7 @@ from dragonfire.nlplib import Classifier, Helper
 from dragonfire.omniscient import Engine
 from dragonfire.stray import SystemTrayExitListenerSet, SystemTrayInit
 from dragonfire.utilities import TTA
-from dragonfire.arithmetic import arithmeticParser
+from dragonfire.arithmetic import arithmetic_parse
 from dragonfire.conversational import DeepConversation
 from dragonfire.config import Config
 import dragonfire.api as api
@@ -499,8 +499,7 @@ class VirtualAssistant():
                         userin.execute(["sensible-browser", tab_url], search_query, True)
                         return True
 
-        arithmetic_response = arithmeticParser(com)
-        print(arithmetic_response)
+        arithmetic_response = arithmetic_parse(com)
         if arithmetic_response:
             userin.say(arithmetic_response)
         else:
