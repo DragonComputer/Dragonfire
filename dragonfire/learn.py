@@ -49,7 +49,7 @@ class Learner():
         types.append("")
         for np in doc.noun_chunks:  # Iterate over the noun phrases(chunks) TODO: Cover 'dobj' also; doc = nlp(u'DESCRIBE THE SUN') >>> (u'THE SUN', u'SUN', u'dobj', u'DESCRIBE')
             types.append(np.root.dep_)
-            np_text, is_public = self.pronoun_detector(np.text)
+            np_text, is_public = self.detect_pronoun(np.text)
             # print("IS_PUBLIC: ", is_public)
             # Purpose of this if statement is completing possessive form of nouns
             if np.root.dep_ == 'pobj' and types[-2] == 'nsubj':  # if it's an object of a preposition and the previous noun phrase's type was nsubj(nominal subject) then (it's purpose is capturing subject like MY PLACE OF BIRTH)
@@ -69,9 +69,9 @@ class Learner():
                 if word.tag_ in ['WDT', 'WP', 'WP$', 'WRB']:  # check if there is a "wh-" question (we are determining that if it's a question or not, so only accepting questions with "wh-" form)
                     wh_found = True
             if wh_found:  # if that's a question
-                straight = self.db_getter(subject, is_public=is_public, user_id=user_id)  # get the answer from the database
+                straight = self.db_get(subject, is_public=is_public, user_id=user_id)  # get the answer from the database
                 if straight is None:
-                    return self.db_getter(subject, is_public=is_public, user_id=user_id, invert=True)  # if nothing found then invert
+                    return self.db_get(subject, is_public=is_public, user_id=user_id, invert=True)  # if nothing found then invert
                 return straight
             else:
                 verb_found = False
@@ -95,19 +95,16 @@ class Learner():
                 if any(verb in verbs for verb in self.upper_capitalize(["forget", "remove", "delete", "update"])):
                     if self.is_server and is_public:
                         return "I cannot forget a general fact."
-                    if self.db_remover(subject, is_public=is_public, user_id=user_id):  # if there is a record about the subject in the database then remove that record and...
-                        return "OK, I forgot everything I know about " + self.mirror(subject)
-                    else:
-                        return "I don't even know anything about " + self.mirror(subject)
+                    return self.db_delete(subject, is_public=is_public, user_id=user_id)  # if there is a record about the subject in the database then remove that record and...
 
                 if any(verb in verbs for verb in self.upper_capitalize(["define", "explain", "tell", "describe"])):
-                    return self.db_getter(subject, is_public=is_public, user_id=user_id)
+                    return self.db_get(subject, is_public=is_public, user_id=user_id)
 
                 if verbtense:
-                    return self.db_setter(subject, verbtense, clause, com, is_public=is_public, user_id=user_id)  # set the record to the database
+                    return self.db_upsert(subject, verbtense, clause, com, is_public=is_public, user_id=user_id)  # set the record to the database
 
     # Function to get a record from the database
-    def db_getter(self, subject, invert=False, is_public=True, user_id=None):
+    def db_get(self, subject, invert=False, is_public=True, user_id=None):
         if self.is_server:
             u_id = 0
             if not is_public and user_id:
@@ -129,6 +126,7 @@ class Learner():
             except pymysql.InternalError as error:
                 code, message = error.args
                 print (">>>>>>>>>>>>>", code, message)
+                return "Sorry, I encountered with a database problem."
             db.close()
         else:
             if invert:
@@ -165,7 +163,7 @@ class Learner():
                 return None  # if there is no result return None
 
     # Function to set a record to the database
-    def db_setter(self, subject, verbtense, clause, com, is_public=True, user_id=None):
+    def db_upsert(self, subject, verbtense, clause, com, is_public=True, user_id=None):
         if self.is_server:
             u_id = 0
             if not is_public and user_id:
@@ -194,6 +192,7 @@ class Learner():
             except pymysql.InternalError as error:
                 code, message = error.args
                 print (">>>>>>>>>>>>>", code, message)
+                return "Sorry, I encountered with a database problem."
             db.close()
         else:
             if not self.db.search((Query().subject == subject) & (Query().verbtense == verbtense) & (Query().clause == clause)):  # if there is no exacty record on the database then
@@ -205,7 +204,7 @@ class Learner():
         return "OK, I get it. " + self.mirror(com)  # mirror the command(user's speech) and return it to say
 
     # Function to delete a record from the database
-    def db_remover(self, subject, is_public=True, user_id=None):
+    def db_delete(self, subject, is_public=True, user_id=None):
         if self.is_server:
             if not is_public and user_id:
                 db = pymysql.connect(Config.MYSQL_HOST, Config.MYSQL_USER, Config.MYSQL_PASS, Config.MYSQL_DB)
@@ -217,19 +216,23 @@ class Learner():
                     results = cursor.fetchall()
                     if not results:
                         db.close()
-                        return False
+                        return "I don't even know anything about " + self.mirror(subject)
                     else:
                         cursor.execute(sql2)
                         db.commit()
                         db.close()
-                        return True
+                        return "OK, I forgot everything I know about " + self.mirror(subject)
                 except pymysql.InternalError as error:
                     code, message = error.args
                     print (">>>>>>>>>>>>>", code, message)
+                    return "Sorry, I encountered with a database problem."
             else:
-                return False
+                return "I don't even know anything about " + self.mirror(subject)
         else:
-            return self.db.remove(Query().subject == self.pronoun_fixer(subject))
+            if self.db.remove(Query().subject == self.fix_pronoun(subject)):
+                return "OK, I forgot everything I know about " + self.mirror(subject)
+            else:
+                return "I don't even know anything about " + self.mirror(subject)
 
     # Function to mirror the answer (for example: I'M to YOU ARE)
     def mirror(self, answer):
@@ -262,7 +265,7 @@ class Learner():
         return result
 
     # Pronoun fixer to handle situations like YOU and YOURSELF
-    def pronoun_fixer(self, subject):  # TODO: Extend the context of this function
+    def fix_pronoun(self, subject):  # TODO: Extend the context of this function
         if subject == "yourself":
             return "you"
         elif subject == "Yourself":
@@ -272,7 +275,7 @@ class Learner():
         else:
             return subject
 
-    def pronoun_detector(self, noun_chunk):
+    def detect_pronoun(self, noun_chunk):
         np_text = ""
         is_public = True
         doc = self.nlp(noun_chunk)
