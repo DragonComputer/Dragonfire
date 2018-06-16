@@ -235,6 +235,28 @@ def notification(name, gender, birth_date, location, gender_prefix):
     return json.dumps(data, indent=4)
 
 
+@hug.post('/register', requires=token_authentication)
+def register(name, gender, birth_date):
+    id = ""
+
+    db = pymysql.connect(Config.MYSQL_HOST, Config.MYSQL_USER, Config.MYSQL_PASS, Config.MYSQL_DB)
+    cursor = db.cursor(pymysql.cursors.DictCursor)
+    sql = """
+        INSERT INTO users (name, gender, birth_date)
+        VALUES('{}', '{}', '{}')
+        """.format(name, gender, birth_date)
+    try:
+        cursor.execute(sql)
+        db.commit()
+        id = cursor.lastrowid
+    except pymysql.InternalError as error:
+        code, message = error.args
+        print (">>>>>>>>>>>>>", code, message)
+    db.close()
+
+    return json.dumps(id, indent=4)
+
+
 class Run():
     def __init__(self, nlpRef, userinRef, token):
         global nlp
