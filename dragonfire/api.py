@@ -1,5 +1,4 @@
 from __future__ import print_function
-import collections  # Imported to support ordered dictionaries in Python
 import hug
 from hug_middleware_cors import CORSMiddleware
 import waitress
@@ -23,14 +22,17 @@ dc = None
 learner = None
 precomptoken = None
 
+
 @hug.authentication.token
 def token_authentication(token):
     if token == precomptoken:
         return True
 
+
 @hug.post('/tag', requires=token_authentication)
 def tagger_end(text):
     return json.dumps(tagger(text), indent=4)
+
 
 def tagger(text):
     data = []
@@ -49,9 +51,11 @@ def tagger(text):
         data.append(parse)
     return data
 
+
 @hug.post('/dep', requires=token_authentication)
 def dependency_parser_end(text):
     return json.dumps(dependency_parser(text), indent=4)
+
 
 def dependency_parser(text):
     data = []
@@ -62,13 +66,15 @@ def dependency_parser(text):
             'root_text': chunk.root.text,
             'root_dep': chunk.root.dep_,
             'root_head_text': chunk.root.head.text,
-            }
+        }
         data.append(parse)
     return data
+
 
 @hug.post('/ner', requires=token_authentication)
 def entity_recognizer_end(text):
     return json.dumps(entity_recognizer(text), indent=4)
+
 
 def entity_recognizer(text):
     data = []
@@ -79,13 +85,15 @@ def entity_recognizer(text):
             'start_char': ent.start_char,
             'end_char': ent.end_char,
             'label': ent.label_,
-            }
+        }
         data.append(parse)
     return data
+
 
 @hug.post('/token', requires=token_authentication)
 def tokenizer_end(text):
     return json.dumps(tokenizer(text), indent=4)
+
 
 def tokenizer(text):
     data = []
@@ -94,9 +102,11 @@ def tokenizer(text):
         data.append(token.text)
     return data
 
+
 @hug.post('/sent', requires=token_authentication)
 def sentence_segmenter_end(text):
     return json.dumps(sentence_segmenter(text), indent=4)
+
 
 def sentence_segmenter(text):
     data = []
@@ -105,9 +115,11 @@ def sentence_segmenter(text):
         data.append(sent.text)
     return data
 
+
 @hug.post('/cmd', requires=token_authentication)
 def cmd(text):
     return json.dumps(all_in_one(text), indent=4)
+
 
 def all_in_one(text):
     data = []
@@ -120,6 +132,7 @@ def all_in_one(text):
         data.append(sent_data)
     return data
 
+
 @hug.post('/omni', requires=token_authentication)
 def omni(text, gender_prefix):
     answer = omniscient.respond(text, userin=userin, user_prefix=gender_prefix, is_server=True)
@@ -127,10 +140,12 @@ def omni(text, gender_prefix):
         answer = ""
     return json.dumps(answer, indent=4)
 
+
 @hug.post('/deep', requires=token_authentication)
 def deep(text, gender_prefix):
     answer = dc.respond(text, user_prefix=gender_prefix)
     return json.dumps(answer, indent=4)
+
 
 @hug.post('/wikipedia', requires=token_authentication)
 def wikipedia(query, gender_prefix):
@@ -153,6 +168,7 @@ def wikipedia(query, gender_prefix):
     data['url'] = url
     return json.dumps(data, indent=4)
 
+
 @hug.post('/youtube', requires=token_authentication)
 def youtube(query, gender_prefix):
     response = ""
@@ -172,6 +188,7 @@ def youtube(query, gender_prefix):
     data['url'] = url
     return json.dumps(data, indent=4)
 
+
 @hug.post('/learn', requires=token_authentication)
 def learn(text):
     response = learner.respond(text)
@@ -179,12 +196,14 @@ def learn(text):
         response = ""
     return json.dumps(response, indent=4)
 
+
 @hug.post('/math', requires=token_authentication)
 def math(text):
     response = arithmetic_parse(text)
     if not response:
         response = ""
     return json.dumps(response, indent=4)
+
 
 @hug.post('/notification', requires=token_authentication)
 def notification(name, gender, birth_date, location, gender_prefix):

@@ -89,7 +89,7 @@ class Learner():
 
                 # keywords to order get and remove operations on the database
                 if any(verb in verbs for verb in self.upper_capitalize(["forget", "remove", "delete", "update"])):
-                    if self.db.remove(Query().subject == self.pronoun_fixer(subject)):  # if there is a record about the subject in the database then remove that record and...
+                    if self.db_remover(subject):  # if there is a record about the subject in the database then remove that record and...
                         return "OK, I forgot everything I know about " + self.mirror(subject)
                     else:
                         return "I don't even know anything about " + self.mirror(subject)
@@ -144,6 +144,10 @@ class Learner():
                 'clause': clause
             })  # insert the given data
         return "OK, I get it. " + self.mirror(com)  # mirror the command(user's speech) and return it to say
+
+    # Function to delete a record from the database
+    def db_remover(self, subject):
+        return self.db.remove(Query().subject == self.pronoun_fixer(subject))
 
     # Function to mirror the answer (for example: I'M to YOU ARE)
     def mirror(self, answer):
