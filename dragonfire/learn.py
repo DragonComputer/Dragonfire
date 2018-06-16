@@ -44,16 +44,19 @@ class Learner():
         types.append("")
         for np in doc.noun_chunks:  # Iterate over the noun phrases(chunks) TODO: Cover 'dobj' also; doc = nlp(u'DESCRIBE THE SUN') >>> (u'THE SUN', u'SUN', u'dobj', u'DESCRIBE')
             types.append(np.root.dep_)
+            np_text = np.text
+            if np.root.lemma_ == "-PRON-":
+                np_text = np_text.lower()
             # Purpose of this if statement is completing possessive form of nouns
             if np.root.dep_ == 'pobj' and types[-2] == 'nsubj':  # if it's an object of a preposition and the previous noun phrase's type was nsubj(nominal subject) then (it's purpose is capturing subject like MY PLACE OF BIRTH)
                 subject.append(np.root.head.text)  # append the parent text from syntactic relations tree (example: while nsubj is 'MY PLACE', np.root.head.text is 'OF')
-                subject.append(np.text)  # append the text of this noun phrase (example: while nsubj is 'MY PLACE', np.text is 'BIRTH')
+                subject.append(np_text)  # append the text of this noun phrase (example: while nsubj is 'MY PLACE', np.text is 'BIRTH')
             if np.root.dep_ == 'nsubj' and types[-2] not in ['pobj', 'nsubj'] and np.root.tag_ not in ['WDT', 'WP', 'WP$', 'WRB']:  # if it's a nsubj(nominal subject) ("wh-" words can be considered as nsubj(nominal subject) but they are out of scope.  This is why we are excluding them.)
-                subject.append(np.text)  # append the text of this noun phrase
+                subject.append(np_text)  # append the text of this noun phrase
             if np.root.dep_ == 'attr' and types[-2] not in ['pobj', 'nsubj'] and np.root.tag_ not in ['WDT', 'WP', 'WP$', 'WRB']:  # if it's an attribute and the previous noun phrase's type was not nsubj(nominal subject)
-                subject.append(np.text)  # append the text of this noun phrase
+                subject.append(np_text)  # append the text of this noun phrase
             if np.root.dep_ == 'dobj' and types[-2] not in ['pobj', 'nsubj'] and np.root.tag_ not in ['WDT', 'WP', 'WP$', 'WRB']:  # if it's a dobj(direct object) and the previous noun phrase's type was not nsubj(nominal subject)
-                subject.append(np.text)  # append the text of this noun phrase
+                subject.append(np_text)  # append the text of this noun phrase
         subject = [x for x in subject]
         subject = ' '.join(subject).strip()  # concatenate all noun phrases found
         if subject:  # if the subject is not empty
@@ -85,13 +88,13 @@ class Learner():
                 clause = ' '.join(clause).strip()  # concatenate the clause
 
                 # keywords to order get and remove operations on the database
-                if any(verb in verbs for verb in self.capitalizer(["forget", "remove", "delete", "update"])):
+                if any(verb in verbs for verb in self.upper_capitalize(["forget", "remove", "delete", "update"])):
                     if self.db.remove(Query().subject == self.pronoun_fixer(subject)):  # if there is a record about the subject in the database then remove that record and...
                         return "OK, I forgot everything I know about " + self.mirror(subject)
                     else:
                         return "I don't even know anything about " + self.mirror(subject)
 
-                if any(verb in verbs for verb in self.capitalizer(["define", "explain", "tell", "describe"])):
+                if any(verb in verbs for verb in self.upper_capitalize(["define", "explain", "tell", "describe"])):
                     return self.db_getter(subject)
 
                 if verbtense:
@@ -128,7 +131,7 @@ class Learner():
                         first_clause = True
                     else:
                         answer += ' and ' + clause  # otherwise concatenate with ' AND '
-            return self.mirror(answer)  # mirror the answer (for example: I'M to YOU ARE)
+            return self.mirror(answer).capitalize()  # mirror the answer (for example: I'M to YOU ARE)
         else:
             return None  # if there is no result return None
 
@@ -183,7 +186,7 @@ class Learner():
         else:
             return subject
 
-    def capitalizer(self, array):
+    def upper_capitalize(self, array):
         result = []
         for word in array:
             result.append(word)
