@@ -190,8 +190,8 @@ def youtube(query, gender_prefix):
 
 
 @hug.post('/learn', requires=token_authentication)
-def learn(text):
-    response = learner.respond(text)
+def learn(text, user_id):
+    response = learner.respond(text, is_server=True, user_id=user_id)
     if not response:
         response = ""
     return json.dumps(response, indent=4)
