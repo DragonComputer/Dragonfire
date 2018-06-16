@@ -9,6 +9,7 @@ from dragonfire.omniscient import Engine
 from dragonfire.conversational import DeepConversation
 from dragonfire.learn import Learner
 from dragonfire.config import Config
+from dragonfire.arithmetic import arithmetic_parse
 import wikipedia as wikipedia_lib
 import re
 import youtube_dl
@@ -174,6 +175,13 @@ def youtube(query, gender_prefix):
 @hug.post('/learn', requires=token_authentication)
 def learn(text):
     response = learner.respond(text)
+    if not response:
+        response = ""
+    return json.dumps(response, indent=4)
+
+@hug.post('/math', requires=token_authentication)
+def math(text):
+    response = arithmetic_parse(text)
     if not response:
         response = ""
     return json.dumps(response, indent=4)
