@@ -206,19 +206,32 @@ def math(text):
 
 
 @hug.post('/notification', requires=token_authentication)
-def notification(name, gender, birth_date, location, gender_prefix):
+def notification(user_id, location, gender_prefix):
     url = ""
     title = ""
     message = ""
 
     db = pymysql.connect(Config.MYSQL_HOST, Config.MYSQL_USER, Config.MYSQL_PASS, Config.MYSQL_DB)
     cursor = db.cursor(pymysql.cursors.DictCursor)
-    sql = "SELECT * FROM notifications"
+    sql1 = "SELECT * FROM users WHERE id = {}".format(user_id)
+    sql2 = "SELECT * FROM notifications"
     try:
-        cursor.execute(sql)
+        cursor.execute(sql1)
+        results = cursor.fetchall()
+        if results:
+            row = results[0]
+            name = row["name"]
+            gender = row["gender"]
+            birth_date = row["birth_date"]
+        else:
+            name = "Master"
+            gender = 1
+            birth_date = "1980-01-01"
+
+        cursor.execute(sql2)
         results = cursor.fetchall()
         row = random.choice(results)
-        if row['capitalize'] == 1:
+        if row["capitalize"] == 1:
             gender_prefix = gender_prefix.capitalize()
         url = row["url"]
         title = row["title"]
