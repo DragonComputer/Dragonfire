@@ -56,17 +56,24 @@ sudo dpkg -i dragonfire_1.0.0_amd64.deb
 ### Usage
 
 ```
-usage: dragonfire [-h] [-c] [-s] [--headless]
+usage: dragonfire [-h] [-c] [-s] [-j] [-v] [-g] [--server API_KEY] [--version]
 
 optional arguments:
-  -h, --help    show this help message and exit
-  -c, --cli     Command-line interface mode. Give commands to Dragonfire via
-                command-line inputs (keyboard) instead of audio inputs
-                (microphone).
-  -s, --silent  Silent mode. Disable Text-to-Speech output. Dragonfire won't
-                generate any audio output.
-  --headless    Headless mode. Do not display an avatar animation on the
-                screen. Disable the female head model.
+  -h, --help        show this help message and exit
+  -c, --cli         Command-line interface mode. Give commands to Dragonfire
+                    via command-line inputs (keyboard) instead of audio inputs
+                    (microphone).
+  -s, --silent      Silent mode. Disable Text-to-Speech output. Dragonfire
+                    won't generate any audio output.
+  -j, --headless    Headless mode. Do not display an avatar animation on the
+                    screen. Disable the female head model.
+  -v, --verbose     Increase verbosity of log output.
+  -g, --gspeech     Instead of using the default speech recognition
+                    method(Mozilla DeepSpeech), use Google Speech Recognition
+                    service. (more accurate results)
+  --server API_KEY  Server mode. Disable any audio functionality, serve a
+                    RESTful spaCy API and become a Twitter integrated chatbot.
+  --version         Display the version number of Dragonfire.
 ```
 
 To activate Dragonfire say *DRAGONFIRE* or *HEY* or *WAKE UP*.
@@ -207,11 +214,4 @@ We have also a collective which you can donate:
   <img src="https://opencollective.com/dragonfire/donate/button@2x.png?color=blue" width=300 />
 </a>
 
-Maybe you may want to become a backer or a sponsor:
-
-<a href="https://opencollective.com/dragonfire" target="_blank">
-    <p align="left">
-        <img src="https://opencollective.com/dragonfire/backers.svg?width=890" />
-        <img src="https://opencollective.com/dragonfire/sponsors.svg?width=890" />
-    </p>
-</a>
+Maybe you may want to become a [backer](https://opencollective.com/dragonfire) or a [sponsor](https://opencollective.com/dragonfire):
