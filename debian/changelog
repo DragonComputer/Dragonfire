@@ -1,3 +1,17 @@
+dragonfire (1.0.0) unstable; urgency=medium
+
+  * Post-installation scripts are fixed
+  * An API implemented
+  * The project is turned into more of a server-side application although it's continuing to preserve the features of its desktop application aspect
+  * The package is now Python 3 only
+  * Universal Python wheel generation disabled
+  * Basic Analyzer (done in dragonfire/__init__.py) is heavily pruned and improved. Now it's purely spaCy based
+  * Omniscient and Learner classes are refactored
+  * Learning ability now can store data (that comes from many different Android users) on MySQL database seamlessly
+  * Gspeech alternative added
+
+ -- Mehmet Mert Yildiran <mehmetmertyildiran@gmail.com>  Tue, 19 Jun 2018 01:57:10 +0300
+
 dragonfire (0.9.9) unstable; urgency=medium
 
   * Twitter integration implemented
