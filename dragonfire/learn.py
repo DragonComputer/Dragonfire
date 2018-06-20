@@ -64,6 +64,8 @@ class Learner():
         subject = [x for x in subject]
         subject = ' '.join(subject).strip()  # concatenate all noun phrases found
         if subject:  # if the subject is not empty
+            if subject in self.inv_pronouns:  # pass the learning ability if the user is talking about Dragonfire's itself
+                return ""
             wh_found = False
             for word in doc:  # iterate over the each word in the given command(user's speech)
                 if word.tag_ in ['WDT', 'WP', 'WP$', 'WRB']:  # check if there is a "wh-" question (we are determining that if it's a question or not, so only accepting questions with "wh-" form)
