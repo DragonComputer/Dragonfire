@@ -5,4 +5,7 @@ export PYBUILD_NAME = foo
 export PYBUILD_DISABLE_python3=test
 
 %:
-	dh $@ --with python3 --buildsystem=pybuild
+		dh $@ --with python3 --buildsystem=pybuild
+
+override_dh_installman:
+		dh_installman debian/dragonfire.1
