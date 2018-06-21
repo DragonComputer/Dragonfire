@@ -5,4 +5,4 @@ export PYBUILD_NAME = foo
 export PYBUILD_DISABLE_python3.5=test
 
 %:
-        dh $@ --with python2,python3 --buildsystem=pybuild
+	dh $@ --with python2,python3 --buildsystem=pybuild
