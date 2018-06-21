@@ -261,7 +261,7 @@ All Python must adhere to [PEP 8](https://www.python.org/dev/peps/pep-0008/).
 Install build dependencies:
 
 ```
-sudo apt-get install debhelper python3 python3-all-dev libglib2.0-dev libcairo2-dev libgtk2.0-dev
+sudo apt-get install debhelper python2.7-minimal python3 python3-all-dev python-setuptools python3-setuptools libglib2.0-dev libcairo2-dev libgtk2.0-dev
 ```
 
 To building the Debian package simply run:
