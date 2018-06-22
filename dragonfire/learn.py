@@ -64,7 +64,7 @@ class Learner():
         subject = [x for x in subject]
         subject = ' '.join(subject).strip()  # concatenate all noun phrases found
         if subject:  # if the subject is not empty
-            if subject in self.inv_pronouns:  # pass the learning ability if the user is talking about Dragonfire's itself
+            if subject.upper() in self.inv_pronouns:  # pass the learning ability if the user is talking about Dragonfire's itself
                 return ""
             wh_found = False
             for word in doc:  # iterate over the each word in the given command(user's speech)
