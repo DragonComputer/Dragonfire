@@ -11,7 +11,10 @@ import random
 class Classifier():
     @staticmethod
     def gender_features(word):
-        return {'last_letter': word[-1]}
+        if not word:
+            return {'last_letter': 'a'}
+        else:
+            return {'last_letter': word[-1]}
 
     @staticmethod
     def gender(word):
