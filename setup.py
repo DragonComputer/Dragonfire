@@ -110,8 +110,15 @@ setup(
     # requirements files see:
     # https://packaging.python.org/en/latest/requirements.html
     install_requires=[
-        'wikipedia', 'PyUserInput', 'tinydb', 'youtube_dl', 'spacy', 'pyowm',
-        'tensorflow==1.0.0', 'deepspeech==0.2.0a5', 'requests==2.18.4'
+        'wikipedia==1.4.0',
+        'PyUserInput==0.1.11',
+        'tinydb==3.9.0.post1',
+        'youtube_dl',
+        'spacy==2.0.11',
+        'pyowm==2.8.0',
+        'tensorflow==1.0.0',
+        'deepspeech==0.2.0a5',
+        'requests==2.18.4'
     ],
 
     # List additional groups of dependencies here (e.g. development
@@ -120,9 +127,21 @@ setup(
     # $ pip install -e .[dev,test]
     extras_require={
         'optionals': [
-            'egenix-mx-base', 'lxml', 'nltk', 'pyaudio', 'httplib2>=0.9.1',
-            'imutils', 'pyqtgraph', 'PeakUtils', 'tweepy', 'metadata_parser',
-            'hug', 'hug-middleware-cors', 'waitress', 'PyMySQL', 'SpeechRecognition'
+            'egenix-mx-base',
+            'lxml==3.5.0',
+            'nltk==3.1',
+            'pyaudio==0.2.11',
+            'httplib2>=0.9.1',
+            'imutils',
+            'pyqtgraph',
+            'PeakUtils',
+            'tweepy==3.6.0',
+            'metadata_parser',
+            'hug==2.4.0',
+            'hug-middleware-cors==1.0.0',
+            'waitress==1.1.0',
+            'PyMySQL==0.8.1',
+            'SpeechRecognition'
         ]
     },
 
