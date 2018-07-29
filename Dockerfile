@@ -51,8 +51,8 @@ RUN printf "import nltk\nnltk.download('names')\nnltk.download('brown')\nnltk.do
 # Print success message
 RUN echo -e "\n\nDragonfire is successfully installed into the container.\n"
 
-# Make port 3031 available to the world outside this container
-EXPOSE 3031
+# Make port 3301 available to the world outside this container
+EXPOSE 3301
 
 # Start Dragonfire
 ENTRYPOINT ["dragonfire"]
