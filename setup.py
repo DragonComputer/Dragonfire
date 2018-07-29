@@ -45,7 +45,7 @@ def pkgconfig(*packages):
 
 
 # Get the long description from the README file
-with open(path.join(here, 'README.rst'), encoding='utf-8') as f:
+with open(path.join(here, 'README.md'), encoding='utf-8') as f:
     long_description = f.read()
 
 setup(
@@ -57,12 +57,13 @@ setup(
     version='1.0.0',
     description='Dragonfire is an open source virtual assistant project for Ubuntu based Linux distributions',
     long_description=long_description,
+    long_description_content_type='text/markdown',
 
     # The project's main homepage.
     url='https://github.com/mertyildiran/Dragonfire',
 
     # Author details
-    author='Mehmet Mert Yildiran',
+    author='Mehmet Mert Yıldıran',
     author_email='mert.yildiran@bil.omu.edu.tr',
 
     # Choose your license
@@ -74,10 +75,10 @@ setup(
         #   3 - Alpha
         #   4 - Beta
         #   5 - Production/Stable
-        'Development Status :: 3 - Alpha',
+        'Development Status :: 5 - Production/Stable',
 
         # Indicate who your project is intended for
-        'Intended Audience :: Developers',
+        'Intended Audience :: End Users/Desktop',
         'Topic :: Scientific/Engineering :: Human Machine Interfaces',
 
         # Pick your license as you wish (should match "license" above)
@@ -149,12 +150,8 @@ setup(
     # installed, specify them here.  If using Python 2.6 or less, then these
     # have to be included in MANIFEST.in as well.
     package_data={
-        # If any package contains *.txt files, include them:
-        # '': ['*.txt'],
-        # '': ['*.ini'],
-        # 'dragonfire': ['*.jconf','*.dfa','*.dict','*.grammar','*.term','*.voca','acousticmodel/*','realhud/animation/*']
+        # If any package contains data files, include them:
         'dragonfire': ['realhud/animation/*', 'sr/models/english/*']
-        # '': ['*.aiml']
     },
 
     # Although 'package_data' is the preferred approach, in some case you may
