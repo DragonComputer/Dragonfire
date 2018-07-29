@@ -271,23 +271,23 @@ def register(name, gender, birth_date):
 
 
 class Run():
-    def __init__(self, nlpRef, userinRef, token):
+    def __init__(self, nlp_ref, userin_ref, token, port_number):
         global nlp
         global omniscient
         global userin
         global dc
         global precomptoken
         global learner
-        nlp = nlpRef  # Load en_core_web_sm, English, 50 MB, default model
+        nlp = nlp_ref  # Load en_core_web_sm, English, 50 MB, default model
         omniscient = Engine(nlp)
         dc = DeepConversation()
         learner = Learner(nlp)
-        userin = userinRef
+        userin = userin_ref
         precomptoken = token
         app = hug.API(__name__)
         app.http.output_format = hug.output_format.text
         app.http.add_middleware(CORSMiddleware(app))
-        t = Thread(target=waitress.serve, args=(__hug_wsgi__, ), kwargs={"port": 3301})
+        t = Thread(target=waitress.serve, args=(__hug_wsgi__, ), kwargs={"port": port_number})
         t.start()
         t.join()
 

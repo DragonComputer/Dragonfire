@@ -82,7 +82,7 @@ except NameError:
 def start(args):
 
     if args["server"]:
-        api.Run(nlp, userin, args["server"])
+        api.Run(nlp, userin, args["server"], args["port"])
         if Config.TWITTER_CONSUMER_KEY != 'CONSUMER_KEY':
             auth = OAuthHandler(Config.TWITTER_CONSUMER_KEY, Config.TWITTER_CONSUMER_SECRET)
             auth.set_access_token(Config.TWITTER_ACCESS_KEY, Config.TWITTER_ACCESS_SECRET)
@@ -614,6 +614,7 @@ def initiate():
     ap.add_argument("-v", "--verbose", help="Increase verbosity of log output.", action="store_true")
     ap.add_argument("-g", "--gspeech", help="Instead of using the default speech recognition method(Mozilla DeepSpeech), use Google Speech Recognition service. (more accurate results)", action="store_true")
     ap.add_argument("--server", help="Server mode. Disable any audio functionality, serve a RESTful spaCy API and become a Twitter integrated chatbot.", metavar="API_KEY")
+    ap.add_argument("-p", "--port", help="Port number for server mode.", default="3301", metavar="PORT")
     ap.add_argument("--version", help="Display the version number of Dragonfire.", action="store_true")
     args = vars(ap.parse_args())
     if args["version"]:

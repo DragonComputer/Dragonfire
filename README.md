@@ -60,27 +60,30 @@ or simply: `sudo ./install.sh`
 ### Usage
 
 ```
-usage: dragonfire [-h] [-c] [-s] [-j] [-v] [-g] [--server API_KEY] [--version]
+usage: dragonfire [-h] [-c] [-s] [-j] [-v] [-g] [--server API_KEY] [-p PORT]
+                  [--version]
 
 optional arguments:
-  -h, --help        show this help message and exit
-  -c, --cli         Command-line interface mode. Give commands to Dragonfire
-                    via command-line inputs (keyboard) instead of audio inputs
-                    (microphone).
-  -s, --silent      Silent mode. Disable Text-to-Speech output. Dragonfire
-                    won't generate any audio output.
-  -j, --headless    Headless mode. Do not display an avatar animation on the
-                    screen. Disable the female head model.
-  -v, --verbose     Increase verbosity of log output.
-  -g, --gspeech     Instead of using the default speech recognition
-                    method(Mozilla DeepSpeech), use Google Speech Recognition
-                    service. (more accurate results)
-  --server API_KEY  Server mode. Disable any audio functionality, serve a
-                    RESTful spaCy API and become a Twitter integrated chatbot.
-  --version         Display the version number of Dragonfire.
+  -h, --help            show this help message and exit
+  -c, --cli             Command-line interface mode. Give commands to
+                        Dragonfire via command-line inputs (keyboard) instead
+                        of audio inputs (microphone).
+  -s, --silent          Silent mode. Disable Text-to-Speech output. Dragonfire
+                        won't generate any audio output.
+  -j, --headless        Headless mode. Do not display an avatar animation on
+                        the screen. Disable the female head model.
+  -v, --verbose         Increase verbosity of log output.
+  -g, --gspeech         Instead of using the default speech recognition
+                        method(Mozilla DeepSpeech), use Google Speech
+                        Recognition service. (more accurate results)
+  --server API_KEY      Server mode. Disable any audio functionality, serve a
+                        RESTful spaCy API and become a Twitter integrated
+                        chatbot.
+  -p PORT, --port PORT  Port number for server mode.
+  --version             Display the version number of Dragonfire.
 ```
 
-or with Docker: `docker run dragonfire [-h] [-c] [-s] [-j] [-v] [-g] [--server API_KEY] [--version]`
+or with Docker: `docker run dragonfire [-h] [-c] [-s] [-j] [-v] [-g] [--server API_KEY] [-p PORT]`
 
 or simply start from your Linux application launcher.
 
