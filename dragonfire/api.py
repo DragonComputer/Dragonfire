@@ -4,9 +4,6 @@ from hug_middleware_cors import CORSMiddleware
 import waitress
 from threading import Thread
 import json
-from dragonfire.omniscient import Engine
-from dragonfire.conversational import DeepConversation
-from dragonfire.learn import Learner
 from dragonfire.config import Config
 from dragonfire.arithmetic import arithmetic_parse
 import wikipedia as wikipedia_lib
@@ -16,10 +13,10 @@ import pymysql
 import random
 
 nlp = None
+learner = None
+dc = None
 omniscient = None
 userin = None
-dc = None
-learner = None
 precomptoken = None
 
 
@@ -271,17 +268,17 @@ def register(name, gender, birth_date):
 
 
 class Run():
-    def __init__(self, nlp_ref, userin_ref, token, port_number):
+    def __init__(self, nlp_ref, learner_ref, omniscient_ref, dc_ref, userin_ref, token, port_number):
         global nlp
-        global omniscient
-        global userin
-        global dc
-        global precomptoken
         global learner
+        global omniscient
+        global dc
+        global userin
+        global precomptoken
         nlp = nlp_ref  # Load en_core_web_sm, English, 50 MB, default model
-        omniscient = Engine(nlp)
-        dc = DeepConversation()
-        learner = Learner(nlp)
+        learner = learner_ref
+        omniscient = omniscient_ref
+        dc = dc_ref
         userin = userin_ref
         precomptoken = token
         app = hug.API(__name__)

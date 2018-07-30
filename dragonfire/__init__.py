@@ -56,7 +56,7 @@ userin = None
 nlp = spacy.load('en')  # Load en_core_web_sm, English, 50 MB, default model
 learner = Learner(nlp)
 omniscient = Engine(nlp)
-dc = None
+dc = DeepConversation()
 e = Event()
 
 USER_ANSWERING = {
@@ -75,7 +75,7 @@ except NameError:
 def start(args, userin):
 
     if args["server"]:
-        import dragonfire.api as api  # API of Dragonfire
+        import dragonfire.api as API  # API of Dragonfire
         import tweepy  # An easy-to-use Python library for accessing the Twitter API
         from tweepy import OAuthHandler
         from tweepy import Stream
@@ -90,7 +90,7 @@ def start(args, userin):
             l = MentionListener(args, userin)
             stream = Stream(auth, l)
             stream.filter(track=['DragonfireAI'], async=True)
-        api.Run(nlp, userin, args["server"], args["port"])
+        API.Run(nlp, learner, omniscient, dc, userin, args["server"], args["port"])
     else:
         global user_full_name
         global user_prefix
@@ -319,8 +319,6 @@ class VirtualAssistant():
             user_prefix = title
             userin.say("OK, " + user_prefix + ".")
             return True
-        # only for The United States today but prepared for all countries. Also
-        # only for celsius degrees today. --> by Radan Liska :-)
         if h.is_wh_question() and h.check_lemma("temperature"):
             city = ""
             for ent in doc.ents:
@@ -532,7 +530,7 @@ def tts_kill():
     subprocess.call(["pkill", "flite"], stdout=FNULL, stderr=FNULL)
 
 
-def dragon_greet(userin):
+def greet(userin):
     (columns, lines) = shutil.get_terminal_size()
     print(columns * "_" + "\n")
     time = datetime.datetime.now().time()
@@ -610,12 +608,11 @@ def initiate():
         inactive = False
         userin = TextToAction(args)
         if not args["server"]:
-            dc = DeepConversation()
             inactive = True
             SystemTrayExitListenerSet(e)
             stray_proc = Process(target=SystemTrayInit)
             stray_proc.start()
-            dragon_greet(userin)
+            greet(userin)
         start(args, userin)
     except KeyboardInterrupt:
         if not args["server"]:
