@@ -16,6 +16,7 @@ import metadata_parser
 import urllib.request
 import mimetypes
 import uuid
+import shutil
 
 DRAGONFIRE_PATH = os.path.dirname(
     os.path.abspath(inspect.getfile(inspect.currentframe())))
@@ -96,20 +97,17 @@ class TextToAction:
         # if songRunning == True:
         #   subprocess.Popen(["rhythmbox-client","--pause"])
         if len(message) < 10000:
+            (columns, lines) = shutil.get_terminal_size()
             if dynamic:
                 if end:
                     print(message.upper())
-                    print(
-                        "_______________________________________________________________\n"
-                    )
+                    print(columns * "_" + "\n")
                 else:
                     print("Dragonfire: " + message.upper(), end=' ')
                     stdout.flush()
             else:
                 print("Dragonfire: " + message.upper())
-                print(
-                    "_______________________________________________________________\n"
-                )
+                print(columns * "_" + "\n")
         if not self.silent:
             subprocess.call(["pkill", "flite"], stdout=FNULL, stderr=FNULL)
             tts_proc = subprocess.Popen(

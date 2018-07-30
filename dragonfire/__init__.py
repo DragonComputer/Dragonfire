@@ -26,6 +26,7 @@ import uuid  # UUID objects according to RFC 4122
 from multiprocessing import Event, Process  # Process-based “threading” interface
 from os.path import expanduser  # Common pathname manipulations
 from random import choice  # Generate pseudo-random numbers
+import shutil  # High-level file operations
 
 from dragonfire.learn import Learner  # Submodule of Dragonfire that forms her learning ability
 from dragonfire.nlplib import Classifier, Helper  # Submodule of Dragonfire to handle extra NLP tasks
@@ -529,7 +530,8 @@ def tts_kill():
 
 
 def dragon_greet(userin):
-    print("_______________________________________________________________\n")
+    (columns, lines) = shutil.get_terminal_size()
+    print(columns * "_" + "\n")
     time = datetime.datetime.now().time()
 
     global user_full_name
