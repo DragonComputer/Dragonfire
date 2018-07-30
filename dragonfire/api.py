@@ -12,19 +12,14 @@ import youtube_dl
 import pymysql
 import random
 
-nlp = None
-learner = None
-dc = None
-omniscient = None
-userin = None
-precomptoken = None
-
 
 @hug.authentication.token
 def token_authentication(token):
     if token == precomptoken:
         return True
 
+
+# Natural Language Processing realted API endpoints START
 
 @hug.post('/tag', requires=token_authentication)
 def tagger_end(text):
@@ -129,6 +124,26 @@ def all_in_one(text):
         data.append(sent_data)
     return data
 
+# Natural Language Processing realted API endpoints END
+
+
+# Directly on server-side Q&A related API endpoints START
+
+@hug.post('/math', requires=token_authentication)
+def math(text):
+    response = arithmetic_parse(text)
+    if not response:
+        response = ""
+    return json.dumps(response, indent=4)
+
+
+@hug.post('/learn', requires=token_authentication)
+def learn(text, user_id):
+    response = learner.respond(text, is_server=True, user_id=user_id)
+    if not response:
+        response = ""
+    return json.dumps(response, indent=4)
+
 
 @hug.post('/omni', requires=token_authentication)
 def omni(text, gender_prefix):
@@ -143,7 +158,10 @@ def deep(text, gender_prefix):
     answer = dc.respond(text, user_prefix=gender_prefix)
     return json.dumps(answer, indent=4)
 
+# Directly on server-side Q&A related API endpoints END
 
+
+# Endpoint to make a Wikipedia search and return its text content
 @hug.post('/wikipedia', requires=token_authentication)
 def wikipedia(query, gender_prefix):
     response = ""
@@ -166,6 +184,7 @@ def wikipedia(query, gender_prefix):
     return json.dumps(data, indent=4)
 
 
+# Endpoint to make a YouTube search and return the video title and URL
 @hug.post('/youtube', requires=token_authentication)
 def youtube(query, gender_prefix):
     response = ""
@@ -186,22 +205,7 @@ def youtube(query, gender_prefix):
     return json.dumps(data, indent=4)
 
 
-@hug.post('/learn', requires=token_authentication)
-def learn(text, user_id):
-    response = learner.respond(text, is_server=True, user_id=user_id)
-    if not response:
-        response = ""
-    return json.dumps(response, indent=4)
-
-
-@hug.post('/math', requires=token_authentication)
-def math(text):
-    response = arithmetic_parse(text)
-    if not response:
-        response = ""
-    return json.dumps(response, indent=4)
-
-
+# Endpoint to serve the notifications from the database
 @hug.post('/notification', requires=token_authentication)
 def notification(user_id, location, gender_prefix):
     url = ""
@@ -245,6 +249,7 @@ def notification(user_id, location, gender_prefix):
     return json.dumps(data, indent=4)
 
 
+# Endpoint to handle registration requests
 @hug.post('/register', requires=token_authentication)
 def register(name, gender, birth_date):
     id = ""
