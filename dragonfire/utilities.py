@@ -29,9 +29,6 @@ songRunning = False
 
 class TTA:
     def __init__(self, args):
-        self.command = None
-        self.message = None
-
         self.headless = args["headless"]
         self.silent = args["silent"]
         self.server = args["server"]
@@ -40,40 +37,39 @@ class TTA:
             self.silent = True
         self.twitter_api = None
         self.twitter_user = None
-        realhud.load_gif(DRAGONFIRE_PATH + "/realhud/animation/avatar.gif")
+        if not self.headless:
+            realhud.load_gif(DRAGONFIRE_PATH + "/realhud/animation/avatar.gif")
 
-    def execute(self, com="", msg="", speak=False, duration=0):
-        self.command = com
-        self.message = msg
+    def execute(self, cmd="", msg="", speak=False, duration=0):
         self.speak = speak
 
         if self.server:
             return True
         if self.speak == True:
-            self.say(self.message)
+            self.say(msg)
         try:
-            subprocess.Popen(["notify-send", "Dragonfire", self.message])
+            subprocess.Popen(["notify-send", "Dragonfire", msg])
         except BaseException:
             pass
-        if self.command != "":
+        if cmd != "":
             time.sleep(duration)
             try:
-                subprocess.Popen(self.command, stdout=FNULL, stderr=FNULL)
+                subprocess.Popen(cmd, stdout=FNULL, stderr=FNULL)
             except BaseException:
                 pass
 
-    def say(self, message, dynamic=False, end=False):
+    def say(self, message, dynamic=False, end=False, cmd=None):
         if self.server:
             text = "@" + self.twitter_user + " " + message#.upper()
             text = (text[:TWITTER_CHAR_LIMIT]) if len(text) > TWITTER_CHAR_LIMIT else text
-            if self.command:
-                if len(self.command) > 1:
-                    if self.command[0] == "sensible-browser":
-                        reduction = len(text + " " + self.command[1]) - TWITTER_CHAR_LIMIT
+            if cmd:
+                if len(cmd) > 1:
+                    if cmd[0] == "sensible-browser":
+                        reduction = len(text + " " + cmd[1]) - TWITTER_CHAR_LIMIT
                         if reduction < 1:
                             reduction = None
-                        text = text[:reduction] + " " + self.command[1]
-                        page = metadata_parser.MetadataParser(url=self.command[1])
+                        text = text[:reduction] + " " + cmd[1]
+                        page = metadata_parser.MetadataParser(url=cmd[1])
                         img_url = page.get_metadata_link('image')
                         if img_url:
                             response = urllib.request.urlopen(img_url)
@@ -94,7 +90,6 @@ class TTA:
                             return True
             try:
                 self.twitter_api.update_status(text)
-                print(text)
                 if randint(1,10) == 1:
                     self.twitter_api.create_friendship(self.twitter_user, follow=True)
             except TweepError as e:

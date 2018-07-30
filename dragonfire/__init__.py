@@ -179,7 +179,7 @@ class VirtualAssistant():
                             wikicontent = "".join([i if ord(i) < 128 else ' ' for i in wikipage.content])
                             wikicontent = re.sub(r'\([^)]*\)', '', wikicontent)
                             userin.execute(["sensible-browser", wikipage.url], search_query)
-                            userin.say(wikicontent)
+                            userin.say(wikicontent, cmd=["sensible-browser", wikipage.url])
                             return True
                         except requests.exceptions.ConnectionError:
                             userin.execute([" "], "Wikipedia connection error.")
@@ -436,7 +436,7 @@ class VirtualAssistant():
                         wikicontent = "".join([i if ord(i) < 128 else ' ' for i in wikipage.content])
                         wikicontent = re.sub(r'\([^)]*\)', '', wikicontent)
                         userin.execute(["sensible-browser", wikipage.url], search_query)
-                        userin.say(wikicontent)
+                        userin.say(wikicontent, cmd=["sensible-browser", wikipage.url])
                         return True
                     except requests.exceptions.ConnectionError:
                         userin.execute([" "], "Wikipedia connection error.")
@@ -473,9 +473,10 @@ class VirtualAssistant():
                             youtube_url = "https://www.youtube.com/watch?v=%s" % (info['entries'][0]['id'])
                             userin.execute(["sensible-browser", youtube_url], youtube_title)
                             youtube_title = "".join([i if ord(i) < 128 else ' ' for i in youtube_title])
+                            userin.say(youtube_title, ["sensible-browser", youtube_url])
                         else:
                             youtube_title = "No video found, " + user_prefix + "."
-                        userin.say(youtube_title)
+                            userin.say(youtube_title)
                         time.sleep(5)
                         k = PyKeyboard()
                         k.tap_key(k.tab_key)
