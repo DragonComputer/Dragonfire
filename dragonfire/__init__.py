@@ -1,59 +1,58 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 
-from __future__ import print_function  # , unicode_literals
-
-import argparse
-import contextlib
+import argparse  # Parser for command-line options, arguments and sub-commands
+import contextlib  # Utilities for with-statement contexts
 
 try:
-    import cStringIO
+    import cStringIO  # Read and write strings as files
 except ImportError:
-    import io as cStringIO
+    import io as cStringIO  # Read and write strings as files
 
-import datetime
-import inspect
-import os
-import re
-import subprocess
-import sys
+import datetime  # Basic date and time types
+import inspect  # Inspect live objects
+import os  # Miscellaneous operating system interfaces
+import re  # Regular expression operations
+import subprocess  # Subprocess managements
+import sys  # System-specific parameters and functions
 
 try:
-    import thread
+    import thread  # Low-level threading API
 except ImportError:
-    import _thread as thread
+    import _thread as thread  # Low-level threading API
 
-import time
-import uuid
-from multiprocessing import Event, Process
-from os.path import expanduser
-from random import choice
+import time  # Time access and conversions
+import uuid  # UUID objects according to RFC 4122
+from multiprocessing import Event, Process  # Process-based “threading” interface
+from os.path import expanduser  # Common pathname manipulations
+from random import choice  # Generate pseudo-random numbers
+import json  # JSON encoder and decoder
 
-import requests.exceptions
+from dragonfire.learn import Learner  # Submodule of Dragonfire that forms her learning ability
+from dragonfire.nlplib import Classifier, Helper  # Submodule of Dragonfire to handle extra NLP tasks
+from dragonfire.omniscient import Engine  # Submodule of Dragonfire that serves as a Question Answering Engine
+from dragonfire.stray import SystemTrayExitListenerSet, SystemTrayInit  # Submodule of Dragonfire for System Tray Icon related functionalities
+from dragonfire.utilities import TTA  # Submodule of Dragonfire to provide various utilities
+from dragonfire.arithmetic import arithmetic_parse  # Submodule of Dragonfire to analyze arithmetic expressions
+from dragonfire.conversational import DeepConversation  # Submodule of Dragonfire to answer questions directly using an Artificial Neural Network
+from dragonfire.config import Config  # Submodule of Dragonfire to store configurations
+import dragonfire.api as api  # API of Dragonfire
 
-import spacy  # Most powerful NLP library available - spaCy
-import pyowm
-import wikipedia
-import wikipedia.exceptions
-import youtube_dl
-from dragonfire.learn import Learner
-from dragonfire.nlplib import Classifier, Helper
-from dragonfire.omniscient import Engine
-from dragonfire.stray import SystemTrayExitListenerSet, SystemTrayInit
-from dragonfire.utilities import TTA
-from dragonfire.arithmetic import arithmetic_parse
-from dragonfire.conversational import DeepConversation
-from dragonfire.config import Config
-import dragonfire.api as api
-from pykeyboard import PyKeyboard
-from pymouse import PyMouse
-from tinydb import Query, TinyDB
+import spacy  # Industrial-strength Natural Language Processing in Python
+import pyowm  # A Python wrapper around the OpenWeatherMap API
+import wikipedia  # Python library that makes it easy to access and parse data from Wikipedia
+import wikipedia.exceptions  # Exceptions of wikipedia library
+import requests.exceptions  # HTTP for Humans
+import youtube_dl  # Command-line program to download videos from YouTube.com and other video sites
+from pykeyboard import PyKeyboard  # A simple, cross-platform Python module for providing keyboard control
+from pymouse import PyMouse  # Cross-platform Python mouse module
+from tinydb import Query, TinyDB  # TinyDB is a lightweight document oriented database optimized for your happiness
 
+# An easy-to-use Python library for accessing the Twitter API
+import tweepy
 from tweepy.streaming import StreamListener
 from tweepy import OAuthHandler
 from tweepy import Stream
-import tweepy
-import json
 
 DRAGONFIRE_PATH = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 FNULL = open(os.devnull, 'w')
