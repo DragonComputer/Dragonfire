@@ -1,11 +1,10 @@
 language: python
-cache: pip
+cache: pip3
 python:
-    - "2.7"
     - "3.6"
 install:
     #- pip install -r requirements.txt
-    - pip install flake8  # pytest  # add another testing frameworks later
+    - pip3 install flake8  # pytest  # add another testing frameworks later
 before_script:
     # stop the build if there are Python syntax errors or undefined names
     - flake8 . --count --select=E901,E999,F822,F823 --show-source --statistics
