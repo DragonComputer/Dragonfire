@@ -64,7 +64,7 @@ class KaldiRecognizer():
         self.__class__.words = []
         self.__class__.finished = False
 
-    def recognize(self, args):
+    def recognize(self, args, userin, user_full_name, user_prefix):
 
         with noalsaerr():
             p = pyaudio.PyAudio()  # Create a PyAudio session
@@ -115,8 +115,8 @@ class KaldiRecognizer():
                     words = self.words
                     words = [x for x in words if x != '<#s>']
                     com = ' '.join(words)
-                    t = Thread(
-                        target=VirtualAssistant.command, args=(com, args))
+                    her = VirtualAssistant(args, userin, user_full_name, user_prefix)
+                    t = Thread(target=her.command, args=(com,))
                     t.start()
                     self.reset()
 

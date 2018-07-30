@@ -26,7 +26,6 @@ import uuid  # UUID objects according to RFC 4122
 from multiprocessing import Event, Process  # Process-based “threading” interface
 from os.path import expanduser  # Common pathname manipulations
 from random import choice  # Generate pseudo-random numbers
-import json  # JSON encoder and decoder
 
 from dragonfire.learn import Learner  # Submodule of Dragonfire that forms her learning ability
 from dragonfire.nlplib import Classifier, Helper  # Submodule of Dragonfire to handle extra NLP tasks
@@ -36,7 +35,6 @@ from dragonfire.utilities import TTA  # Submodule of Dragonfire to provide vario
 from dragonfire.arithmetic import arithmetic_parse  # Submodule of Dragonfire to analyze arithmetic expressions
 from dragonfire.conversational import DeepConversation  # Submodule of Dragonfire to answer questions directly using an Artificial Neural Network
 from dragonfire.config import Config  # Submodule of Dragonfire to store configurations
-import dragonfire.api as api  # API of Dragonfire
 
 import spacy  # Industrial-strength Natural Language Processing in Python
 import pyowm  # A Python wrapper around the OpenWeatherMap API
@@ -48,11 +46,6 @@ from pykeyboard import PyKeyboard  # A simple, cross-platform Python module for 
 from pymouse import PyMouse  # Cross-platform Python mouse module
 from tinydb import Query, TinyDB  # TinyDB is a lightweight document oriented database optimized for your happiness
 
-# An easy-to-use Python library for accessing the Twitter API
-import tweepy
-from tweepy.streaming import StreamListener
-from tweepy import OAuthHandler
-from tweepy import Stream
 
 DRAGONFIRE_PATH = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 FNULL = open(os.devnull, 'w')
@@ -78,52 +71,70 @@ except NameError:
     raw_input = input  # Python 3
 
 
-def start(args):
+def start(args, userin):
 
     if args["server"]:
-        api.Run(nlp, userin, args["server"], args["port"])
+        import dragonfire.api as api  # API of Dragonfire
+        import tweepy  # An easy-to-use Python library for accessing the Twitter API
+        from tweepy import OAuthHandler
+        from tweepy import Stream
+        from dragonfire.tweepy import MentionListener
+
         if Config.TWITTER_CONSUMER_KEY != 'CONSUMER_KEY':
             auth = OAuthHandler(Config.TWITTER_CONSUMER_KEY, Config.TWITTER_CONSUMER_SECRET)
             auth.set_access_token(Config.TWITTER_ACCESS_KEY, Config.TWITTER_ACCESS_SECRET)
             userin.twitter_api = tweepy.API(auth)
 
             print("Listening Twitter mentions...")
-            l = MentionListener(args)
+            l = MentionListener(args, userin)
             stream = Stream(auth, l)
             stream.filter(track=['DragonfireAI'], async=True)
-    elif args["cli"]:
-        while (True):
-            com = raw_input("Enter your command: ")
-            thread.start_new_thread(VirtualAssistant.command, (com, args))
-            time.sleep(0.5)
-    elif args["gspeech"]:
-        from dragonfire.sr.gspeech import GspeechRecognizer
-        recognizer = GspeechRecognizer()
-        recognizer.recognize(args)
+        api.Run(nlp, userin, args["server"], args["port"])
     else:
-        from dragonfire.sr.deepspeech import DeepSpeechRecognizer
-        recognizer = DeepSpeechRecognizer()
-        recognizer.recognize(args)
+        global user_full_name
+        global user_prefix
+        if args["cli"]:
+            her = VirtualAssistant(args, userin, user_full_name, user_prefix)
+            while (True):
+                com = raw_input("Enter your command: ")
+                thread.start_new_thread(her.command, (com,))
+                time.sleep(0.5)
+        elif args["gspeech"]:
+            from dragonfire.sr.gspeech import GspeechRecognizer
+
+            recognizer = GspeechRecognizer()
+            recognizer.recognize(args, userin, user_full_name, user_prefix)
+        else:
+            from dragonfire.sr.deepspeech import DeepSpeechRecognizer
+
+            recognizer = DeepSpeechRecognizer()
+            recognizer.recognize(args, userin, user_full_name, user_prefix)
 
 
 class VirtualAssistant():
 
-    @staticmethod
-    def command(com, args, tw_user=None):
+    def __init__(self, args, userin, user_full_name="John Doe", user_prefix="sir", tw_user=None):
+        self.args = args
+        self.userin = userin
+        self.user_full_name = user_full_name
+        self.user_prefix = user_prefix
+        self.userin.twitter_user = tw_user
 
-        global e
-        if (e.is_set()):  # System Tray Icon exit must trigger this
-            exit(0)
+    def command(self, com):
+
+        if not self.args["server"]:
+            global inactive
+            global config_file
+            global e
+            if (e.is_set()):  # System Tray Icon exit must trigger this
+                exit(0)
+        args = self.args
+        userin = self.userin
+        user_full_name = self.user_full_name
+        user_prefix = self.user_prefix
 
         if not com.strip() or not isinstance(com, str):
             return False
-
-        global inactive
-        global user_full_name
-        global user_prefix
-        global config_file
-
-        userin.twitter_user = tw_user
 
         print("You: " + com.upper())
         doc = nlp(com)
@@ -512,44 +523,11 @@ class VirtualAssistant():
                         userin.say(dc_response)
 
 
-class MentionListener(StreamListener):
-    """ A listener handles tweets that are received from the stream.
-    This is a basic listener that just prints received tweets to stdout.
-
-    """
-
-    def __init__(self, args):
-        self.args = args
-
-    def on_data(self, data):
-        global user_full_name
-        global user_prefix
-
-        mention = json.loads(data)
-        # print(json.dumps(mention, indent=4, sort_keys=True))
-        if 'retweeted_status' not in mention:
-            tw_text = mention['text']
-            tw_user = mention['user']['screen_name']
-            if tw_user == "DragonfireAI":
-                return True
-            user_full_name = mention['user']['name']
-            user_prefix = mention['user']['name'].split()[0]
-            print("\n@" + tw_user + " said:")
-            print(tw_text)
-            tw_text = tw_text.replace("@DragonfireAI", "")
-            tw_text = re.sub(r'([^\s\w\?]|_)+', '', tw_text).strip()
-            thread.start_new_thread(VirtualAssistant.command, (tw_text, self.args, tw_user))
-        return True
-
-    def on_error(self, status):
-        print(status)
-
-
 def tts_kill():
     subprocess.call(["pkill", "flite"], stdout=FNULL, stderr=FNULL)
 
 
-def dragon_greet():
+def dragon_greet(userin):
     print("_______________________________________________________________\n")
     time = datetime.datetime.now().time()
 
@@ -620,20 +598,19 @@ def initiate():
         import pkg_resources
         print(pkg_resources.get_distribution("dragonfire").version)
         sys.exit(1)
-    global userin
-    userin = TTA(args)
     try:
         global inactive
         global dc
         inactive = False
+        userin = TTA(args)
         if not args["server"]:
             dc = DeepConversation()
             inactive = True
             SystemTrayExitListenerSet(e)
             stray_proc = Process(target=SystemTrayInit)
             stray_proc.start()
-            dragon_greet()
-        start(args)
+            dragon_greet(userin)
+        start(args, userin)
     except KeyboardInterrupt:
         if not args["server"]:
             stray_proc.terminate()

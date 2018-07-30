@@ -37,7 +37,7 @@ class DeepSpeechRecognizer():
     def reset(self):
         self.__class__.finished = False
 
-    def recognize(self, args):
+    def recognize(self, args, userin, user_full_name, user_prefix):
 
         with noalsaerr():
             p = pyaudio.PyAudio()  # Create a PyAudio session
@@ -84,8 +84,8 @@ class DeepSpeechRecognizer():
                     com = SpeechServerMain.ds.stt(audio, RATE)
                     stream.start_stream()
                     # print(com)
-                    t = Thread(
-                        target=VirtualAssistant.command, args=(com, args))
+                    her = VirtualAssistant(args, userin, user_full_name, user_prefix)
+                    t = Thread(target=her.command, args=(com,))
                     t.start()
                     self.reset()
 
