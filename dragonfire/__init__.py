@@ -31,7 +31,7 @@ from dragonfire.learn import Learner  # Submodule of Dragonfire that forms her l
 from dragonfire.nlplib import Classifier, Helper  # Submodule of Dragonfire to handle extra NLP tasks
 from dragonfire.omniscient import Engine  # Submodule of Dragonfire that serves as a Question Answering Engine
 from dragonfire.stray import SystemTrayExitListenerSet, SystemTrayInit  # Submodule of Dragonfire for System Tray Icon related functionalities
-from dragonfire.utilities import TTA  # Submodule of Dragonfire to provide various utilities
+from dragonfire.utilities import TextToAction  # Submodule of Dragonfire to provide various utilities
 from dragonfire.arithmetic import arithmetic_parse  # Submodule of Dragonfire to analyze arithmetic expressions
 from dragonfire.conversational import DeepConversation  # Submodule of Dragonfire to answer questions directly using an Artificial Neural Network
 from dragonfire.config import Config  # Submodule of Dragonfire to store configurations
@@ -603,7 +603,7 @@ def initiate():
         global inactive
         global dc
         inactive = False
-        userin = TTA(args)
+        userin = TextToAction(args)
         if not args["server"]:
             dc = DeepConversation()
             inactive = True

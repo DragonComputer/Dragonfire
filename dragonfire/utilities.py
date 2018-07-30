@@ -1,7 +1,5 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
-
-from __future__ import absolute_import, print_function
 
 import inspect
 import os
@@ -27,7 +25,7 @@ TWITTER_CHAR_LIMIT = 280
 songRunning = False
 
 
-class TTA:
+class TextToAction:
     def __init__(self, args):
         self.headless = args["headless"]
         self.silent = args["silent"]
@@ -141,5 +139,5 @@ class TTA:
 
 
 if __name__ == "__main__":
-    userin = TTA()
+    userin = TextToAction()
     userin.say("Hello world!")
