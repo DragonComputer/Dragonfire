@@ -310,11 +310,12 @@ class VirtualAssistant():
                 if token.pos_ == "NOUN":
                     title += ' ' + token.text
             title = title.strip()
-            callme_config = config_file.search(Query().datatype == 'callme')
-            if callme_config:
-                config_file.update({'title': title}, Query().datatype == 'callme')
-            else:
-                config_file.insert({'datatype': 'callme', 'title': title})
+            if not args["server"]:
+                callme_config = config_file.search(Query().datatype == 'callme')
+                if callme_config:
+                    config_file.update({'title': title}, Query().datatype == 'callme')
+                else:
+                    config_file.insert({'datatype': 'callme', 'title': title})
             user_prefix = title
             userin.say("OK, " + user_prefix + ".")
             return True
@@ -335,7 +336,7 @@ class VirtualAssistant():
                 userin.execute([" "], msg)
                 userin.say(msg)
                 return True
-        if h.check_nth_lemma(0, "keyboard") or h.check_nth_lemma(0, "type"):
+        if (h.check_nth_lemma(0, "keyboard") or h.check_nth_lemma(0, "type")) and not args["server"]:
             n = len(doc[0].text) + 1
             with nostdout():
                 with nostderr():
@@ -344,44 +345,44 @@ class VirtualAssistant():
                         k.tap_key(character)
                     k.tap_key(" ")
             return True
-        if h.directly_equal(["enter"]) or (h.check_adj_lemma("new") or h.check_noun_lemma("line")):
+        if (h.directly_equal(["enter"]) or (h.check_adj_lemma("new") or h.check_noun_lemma("line"))) and not args["server"]:
             with nostdout():
                 with nostderr():
                     k = PyKeyboard()
                     k.tap_key(k.enter_key)
             return True
-        if h.check_adj_lemma("new") and h.check_noun_lemma("tab"):
+        if h.check_adj_lemma("new") and h.check_noun_lemma("tab") and not args["server"]:
             with nostdout():
                 with nostderr():
                     k = PyKeyboard()
                     k.press_keys([k.control_l_key, 't'])
             return True
-        if h.check_verb_lemma("switch") and h.check_noun_lemma("tab"):
+        if h.check_verb_lemma("switch") and h.check_noun_lemma("tab") and not args["server"]:
             with nostdout():
                 with nostderr():
                     k = PyKeyboard()
                     k.press_keys([k.control_l_key, k.tab_key])
             return True
-        if h.directly_equal(["CLOSE", "ESCAPE"]):
+        if h.directly_equal(["CLOSE", "ESCAPE"]) and not args["server"]:
             with nostdout():
                 with nostderr():
                     k = PyKeyboard()
                     k.press_keys([k.control_l_key, 'w'])
                     k.tap_key(k.escape_key)
             return True
-        if h.check_lemma("back") and h.max_word_count(4):
+        if h.check_lemma("back") and h.max_word_count(4) and not args["server"]:
             with nostdout():
                 with nostderr():
                     k = PyKeyboard()
                     k.press_keys([k.alt_l_key, k.left_key])
             return True
-        if h.check_lemma("forward") and h.max_word_count(4):
+        if h.check_lemma("forward") and h.max_word_count(4) and not args["server"]:
             with nostdout():
                 with nostderr():
                     k = PyKeyboard()
                     k.press_keys([k.alt_l_key, k.right_key])
             return True
-        if h.check_text("swipe") or h.check_text("scroll"):
+        if (h.check_text("swipe") or h.check_text("scroll")) and not args["server"]:
             if h.check_text("left"):
                 with nostdout():
                     with nostderr():
@@ -406,19 +407,20 @@ class VirtualAssistant():
                         m = PyMouse()
                         m.scroll(-5, 0)
                 return True
-        if h.directly_equal(["PLAY", "PAUSE", "SPACEBAR"]):
+        if h.directly_equal(["PLAY", "PAUSE", "SPACEBAR"]) and not args["server"]:
             with nostdout():
                 with nostderr():
                     k = PyKeyboard()
                     k.tap_key(" ")
             return True
-        if ((h.check_text("shut") and h.check_text("down")) or (h.check_text("power") and h.check_text("off"))) and h.check_text("computer"):
+        if ((h.check_text("shut") and h.check_text("down")) or (h.check_text("power") and h.check_text("off"))) and h.check_text("computer") and not args["server"]:
             userin.execute(["sudo", "poweroff"], "Shutting down", True, 3)
             return True
         if h.check_nth_lemma(0, "goodbye") or h.check_nth_lemma(0, "bye") or (h.check_verb_lemma("see") and h.check_noun_lemma("you") and h.check_noun_lemma("later")):
             userin.say("Goodbye, " + user_prefix)
-            # raise KeyboardInterrupt
-            thread.interrupt_main()
+            if not args["server"]:
+                # raise KeyboardInterrupt
+                thread.interrupt_main()
             return True
         if (h.check_lemma("search") or h.check_lemma("find")) and h.check_lemma("wikipedia"):
             with nostderr():
@@ -478,13 +480,14 @@ class VirtualAssistant():
                         else:
                             youtube_title = "No video found, " + user_prefix + "."
                             userin.say(youtube_title)
-                        time.sleep(5)
-                        k = PyKeyboard()
-                        k.tap_key(k.tab_key)
-                        k.tap_key(k.tab_key)
-                        k.tap_key(k.tab_key)
-                        k.tap_key(k.tab_key)
-                        k.tap_key('f')
+                        if not args["server"]:
+                            time.sleep(5)
+                            k = PyKeyboard()
+                            k.tap_key(k.tab_key)
+                            k.tap_key(k.tab_key)
+                            k.tap_key(k.tab_key)
+                            k.tap_key(k.tab_key)
+                            k.tap_key('f')
                         return True
         if (h.check_lemma("search") or h.check_lemma("find")) and (h.check_lemma("google") or h.check_lemma("web") or h.check_lemma("internet")) and not h.check_lemma("image"):
             with nostdout():
