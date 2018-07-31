@@ -1,4 +1,6 @@
-from __future__ import print_function
+#!/usr/bin/python3
+# -*- coding: utf-8 -*-
+
 import collections  # Imported to support ordered dictionaries in Python
 from tinydb import TinyDB, Query  # TinyDB is a lightweight document oriented database
 from os.path import expanduser  # Imported to get the home directory

@@ -1,3 +1,6 @@
+#!/usr/bin/python3
+# -*- coding: utf-8 -*-
+
 try:
     import thread  # Low-level threading API
 except ImportError:

@@ -1,4 +1,6 @@
-from __future__ import print_function
+#!/usr/bin/python3
+# -*- coding: utf-8 -*-
+
 import hug
 from hug_middleware_cors import CORSMiddleware
 import waitress

@@ -1,3 +1,6 @@
+#!/usr/bin/python3
+# -*- coding: utf-8 -*-
+
 def text2int(textnum, numwords={}):
     if not numwords:
         units = [

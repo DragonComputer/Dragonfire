@@ -1,3 +1,6 @@
+#!/usr/bin/python3
+# -*- coding: utf-8 -*-
+
 class Config():
     # Twitter Credentials
     TWITTER_CONSUMER_KEY = 'CONSUMER_KEY'

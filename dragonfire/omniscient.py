@@ -1,4 +1,5 @@
-from __future__ import print_function
+#!/usr/bin/python3
+# -*- coding: utf-8 -*-
 
 import collections  # Imported to support ordered dictionaries in Python
 import contextlib
