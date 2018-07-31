@@ -102,7 +102,7 @@ class Omniscient():
                     sentence = self.nlp(sentence)  # parse the sentence using spaCy NLP library
                     for ent in sentence.ents:  # iterate over the all entities in the sentence (has been found by spaCy)
                         all_entities.append(ent.text)  # append the entity to all_entities
-                        mention[ent. text] = 0.0  # the value if focus not even defined or the focus is NOT even mentioned
+                        mention[ent.text] = 0.0  # the value if focus not even defined or the focus is NOT even mentioned
                         for wh in wh_question:  # iterate over the all wh questions have been found in the Command(user's speech)
                             if wh.upper() in self.entity_map:  # if the wh question is defined in entity_map (on top) then
                                 target_entities = self.entity_map[wh.upper()]  # get the target entities from the entity_map
@@ -114,7 +114,7 @@ class Omniscient():
                                     findings.append(ent.text)  # WE FOUND! a possible entity so append the text to findings
                                     if focus:  # if focus is defined then
                                         if focus in sentence.text:  # if focus is in the sentence then
-                                            mention[ent. text] += 1.0 * sentence.text.count(focus)  # assign the how many times the entity mentioned in the sentence
+                                            mention[ent.text] += 1.0 * sentence.text.count(focus)  # assign the how many times the entity mentioned in the sentence
 
             if findings:  # if there is a finding or there are findings then
 
