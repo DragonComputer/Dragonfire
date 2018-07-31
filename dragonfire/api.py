@@ -108,12 +108,9 @@ def sentence_segmenter(text):
     return data
 
 
+# All-in-One NLP
 @hug.post('/cmd', requires=token_authentication)
 def cmd(text):
-    return json.dumps(all_in_one(text), indent=4)
-
-
-def all_in_one(text):
     data = []
     sents = sentence_segmenter(text)
     for sent in sents:
@@ -122,7 +119,7 @@ def all_in_one(text):
         sent_data['deps'] = dependency_parser(sent)
         sent_data['ners'] = entity_recognizer(sent)
         data.append(sent_data)
-    return data
+    return json.dumps(data, indent=4)
 
 # Natural Language Processing realted API endpoints END
 
@@ -156,6 +153,19 @@ def omni(text, gender_prefix):
 @hug.post('/deep', requires=token_authentication)
 def deep(text, gender_prefix):
     answer = dc.respond(text, user_prefix=gender_prefix)
+    return json.dumps(answer, indent=4)
+
+
+# All-in-One Answering
+@hug.post('/answer', requires=token_authentication)
+def answer(text, gender_prefix, user_id):
+    answer = arithmetic_parse(text)
+    if not answer:
+        answer = learner.respond(text, is_server=True, user_id=user_id)
+        if not answer:
+            answer = omniscient.respond(text, userin=userin, user_prefix=gender_prefix, is_server=True)
+            if not answer:
+                answer = dc.respond(text, user_prefix=gender_prefix)
     return json.dumps(answer, indent=4)
 
 # Directly on server-side Q&A related API endpoints END
