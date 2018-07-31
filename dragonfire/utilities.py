@@ -11,6 +11,13 @@ from random import randint
 
 import realhud
 
+import contextlib  # Utilities for with-statement contexts
+try:
+    import cStringIO  # Read and write strings as files
+except ImportError:
+    import io as cStringIO  # Read and write strings as files
+import sys  # System-specific parameters and functions
+
 from tweepy.error import TweepError
 import metadata_parser
 import urllib.request
@@ -134,6 +141,22 @@ class TextToAction:
 
     def espeak(self, message):
         subprocess.Popen(["espeak", "-v", "en-uk-north", message])
+
+
+@contextlib.contextmanager
+def nostdout():
+    save_stdout = sys.stdout
+    sys.stdout = cStringIO.StringIO()
+    yield
+    sys.stdout = save_stdout
+
+
+@contextlib.contextmanager
+def nostderr():
+    save_stderr = sys.stderr
+    sys.stderr = cStringIO.StringIO()
+    yield
+    sys.stderr = save_stderr
 
 
 if __name__ == "__main__":

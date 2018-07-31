@@ -2,15 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import collections  # Imported to support ordered dictionaries in Python
-import contextlib
-
-try:
-    import cStringIO
-except ImportError:
-    import io as cStringIO
-
 import random
-import sys
 
 import requests.exceptions
 
@@ -18,6 +10,7 @@ import wikipedia  # Provides and API-like functionality to search and access Wik
 import wikipedia.exceptions
 from nltk.corpus import wordnet as wn  # WordNet
 from nltk.corpus.reader.wordnet import WordNetError
+from dragonfire.utilities import nostderr
 
 
 class Engine():
@@ -291,22 +284,6 @@ class Engine():
             return None, None, None, None
 
         return the_subject, subjects, focus, subject_with_objects
-
-
-@contextlib.contextmanager
-def nostdout():
-    save_stdout = sys.stdout
-    sys.stdout = cStringIO.StringIO()
-    yield
-    sys.stdout = save_stdout
-
-
-@contextlib.contextmanager
-def nostderr():
-    save_stderr = sys.stderr
-    sys.stderr = cStringIO.StringIO()
-    yield
-    sys.stderr = save_stderr
 
 
 if __name__ == "__main__":

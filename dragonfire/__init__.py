@@ -2,13 +2,6 @@
 # -*- coding: utf-8 -*-
 
 import argparse  # Parser for command-line options, arguments and sub-commands
-import contextlib  # Utilities for with-statement contexts
-
-try:
-    import cStringIO  # Read and write strings as files
-except ImportError:
-    import io as cStringIO  # Read and write strings as files
-
 import datetime  # Basic date and time types
 import inspect  # Inspect live objects
 import os  # Miscellaneous operating system interfaces
@@ -32,7 +25,7 @@ from dragonfire.learn import Learner  # Submodule of Dragonfire that forms her l
 from dragonfire.nlplib import Classifier, Helper  # Submodule of Dragonfire to handle extra NLP tasks
 from dragonfire.omniscient import Engine  # Submodule of Dragonfire that serves as a Question Answering Engine
 from dragonfire.stray import SystemTrayExitListenerSet, SystemTrayInit  # Submodule of Dragonfire for System Tray Icon related functionalities
-from dragonfire.utilities import TextToAction  # Submodule of Dragonfire to provide various utilities
+from dragonfire.utilities import TextToAction, nostdout, nostderr  # Submodule of Dragonfire to provide various utilities
 from dragonfire.arithmetic import arithmetic_parse  # Submodule of Dragonfire to analyze arithmetic expressions
 from dragonfire.conversational import DeepConversation  # Submodule of Dragonfire to answer questions directly using an Artificial Neural Network
 from dragonfire.config import Config  # Submodule of Dragonfire to store configurations
@@ -569,22 +562,6 @@ def greet(userin):
 def speech_error():
     userin.execute(["echo"], "An error occurred")
     userin.say("I couldn't understand, please repeat again.")
-
-
-@contextlib.contextmanager
-def nostdout():
-    save_stdout = sys.stdout
-    sys.stdout = cStringIO.StringIO()
-    yield
-    sys.stdout = save_stdout
-
-
-@contextlib.contextmanager
-def nostderr():
-    save_stderr = sys.stderr
-    sys.stderr = cStringIO.StringIO()
-    yield
-    sys.stderr = save_stderr
 
 
 def initiate():
