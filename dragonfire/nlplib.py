@@ -1,10 +1,11 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 
-import nltk
-from nltk.corpus import names
-from nltk.corpus import brown
-import random
+from random import shuffle  # Generate pseudo-random numbers
+
+import nltk  # Natural Language Toolkit
+from nltk.corpus import names  # The Names Corpus
+from nltk.corpus import brown  # The Brown Corpus
 
 
 class Classifier():
@@ -20,7 +21,7 @@ class Classifier():
         labeled_names = ([(name, 'male') for name in names.words('male.txt')] +
                          [(name, 'female')
                           for name in names.words('female.txt')])
-        random.shuffle(labeled_names)
+        shuffle(labeled_names)
         featuresets = [(Classifier.gender_features(n), gender)
                        for (n, gender) in labeled_names]
         train_set = featuresets[500:]

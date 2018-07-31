@@ -1,8 +1,7 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 
-import sys
-import os
+import os  # Miscellaneous operating system interfaces
 
 TRAY_TOOLTIP = 'System Tray Icon'
 TRAY_ICON = '/usr/share/icons/hicolor/48x48/apps/dragonfire_icon.png'

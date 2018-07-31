@@ -2,15 +2,15 @@
 # -*- coding: utf-8 -*-
 
 import collections  # Imported to support ordered dictionaries in Python
-import random
+from random import uniform  # Generate pseudo-random numbers
 
-import requests.exceptions
+from dragonfire.utilities import nostderr  # With statement to suppress errors
 
+import requests.exceptions  # HTTP for Humans
 import wikipedia  # Provides and API-like functionality to search and access Wikipedia data
-import wikipedia.exceptions
-from nltk.corpus import wordnet as wn  # WordNet
-from nltk.corpus.reader.wordnet import WordNetError
-from dragonfire.utilities import nostderr
+import wikipedia.exceptions  # Exceptions of wikipedia library
+from nltk.corpus import wordnet as wn  # The WordNet corpus
+from nltk.corpus.reader.wordnet import WordNetError  # To catch the errors
 
 
 class Omniscient():
@@ -210,9 +210,9 @@ class Omniscient():
 
     # this function is only for TESTING purposes. It randomzes the coefficients so that we are able optimize the values
     def randomize_coefficients(self):
-        coeff1 = round(random.uniform(0.00, 0.98), 2)
-        coeff2 = round(random.uniform(0.00, (1 - coeff1)), 2)
-        coeff3 = round(random.uniform(0.00, (1 - (coeff1 + coeff2))), 2)
+        coeff1 = round(uniform(0.00, 0.98), 2)
+        coeff2 = round(uniform(0.00, (1 - coeff1)), 2)
+        coeff3 = round(uniform(0.00, (1 - (coeff1 + coeff2))), 2)
         coeff4 = 1 - (coeff1 + coeff2 + coeff3)
         self.coefficient = {'frequency': coeff1, 'precedence': coeff2, 'proximity': coeff3, 'mention': coeff4}
 

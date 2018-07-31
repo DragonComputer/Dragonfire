@@ -8,12 +8,10 @@ import os  # Miscellaneous operating system interfaces
 import re  # Regular expression operations
 import subprocess  # Subprocess managements
 import sys  # System-specific parameters and functions
-
 try:
-    import thread  # Low-level threading API
+    import thread  # Low-level threading API (Python 2.7)
 except ImportError:
-    import _thread as thread  # Low-level threading API
-
+    import _thread as thread  # Low-level threading API (Python 3.x)
 import time  # Time access and conversions
 import uuid  # UUID objects according to RFC 4122
 from multiprocessing import Event, Process  # Process-based “threading” interface

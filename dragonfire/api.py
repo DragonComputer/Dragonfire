@@ -1,18 +1,18 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 
-import hug
-from hug_middleware_cors import CORSMiddleware
-import waitress
-from threading import Thread
-import json
-from dragonfire.config import Config
-from dragonfire.arithmetic import arithmetic_parse
-import wikipedia as wikipedia_lib
-import re
-import youtube_dl
-import pymysql
-import random
+import hug  # Embrace the APIs of the future
+from hug_middleware_cors import CORSMiddleware  # Middleware for allowing CORS (cross-origin resource sharing) requests from hug servers
+import waitress  # A production-quality pure-Python WSGI server with very acceptable performance
+from threading import Thread  # Thread-based parallelism
+import json  # JSON encoder and decoder
+from dragonfire.config import Config  # Credentials for the database connection
+from dragonfire.arithmetic import arithmetic_parse  # Submodule of Dragonfire to analyze arithmetic expressions
+import wikipedia as wikipedia_lib  # Python library that makes it easy to access and parse data from Wikipedia
+import re  # Regular expression operations
+import youtube_dl  # Command-line program to download videos from YouTube.com and other video sites
+import pymysql  # Pure Python MySQL Client
+from random import choice  # Generate pseudo-random numbers
 
 
 @hug.authentication.token
@@ -243,7 +243,7 @@ def notification(user_id, location, gender_prefix):
 
         cursor.execute(sql2)
         results = cursor.fetchall()
-        row = random.choice(results)
+        row = choice(results)
         if row["capitalize"] == 1:
             gender_prefix = gender_prefix.capitalize()
         url = row["url"]

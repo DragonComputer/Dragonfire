@@ -4,8 +4,8 @@
 import collections  # Imported to support ordered dictionaries in Python
 from tinydb import TinyDB, Query  # TinyDB is a lightweight document oriented database
 from os.path import expanduser  # Imported to get the home directory
-from dragonfire.config import Config
-import pymysql
+from dragonfire.config import Config  # Credentials for the database connection
+import pymysql  # Pure Python MySQL Client
 
 
 class Learner():

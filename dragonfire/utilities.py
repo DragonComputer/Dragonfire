@@ -1,32 +1,30 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 
-import inspect
-import os
-import subprocess
-import time
-from multiprocessing import Pool
-from sys import stdout
-from random import randint
-
-import realhud
-
+import inspect  # Inspect live objects
+import os  # Miscellaneous operating system interfaces
+import subprocess  # Subprocess managements
+import time  # Time access and conversions
+from multiprocessing import Pool  # Process-based “threading” interface
+from sys import stdout  # System-specific parameters and functions
+from random import randint  # Generate pseudo-random numbers
 import contextlib  # Utilities for with-statement contexts
 try:
-    import cStringIO  # Read and write strings as files
+    import cStringIO  # Read and write strings as files (Python 2.7)
 except ImportError:
-    import io as cStringIO  # Read and write strings as files
+    import io as cStringIO  # Read and write strings as files (Python 3.x)
 import sys  # System-specific parameters and functions
 
-from tweepy.error import TweepError
-import metadata_parser
-import urllib.request
-import mimetypes
-import uuid
-import shutil
+import realhud  # Dragonfire's Python C extension to display a click-through, transparent background images or GIFs
 
-DRAGONFIRE_PATH = os.path.dirname(
-    os.path.abspath(inspect.getfile(inspect.currentframe())))
+from tweepy.error import TweepError  # An easy-to-use Python library for accessing the Twitter API
+import metadata_parser  # Python library for pulling metadata out of web documents
+import urllib.request  # URL handling modules
+import mimetypes  # Map filenames to MIME types
+import uuid  # UUID objects according to RFC 4122
+import shutil  # High-level file operations
+
+DRAGONFIRE_PATH = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 FNULL = open(os.devnull, 'w')
 TWITTER_CHAR_LIMIT = 280
 
