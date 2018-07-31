@@ -23,7 +23,7 @@ import shutil  # High-level file operations
 
 from dragonfire.learn import Learner  # Submodule of Dragonfire that forms her learning ability
 from dragonfire.nlplib import Classifier, Helper  # Submodule of Dragonfire to handle extra NLP tasks
-from dragonfire.omniscient import Engine  # Submodule of Dragonfire that serves as a Question Answering Engine
+from dragonfire.omniscient import Omniscient  # Submodule of Dragonfire that serves as a Question Answering Engine
 from dragonfire.stray import SystemTrayExitListenerSet, SystemTrayInit  # Submodule of Dragonfire for System Tray Icon related functionalities
 from dragonfire.utilities import TextToAction, nostdout, nostderr  # Submodule of Dragonfire to provide various utilities
 from dragonfire.arithmetic import arithmetic_parse  # Submodule of Dragonfire to analyze arithmetic expressions
@@ -48,7 +48,7 @@ CONVERSATION_ID = uuid.uuid4()
 userin = None
 nlp = spacy.load('en')  # Load en_core_web_sm, English, 50 MB, default model
 learner = Learner(nlp)
-omniscient = Engine(nlp)
+omniscient = Omniscient(nlp)
 dc = DeepConversation()
 e = Event()
 
@@ -72,7 +72,7 @@ def start(args, userin):
         import tweepy  # An easy-to-use Python library for accessing the Twitter API
         from tweepy import OAuthHandler
         from tweepy import Stream
-        from dragonfire.tweepy import MentionListener
+        from dragonfire.twitter import MentionListener
 
         if Config.TWITTER_CONSUMER_KEY != 'CONSUMER_KEY':
             auth = OAuthHandler(Config.TWITTER_CONSUMER_KEY, Config.TWITTER_CONSUMER_SECRET)
