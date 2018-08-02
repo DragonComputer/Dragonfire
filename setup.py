@@ -19,6 +19,13 @@ here = path.abspath(path.dirname(__file__))
 
 
 def pkgconfig(*packages):
+    """Method to prepare the configuration for compiling the `realhud` Python C extension
+    of Dragonfire by querying installed libraries.
+
+    Kwargs:
+        packages: C libraries
+    """
+
     flags = {
         '-D': 'define_macros',
         '-I': 'include_dirs',

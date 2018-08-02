@@ -1,6 +1,14 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 
+"""
+.. module:: nlplib
+    :platform: Unix
+    :synopsis: the top-level submodule of Dragonfire that contains the classes to provide an extra layer of abstraction to the NLP libraries that are used by Dragonfire.
+
+.. moduleauthor:: Mehmet Mert Yıldıran <mert.yildiran@bil.omu.edu.tr>
+"""
+
 from random import shuffle  # Generate pseudo-random numbers
 
 import nltk  # Natural Language Toolkit
@@ -9,6 +17,9 @@ from nltk.corpus import brown  # The Brown Corpus
 
 
 class Classifier():
+    """Class to provide static classification methods for various NLP tasks.
+    """
+
     @staticmethod
     def gender_features(word):
         if not word:
@@ -18,6 +29,24 @@ class Classifier():
 
     @staticmethod
     def gender(word):
+        """Method to determine the gender of given word by comparing it to name dictionaries.
+
+        Args:
+            word (str):  Word. (usually a name)
+
+        Kwargs:
+            is_server (bool):   Is Dragonfire running as an API server?
+            user_id (int):      User's ID.
+
+        Returns:
+            str.
+
+        .. note::
+
+            This method is a very naive and not very useful. So it will be deprecated in the future.
+
+        """
+
         labeled_names = ([(name, 'male') for name in names.words('male.txt')] +
                          [(name, 'female')
                           for name in names.words('female.txt')])
@@ -63,16 +92,43 @@ cfg["JJ+NN"] = "NNI"
 
 
 class TopicExtractor(object):
+    """Class to provide methods to extrac the topic from given sentence using NLTK library.
+    """
+
     def __init__(self, sentence):
+        """Initialization method of :class:`TopicExtractor` class.
+
+        Args:
+            sentence (str):  A sentence.
+        """
+
         self.sentence = sentence
 
-    # Split the sentence into singlw words/tokens
     def tokenize_sentence(self, sentence):
+        """Tokenize the given sentence.
+
+        Split the sentence into single words/tokens.
+
+        Args:
+            sentence (str):  A sentence.
+
+        Returns:
+            List of :str:.
+        """
+
         tokens = nltk.word_tokenize(sentence)
         return tokens
 
-    # Normalize brown corpus' tags ("NN", "NN-PL", "NNS" > "NN")
     def normalize_tags(self, tagged):
+        """Normalize brown corpus' tags ("NN", "NN-PL", "NNS" > "NN").
+
+        Args:
+            tagged (List of :str:):  Tagged words.
+
+        Returns:
+            List of :str:.
+        """
+
         n_tagged = []
         for t in tagged:
             if t[1] in ("NP-TL", "NP"):
@@ -87,8 +143,12 @@ class TopicExtractor(object):
             n_tagged.append((t[0], t[1]))
         return n_tagged
 
-    # Extract the main topics from the sentence
     def extract(self):
+        """Extract the main topics from the sentence.
+
+        Returns:
+            List of :str:.
+        """
 
         tokens = self.tokenize_sentence(self.sentence)
         tags = self.normalize_tags(bigram_tagger.tag(tokens))
@@ -119,71 +179,185 @@ class TopicExtractor(object):
 
 
 class Helper():
+    """Class to provide an extra layer of abstraction to the :mod:`spacy` NLP library.
+    """
 
     def __init__(self, doc):
+        """Initialization method of :class:`Helper` class.
+
+        Args:
+            doc:  Doc instance from spaCy NLP library. Pre-parsed version of user's input/command.
+        """
+
         self.doc = doc
 
     def directly_equal(self, words):
+        """Method to check if user's input is directly equal to one of these words.
+
+        Args:
+            words (List of :str:):  Words.
+
+        Returns:
+            bool.
+        """
+
         for word in words:
             if self.doc[0].lemma_ == word and len(self.doc) == 1:
                 return True
         return False
 
     def check_nth_lemma(self, n, word):
+        """Method to check if nth lemma is equal to given word.
+
+        Args:
+            n (int):        nth lemma.
+            word (str):     Word.
+
+        Returns:
+            bool.
+        """
+
         return self.doc[n].lemma_ == word
 
     def check_verb_lemma(self, verb):
+        """Method to check if there is a verb with given lemma.
+
+        Args:
+            verb (str):  Verb lemma.
+
+        Returns:
+            bool.
+        """
+
         for token in self.doc:
             if token.pos_ == "VERB" and token.lemma_ == verb:
                 return True
         return False
 
     def check_wh_lemma(self, wh):
+        """Method to check if there is a WH- word with given lemma.
+
+        Args:
+            wh (str):  WH- word lemma.
+
+        Returns:
+            bool.
+        """
+
         for token in self.doc:
             if token.tag_ in ['WDT', 'WP', 'WP$', 'WRB'] and token.lemma_ == wh:
                 return True
         return False
 
     def check_deps_contains(self, phrase):
+        """Method to check if the user's input/command contains this phrase.
+
+        Args:
+            phrase (str):  Noun phrase.
+
+        Returns:
+            bool.
+        """
+
         for chunk in self.doc.noun_chunks:
             if chunk.text == phrase:
                 return True
         return False
 
     def check_only_dep_is(self, phrase):
+        """Method to check if this is the only phrase user's input/command has.
+
+        Args:
+            phrase (str):  Noun phrase.
+
+        Returns:
+            bool.
+        """
+
         return len(self.doc.noun_chunks) == 1 and self.doc.noun_chunks[0].text == phrase
 
     def check_noun_lemma(self, noun):
+        """Method to check if there is a verb noun given lemma.
+
+        Args:
+            noun (str):  Noun lemma.
+
+        Returns:
+            bool.
+        """
+
         for token in self.doc:
             if (token.pos_ == "NOUN" or token.pos_ == "PROPN") and token.lemma_ == noun:
                 return True
         return False
 
     def check_adj_lemma(self, adj):
+        """Method to check if there is an adjective with given lemma.
+
+        Args:
+            adj (str):  Adjective lemma.
+
+        Returns:
+            bool.
+        """
+
         for token in self.doc:
             if token.pos_ == "ADJ" and token.lemma_ == adj:
                 return True
         return False
 
     def check_lemma(self, lemma):
+        """Method to check if there is a word with given lemma.
+
+        Args:
+            lemma (str):  Lemma.
+
+        Returns:
+            bool.
+        """
+
         for token in self.doc:
             if token.lemma_ == lemma:
                 return True
         return False
 
     def check_text(self, text):
+        """Method to check if the user's input/command is directly equal to given text.
+
+        Args:
+            text (str):  Text.
+
+        Returns:
+            bool.
+        """
+
         for token in self.doc:
             if token.text.upper() == text.upper():
                 return True
         return False
 
     def is_wh_question(self):
+        """Method to check if the user's input/command a WH question.
+
+        Returns:
+            bool.
+        """
+
         for token in self.doc:
             if token.tag_ in ['WDT', 'WP', 'WP$', 'WRB']:
                 return True
         return False
 
     def max_word_count(self, n):
+        """Method to check if the word length of the user's input/command is less than or equal to given value.
+
+        Args:
+            n (int):  Number of words.
+
+        Returns:
+            bool.
+        """
+
         return len(self.doc) <= n
 
 

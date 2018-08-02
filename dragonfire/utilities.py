@@ -1,6 +1,14 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 
+"""
+.. module:: utilities
+    :platform: Unix
+    :synopsis: the top-level submodule of Dragonfire that provides various utility tools for different kind of tasks.
+
+.. moduleauthor:: Mehmet Mert Yıldıran <mert.yildiran@bil.omu.edu.tr>
+"""
+
 import inspect  # Inspect live objects
 import os  # Miscellaneous operating system interfaces
 import subprocess  # Subprocess managements
@@ -32,7 +40,16 @@ songRunning = False
 
 
 class TextToAction:
+    """Class that turns text into action.
+    """
+
     def __init__(self, args):
+        """Initialization method of :class:`TextTOAction` class.
+
+        Args:
+            args:  Command-line arguments.
+        """
+
         self.headless = args["headless"]
         self.silent = args["silent"]
         self.server = args["server"]
@@ -45,6 +62,20 @@ class TextToAction:
             realhud.load_gif(DRAGONFIRE_PATH + "/realhud/animation/avatar.gif")
 
     def execute(self, cmd="", msg="", speak=False, duration=0):
+        """Method to execute the given bash command and display a desktop environment independent notification.
+
+        Kwargs:
+            cmd (str):          Bash command.
+            msg (str):          Message to be displayed.
+            speak (bool):       Also call the :func:`say` method with this message?
+            duration (int):     Wait n seconds before executing the bash command.
+
+        .. note::
+
+            Because this method is executing bash commands directly, it should be called and modified **carefully**. Otherwise it can cause a **SECURITY BREACH** on the machine.
+
+        """
+
         self.speak = speak
 
         if self.server:
@@ -63,6 +94,29 @@ class TextToAction:
                 pass
 
     def say(self, message, dynamic=False, end=False, cmd=None):
+        """Method to give text-to-speech output(using **The Festival Speech Synthesis System**), print the response into console and **send a tweet**.
+
+        Args:
+            message (str):  Message to be read by Dragonfire or turned into a tweet.
+
+        Kwargs:
+            dynamic (bool):     Dynamically print the output into console?
+            end (bool):         Is it the end of the dynamic printing?
+            cmd (str):          Bash command.
+
+        Returns:
+            str.
+
+        .. note::
+
+            This method is extremely polymorphic so use it carefully.
+             - If you call it on `--server` mode it tweets. Otherwise it prints the reponse into console.
+             - If `--silent` option is not fed then it also gives text-to-speech output. Otherwise it remain silent.
+             - If response is more than 10000 characters it does not print.
+             - If `--headless` option is not fed then it shows a speaking female head animation on the screen using `realhud` Python C extension.
+
+        """
+
         if self.server:
             text = "@" + self.twitter_user + " " + message#.upper()
             text = (text[:TWITTER_CHAR_LIMIT]) if len(text) > TWITTER_CHAR_LIMIT else text
@@ -138,11 +192,25 @@ class TextToAction:
         #   subprocess.Popen(["rhythmbox-client","--play"])
 
     def espeak(self, message):
+        """Method to give a text-to-speech output using **eSpeak: Speech Synthesizer**.
+
+        Args:
+            message (str):  Message to be read by Dragonfire.
+
+        .. note::
+
+            This method is currently not used by Dragonfire and deprecated.
+
+        """
+
         subprocess.Popen(["espeak", "-v", "en-uk-north", message])
 
 
 @contextlib.contextmanager
 def nostdout():
+    """Method to suppress the standard output. (use it with `with` statements)
+    """
+
     save_stdout = sys.stdout
     sys.stdout = cStringIO.StringIO()
     yield
@@ -151,6 +219,8 @@ def nostdout():
 
 @contextlib.contextmanager
 def nostderr():
+    """Method to suppress the standard error. (use it with `with` statements)
+    """
     save_stderr = sys.stderr
     sys.stderr = cStringIO.StringIO()
     yield

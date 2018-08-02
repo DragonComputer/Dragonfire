@@ -1,6 +1,14 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 
+"""
+.. module:: __init__
+    :platform: Unix
+    :synopsis: the top-level module of Dragonfire that contains the entry point and handles built-in commands.
+
+.. moduleauthor:: Mehmet Mert Yıldıran <mert.yildiran@bil.omu.edu.tr>
+"""
+
 import argparse  # Parser for command-line options, arguments and sub-commands
 import datetime  # Basic date and time types
 import inspect  # Inspect live objects
@@ -64,6 +72,12 @@ except NameError:
 
 
 def start(args, userin):
+    """Function that starts the virtual assistant with the correct mode according to command-line arguments.
+
+    Args:
+        args:       Command-line arguments.
+        userin:     :class:`TextToAction` instance.
+    """
 
     if args["server"]:
         import dragonfire.api as API  # API of Dragonfire
@@ -104,8 +118,30 @@ def start(args, userin):
 
 
 class VirtualAssistant():
+    """Class to define a virtual assistant.
+
+    This class provides necessary initiations and a function named :func:`command`
+    as the entry point for each one of the user commands.
+
+    .. note::
+
+        This class is not used in the API.
+
+    """
 
     def __init__(self, args, userin, user_full_name="John Doe", user_prefix="sir", tw_user=None):
+        """Initialization method of :class:`VirtualAssistant` class.
+
+        Args:
+            args:       Command-line arguments.
+            userin:     :class:`TextToAction` instance.
+
+        Kwargs:
+            user_full_name (str):       User's full name  to answer some basic questions
+            user_prefix (str):          Prefix to address/call user when answering
+            tw_user (str):              Twitter username of the person querying DragonfireAI Twitter account with a mention
+        """
+
         self.args = args
         self.userin = userin
         self.user_full_name = user_full_name
@@ -113,6 +149,19 @@ class VirtualAssistant():
         self.userin.twitter_user = tw_user
 
     def command(self, com):
+        """Function that serves as the entry point for each one of the user commands.
+
+        This function goes through these steps for each one of user's commands, respectively:
+
+         - Search across the built-in commands via a simple if-else control flow.
+         - Try to get a response from :func:`arithmetic_parse` function.
+         - Try to get a response from :func:`respond` method of :class:`Learner` class.
+         - Try to get a answer from :func:`respond` method of :class:`Omniscient` class.
+         - Try to get a response from :func:`respond` method of :class:`DeepConversation` class.
+
+        Args:
+            com (str):  User's command.
+        """
 
         if not self.args["server"]:
             global inactive
@@ -518,10 +567,19 @@ class VirtualAssistant():
 
 
 def tts_kill():
+    """The top-level method to kill/end the text-to-speech output immediately.
+    """
+
     subprocess.call(["pkill", "flite"], stdout=FNULL, stderr=FNULL)
 
 
 def greet(userin):
+    """The top-level method to greet the user with message like "*Good morning, sir.*".
+
+    Args:
+        userin:  :class:`TextToAction` instance.
+    """
+
     (columns, lines) = shutil.get_terminal_size()
     print(columns * "_" + "\n")
     time = datetime.datetime.now().time()
@@ -558,11 +616,22 @@ def greet(userin):
 
 
 def speech_error():
+    """The top-level method to indicate that there is a speech recognition error occurred.
+    """
+
     userin.execute(["echo"], "An error occurred")
     userin.say("I couldn't understand, please repeat again.")
 
 
 def initiate():
+    """The top-level method to serve as the entry point of Dragonfire.
+
+    This method is the entry point defined in `setup.py` for the `dragonfire` executable that
+    placed a directory in `$PATH`.
+
+    This method parses the command-line arguments and handles the top-level initiations accordingly.
+    """
+
     ap = argparse.ArgumentParser()
     ap.add_argument("-c", "--cli", help="Command-line interface mode. Give commands to Dragonfire via command-line inputs (keyboard) instead of audio inputs (microphone).", action="store_true")
     ap.add_argument("-s", "--silent", help="Silent mode. Disable Text-to-Speech output. Dragonfire won't generate any audio output.", action="store_true")

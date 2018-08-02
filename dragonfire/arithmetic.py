@@ -1,7 +1,28 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 
+"""
+.. module:: arithmetic
+    :platform: Unix
+    :synopsis: the top-level submodule of Dragonfire that provides basic methods to evaluate the algebraic expressions.
+
+.. moduleauthor:: Mehmet Mert Yıldıran <mert.yildiran@bil.omu.edu.tr>
+"""
+
+
 def text2int(textnum, numwords={}):
+    """Function that converts number descriptions written in English to integer.
+
+    Args:
+        textnum (str):  Number despcription written in English.
+
+    Kwargs:
+        numwords (dict): Dictionary that maps words to numbers.
+
+    Returns:
+        int.
+    """
+
     if not numwords:
         units = [
             "zero", "one", "two", "three", "four", "five", "six", "seven", "eight",
@@ -33,6 +54,15 @@ def text2int(textnum, numwords={}):
 
 
 def arithmetic_parse(com):
+    """Method to evaluate the algebraic expressions written in English.
+
+    Args:
+        com (str):  User's command.
+
+    Returns:
+        str.
+    """
+
     if not any(e in com.upper() for e in ['+', '-', '/', '*', '^', '=', 'x', 'y', 'z', 'PLUS', 'MINUS', 'DIVIDED BY', 'MULTIPLIED BY', 'TIMES', 'TO THE POWER OF', 'EQUAL']):
         return False
     com = com.lower()

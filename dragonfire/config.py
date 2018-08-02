@@ -1,7 +1,19 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 
+"""
+.. module:: config
+    :platform: Unix
+    :synopsis: the module that contains the configuration for the API of Dragonfire.
+
+.. moduleauthor:: Mehmet Mert Yıldıran <mert.yildiran@bil.omu.edu.tr>
+"""
+
+
 class Config():
+    """Class that stores the Twitter API and MySQL database connection credentials in class variables.
+    """
+
     # Twitter Credentials
     TWITTER_CONSUMER_KEY = 'CONSUMER_KEY'
     TWITTER_CONSUMER_SECRET = 'CONSUMER_SECRET'

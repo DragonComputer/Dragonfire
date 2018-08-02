@@ -1,6 +1,14 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 
+"""
+.. module:: twitter
+    :platform: Unix
+    :synopsis: the top-level submodule of Dragonfire that contains the classes to provide Twitter chatbot functionality to Dragonfire.
+
+.. moduleauthor:: Mehmet Mert Yıldıran <mert.yildiran@bil.omu.edu.tr>
+"""
+
 try:
     import thread  # Low-level threading API
 except ImportError:
@@ -13,15 +21,26 @@ from dragonfire import VirtualAssistant  # The class to create a virtual assista
 
 class MentionListener(StreamListener):
     """ A listener handles tweets that are received from the stream.
-    This is a basic listener that just prints received tweets to stdout.
-
     """
 
     def __init__(self, args, userin):
+        """Initialization method of :class:`MentionListener` class.
+
+        Args:
+            args:       Command-line arguments.
+            userin:     :class:`TextToAction` instance.
+        """
+
         self.args = args
         self.userin = userin
 
     def on_data(self, data):
+        """Method that called whenever someone tweeted Dragonfire with a mention.
+
+        Args:
+            data (str):  String that contains data of the tweet.
+        """
+
         mention = json.loads(data)
         # print(json.dumps(mention, indent=4, sort_keys=True))
         if 'retweeted_status' not in mention:
@@ -40,4 +59,10 @@ class MentionListener(StreamListener):
         return True
 
     def on_error(self, status):
+        """Method that called when an error occurred.
+
+        Args:
+            status (str):  String that holds information about the error.
+        """
+
         print(status)

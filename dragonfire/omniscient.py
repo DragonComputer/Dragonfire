@@ -1,6 +1,14 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 
+"""
+.. module:: omniscient
+    :platform: Unix
+    :synopsis: the top-level submodule of Dragonfire that contains the classes related to **Omniscient**: Dragonfire's Factoid Question Answering Engine.
+
+.. moduleauthor:: Mehmet Mert Yıldıran <mert.yildiran@bil.omu.edu.tr>
+"""
+
 import collections  # Imported to support ordered dictionaries in Python
 from random import uniform  # Generate pseudo-random numbers
 
@@ -14,7 +22,16 @@ from nltk.corpus.reader.wordnet import WordNetError  # To catch the errors
 
 
 class Omniscient():
+    """Class to provide the factoid question answering ability.
+    """
+
     def __init__(self, nlp):
+        """Initialization method of :class:`Omniscient` class.
+
+        Args:
+            nlp:  :mod:`spacy` model instance.
+        """
+
         self.nlp = nlp  # Load en_core_web_sm, English, 50 MB, default model
         self.entity_map = {
             'WHO': ['PERSON'],
@@ -24,8 +41,27 @@ class Omniscient():
         }  # Map wh question words to entity categories
         self.coefficient = {'frequency': 0.36, 'precedence': 0.13, 'proximity': 0.21, 'mention': 0.30}  # Coefficients for scoring
 
-    # Entry function for this class. Dragonfire calls only this function. Unlike Learner.respond() it executes TTS because of its late reponse nature.
     def respond(self, com, tts_output=False, userin=None, user_prefix=None, is_server=False):
+        """Method to respond the user's input/command using factoid question answering ability.
+
+        Args:
+            com (str):  User's command.
+
+        Kwargs:
+            tts_output (bool):      Is text-to-speech output enabled?
+            userin:                 :class:`TextToAction` instance.
+            user_prefix (str):      Prefix to address/call user when answering.
+            is_server (bool):       Is Dragonfire running as an API server?
+
+        Returns:
+            str.
+
+        .. note::
+
+            Entry function for :class:`Omniscient` class. Dragonfire calls only this function. Unlike :func:`Learner.respond`, it executes TTS because of its late reponse nature.
+
+        """
+
         result = None
         subject, subjects, focus, subject_with_objects = self.semantic_extractor(com)  # Extract the subject, focus, objects etc.
         if not subject:
@@ -157,8 +193,27 @@ class Omniscient():
             else:  # if no any findings
                 return False  # in case of no any findings return False
 
-    # function to determine the entity of the subject
     def wordnet_entity_determiner(self, subject, tts_output, is_server, userin=None, user_prefix=None):
+        """Function to determine the named entity classification of the subject.
+
+        Args:
+            subject (str):  Subject that extracted from the user's input/command.
+            tts_output (bool):      Is text-to-speech output enabled?
+            is_server (bool):   Is Dragonfire running as an API server?
+
+        Kwargs:
+            userin:                 :class:`TextToAction` instance.
+            user_prefix (str):      Prefix to address/call user when answering.
+
+        Returns:
+            List of :str:.
+
+        .. note::
+
+            `entity_samples_map` variable is used to fix some missing(or wrong) classififaction issue of spaCy NLP library detected while writing this code.
+
+        """
+
         entity_samples_map = {
             'PERSON': ['person', 'character', 'human', 'individual', 'name'],
             'NORP': ['nationality', 'religion', 'politics'],
@@ -208,24 +263,49 @@ class Omniscient():
         if result == 'PRODUCT': return [result, 'ORG']  # currently, spaCy is incorrectly classifying many entities that belongs to PRODUCT as ORG. Because of that include ORG to the return
         return [result]  # if there is no exception on above lines then return only one result but in an array. For example ['PERSON']
 
-    # this function is only for TESTING purposes. It randomzes the coefficients so that we are able optimize the values
     def randomize_coefficients(self):
+        """Function to randomize the coefficients for the purpose of optimizing their values.
+
+        Returns:
+            dict.
+
+        .. note::
+
+            This function is being used only for TESTING purposes.
+
+        """
         coeff1 = round(uniform(0.00, 0.98), 2)
         coeff2 = round(uniform(0.00, (1 - coeff1)), 2)
         coeff3 = round(uniform(0.00, (1 - (coeff1 + coeff2))), 2)
         coeff4 = 1 - (coeff1 + coeff2 + coeff3)
         self.coefficient = {'frequency': coeff1, 'precedence': coeff2, 'proximity': coeff3, 'mention': coeff4}
 
-    # function to clean unnecessary words from the given phrase/string. (Punctuation mark, symbol, unknown, conjunction, determiner, subordinating or preposition and space)
     def phrase_cleaner(self, phrase):
+        """Function to clean unnecessary words from the given phrase/string. (Punctuation mark, symbol, unknown, conjunction, determiner, subordinating or preposition and space)
+
+        Args:
+            phrase (str):  Noun phrase.
+
+        Returns:
+            str.
+        """
+
         clean_phrase = []
         for word in self.nlp(phrase):
             if word.pos_ not in ['PUNCT', 'SYM', 'X', 'CONJ', 'DET', 'ADP', 'SPACE']:
                 clean_phrase.append(word.text)
         return ' '.join(clean_phrase)
 
-    # this function extracts subject, subjects, focus, subject_with_objects
     def semantic_extractor(self, string):
+        """Function to extract subject, subjects, focus, subject_with_objects from given string.
+
+        Args:
+            string (str):  String.
+
+        Returns:
+            List of :str:.
+        """
+
         doc = self.nlp(string)  # spaCy does all kinds of NLP analysis in one function
         the_subject = None  # Wikipedia search query variable definition (the subject)
         # Followings are lists because it could be multiple of them in a string. Multiple objects or subjects...

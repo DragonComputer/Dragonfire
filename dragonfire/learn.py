@@ -1,6 +1,14 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 
+"""
+.. module:: learn
+    :platform: Unix
+    :synopsis: the top-level submodule of Dragonfire that contains the classes related to Dragonfire's learning ability.
+
+.. moduleauthor:: Mehmet Mert Yıldıran <mert.yildiran@bil.omu.edu.tr>
+"""
+
 import collections  # Imported to support ordered dictionaries in Python
 from tinydb import TinyDB, Query  # TinyDB is a lightweight document oriented database
 from os.path import expanduser  # Imported to get the home directory
@@ -9,7 +17,16 @@ import pymysql  # Pure Python MySQL Client
 
 
 class Learner():
+    """Class to provide the learning ability.
+    """
+
     def __init__(self, nlp):
+        """Initialization method of :class:`Learner` class.
+
+        Args:
+            nlp:  :mod:`spacy` model instance.
+        """
+
         self.pronouns = collections.OrderedDict()  # Create an ordered dictionary
         self.pronouns["I"] = "YOU"
         self.pronouns["ME"] = "YOU"
@@ -41,8 +58,25 @@ class Learner():
         self.nlp = nlp  # Load en_core_web_sm, English, 50 MB, default model
         self.is_server = False
 
-    # Entry function for this class. Dragonfire calls only this function. It does not handle TTS.
     def respond(self, com, is_server=False, user_id=None):
+        """Method to respond the user's input/command using learning ability.
+
+        Args:
+            com (str):  User's command.
+
+        Kwargs:
+            is_server (bool):   Is Dragonfire running as an API server?
+            user_id (int):      User's ID.
+
+        Returns:
+            str.
+
+        .. note::
+
+            Entry function for :class:`Learner` class. Dragonfire calls only this function. It does not handle TTS.
+
+        """
+
         self.is_server = is_server
         is_public = True
         doc = self.nlp(com)  # Command(user's speech) must be decoded from utf-8 to unicode because spaCy only supports unicode strings, self.nlp() handles all parsing
@@ -107,8 +141,21 @@ class Learner():
                 if verbtense:
                     return self.db_upsert(subject, verbtense, clause, com, is_public=is_public, user_id=user_id)  # set the record to the database
 
-    # Function to get a record from the database
     def db_get(self, subject, invert=False, is_public=True, user_id=None):
+        """Function to get a record from the database.
+
+        Args:
+            subject (str):  Subject that extracted from the user's input/command.
+
+        Kwargs:
+            invert (bool):      Is it invert mode? (swap subject and clause)
+            is_public (int):    Is it a public record? (non-user specific)
+            user_id (int):      User's ID.
+
+        Returns:
+            str.
+        """
+
         if self.is_server:
             u_id = 0
             if not is_public and user_id:
@@ -166,8 +213,24 @@ class Learner():
             else:
                 return None  # if there is no result return None
 
-    # Function to set a record to the database
     def db_upsert(self, subject, verbtense, clause, com, is_public=True, user_id=None):
+        """Function to insert(or update) a record to the database.
+
+        Args:
+            subject (str):      Subject that extracted from the user's input/command.
+            verbtense (str):    The am/is/are in the user's input/command.
+            clause (str):       Clause that contains the fact.
+            com (str):          User's command.
+
+        Kwargs:
+            invert (bool):      Is it invert mode? (swap subject and clause)
+            is_public (int):    Is it a public record? (non-user specific)
+            user_id (int):      User's ID.
+
+        Returns:
+            str.
+        """
+
         if self.is_server:
             u_id = 0
             if not is_public and user_id:
@@ -207,8 +270,20 @@ class Learner():
                 })  # insert the given data
         return "OK, I get it. " + self.mirror(com)  # mirror the command(user's speech) and return it to say
 
-    # Function to delete a record from the database
     def db_delete(self, subject, is_public=True, user_id=None):
+        """Function to delete a record from the database.
+
+        Args:
+            subject (str):  Subject that extracted from the user's input/command.
+
+        Kwargs:
+            is_public (int):    Is it a public record? (non-user specific)
+            user_id (int):      User's ID.
+
+        Returns:
+            str.
+        """
+
         if self.is_server:
             if not is_public and user_id:
                 db = pymysql.connect(Config.MYSQL_HOST, Config.MYSQL_USER, Config.MYSQL_PASS, Config.MYSQL_DB)
@@ -238,8 +313,16 @@ class Learner():
             else:
                 return "I don't even know anything about " + self.mirror(subject)
 
-    # Function to mirror the answer (for example: I'M to YOU ARE)
     def mirror(self, answer):
+        """Function to mirror the answer (for example: I'M to YOU ARE).
+
+        Args:
+            answer (str):  Prepared answer that just before the actual return of :func:`respond` method.
+
+        Returns:
+            str.
+        """
+
         result = []
         types = []
         types.append("")
@@ -268,8 +351,16 @@ class Learner():
         result = result.replace(" '", "'")  # fix for situations like "I 'AM", "YOU 'LL"
         return result
 
-    # Pronoun fixer to handle situations like YOU and YOURSELF
     def fix_pronoun(self, subject):  # TODO: Extend the context of this function
+        """Pronoun fixer to handle situations like YOU and YOURSELF.
+
+        Args:
+            subject (str):  Subject that extracted from the user's input/command.
+
+        Returns:
+            str.
+        """
+
         if subject == "yourself":
             return "you"
         elif subject == "Yourself":
@@ -280,6 +371,15 @@ class Learner():
             return subject
 
     def detect_pronoun(self, noun_chunk):
+        """Determine whether user is talking about himself/herself or some other entity.
+
+        Args:
+            noun_chunk (str):  Noun phrase.
+
+        Returns:
+            (str, bool).
+        """
+
         np_text = ""
         is_public = True
         doc = self.nlp(noun_chunk)
@@ -292,6 +392,15 @@ class Learner():
         return np_text, is_public
 
     def upper_capitalize(self, array):
+        """Return capitalized and uppercased versions of the strings inside the given array.
+
+        Args:
+            array (List of :str:):  List of strings.
+
+        Returns:
+            List of :str:.
+        """
+
         result = []
         for word in array:
             result.append(word)
