@@ -152,7 +152,12 @@ setup(
             'hug-middleware-cors==1.0.0',
             'waitress==1.1.0',
             'PyMySQL==0.8.1',
-            'SpeechRecognition'
+            'SpeechRecognition',
+            'flake8',
+            'sphinx',
+            'sphinx_rtd_theme',
+            'recommonmark',
+            'm2r'
         ]
     },
 

@@ -11,10 +11,15 @@
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
-#
-# import os
-# import sys
-# sys.path.insert(0, os.path.abspath('.'))
+
+import os
+import sys
+
+from recommonmark.parser import CommonMarkParser
+from unittest.mock import MagicMock
+
+
+sys.path.insert(0, os.path.abspath('../..'))
 
 
 # -- Project information -----------------------------------------------------
@@ -24,7 +29,7 @@ copyright = '2018, Mehmet Mert Yıldıran'
 author = 'Mehmet Mert Yıldıran'
 
 # The short X.Y version
-version = ''
+version = '1.0.0'
 # The full version, including alpha/beta/rc tags
 release = '1.0.0'
 
@@ -48,16 +53,22 @@ extensions = [
     'sphinx.ext.ifconfig',
     'sphinx.ext.viewcode',
     'sphinx.ext.githubpages',
+    'sphinx.ext.napoleon',
+    'm2r',
 ]
+
+# Napoleon settings
+napoleon_google_docstring = False
+napoleon_use_param = False
+napoleon_use_ivar = True
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
 
 # The suffix(es) of source filenames.
 # You can specify multiple suffix as a list of string:
-#
-# source_suffix = ['.rst', '.md']
-source_suffix = '.rst'
+
+source_suffix = ['.rst', '.md']
 
 # The master toctree document.
 master_doc = 'index'
@@ -83,7 +94,7 @@ pygments_style = 'sphinx'
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-html_theme = 'alabaster'
+html_theme = 'sphinx_rtd_theme'
 
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
@@ -175,3 +186,37 @@ intersphinx_mapping = {'https://docs.python.org/': None}
 
 # If true, `todo` and `todoList` produce output, else they produce nothing.
 todo_include_todos = True
+
+
+# Post-install script for sphinx-build
+def setup(app):
+    import nltk
+    nltk.download('names')
+    nltk.download('brown')
+    nltk.download('wordnet')
+    nltk.download('punkt')
+
+
+# Mock out modules
+class Mock(MagicMock):
+    @classmethod
+    def __getattr__(cls, name):
+        return MagicMock()
+
+MOCK_MODULES = [
+    'realhud',
+    'spacy',
+    'youtube_dl',
+    'dragonfire.conversational',
+    'dragonfire.conversational.model',
+    'dragonfire.conversational.textdata',
+    'dragonfire.conversational.corpus.cornelldata',
+    'dragonfire.conversational.corpus.lightweightdata',
+    'dragonfire.conversational.corpus.opensubsdata',
+    'dragonfire.conversational.corpus.scotusdata',
+    'dragonfire.conversational.corpus.ubuntudata',
+    'dragonfire.conversational.corpus',
+    'dragonfire.sr.decoder_test',
+    'dragonfire.sr.experimental'
+]
+sys.modules.update((mod_name, Mock()) for mod_name in MOCK_MODULES)
