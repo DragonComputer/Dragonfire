@@ -2,11 +2,13 @@
 
 <img src="https://travis-ci.org/DragonComputer/Dragonfire.svg?branch=master" align="right" />
 
+<img src="https://readthedocs.org/projects/dragonfire/badge/?version=latest" align="right" />
+
 <img src="https://opencollective.com/dragonfire/tiers/backer/badge.svg?label=backer&color=brightgreen" align="right" />
 
 <img src="https://opencollective.com/dragonfire/tiers/sponsor/badge.svg?label=sponsor&color=brightgreen" align="right" />
 
-an open source virtual assistant project for Ubuntu based Linux distributions
+the open-source virtual assistant for Ubuntu based Linux distributions
 
 ![Dragonfire](https://raw.githubusercontent.com/DragonComputer/Dragonfire/master/docs/img/demo.gif)
 
@@ -57,7 +59,7 @@ or simply: `sudo ./install.sh`
 
 <sup><i>To install the dependencies run `sudo apt-get -f install` right after the `dpkg -i` command. The installation will automatically download the pre-trained English model of Mozilla DeepSpeech (1.31 GB download size) and will place it under `/usr/share/dragonfire/deepspeech/models` directory. You can manually [download the model](https://github.com/mozilla/DeepSpeech/releases/download/v0.1.1/deepspeech-0.1.1-models.tar.gz) if you want.</i></sup>
 
-### Usage
+### Usage <a href="https://dragonfire.readthedocs.io/en/latest/dragonfire.html#module-dragonfire.api"><img src="https://media.readthedocs.com/corporate/img/header-logo.png" align="right" height="25px" /></a>
 
 ```
 usage: dragonfire [-h] [-c] [-s] [-j] [-v] [-g] [--server API_KEY] [-p PORT]
