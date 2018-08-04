@@ -54,6 +54,6 @@ if [ ! ${verified::-3} = "$CHECKSUM2" ]; then
 fi
 
 pip3 install --upgrade PyAudio==0.2.11 wikipedia==1.4.0 PyUserInput==0.1.11 tinydb==3.9.0.post1 youtube_dl spacy==2.0.11 pyowm==2.8.0 tensorflow==1.0.0 deepspeech==0.2.0a5 SpeechRecognition tweepy==3.6.0 metadata_parser hug==2.4.0 hug-middleware-cors==1.0.0 waitress==1.1.0 PyMySQL==0.8.1 requests==2.18.4 && \
-pip3 install --upgrade flake8 sphinx sphinx_rtd_theme recommonmark m2r && \
+pip3 install --upgrade flake8 sphinx sphinx_rtd_theme recommonmark m2r pytest && \
 python3 -m spacy download en \
 && printf "import nltk\nnltk.download('names')\nnltk.download('brown')\nnltk.download('wordnet')\nnltk.download('punkt')" | python3 && echo -e "\n\n${GREEN}Dragonfire is successfully installed to your computer.${NC}\n"
