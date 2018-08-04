@@ -26,7 +26,7 @@ class Omniscient():
     """
 
     def __init__(self, nlp):
-        """Initialization method of :class:`Omniscient` class.
+        """Initialization method of :class:`dragonfire.omniscient.Omniscient` class.
 
         Args:
             nlp:  :mod:`spacy` model instance.
@@ -47,14 +47,14 @@ class Omniscient():
         Args:
             com (str):  User's command.
 
-        Kwargs:
+        Keyword Args:
             tts_output (bool):      Is text-to-speech output enabled?
-            userin:                 :class:`TextToAction` instance.
+            userin:                 :class:`dragonfire.utilities.TextToAction` instance.
             user_prefix (str):      Prefix to address/call user when answering.
             is_server (bool):       Is Dragonfire running as an API server?
 
         Returns:
-            str.
+            str:  Response.
 
         .. note::
 
@@ -201,12 +201,12 @@ class Omniscient():
             tts_output (bool):      Is text-to-speech output enabled?
             is_server (bool):   Is Dragonfire running as an API server?
 
-        Kwargs:
-            userin:                 :class:`TextToAction` instance.
+        Keyword Args:
+            userin:                 :class:`dragonfire.utilities.TextToAction` instance.
             user_prefix (str):      Prefix to address/call user when answering.
 
         Returns:
-            List of :str:.
+            (list) of (str)s: Entity list.
 
         .. note::
 
@@ -267,7 +267,7 @@ class Omniscient():
         """Function to randomize the coefficients for the purpose of optimizing their values.
 
         Returns:
-            dict.
+            dict:  Randomized coefficients.
 
         .. note::
 
@@ -287,7 +287,7 @@ class Omniscient():
             phrase (str):  Noun phrase.
 
         Returns:
-            str.
+            str:  Cleaned noun phrase.
         """
 
         clean_phrase = []
@@ -303,7 +303,7 @@ class Omniscient():
             string (str):  String.
 
         Returns:
-            List of :str:.
+            (list) of (str)s: List of subject, subjects, focus, subject_with_objects.
         """
 
         doc = self.nlp(string)  # spaCy does all kinds of NLP analysis in one function

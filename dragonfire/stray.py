@@ -24,7 +24,7 @@ class SystemTrayIcon:
     """
 
     def __init__(self):
-        """Initialization method of :class:`SystemTrayIcon` class.
+        """Initialization method of :class:`dragonfire.stray.SystemTrayIcon` class.
         """
 
         import gi
@@ -44,8 +44,8 @@ class SystemTrayIcon:
     def exit(self, data=None):
         """Method to exit the system tray icon.
 
-        Kwargs:
-            data :   Unknown
+        Keyword Args:
+            data :  *Unknown*
         """
 
         self.Gtk.main_quit()
@@ -90,7 +90,7 @@ def SystemTrayExitListenerSet(e):
 
 
 def SystemTrayInit():
-    """Method to create a :class:`SystemTrayIcon` instance with the purpose of displaying to system tray icon.
+    """Method to create a :class:`dragonfire.stray.SystemTrayIcon` instance with the purpose of displaying to system tray icon.
     """
 
     SystemTrayIcon()

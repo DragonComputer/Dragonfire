@@ -21,7 +21,7 @@ class Learner():
     """
 
     def __init__(self, nlp):
-        """Initialization method of :class:`Learner` class.
+        """Initialization method of :class:`dragonfire.learn.Learner` class.
 
         Args:
             nlp:  :mod:`spacy` model instance.
@@ -64,12 +64,12 @@ class Learner():
         Args:
             com (str):  User's command.
 
-        Kwargs:
+        Keyword Args:
             is_server (bool):   Is Dragonfire running as an API server?
             user_id (int):      User's ID.
 
         Returns:
-            str.
+            str:  Response.
 
         .. note::
 
@@ -147,13 +147,13 @@ class Learner():
         Args:
             subject (str):  Subject that extracted from the user's input/command.
 
-        Kwargs:
+        Keyword Args:
             invert (bool):      Is it invert mode? (swap subject and clause)
             is_public (int):    Is it a public record? (non-user specific)
             user_id (int):      User's ID.
 
         Returns:
-            str.
+            str:  Response.
         """
 
         if self.is_server:
@@ -222,13 +222,13 @@ class Learner():
             clause (str):       Clause that contains the fact.
             com (str):          User's command.
 
-        Kwargs:
+        Keyword Args:
             invert (bool):      Is it invert mode? (swap subject and clause)
             is_public (int):    Is it a public record? (non-user specific)
             user_id (int):      User's ID.
 
         Returns:
-            str.
+            str:  Response.
         """
 
         if self.is_server:
@@ -276,12 +276,12 @@ class Learner():
         Args:
             subject (str):  Subject that extracted from the user's input/command.
 
-        Kwargs:
+        Keyword Args:
             is_public (int):    Is it a public record? (non-user specific)
             user_id (int):      User's ID.
 
         Returns:
-            str.
+            str: Response.
         """
 
         if self.is_server:
@@ -320,7 +320,7 @@ class Learner():
             answer (str):  Prepared answer that just before the actual return of :func:`respond` method.
 
         Returns:
-            str.
+            str:  Response.
         """
 
         result = []
@@ -358,7 +358,7 @@ class Learner():
             subject (str):  Subject that extracted from the user's input/command.
 
         Returns:
-            str.
+            str:  Response.
         """
 
         if subject == "yourself":
@@ -377,7 +377,7 @@ class Learner():
             noun_chunk (str):  Noun phrase.
 
         Returns:
-            (str, bool).
+            ((str), (bool)):  Detected pronoun and boolean value depends on the detection.
         """
 
         np_text = ""
@@ -395,10 +395,10 @@ class Learner():
         """Return capitalized and uppercased versions of the strings inside the given array.
 
         Args:
-            array (List of :str:):  List of strings.
+            array ((list) of (str)s):  List of strings.
 
         Returns:
-            List of :str:.
+            (list) of (str)s:  List of strings.
         """
 
         result = []

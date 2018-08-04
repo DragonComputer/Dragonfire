@@ -31,10 +31,10 @@ def token_authentication(token):
         token (str):  API token.
 
     Returns:
-       bool.  The return code::
+        bool.  The return code::
 
-          True -- The token is correct!
-          False -- The token is invalid!
+            True -- The token is correct!
+            False -- The token is invalid!
     """
 
     if token == precomptoken:
@@ -51,7 +51,7 @@ def tagger_end(text):
         text (str):  Text.
 
     Returns:
-       JSON document.
+        JSON document.
     """
 
     return json.dumps(tagger(text), indent=4)
@@ -64,7 +64,7 @@ def tagger(text):
         text (str):  Text.
 
     Returns:
-       List of :dict:.
+        (list) of (dict)s:  List of dictionaries.
     """
 
     data = []
@@ -92,7 +92,7 @@ def dependency_parser_end(text):
         text (str):  Text.
 
     Returns:
-       JSON document.
+        JSON document.
     """
 
     return json.dumps(dependency_parser(text), indent=4)
@@ -105,7 +105,7 @@ def dependency_parser(text):
         text (str):  Text.
 
     Returns:
-       List of :dict:.
+        (list) of (dict)s:  List of dictionaries.
     """
 
     data = []
@@ -129,7 +129,7 @@ def entity_recognizer_end(text):
         text (str):  Text.
 
     Returns:
-       JSON document.
+        JSON document.
     """
 
     return json.dumps(entity_recognizer(text), indent=4)
@@ -142,7 +142,7 @@ def entity_recognizer(text):
         text (str):  Text.
 
     Returns:
-       List of :dict:.
+        (list) of (dict)s:  List of dictionaries.
     """
 
     data = []
@@ -166,7 +166,7 @@ def tokenizer_end(text):
         text (str):  Text.
 
     Returns:
-       JSON document.
+        JSON document.
     """
 
     return json.dumps(tokenizer(text), indent=4)
@@ -179,7 +179,7 @@ def tokenizer(text):
         text (str):  Text.
 
     Returns:
-       List of :dict:.
+        (list) of (dict)s:  List of dictionaries.
     """
 
     data = []
@@ -197,7 +197,7 @@ def sentence_segmenter_end(text):
         text (str):  Text.
 
     Returns:
-       JSON document.
+        JSON document.
     """
 
     return json.dumps(sentence_segmenter(text), indent=4)
@@ -210,7 +210,7 @@ def sentence_segmenter(text):
         text (str):  Text.
 
     Returns:
-       List of :dict:.
+        (list) of (dict)s:  List of dictionaries.
     """
 
     data = []
@@ -223,19 +223,19 @@ def sentence_segmenter(text):
 # All-in-One NLP
 @hug.post('/cmd', requires=token_authentication)
 def cmd(text):
-    """Serves the **all Natural Language Processing features**(parsers) of :mod:`spacy` in a single **endpoint**.
+    """Serves the **all Natural Language Processing features** (parsers) of :mod:`spacy` in a single **endpoint**.
 
     Combines the results of these methods into a single JSON document:
 
-     - :func:`tagger` method (**POS Tagging**)
-     - :func:`dependency_parser` method (**Dependency Parse**)
-     - :func:`entity_recognizer` method (*Named Entity Recognition**)
+     - :func:`dragonfire.api.tagger` method (**POS Tagging**)
+     - :func:`dragonfire.api.dependency_parser` method (**Dependency Parse**)
+     - :func:`dragonfire.api.entity_recognizer` method (**Named Entity Recognition**)
 
     Args:
         text (str):  Text.
 
     Returns:
-       JSON document.
+        JSON document.
     """
 
     data = []
@@ -255,13 +255,13 @@ def cmd(text):
 
 @hug.post('/math', requires=token_authentication)
 def math(text):
-    """**Endpoint** to return the response of :func:`arithmetic_parse` function.
+    """**Endpoint** to return the response of :func:`dragonfire.arithmetic.arithmetic_parse` function.
 
     Args:
         text (str):  Text.
 
     Returns:
-       JSON document.
+        JSON document.
     """
 
     response = arithmetic_parse(text)
@@ -272,14 +272,14 @@ def math(text):
 
 @hug.post('/learn', requires=token_authentication)
 def learn(text, user_id):
-    """**Endpoint** to return the response of :func:`respond` method of :class:`Learner` class.
+    """**Endpoint** to return the response of :func:`dragonfire.learn.Learner.respond` method.
 
     Args:
         text (str):         Text.
         user_id (int):      User's ID.
 
     Returns:
-       JSON document.
+        JSON document.
     """
 
     response = learner.respond(text, is_server=True, user_id=user_id)
@@ -290,14 +290,14 @@ def learn(text, user_id):
 
 @hug.post('/omni', requires=token_authentication)
 def omni(text, gender_prefix):
-    """**Endpoint** to return the answer of :func:`respond` method of :class:`Omniscient` class.
+    """**Endpoint** to return the answer of :func:`dragonfire.omniscient.Omniscient.respond` method.
 
     Args:
         text (str):             Text.
         gender_prefix (str):    Prefix to address/call user when answering.
 
     Returns:
-       JSON document.
+        JSON document.
     """
 
     answer = omniscient.respond(text, userin=userin, user_prefix=gender_prefix, is_server=True)
@@ -308,14 +308,14 @@ def omni(text, gender_prefix):
 
 @hug.post('/deep', requires=token_authentication)
 def deep(text, gender_prefix):
-    """**Endpoint** to return the response of :func:`respond` method of :class:`DeepConversation` class.
+    """**Endpoint** to return the response of :func:`dragonfire.conversational.DeepConversation.respond` method.
 
     Args:
         text (str):             Text.
         gender_prefix (str):    Prefix to address/call user when answering.
 
     Returns:
-       JSON document.
+        JSON document.
     """
 
     answer = dc.respond(text, user_prefix=gender_prefix)
@@ -329,10 +329,10 @@ def answer(text, gender_prefix, user_id):
 
     Combines the results of these methods into a single JSON document:
 
-     - :func:`arithmetic_parse` function
-     - :func:`respond` method of :class:`Learner` class
-     - :func:`respond` method of :class:`Omniscient` class
-     - :func:`respond` method of :class:`DeepConversation` class
+     - :func:`dragonfire.arithmetic.arithmetic_parse` function
+     - :func:`dragonfire.learn.Learner.respond` method
+     - :func:`dragonfire.omniscient.Omniscient.respond` method
+     - :func:`dragonfire.conversational.DeepConversation.respond` method
 
     Args:
         text (str):             Text.
@@ -340,7 +340,7 @@ def answer(text, gender_prefix, user_id):
         user_id (int):          User's ID.
 
     Returns:
-       JSON document.
+        JSON document.
     """
 
     answer = arithmetic_parse(text)
@@ -364,7 +364,7 @@ def wikipedia(query, gender_prefix):
         gender_prefix (str):    Prefix to address/call user when answering.
 
     Returns:
-       JSON document.
+        JSON document.
     """
 
     response = ""
@@ -396,7 +396,7 @@ def youtube(query, gender_prefix):
         gender_prefix (str):    Prefix to address/call user when answering.
 
     Returns:
-       JSON document.
+        JSON document.
     """
 
     response = ""
@@ -423,11 +423,11 @@ def notification(user_id, location, gender_prefix):
 
     Args:
         user_id (int):          User's ID.
-        location (str):         Development in progress...
+        location (str):         *Development in progress...*
         gender_prefix (str):    Prefix to address/call user when answering.
 
     Returns:
-       JSON document.
+        JSON document.
     """
 
     url = ""
@@ -482,7 +482,7 @@ def register(name, gender, birth_date):
         birth_date (str):   User's birth date.
 
     Returns:
-       JSON document.
+        JSON document.
     """
 
     id = ""
@@ -515,17 +515,17 @@ class Run():
     """
 
     def __init__(self, nlp_ref, learner_ref, omniscient_ref, dc_ref, userin_ref, token, port_number):
-        """Initialization method of :class:`Run` class
+        """Initialization method of :class:`dragonfire.api.Run` class
 
         This method starts an API server using :mod:`waitress` (*a pure-Python WSGI server*)
         on top of lightweight :mod:`hug` API framework.
 
         Args:
             nlp_ref:                :mod:`spacy` model instance.
-            learner_ref:            :class:`Learner` instance.
-            omniscient_ref:         :class:`Omniscient` instance.
-            dc_ref:                 :class:`DeepConversation` instance.
-            userin_ref:             :class:`TextToAction` instance.
+            learner_ref:            :class:`dragonfire.learn.Learner` instance.
+            omniscient_ref:         :class:`dragonfire.omniscient.Omniscient` instance.
+            dc_ref:                 :class:`dragonfire.conversational.DeepConversation` instance.
+            userin_ref:             :class:`dragonfire.utilities.TextToAction` instance.
             token (str):            API token.
             port_number (int):      Port number that the API will be served.
         """

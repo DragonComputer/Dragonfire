@@ -76,7 +76,7 @@ def start(args, userin):
 
     Args:
         args:       Command-line arguments.
-        userin:     :class:`TextToAction` instance.
+        userin:     :class:`dragonfire.utilities.TextToAction` instance.
     """
 
     if args["server"]:
@@ -120,7 +120,7 @@ def start(args, userin):
 class VirtualAssistant():
     """Class to define a virtual assistant.
 
-    This class provides necessary initiations and a function named :func:`command`
+    This class provides necessary initiations and a function named :func:`dragonfire.VirtualAssistant.command`
     as the entry point for each one of the user commands.
 
     .. note::
@@ -130,13 +130,13 @@ class VirtualAssistant():
     """
 
     def __init__(self, args, userin, user_full_name="John Doe", user_prefix="sir", tw_user=None):
-        """Initialization method of :class:`VirtualAssistant` class.
+        """Initialization method of :class:`dragonfire.VirtualAssistant` class.
 
         Args:
             args:       Command-line arguments.
-            userin:     :class:`TextToAction` instance.
+            userin:     :class:`dragonfire.utilities.TextToAction` instance.
 
-        Kwargs:
+        Keyword Args:
             user_full_name (str):       User's full name  to answer some basic questions
             user_prefix (str):          Prefix to address/call user when answering
             tw_user (str):              Twitter username of the person querying DragonfireAI Twitter account with a mention
@@ -154,10 +154,10 @@ class VirtualAssistant():
         This function goes through these steps for each one of user's commands, respectively:
 
          - Search across the built-in commands via a simple if-else control flow.
-         - Try to get a response from :func:`arithmetic_parse` function.
-         - Try to get a response from :func:`respond` method of :class:`Learner` class.
-         - Try to get a answer from :func:`respond` method of :class:`Omniscient` class.
-         - Try to get a response from :func:`respond` method of :class:`DeepConversation` class.
+         - Try to get a response from :func:`dragonfire.arithmetic.arithmetic_parse` function.
+         - Try to get a response from :func:`dragonfire.learn.Learner.respond` method.
+         - Try to get a answer from :func:`dragonfire.omniscient.Omniscient.respond` method.
+         - Try to get a response from :func:`dragonfire.conversational.DeepConversation.respond` method.
 
         Args:
             com (str):  User's command.
@@ -577,7 +577,7 @@ def greet(userin):
     """The top-level method to greet the user with message like "*Good morning, sir.*".
 
     Args:
-        userin:  :class:`TextToAction` instance.
+        userin:  :class:`dragonfire.utilities.TextToAction` instance.
     """
 
     (columns, lines) = shutil.get_terminal_size()

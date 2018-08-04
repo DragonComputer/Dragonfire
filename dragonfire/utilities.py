@@ -44,7 +44,7 @@ class TextToAction:
     """
 
     def __init__(self, args):
-        """Initialization method of :class:`TextTOAction` class.
+        """Initialization method of :class:`dragonfire.utilities.TextToAction` class.
 
         Args:
             args:  Command-line arguments.
@@ -64,10 +64,10 @@ class TextToAction:
     def execute(self, cmd="", msg="", speak=False, duration=0):
         """Method to execute the given bash command and display a desktop environment independent notification.
 
-        Kwargs:
+        Keyword Args:
             cmd (str):          Bash command.
             msg (str):          Message to be displayed.
-            speak (bool):       Also call the :func:`say` method with this message?
+            speak (bool):       Also call the :func:`dragonfire.utilities.TextToAction.say` method with this message?
             duration (int):     Wait n seconds before executing the bash command.
 
         .. note::
@@ -99,13 +99,13 @@ class TextToAction:
         Args:
             message (str):  Message to be read by Dragonfire or turned into a tweet.
 
-        Kwargs:
+        Keyword Args:
             dynamic (bool):     Dynamically print the output into console?
             end (bool):         Is it the end of the dynamic printing?
             cmd (str):          Bash command.
 
         Returns:
-            str.
+            bool:  True or False
 
         .. note::
 

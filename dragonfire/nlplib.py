@@ -34,12 +34,12 @@ class Classifier():
         Args:
             word (str):  Word. (usually a name)
 
-        Kwargs:
+        Keyword Args:
             is_server (bool):   Is Dragonfire running as an API server?
             user_id (int):      User's ID.
 
         Returns:
-            str.
+            str:  Male or Female
 
         .. note::
 
@@ -113,20 +113,20 @@ class TopicExtractor(object):
             sentence (str):  A sentence.
 
         Returns:
-            List of :str:.
+            (list) of (str)s:  List of strings.
         """
 
         tokens = nltk.word_tokenize(sentence)
         return tokens
 
     def normalize_tags(self, tagged):
-        """Normalize brown corpus' tags ("NN", "NN-PL", "NNS" > "NN").
+        """Normalize brown corpus' tags `("NN", "NN-PL", "NNS" -> "NN")`.
 
         Args:
-            tagged (List of :str:):  Tagged words.
+            tagged ((list) of (str)s):  Tagged words.
 
         Returns:
-            List of :str:.
+            (list) of (str)s:  List of strings.
         """
 
         n_tagged = []
@@ -147,7 +147,7 @@ class TopicExtractor(object):
         """Extract the main topics from the sentence.
 
         Returns:
-            List of :str:.
+            (list) of (str)s:  List of strings.
         """
 
         tokens = self.tokenize_sentence(self.sentence)
@@ -195,10 +195,10 @@ class Helper():
         """Method to check if user's input is directly equal to one of these words.
 
         Args:
-            words (List of :str:):  Words.
+            words ((list) of (str)s):  Words.
 
         Returns:
-            bool.
+            bool:  True or False
         """
 
         for word in words:
@@ -214,7 +214,7 @@ class Helper():
             word (str):     Word.
 
         Returns:
-            bool.
+            bool:  True or False
         """
 
         return self.doc[n].lemma_ == word
@@ -226,7 +226,7 @@ class Helper():
             verb (str):  Verb lemma.
 
         Returns:
-            bool.
+            bool:  True or False
         """
 
         for token in self.doc:
@@ -241,7 +241,7 @@ class Helper():
             wh (str):  WH- word lemma.
 
         Returns:
-            bool.
+            bool:  True or False
         """
 
         for token in self.doc:
@@ -256,7 +256,7 @@ class Helper():
             phrase (str):  Noun phrase.
 
         Returns:
-            bool.
+            bool:  True or False
         """
 
         for chunk in self.doc.noun_chunks:
@@ -271,7 +271,7 @@ class Helper():
             phrase (str):  Noun phrase.
 
         Returns:
-            bool.
+            bool:  True or False
         """
 
         return len(self.doc.noun_chunks) == 1 and self.doc.noun_chunks[0].text == phrase
@@ -283,7 +283,7 @@ class Helper():
             noun (str):  Noun lemma.
 
         Returns:
-            bool.
+            bool:  True or False
         """
 
         for token in self.doc:
@@ -298,7 +298,7 @@ class Helper():
             adj (str):  Adjective lemma.
 
         Returns:
-            bool.
+            bool:  True or False
         """
 
         for token in self.doc:
@@ -313,7 +313,7 @@ class Helper():
             lemma (str):  Lemma.
 
         Returns:
-            bool.
+            bool:  True or False
         """
 
         for token in self.doc:
@@ -328,7 +328,7 @@ class Helper():
             text (str):  Text.
 
         Returns:
-            bool.
+            bool:  True or False
         """
 
         for token in self.doc:
@@ -340,7 +340,7 @@ class Helper():
         """Method to check if the user's input/command a WH question.
 
         Returns:
-            bool.
+            bool:  True or False
         """
 
         for token in self.doc:
@@ -355,7 +355,7 @@ class Helper():
             n (int):  Number of words.
 
         Returns:
-            bool.
+            bool:  True or False
         """
 
         return len(self.doc) <= n

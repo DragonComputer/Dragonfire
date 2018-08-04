@@ -58,9 +58,7 @@ extensions = [
 ]
 
 # Napoleon settings
-napoleon_google_docstring = False
-napoleon_use_param = False
-napoleon_use_ivar = True
+napoleon_google_docstring = True
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
@@ -180,12 +178,15 @@ texinfo_documents = [
 # -- Options for intersphinx extension ---------------------------------------
 
 # Example configuration for intersphinx: refer to the Python standard library.
-intersphinx_mapping = {'https://docs.python.org/': None}
+intersphinx_mapping = {'python': ('https://docs.python.org/3', None)}
 
 # -- Options for todo extension ----------------------------------------------
 
 # If true, `todo` and `todoList` produce output, else they produce nothing.
 todo_include_todos = True
+
+# Show __init__(self) methods in the documentation
+autoclass_content = 'both'
 
 
 # Post-install script for sphinx-build

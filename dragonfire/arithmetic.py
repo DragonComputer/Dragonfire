@@ -16,11 +16,11 @@ def text2int(textnum, numwords={}):
     Args:
         textnum (str):  Number despcription written in English.
 
-    Kwargs:
+    Keyword Args:
         numwords (dict): Dictionary that maps words to numbers.
 
     Returns:
-        int.
+        int: Integer version of given number description in string format.
     """
 
     if not numwords:
@@ -60,7 +60,7 @@ def arithmetic_parse(com):
         com (str):  User's command.
 
     Returns:
-        str.
+        str: Result of the given algebraic expression.
     """
 
     if not any(e in com.upper() for e in ['+', '-', '/', '*', '^', '=', 'x', 'y', 'z', 'PLUS', 'MINUS', 'DIVIDED BY', 'MULTIPLIED BY', 'TIMES', 'TO THE POWER OF', 'EQUAL']):

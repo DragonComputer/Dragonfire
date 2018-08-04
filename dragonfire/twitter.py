@@ -24,11 +24,11 @@ class MentionListener(StreamListener):
     """
 
     def __init__(self, args, userin):
-        """Initialization method of :class:`MentionListener` class.
+        """Initialization method of :class:`dragonfire.twitter.MentionListener` class.
 
         Args:
             args:       Command-line arguments.
-            userin:     :class:`TextToAction` instance.
+            userin:     :class:`dragonfire.utilities.TextToAction` instance.
         """
 
         self.args = args
