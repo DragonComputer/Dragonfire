@@ -161,6 +161,9 @@ class VirtualAssistant():
 
         Args:
             com (str):  User's command.
+
+        Returns:
+            str:  Response.
         """
 
         if not self.args["server"]:
@@ -195,7 +198,7 @@ class VirtualAssistant():
                 print("")
 
         if inactive and not (h.directly_equal(["dragonfire", "hey"]) or (h.check_verb_lemma("wake") and h.check_nth_lemma(-1, "up")) or (h.check_nth_lemma(0, "dragon") and h.check_nth_lemma(1, "fire") and h.max_word_count(2))):
-            return True
+            return ""
 
         if USER_ANSWERING['status']:
             if com.startswith("FIRST") or com.startswith("THE FIRST") or com.startswith("SECOND") or com.startswith("THE SECOND") or com.startswith("THIRD") or com.startswith("THE THIRD"):
@@ -220,130 +223,106 @@ class VirtualAssistant():
                             wikicontent = "".join([i if ord(i) < 128 else ' ' for i in wikipage.content])
                             wikicontent = re.sub(r'\([^)]*\)', '', wikicontent)
                             userin.execute(["sensible-browser", wikipage.url], search_query)
-                            userin.say(wikicontent, cmd=["sensible-browser", wikipage.url])
-                            return True
+                            return userin.say(wikicontent, cmd=["sensible-browser", wikipage.url])
                         except requests.exceptions.ConnectionError:
                             userin.execute([" "], "Wikipedia connection error.")
-                            userin.say("Sorry, " + user_prefix + ". But I'm unable to connect to Wikipedia servers.")
-                            return True
+                            return userin.say("Sorry, " + user_prefix + ". But I'm unable to connect to Wikipedia servers.")
                         except Exception:
-                            return True
+                            return False
 
         if h.directly_equal(["dragonfire", "hey"]) or (h.check_verb_lemma("wake") and h.check_nth_lemma(-1, "up")) or (h.check_nth_lemma(0, "dragon") and h.check_nth_lemma(1, "fire") and h.max_word_count(2)):
             inactive = False
-            userin.say(choice([
+            return userin.say(choice([
                 "Yes, " + user_prefix + ".",
                 "Yes. I'm waiting.",
                 "What is your order?",
                 "Ready for the orders!",
                 user_prefix + ", tell me your wish."
             ]))
-            return True
         if (h.check_verb_lemma("go") and h.check_noun_lemma("sleep")) or (h.check_verb_lemma("stop") and h.check_verb_lemma("listen")):
             inactive = True
             userin.execute(["echo"], "Dragonfire deactivated. To reactivate say 'Dragonfire!' or 'Wake Up!'")
-            userin.say("I'm going to sleep")
-            return True
+            return userin.say("I'm going to sleep")
         if h.directly_equal(["enough"]) or (h.check_verb_lemma("shut") and h.check_nth_lemma(-1, "up")):
             tts_kill()
-            print("Dragonfire quiets.")
-            return True
+            msg = "Dragonfire quiets."
+            print(msg)
+            return msg
         if h.check_wh_lemma("what") and h.check_deps_contains("your name"):
-            userin.execute([" "], "My name is Dragonfire.", True)
-            return True
+            return userin.execute([" "], "My name is Dragonfire.", True)
         if h.check_wh_lemma("what") and h.check_deps_contains("your gender"):
-            userin.say("I have a female voice but I don't have a gender identity. I'm a computer program, " + user_prefix + ".")
-            return True
+            return userin.say("I have a female voice but I don't have a gender identity. I'm a computer program, " + user_prefix + ".")
         if (h.check_wh_lemma("who") and h.check_text("I")) or (h.check_verb_lemma("say") and h.check_text("my") and check_lemma("name")):
             userin.execute([" "], user_full_name)
-            userin.say("Your name is " + user_full_name + ", " + user_prefix + ".")
-            return True
+            return userin.say("Your name is " + user_full_name + ", " + user_prefix + ".")
         if h.check_verb_lemma("open") or h.check_adj_lemma("open") or h.check_verb_lemma("run") or h.check_verb_lemma("start") or h.check_verb_lemma("show"):
             if h.check_text("blender"):
                 userin.execute(["blender"], "Blender")
-                userin.say("Blender 3D computer graphics software")
-                return True
+                return userin.say("Blender 3D computer graphics software")
             if h.check_text("draw"):
                 userin.execute(["libreoffice", "--draw"], "LibreOffice Draw")
-                userin.say("Opening LibreOffice Draw")
-                return True
+                return userin.say("Opening LibreOffice Draw")
             if h.check_text("impress"):
                 userin.execute(["libreoffice", "--impress"], "LibreOffice Impress")
-                userin.say("Opening LibreOffice Impress")
-                return True
+                return userin.say("Opening LibreOffice Impress")
             if h.check_text("math"):
                 userin.execute(["libreoffice", "--math"], "LibreOffice Math")
-                userin.say("Opening LibreOffice Math")
-                return True
+                return userin.say("Opening LibreOffice Math")
             if h.check_text("writer"):
                 userin.execute(["libreoffice", "--writer"], "LibreOffice Writer")
-                userin.say("Opening LibreOffice Writer")
-                return True
+                return userin.say("Opening LibreOffice Writer")
             if h.check_text("gimp") or (h.check_noun_lemma("photo") and (h.check_noun_lemma("editor") or h.check_noun_lemma("shop"))):
                 userin.execute(["gimp"], "GIMP")
-                userin.say("Opening the photo editor software.")
-                return True
+                return userin.say("Opening the photo editor software.")
             if h.check_text("inkscape") or (h.check_noun_lemma("vector") and h.check_noun_lemma("graphic")) or (h.check_text("vectorial") and h.check_text("drawing")):
                 userin.execute(["inkscape"], "Inkscape")
-                userin.say("Opening the vectorial drawing software.")
-                return True
+                return userin.say("Opening the vectorial drawing software.")
             if h.check_noun_lemma("office") and h.check_noun_lemma("suite"):
                 userin.execute(["libreoffice"], "LibreOffice")
-                userin.say("Opening LibreOffice")
-                return True
+                return userin.say("Opening LibreOffice")
             if h.check_text("kdenlive") or (h.check_noun_lemma("video") and h.check_noun_lemma("editor")):
                 userin.execute(["kdenlive"], "Kdenlive")
-                userin.say("Opening the video editor software.")
-                return True
+                return userin.say("Opening the video editor software.")
             if h.check_noun_lemma("browser") or h.check_noun_lemma("chrome") or h.check_text("firefox"):
                 userin.execute(["sensible-browser"], "Web Browser")
-                userin.say("Web browser")
-                return True
+                return userin.say("Web browser")
             if h.check_text("steam"):
                 userin.execute(["steam"], "Steam")
-                userin.say("Opening Steam Game Store")
-                return True
+                return userin.say("Opening Steam Game Store")
             if h.check_text("files") or (h.check_noun_lemma("file") and h.check_noun_lemma("manager")):
                 userin.execute(["dolphin"], "File Manager")  # KDE neon
                 userin.execute(["pantheon-files"], "File Manager")  # elementary OS
                 userin.execute(["nautilus", "--browser"], "File Manager")  # Ubuntu
-                userin.say("File Manager")
-                return True
+                return userin.say("File Manager")
             if h.check_noun_lemma("camera"):
                 userin.execute(["kamoso"], "Camera")  # KDE neon
                 userin.execute(["snap-photobooth"], "Camera")  # elementary OS
                 userin.execute(["cheese"], "Camera")  # Ubuntu
-                userin.say("Camera")
-                return True
+                return userin.say("Camera")
             if h.check_noun_lemma("calendar"):
                 userin.execute(["korganizer"], "Calendar")  # KDE neon
                 userin.execute(["maya-calendar"], "Calendar")  # elementary OS
                 userin.execute(["orage"], "Calendar")  # Ubuntu
-                userin.say("Calendar")
-                return True
+                return userin.say("Calendar")
             if h.check_noun_lemma("calculator"):
                 userin.execute(["kcalc"], "Calculator")  # KDE neon
                 userin.execute(["pantheon-calculator"], "Calculator")  # elementary OS
                 userin.execute(["gnome-calculator"], "Calculator")  # Ubuntu
-                userin.say("Calculator")
-                return True
+                return userin.say("Calculator")
             if h.check_noun_lemma("software") and h.check_text("center"):
                 userin.execute(["plasma-discover"], "Software Center")  # KDE neon
                 userin.execute(["software-center"], "Software Center")  # elementary OS & Ubuntu
-                userin.say("Software Center")
-                return True
+                return userin.say("Software Center")
         if h.check_lemma("be") and h.check_lemma("-PRON-") and (h.check_lemma("lady") or h.check_lemma("woman") or h.check_lemma("girl")):
             config_file.update({'gender': 'female'}, Query().datatype == 'gender')
             config_file.remove(Query().datatype == 'callme')
             user_prefix = "My Lady"
-            userin.say("Pardon, " + user_prefix + ".")
-            return True
+            return userin.say("Pardon, " + user_prefix + ".")
         if h.check_lemma("be") and h.check_lemma("-PRON-") and (h.check_lemma("sir") or h.check_lemma("man") or h.check_lemma("boy")):
             config_file.update({'gender': 'male'}, Query().datatype == 'gender')
             config_file.remove(Query().datatype == 'callme')
             user_prefix = "Sir"
-            userin.say("Pardon, " + user_prefix + ".")
-            return True
+            return userin.say("Pardon, " + user_prefix + ".")
         if h.check_lemma("call") and h.check_lemma("-PRON-"):
             title = ""
             for token in doc:
@@ -357,8 +336,7 @@ class VirtualAssistant():
                 else:
                     config_file.insert({'datatype': 'callme', 'title': title})
             user_prefix = title
-            userin.say("OK, " + user_prefix + ".")
-            return True
+            return userin.say("OK, " + user_prefix + ".")
         if h.is_wh_question() and h.check_lemma("temperature"):
             city = ""
             for ent in doc.ents:
@@ -372,8 +350,7 @@ class VirtualAssistant():
                 fmt = "The temperature in {} is {} degrees celsius"
                 msg = fmt.format(city, weather.get_temperature('celsius')['temp'])
                 userin.execute([" "], msg)
-                userin.say(msg)
-                return True
+                return userin.say(msg)
         if (h.check_nth_lemma(0, "keyboard") or h.check_nth_lemma(0, "type")) and not args["server"]:
             n = len(doc[0].text) + 1
             with nostdout():
@@ -382,84 +359,83 @@ class VirtualAssistant():
                     for character in com[n:]:
                         k.tap_key(character)
                     k.tap_key(" ")
-            return True
+            return "keyboard"
         if (h.directly_equal(["enter"]) or (h.check_adj_lemma("new") or h.check_noun_lemma("line"))) and not args["server"]:
             with nostdout():
                 with nostderr():
                     k = PyKeyboard()
                     k.tap_key(k.enter_key)
-            return True
+            return "enter"
         if h.check_adj_lemma("new") and h.check_noun_lemma("tab") and not args["server"]:
             with nostdout():
                 with nostderr():
                     k = PyKeyboard()
                     k.press_keys([k.control_l_key, 't'])
-            return True
+            return "new tab"
         if h.check_verb_lemma("switch") and h.check_noun_lemma("tab") and not args["server"]:
             with nostdout():
                 with nostderr():
                     k = PyKeyboard()
                     k.press_keys([k.control_l_key, k.tab_key])
-            return True
+            return "switch tab"
         if h.directly_equal(["CLOSE", "ESCAPE"]) and not args["server"]:
             with nostdout():
                 with nostderr():
                     k = PyKeyboard()
                     k.press_keys([k.control_l_key, 'w'])
                     k.tap_key(k.escape_key)
-            return True
+            return "close"
         if h.check_lemma("back") and h.max_word_count(4) and not args["server"]:
             with nostdout():
                 with nostderr():
                     k = PyKeyboard()
                     k.press_keys([k.alt_l_key, k.left_key])
-            return True
+            return "back"
         if h.check_lemma("forward") and h.max_word_count(4) and not args["server"]:
             with nostdout():
                 with nostderr():
                     k = PyKeyboard()
                     k.press_keys([k.alt_l_key, k.right_key])
-            return True
+            return "forward"
         if (h.check_text("swipe") or h.check_text("scroll")) and not args["server"]:
             if h.check_text("left"):
                 with nostdout():
                     with nostderr():
                         m = PyMouse()
                         m.scroll(0, -5)
-                return True
+                return "swipe left"
             if h.check_text("right"):
                 with nostdout():
                     with nostderr():
                         m = PyMouse()
                         m.scroll(0, 5)
-                return True
+                return "swipe right"
             if h.check_text("up"):
                 with nostdout():
                     with nostderr():
                         m = PyMouse()
                         m.scroll(5, 0)
-                return True
+                return "swipe up"
             if h.check_text("down"):
                 with nostdout():
                     with nostderr():
                         m = PyMouse()
                         m.scroll(-5, 0)
-                return True
+                return "swipe down"
         if h.directly_equal(["PLAY", "PAUSE", "SPACEBAR"]) and not args["server"]:
             with nostdout():
                 with nostderr():
                     k = PyKeyboard()
                     k.tap_key(" ")
-            return True
+            return "play"
         if ((h.check_text("shut") and h.check_text("down")) or (h.check_text("power") and h.check_text("off"))) and h.check_text("computer") and not args["server"]:
-            userin.execute(["sudo", "poweroff"], "Shutting down", True, 3)
-            return True
+            return userin.execute(["sudo", "poweroff"], "Shutting down", True, 3)
         if h.check_nth_lemma(0, "goodbye") or h.check_nth_lemma(0, "bye") or (h.check_verb_lemma("see") and h.check_noun_lemma("you") and h.check_noun_lemma("later")):
-            userin.say("Goodbye, " + user_prefix)
+            response = userin.say("Goodbye, " + user_prefix)
             if not args["server"]:
                 # raise KeyboardInterrupt
                 thread.interrupt_main()
-            return True
+            return response
         if (h.check_lemma("search") or h.check_lemma("find")) and h.check_lemma("wikipedia"):
             with nostderr():
                 search_query = ""
@@ -477,26 +453,23 @@ class VirtualAssistant():
                         wikicontent = "".join([i if ord(i) < 128 else ' ' for i in wikipage.content])
                         wikicontent = re.sub(r'\([^)]*\)', '', wikicontent)
                         userin.execute(["sensible-browser", wikipage.url], search_query)
-                        userin.say(wikicontent, cmd=["sensible-browser", wikipage.url])
-                        return True
+                        return userin.say(wikicontent, cmd=["sensible-browser", wikipage.url])
                     except requests.exceptions.ConnectionError:
                         userin.execute([" "], "Wikipedia connection error.")
-                        userin.say("Sorry, " + user_prefix + ". But I'm unable to connect to Wikipedia servers.")
-                        return True
+                        return userin.say("Sorry, " + user_prefix + ". But I'm unable to connect to Wikipedia servers.")
                     except wikipedia.exceptions.DisambiguationError as disambiguation:
                         USER_ANSWERING['status'] = True
                         USER_ANSWERING['for'] = 'wikipedia'
                         USER_ANSWERING['reason'] = 'disambiguation'
                         USER_ANSWERING['options'] = disambiguation.options[:3]
                         notify = "Wikipedia disambiguation. Which one of these you meant?:\n - " + disambiguation.options[0]
-                        message = user_prefix + ", there is a disambiguation. Which one of these you meant? " + disambiguation.options[0]
+                        msg = user_prefix + ", there is a disambiguation. Which one of these you meant? " + disambiguation.options[0]
                         for option in disambiguation.options[1:3]:
-                            message += ", or " + option
+                            msg += ", or " + option
                             notify += "\n - " + option
                         notify += '\nSay, for example: "THE FIRST ONE" to choose.'
                         userin.execute([" "], notify)
-                        userin.say(message)
-                        return True
+                        return userin.say(msg)
                     except BaseException:
                         pass
         if (h.check_lemma("search") or h.check_lemma("find")) and h.check_lemma("youtube"):
@@ -514,10 +487,10 @@ class VirtualAssistant():
                             youtube_url = "https://www.youtube.com/watch?v=%s" % (info['entries'][0]['id'])
                             userin.execute(["sensible-browser", youtube_url], youtube_title)
                             youtube_title = "".join([i if ord(i) < 128 else ' ' for i in youtube_title])
-                            userin.say(youtube_title, ["sensible-browser", youtube_url])
+                            response = userin.say(youtube_title, ["sensible-browser", youtube_url])
                         else:
                             youtube_title = "No video found, " + user_prefix + "."
-                            userin.say(youtube_title)
+                            response = userin.say(youtube_title)
                         if not args["server"]:
                             time.sleep(5)
                             k = PyKeyboard()
@@ -526,7 +499,7 @@ class VirtualAssistant():
                             k.tap_key(k.tab_key)
                             k.tap_key(k.tab_key)
                             k.tap_key('f')
-                        return True
+                        return response
         if (h.check_lemma("search") or h.check_lemma("find")) and (h.check_lemma("google") or h.check_lemma("web") or h.check_lemma("internet")) and not h.check_lemma("image"):
             with nostdout():
                 with nostderr():
@@ -537,8 +510,7 @@ class VirtualAssistant():
                     search_query = search_query.strip()
                     if search_query:
                         tab_url = "http://google.com/?#q=" + search_query
-                        userin.execute(["sensible-browser", tab_url], search_query, True)
-                        return True
+                        return userin.execute(["sensible-browser", tab_url], search_query, True)
         if (h.check_lemma("search") or h.check_lemma("find")) and (h.check_lemma("google") or h.check_lemma("web") or h.check_lemma("internet")) and h.check_lemma("image"):
             with nostdout():
                 with nostderr():
@@ -549,21 +521,23 @@ class VirtualAssistant():
                     search_query = search_query.strip()
                     if search_query:
                         tab_url = "http://google.com/?#q=" + search_query + "&tbm=isch"
-                        userin.execute(["sensible-browser", tab_url], search_query, True)
-                        return True
+                        return userin.execute(["sensible-browser", tab_url], search_query, True)
 
         arithmetic_response = arithmetic_parse(com)
         if arithmetic_response:
-            userin.say(arithmetic_response)
+            return userin.say(arithmetic_response)
         else:
-            learnerresponse = learner.respond(com)
-            if learnerresponse:
-                userin.say(learnerresponse)
+            learner_response = learner.respond(com)
+            if learner_response:
+                return userin.say(learner_response)
             else:
-                if not omniscient.respond(com, not args["silent"], userin, user_prefix, args["server"]):
+                omniscient_response = omniscient.respond(com, not args["silent"], userin, user_prefix, args["server"])
+                if omniscient_response:
+                    return omniscient_response
+                else:
                     dc_response = dc.respond(com, user_prefix)
                     if dc_response:
-                        userin.say(dc_response)
+                        return userin.say(dc_response)
 
 
 def tts_kill():
@@ -578,6 +552,9 @@ def greet(userin):
 
     Args:
         userin:  :class:`dragonfire.utilities.TextToAction` instance.
+
+    Returns:
+        str:  Response.
     """
 
     (columns, lines) = shutil.get_terminal_size()
@@ -612,15 +589,18 @@ def greet(userin):
     else:
         time_of_day = "evening"
     userin.execute(["echo"], "To activate say 'Dragonfire!' or 'Wake Up!'")
-    userin.say(" ".join(["Good", time_of_day, user_prefix]))
+    return userin.say(" ".join(["Good", time_of_day, user_prefix]))
 
 
 def speech_error():
     """The top-level method to indicate that there is a speech recognition error occurred.
+
+    Returns:
+        str:  Response.
     """
 
     userin.execute(["echo"], "An error occurred")
-    userin.say("I couldn't understand, please repeat again.")
+    return userin.say("I couldn't understand, please repeat again.")
 
 
 def initiate():

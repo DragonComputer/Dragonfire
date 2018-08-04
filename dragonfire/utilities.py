@@ -92,12 +92,13 @@ class TextToAction:
                 subprocess.Popen(cmd, stdout=FNULL, stderr=FNULL)
             except BaseException:
                 pass
+        return msg
 
-    def say(self, message, dynamic=False, end=False, cmd=None):
+    def say(self, msg, dynamic=False, end=False, cmd=None):
         """Method to give text-to-speech output(using **The Festival Speech Synthesis System**), print the response into console and **send a tweet**.
 
         Args:
-            message (str):  Message to be read by Dragonfire or turned into a tweet.
+            msg (str):  Message to be read by Dragonfire or turned into a tweet.
 
         Keyword Args:
             dynamic (bool):     Dynamically print the output into console?
@@ -118,7 +119,7 @@ class TextToAction:
         """
 
         if self.server:
-            text = "@" + self.twitter_user + " " + message#.upper()
+            text = "@" + self.twitter_user + " " + msg#.upper()
             text = (text[:TWITTER_CHAR_LIMIT]) if len(text) > TWITTER_CHAR_LIMIT else text
             if cmd:
                 if len(cmd) > 1:
@@ -145,27 +146,27 @@ class TextToAction:
                                 print("Warning: " + e.response.text)
                             finally:
                                 os.remove(filename)
-                            return True
+                            return msg
             try:
                 self.twitter_api.update_status(text)
                 if randint(1,10) == 1:
                     self.twitter_api.create_friendship(self.twitter_user, follow=True)
             except TweepError as e:
                 print("Warning: " + e.response.text)
-            return True
+            return msg
         # if songRunning == True:
         #   subprocess.Popen(["rhythmbox-client","--pause"])
-        if len(message) < 10000:
+        if len(msg) < 10000:
             (columns, lines) = shutil.get_terminal_size()
             if dynamic:
                 if end:
-                    print(message.upper())
+                    print(msg.upper())
                     print(columns * "_" + "\n")
                 else:
-                    print("Dragonfire: " + message.upper(), end=' ')
+                    print("Dragonfire: " + msg.upper(), end=' ')
                     stdout.flush()
             else:
-                print("Dragonfire: " + message.upper())
+                print("Dragonfire: " + msg.upper())
                 print(columns * "_" + "\n")
         if not self.silent:
             subprocess.call(["pkill", "flite"], stdout=FNULL, stderr=FNULL)
@@ -175,8 +176,8 @@ class TextToAction:
                 stdout=FNULL,
                 stderr=FNULL,
                 shell=True)
-            message = "".join([i if ord(i) < 128 else ' ' for i in message])
-            tts_proc.stdin.write(message.encode())
+            msg = "".join([i if ord(i) < 128 else ' ' for i in msg])
+            tts_proc.stdin.write(msg.encode())
             tts_proc.stdin.close()
             # print "TTS process started."
 
@@ -190,12 +191,13 @@ class TextToAction:
         pool.terminate()
         # if songRunning == True:
         #   subprocess.Popen(["rhythmbox-client","--play"])
+        return msg
 
-    def espeak(self, message):
+    def espeak(self, msg):
         """Method to give a text-to-speech output using **eSpeak: Speech Synthesizer**.
 
         Args:
-            message (str):  Message to be read by Dragonfire.
+            msg (str):  Message to be read by Dragonfire.
 
         .. note::
 
@@ -203,7 +205,7 @@ class TextToAction:
 
         """
 
-        subprocess.Popen(["espeak", "-v", "en-uk-north", message])
+        subprocess.Popen(["espeak", "-v", "en-uk-north", msg])
 
 
 @contextlib.contextmanager
