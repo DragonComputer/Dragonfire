@@ -4,11 +4,16 @@ from __future__ import print_function
 from __future__ import absolute_import
 import unittest
 from gi.repository import GObject
-import thread
+try:
+    import thread  # Low-level threading API (Python 2.7)
+except ImportError:
+    import _thread as thread  # Low-level threading API (Python 3.x)
 import logging
-from decoder import DecoderPipeline
+from dragonfire.sr.decoder import DecoderPipeline
 import time
 import pyaudio  # Provides Python bindings for PortAudio, the cross platform audio API
+
+import pytest
 
 CHUNK = 8000  # Smallest unit of audio. 1024 bytes
 FORMAT = pyaudio.paInt16  # Data format
@@ -55,6 +60,7 @@ class DecoderPipelineTests(unittest.TestCase):
         self.__class__.words = []
         self.__class__.finished = False
 
+    @pytest.mark.skip(reason="Kaldi is deprecated.")
     def testRecognize(self):
         self.decoder_pipeline.init_request(
             "recognize",
@@ -86,6 +92,7 @@ class DecoderPipelineTests(unittest.TestCase):
             time.sleep(1)
         print(self.words)
 
+    @pytest.mark.skip(reason="Kaldi is deprecated.")
     def testWav(self):
         self.decoder_pipeline.init_request("testWav", "")
         f = open("tests/ten_digits.wav", "rb")

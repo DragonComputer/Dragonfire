@@ -43,7 +43,7 @@ class TextToAction:
     """Class that turns text into action.
     """
 
-    def __init__(self, args):
+    def __init__(self, args, testing=False):
         """Initialization method of :class:`dragonfire.utilities.TextToAction` class.
 
         Args:
@@ -53,6 +53,7 @@ class TextToAction:
         self.headless = args["headless"]
         self.silent = args["silent"]
         self.server = args["server"]
+        self.testing = testing
         if self.server:
             self.headless = True
             self.silent = True
@@ -78,20 +79,19 @@ class TextToAction:
 
         self.speak = speak
 
-        if self.server:
-            return True
-        if self.speak == True:
-            self.say(msg)
-        try:
-            subprocess.Popen(["notify-send", "Dragonfire", msg])
-        except BaseException:
-            pass
-        if cmd != "":
-            time.sleep(duration)
+        if self.server or not self.testing:
+            if self.speak == True:
+                self.say(msg)
             try:
-                subprocess.Popen(cmd, stdout=FNULL, stderr=FNULL)
+                subprocess.Popen(["notify-send", "Dragonfire", msg])
             except BaseException:
                 pass
+            if cmd != "":
+                time.sleep(duration)
+                try:
+                    subprocess.Popen(cmd, stdout=FNULL, stderr=FNULL)
+                except BaseException:
+                    pass
         return msg
 
     def say(self, msg, dynamic=False, end=False, cmd=None):

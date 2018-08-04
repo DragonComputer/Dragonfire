@@ -202,7 +202,7 @@ class Helper():
         """
 
         for word in words:
-            if self.doc[0].lemma_ == word and len(self.doc) == 1:
+            if self.doc[0].lemma_ == word.lower() and len(self.doc) == 1:
                 return True
         return False
 
@@ -303,6 +303,21 @@ class Helper():
 
         for token in self.doc:
             if token.pos_ == "ADJ" and token.lemma_ == adj:
+                return True
+        return False
+
+    def check_adv_lemma(self, adv):
+        """Method to check if there is an adverb with given lemma.
+
+        Args:
+            adv (str):  Adverb lemma.
+
+        Returns:
+            bool:  True or False
+        """
+
+        for token in self.doc:
+            if token.pos_ == "ADV" and token.lemma_ == adv:
                 return True
         return False
 

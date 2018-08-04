@@ -180,3 +180,6 @@ dragonfire/sr/tests/*
 
 # nohup output files
 nohup.out
+
+# pytest
+.pytest_cache

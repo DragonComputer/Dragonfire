@@ -129,7 +129,7 @@ class VirtualAssistant():
 
     """
 
-    def __init__(self, args, userin, user_full_name="John Doe", user_prefix="sir", tw_user=None):
+    def __init__(self, args, userin, user_full_name="John Doe", user_prefix="sir", tw_user=None, testing=False):
         """Initialization method of :class:`dragonfire.VirtualAssistant` class.
 
         Args:
@@ -147,6 +147,13 @@ class VirtualAssistant():
         self.user_full_name = user_full_name
         self.user_prefix = user_prefix
         self.userin.twitter_user = tw_user
+        self.testing = testing
+        self.inactive = False
+        if not self.args["server"]:
+            self.inactive = True
+        if self.testing:
+            home = expanduser("~")
+            self.config_file = TinyDB(home + '/.dragonfire_config.json')
 
     def command(self, com):
         """Function that serves as the entry point for each one of the user commands.
@@ -167,7 +174,6 @@ class VirtualAssistant():
         """
 
         if not self.args["server"]:
-            global inactive
             global config_file
             global e
             if (e.is_set()):  # System Tray Icon exit must trigger this
@@ -176,8 +182,12 @@ class VirtualAssistant():
         userin = self.userin
         user_full_name = self.user_full_name
         user_prefix = self.user_prefix
+        if self.testing:
+            config_file = self.config_file
 
-        if not com.strip() or not isinstance(com, str):
+        if isinstance(com, str):
+            com.strip()
+        else:
             return False
 
         print("You: " + com.upper())
@@ -197,7 +207,7 @@ class VirtualAssistant():
                     print("{:12}  {:12}  {:12}  {:12}".format(chunk.text, chunk.root.text, chunk.root.dep_, chunk.root.head.text))
                 print("")
 
-        if inactive and not (h.directly_equal(["dragonfire", "hey"]) or (h.check_verb_lemma("wake") and h.check_nth_lemma(-1, "up")) or (h.check_nth_lemma(0, "dragon") and h.check_nth_lemma(1, "fire") and h.max_word_count(2))):
+        if self.inactive and not (h.directly_equal(["dragonfire", "hey"]) or (h.check_verb_lemma("wake") and h.check_nth_lemma(-1, "up")) or (h.check_nth_lemma(0, "dragon") and h.check_nth_lemma(1, "fire") and h.max_word_count(2))):
             return ""
 
         if USER_ANSWERING['status']:
@@ -231,16 +241,16 @@ class VirtualAssistant():
                             return False
 
         if h.directly_equal(["dragonfire", "hey"]) or (h.check_verb_lemma("wake") and h.check_nth_lemma(-1, "up")) or (h.check_nth_lemma(0, "dragon") and h.check_nth_lemma(1, "fire") and h.max_word_count(2)):
-            inactive = False
+            self.inactive = False
             return userin.say(choice([
                 "Yes, " + user_prefix + ".",
                 "Yes. I'm waiting.",
                 "What is your order?",
                 "Ready for the orders!",
-                user_prefix + ", tell me your wish."
+                user_prefix.capitalize() + ", tell me your wish."
             ]))
         if (h.check_verb_lemma("go") and h.check_noun_lemma("sleep")) or (h.check_verb_lemma("stop") and h.check_verb_lemma("listen")):
-            inactive = True
+            self.inactive = True
             userin.execute(["echo"], "Dragonfire deactivated. To reactivate say 'Dragonfire!' or 'Wake Up!'")
             return userin.say("I'm going to sleep")
         if h.directly_equal(["enough"]) or (h.check_verb_lemma("shut") and h.check_nth_lemma(-1, "up")):
@@ -252,7 +262,7 @@ class VirtualAssistant():
             return userin.execute([" "], "My name is Dragonfire.", True)
         if h.check_wh_lemma("what") and h.check_deps_contains("your gender"):
             return userin.say("I have a female voice but I don't have a gender identity. I'm a computer program, " + user_prefix + ".")
-        if (h.check_wh_lemma("who") and h.check_text("I")) or (h.check_verb_lemma("say") and h.check_text("my") and check_lemma("name")):
+        if (h.check_wh_lemma("who") and h.check_text("I")) or (h.check_verb_lemma("say") and h.check_text("my") and h.check_lemma("name")):
             userin.execute([" "], user_full_name)
             return userin.say("Your name is " + user_full_name + ", " + user_prefix + ".")
         if h.check_verb_lemma("open") or h.check_adj_lemma("open") or h.check_verb_lemma("run") or h.check_verb_lemma("start") or h.check_verb_lemma("show"):
@@ -283,7 +293,7 @@ class VirtualAssistant():
             if h.check_text("kdenlive") or (h.check_noun_lemma("video") and h.check_noun_lemma("editor")):
                 userin.execute(["kdenlive"], "Kdenlive")
                 return userin.say("Opening the video editor software.")
-            if h.check_noun_lemma("browser") or h.check_noun_lemma("chrome") or h.check_text("firefox"):
+            if h.check_noun_lemma("browser") or h.check_text("chrome") or h.check_text("firefox"):
                 userin.execute(["sensible-browser"], "Web Browser")
                 return userin.say("Web browser")
             if h.check_text("steam"):
@@ -316,12 +326,12 @@ class VirtualAssistant():
         if h.check_lemma("be") and h.check_lemma("-PRON-") and (h.check_lemma("lady") or h.check_lemma("woman") or h.check_lemma("girl")):
             config_file.update({'gender': 'female'}, Query().datatype == 'gender')
             config_file.remove(Query().datatype == 'callme')
-            user_prefix = "My Lady"
+            user_prefix = "my lady"
             return userin.say("Pardon, " + user_prefix + ".")
         if h.check_lemma("be") and h.check_lemma("-PRON-") and (h.check_lemma("sir") or h.check_lemma("man") or h.check_lemma("boy")):
             config_file.update({'gender': 'male'}, Query().datatype == 'gender')
             config_file.remove(Query().datatype == 'callme')
-            user_prefix = "Sir"
+            user_prefix = "sir"
             return userin.say("Pardon, " + user_prefix + ".")
         if h.check_lemma("call") and h.check_lemma("-PRON-"):
             title = ""
@@ -346,93 +356,110 @@ class VirtualAssistant():
             if city:
                 owm = pyowm.OWM("16d66c84e82424f0f8e62c3e3b27b574")
                 reg = owm.city_id_registry()
-                weather = owm.weather_at_id(reg.ids_for(city)[0][0]).get_weather()
-                fmt = "The temperature in {} is {} degrees celsius"
-                msg = fmt.format(city, weather.get_temperature('celsius')['temp'])
-                userin.execute([" "], msg)
-                return userin.say(msg)
+                try:
+                    weather = owm.weather_at_id(reg.ids_for(city)[0][0]).get_weather()
+                    fmt = "The temperature in {} is {} degrees celsius"
+                    msg = fmt.format(city, weather.get_temperature('celsius')['temp'])
+                    userin.execute([" "], msg)
+                    return userin.say(msg)
+                except IndexError:
+                    msg = "Sorry, " + user_prefix + " but I couldn't find a city named " + city + " on the internet."
+                    userin.execute([" "], msg)
+                    return userin.say(msg)
         if (h.check_nth_lemma(0, "keyboard") or h.check_nth_lemma(0, "type")) and not args["server"]:
             n = len(doc[0].text) + 1
             with nostdout():
                 with nostderr():
                     k = PyKeyboard()
-                    for character in com[n:]:
-                        k.tap_key(character)
-                    k.tap_key(" ")
+                    if not self.testing:
+                        for character in com[n:]:
+                            k.tap_key(character)
+                        k.tap_key(" ")
             return "keyboard"
-        if (h.directly_equal(["enter"]) or (h.check_adj_lemma("new") or h.check_noun_lemma("line"))) and not args["server"]:
+        if (h.directly_equal(["enter"]) or (h.check_adj_lemma("new") and h.check_noun_lemma("line"))) and not args["server"]:
             with nostdout():
                 with nostderr():
                     k = PyKeyboard()
-                    k.tap_key(k.enter_key)
+                    if not self.testing:
+                        k.tap_key(k.enter_key)
             return "enter"
         if h.check_adj_lemma("new") and h.check_noun_lemma("tab") and not args["server"]:
             with nostdout():
                 with nostderr():
                     k = PyKeyboard()
-                    k.press_keys([k.control_l_key, 't'])
+                    if not self.testing:
+                        k.press_keys([k.control_l_key, 't'])
             return "new tab"
         if h.check_verb_lemma("switch") and h.check_noun_lemma("tab") and not args["server"]:
             with nostdout():
                 with nostderr():
                     k = PyKeyboard()
-                    k.press_keys([k.control_l_key, k.tab_key])
+                    if not self.testing:
+                        k.press_keys([k.control_l_key, k.tab_key])
             return "switch tab"
         if h.directly_equal(["CLOSE", "ESCAPE"]) and not args["server"]:
             with nostdout():
                 with nostderr():
                     k = PyKeyboard()
-                    k.press_keys([k.control_l_key, 'w'])
-                    k.tap_key(k.escape_key)
+                    if not self.testing:
+                        k.press_keys([k.control_l_key, 'w'])
+                        k.tap_key(k.escape_key)
             return "close"
         if h.check_lemma("back") and h.max_word_count(4) and not args["server"]:
             with nostdout():
                 with nostderr():
                     k = PyKeyboard()
-                    k.press_keys([k.alt_l_key, k.left_key])
+                    if not self.testing:
+                        k.press_keys([k.alt_l_key, k.left_key])
             return "back"
         if h.check_lemma("forward") and h.max_word_count(4) and not args["server"]:
             with nostdout():
                 with nostderr():
                     k = PyKeyboard()
-                    k.press_keys([k.alt_l_key, k.right_key])
+                    if not self.testing:
+                        k.press_keys([k.alt_l_key, k.right_key])
             return "forward"
         if (h.check_text("swipe") or h.check_text("scroll")) and not args["server"]:
             if h.check_text("left"):
                 with nostdout():
                     with nostderr():
                         m = PyMouse()
-                        m.scroll(0, -5)
+                        if not self.testing:
+                            m.scroll(0, -5)
                 return "swipe left"
             if h.check_text("right"):
                 with nostdout():
                     with nostderr():
                         m = PyMouse()
-                        m.scroll(0, 5)
+                        if not self.testing:
+                            m.scroll(0, 5)
                 return "swipe right"
             if h.check_text("up"):
                 with nostdout():
                     with nostderr():
                         m = PyMouse()
-                        m.scroll(5, 0)
+                        if not self.testing:
+                            m.scroll(5, 0)
                 return "swipe up"
             if h.check_text("down"):
                 with nostdout():
                     with nostderr():
                         m = PyMouse()
-                        m.scroll(-5, 0)
+                        if not self.testing:
+                            m.scroll(-5, 0)
                 return "swipe down"
         if h.directly_equal(["PLAY", "PAUSE", "SPACEBAR"]) and not args["server"]:
             with nostdout():
                 with nostderr():
                     k = PyKeyboard()
-                    k.tap_key(" ")
+                    if not self.testing:
+                        k.tap_key(" ")
             return "play"
         if ((h.check_text("shut") and h.check_text("down")) or (h.check_text("power") and h.check_text("off"))) and h.check_text("computer") and not args["server"]:
             return userin.execute(["sudo", "poweroff"], "Shutting down", True, 3)
-        if h.check_nth_lemma(0, "goodbye") or h.check_nth_lemma(0, "bye") or (h.check_verb_lemma("see") and h.check_noun_lemma("you") and h.check_noun_lemma("later")):
+        if h.check_nth_lemma(0, "goodbye") or h.check_nth_lemma(0, "bye") or (h.check_verb_lemma("see") and h.check_text("you") and h.check_adv_lemma("later")):
             response = userin.say("Goodbye, " + user_prefix)
-            if not args["server"]:
+            if not args["server"] and not self.testing:
                 # raise KeyboardInterrupt
                 thread.interrupt_main()
             return response
@@ -492,13 +519,14 @@ class VirtualAssistant():
                             youtube_title = "No video found, " + user_prefix + "."
                             response = userin.say(youtube_title)
                         if not args["server"]:
-                            time.sleep(5)
                             k = PyKeyboard()
-                            k.tap_key(k.tab_key)
-                            k.tap_key(k.tab_key)
-                            k.tap_key(k.tab_key)
-                            k.tap_key(k.tab_key)
-                            k.tap_key('f')
+                            if not self.testing:
+                                time.sleep(5)
+                                k.tap_key(k.tab_key)
+                                k.tap_key(k.tab_key)
+                                k.tap_key(k.tab_key)
+                                k.tap_key(k.tab_key)
+                                k.tap_key('f')
                         return response
         if (h.check_lemma("search") or h.check_lemma("find")) and (h.check_lemma("google") or h.check_lemma("web") or h.check_lemma("internet")) and not h.check_lemma("image"):
             with nostdout():
@@ -627,12 +655,9 @@ def initiate():
         print(pkg_resources.get_distribution("dragonfire").version)
         sys.exit(1)
     try:
-        global inactive
         global dc
-        inactive = False
         userin = TextToAction(args)
         if not args["server"]:
-            inactive = True
             SystemTrayExitListenerSet(e)
             stray_proc = Process(target=SystemTrayInit)
             stray_proc.start()
