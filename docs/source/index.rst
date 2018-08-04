@@ -11,6 +11,10 @@ Welcome to Dragonfire's documentation!
    :caption: Contents:
 
    readme
+   troubleshooting
+   contributing
+   codeofconduct
+   license
 
 
 
