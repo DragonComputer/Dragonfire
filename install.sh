@@ -43,7 +43,7 @@ if [ "$NO_MODEL" = false ] ; then
     fi
 fi
 
-DEEPCONV_DIR=/usr/share/dragonfire/conversational
+DEEPCONV_DIR=/usr/share/dragonfire/deepconv
 if [ ! -d "$DEEPCONV_DIR" ]; then
   mkdir $DEEPCONV_DIR
 fi

@@ -6,7 +6,7 @@ Subpackages
 
 .. toctree::
 
-    dragonfire.conversational
+    dragonfire.deepconv
     dragonfire.sr
     dragonfire.tts
 

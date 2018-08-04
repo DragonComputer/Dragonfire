@@ -26,7 +26,7 @@ RUN pip3 install .
 
 # Define environment variables
 ENV DRAGONFIRE_DIR /usr/share/dragonfire
-ENV DEEPCONV_DIR /usr/share/dragonfire/conversational
+ENV DEEPCONV_DIR /usr/share/dragonfire/deepconv
 
 # Create the necessary directories for the Tensorflow models
 RUN mkdir $DRAGONFIRE_DIR

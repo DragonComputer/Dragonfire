@@ -33,7 +33,7 @@ from dragonfire.omniscient import Omniscient  # Submodule of Dragonfire that ser
 from dragonfire.stray import SystemTrayExitListenerSet, SystemTrayInit  # Submodule of Dragonfire for System Tray Icon related functionalities
 from dragonfire.utilities import TextToAction, nostdout, nostderr  # Submodule of Dragonfire to provide various utilities
 from dragonfire.arithmetic import arithmetic_parse  # Submodule of Dragonfire to analyze arithmetic expressions
-from dragonfire.conversational import DeepConversation  # Submodule of Dragonfire to answer questions directly using an Artificial Neural Network
+from dragonfire.deepconv import DeepConversation  # Submodule of Dragonfire to answer questions directly using an Artificial Neural Network
 from dragonfire.config import Config  # Submodule of Dragonfire to store configurations
 
 import spacy  # Industrial-strength Natural Language Processing in Python
@@ -157,7 +157,7 @@ class VirtualAssistant():
          - Try to get a response from :func:`dragonfire.arithmetic.arithmetic_parse` function.
          - Try to get a response from :func:`dragonfire.learn.Learner.respond` method.
          - Try to get a answer from :func:`dragonfire.omniscient.Omniscient.respond` method.
-         - Try to get a response from :func:`dragonfire.conversational.DeepConversation.respond` method.
+         - Try to get a response from :func:`dragonfire.deepconv.DeepConversation.respond` method.
 
         Args:
             com (str):  User's command.

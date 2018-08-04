@@ -12,11 +12,11 @@ import random
 import string
 import collections
 
-from dragonfire.conversational.corpus.cornelldata import CornellData
-from dragonfire.conversational.corpus.opensubsdata import OpensubsData
-from dragonfire.conversational.corpus.scotusdata import ScotusData
-from dragonfire.conversational.corpus.ubuntudata import UbuntuData
-from dragonfire.conversational.corpus.lightweightdata import LightweightData
+from dragonfire.deepconv.corpus.cornelldata import CornellData
+from dragonfire.deepconv.corpus.opensubsdata import OpensubsData
+from dragonfire.deepconv.corpus.scotusdata import ScotusData
+from dragonfire.deepconv.corpus.ubuntudata import UbuntuData
+from dragonfire.deepconv.corpus.lightweightdata import LightweightData
 
 
 class Batch:
@@ -94,7 +94,7 @@ class TextData:
         """Return the name of the base prefix of the current dataset
         """
         #path = os.path.join(self.args.rootDir, 'data' + os.sep + 'samples' + os.sep)
-        path = dirName = "/usr/share/dragonfire/conversational/model-pretrainedv2/"
+        path = dirName = "/usr/share/dragonfire/deepconv/model-pretrainedv2/"
         path += 'dataset-{}'.format(self.args.corpus)
         if self.args.datasetTag:
             path += '-' + self.args.datasetTag

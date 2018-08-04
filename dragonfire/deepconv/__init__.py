@@ -11,8 +11,8 @@ from random import choice
 from tqdm import tqdm  # Progress bar
 from tensorflow.python import debug as tf_debug
 
-from dragonfire.conversational.textdata import TextData
-from dragonfire.conversational.model import Model
+from dragonfire.deepconv.textdata import TextData
+from dragonfire.deepconv.model import Model
 
 
 class DeepConversation:
@@ -83,7 +83,7 @@ class DeepConversation:
         self.sess = None
 
         # Filename and directories constants
-        self.MODEL_DIR_BASE = "/usr/share/dragonfire/conversational" + os.sep + 'model'
+        self.MODEL_DIR_BASE = "/usr/share/dragonfire/deepconv" + os.sep + 'model'
         self.MODEL_NAME_BASE = 'model'
         self.MODEL_EXT = '.ckpt'
         self.CONFIG_FILENAME = 'params.ini'

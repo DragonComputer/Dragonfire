@@ -308,7 +308,7 @@ def omni(text, gender_prefix):
 
 @hug.post('/deep', requires=token_authentication)
 def deep(text, gender_prefix):
-    """**Endpoint** to return the response of :func:`dragonfire.conversational.DeepConversation.respond` method.
+    """**Endpoint** to return the response of :func:`dragonfire.deepconv.DeepConversation.respond` method.
 
     Args:
         text (str):             Text.
@@ -332,7 +332,7 @@ def answer(text, gender_prefix, user_id):
      - :func:`dragonfire.arithmetic.arithmetic_parse` function
      - :func:`dragonfire.learn.Learner.respond` method
      - :func:`dragonfire.omniscient.Omniscient.respond` method
-     - :func:`dragonfire.conversational.DeepConversation.respond` method
+     - :func:`dragonfire.deepconv.DeepConversation.respond` method
 
     Args:
         text (str):             Text.
@@ -524,7 +524,7 @@ class Run():
             nlp_ref:                :mod:`spacy` model instance.
             learner_ref:            :class:`dragonfire.learn.Learner` instance.
             omniscient_ref:         :class:`dragonfire.omniscient.Omniscient` instance.
-            dc_ref:                 :class:`dragonfire.conversational.DeepConversation` instance.
+            dc_ref:                 :class:`dragonfire.deepconv.DeepConversation` instance.
             userin_ref:             :class:`dragonfire.utilities.TextToAction` instance.
             token (str):            API token.
             port_number (int):      Port number that the API will be served.

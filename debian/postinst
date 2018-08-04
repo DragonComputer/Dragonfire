@@ -21,7 +21,7 @@ if [ ! ${verified::-3} = "$CHECKSUM" ]; then
   wget -nc -O - https://github.com/mozilla/DeepSpeech/releases/download/v0.1.1/deepspeech-0.1.1-models.tar.gz | tar xvfz -
 fi
 
-DEEPCONV_DIR=/usr/share/dragonfire/conversational
+DEEPCONV_DIR=/usr/share/dragonfire/deepconv
 if [ ! -d "$DEEPCONV_DIR" ]; then
   mkdir $DEEPCONV_DIR
 fi

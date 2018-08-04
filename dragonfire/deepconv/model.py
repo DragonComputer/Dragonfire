@@ -5,7 +5,7 @@ Model to predict the next sentence given an input sequence
 
 import tensorflow as tf
 
-from dragonfire.conversational.textdata import Batch
+from dragonfire.deepconv.textdata import Batch
 
 
 class ProjectionOp:
