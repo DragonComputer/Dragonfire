@@ -97,8 +97,8 @@ class Learner():
                 subject.append(np_text)  # append the text of this noun phrase
             if np.root.dep_ == 'dobj' and types[-2] not in ['pobj', 'nsubj'] and np.root.tag_ not in ['WDT', 'WP', 'WP$', 'WRB']:  # if it's a dobj(direct object) and the previous noun phrase's type was not nsubj(nominal subject)
                 subject.append(np_text)  # append the text of this noun phrase
-        subject = [x for x in subject]
-        subject = ' '.join(subject).strip()  # concatenate all noun phrases found
+        subject = [x.strip() for x in subject]
+        subject = ' '.join(subject)  # concatenate all noun phrases found
         if subject:  # if the subject is not empty
             if subject.upper() in self.inv_pronouns:  # pass the learning ability if the user is talking about Dragonfire's itself
                 return ""
@@ -331,25 +331,24 @@ class Learner():
             types.append(token.lemma_)
             if token.lemma_ == "-PRON-":  # if it's a pronoun, mirror it
                 if token.text.upper() in self.pronouns:
-                    result.append(self.pronouns[token.text.upper()].lower())
+                    result.append(self.pronouns[token.text.upper()].lower().strip())
                     continue
                 if token.text.upper() in self.inv_pronouns:
-                    result.append(self.inv_pronouns[token.text.upper()].lower())
+                    result.append(self.inv_pronouns[token.text.upper()].lower().strip())
                     continue
             if (token.lemma_ == "be" or token.dep_ == "aux") and types[-2] == "-PRON-":  # if it's an auxiliary that comes right after a pronoun, mirror it
                 if token.text.upper() in self.auxiliaries:
-                    result.append(self.auxiliaries[token.text.upper()].lower())
+                    result.append(self.auxiliaries[token.text.upper()].lower().strip())
                     continue
                 if token.text.upper() in self.inv_auxiliaries:
-                    result.append(self.inv_auxiliaries[token.text.upper()].lower())
+                    result.append(self.inv_auxiliaries[token.text.upper()].lower().strip())
                     continue
-            result.append(token.text)
+            result.append(token.text.strip())
         for i in range(len(result)):
             if result[i] == "i":
                 result[i] = "I"
         result = ' '.join(result)  # concatenate the result
-        result = result.replace(" '", "'")  # fix for situations like "I 'AM", "YOU 'LL"
-        return result
+        return result.replace(" '", "'")  # fix for situations like "I 'AM", "YOU 'LL"
 
     def fix_pronoun(self, subject):  # TODO: Extend the context of this function
         """Pronoun fixer to handle situations like YOU and YOURSELF.
@@ -389,7 +388,7 @@ class Learner():
                 is_public = False
             else:
                 np_text += ' ' + token.text
-        return np_text, is_public
+        return np_text.strip(), is_public
 
     def upper_capitalize(self, array):
         """Return capitalized and uppercased versions of the strings inside the given array.
@@ -407,50 +406,3 @@ class Learner():
             result.append(word.capitalize())
             result.append(word.upper())
         return result
-
-
-if __name__ == "__main__":
-    # TESTS
-    import os
-    import spacy
-    home = expanduser("~")  # Get the home directory of the user
-    if os.path.exists(home + '/.dragonfire_db.json'):
-        os.remove(home + '/.dragonfire_db.json')  # This is where we store the database; /home/USERNAME/.dragonfire_db.json
-    learner = Learner(spacy.load('en'))
-
-    def give_and_get(give, get):
-        result = learner.respond(give)
-        if not result:
-            print("{} | {}".format(give, result))
-            return False
-        if result != get:
-            print("{} | {}".format(give, result))
-            return False
-        return True
-
-    gives_and_gets = collections.OrderedDict()
-    gives_and_gets["the Sun is hot"] = "OK, I get it. the Sun is hot"
-    gives_and_gets["the Sun is yellow"] = "OK, I get it. the Sun is yellow"
-    gives_and_gets["Describe the Sun"] = "the Sun is hot and yellow"
-    gives_and_gets["What is the Sun"] = "the Sun is hot and yellow"
-    gives_and_gets["my age is 25"] = "OK, I get it. your age is 25"
-    gives_and_gets["What is my age"] = "your age is 25"
-    gives_and_gets["forget my age"] = "OK, I forgot everything I know about your age"
-    gives_and_gets["update my age"] = "I don't even know anything about your age"
-    gives_and_gets["my place of birth is Turkey"] = "OK, I get it. your place of birth is Turkey"
-    gives_and_gets["Where is my place of birth"] = "your place of birth is Turkey"
-    gives_and_gets["you are just a computer program"] = "OK, I get it. I am just a computer program"
-    gives_and_gets["What are you"] = "I am just a computer program"
-    gives_and_gets["mine is golden"] = "OK, I get it. yours is golden"
-    gives_and_gets["how is mine"] = "yours is golden"
-    gives_and_gets["Albert Einstein is a Physicist"] = "OK, I get it. Albert Einstein is a Physicist"
-    gives_and_gets["Who is a Physicist"] = "Albert Einstein is a Physicist"
-    # gives_and_gets["Are you evil"] = None
-
-    tests_ok = True
-    for give, get in gives_and_gets.items():
-        if not give_and_get(give, get):
-            tests_ok = False
-
-    if tests_ok:
-        print("All of " + str(len(gives_and_gets)) + " tests were OK.")

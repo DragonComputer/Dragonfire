@@ -118,17 +118,3 @@ def arithmetic_parse(com):
         return "Sorry, but that does not make sense as the divisor cannot be zero."
     except:
         return False
-
-
-if __name__ == "__main__":
-    print(text2int("seven billion one hundred million thirty one thousand three hundred thirty seven"))
-    print(arithmetic_parse("How much is 12 + 14?"))
-    print(arithmetic_parse("How much is twelve thousand three hundred four plus two hundred fifty six?"))
-    print(arithmetic_parse("What is five hundred eighty nine times six?"))
-    print(arithmetic_parse("What is five hundred eighty nine divided by 89?"))
-    print(arithmetic_parse("What is seven billion five million and four thousand three hundred and four plus five million and four thousand three hundred and four?"))
-    print(arithmetic_parse("How much is 16 - 23?"))
-    print(arithmetic_parse("How much is 144 * 12?"))
-    print(arithmetic_parse("How much is 23 / 0?"))
-    print(arithmetic_parse("How much is 12 + ( 14 * 3 )?"))
-    print(arithmetic_parse("How much is 12 + ( 14 *  )?"))

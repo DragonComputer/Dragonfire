@@ -18,7 +18,7 @@ def test_text2int():
     assert text2int("seven billion one hundred million thirty one thousand three hundred thirty seven") == 7100031337
 
 
-@pytest.mark.parametrize("command,response", [
+@pytest.mark.parametrize("command, response", [
     ("How much is 12 + 14?", "12 + 14 = 26"),
     ("How much is twelve thousand three hundred four plus two hundred fifty six?", "12304 + 256 = 12560"),
     ("What is five hundred eighty nine times six?", "589 * 6 = 3534"),
