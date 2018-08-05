@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 """
-.. module:: text_dragonfire
+.. module:: test_dragonfire
     :platform: Unix
     :synopsis: test module for the top-level module of Dragonfire.
 

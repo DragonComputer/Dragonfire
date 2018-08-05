@@ -58,51 +58,45 @@ class Classifier():
         return classifier.classify(Classifier.gender_features(word))
 
 
-# This is our fast Part of Speech tagger
-#############################################################################
-brown_train = brown.tagged_sents(categories='news')
-regexp_tagger = nltk.RegexpTagger(
-    [(r'^-?[0-9]+(.[0-9]+)?$', 'CD'),
-        (r'(-|:|;)$', ':'),
-        (r'\'*$', 'MD'),
-        (r'(The|the|A|a|An|an)$', 'AT'),
-        (r'.*able$', 'JJ'),
-        (r'^[A-Z].*$', 'NNP'),
-        (r'.*ness$', 'NN'),
-        (r'.*ly$', 'RB'),
-        (r'.*s$', 'NNS'),
-        (r'.*ing$', 'VBG'),
-        (r'.*ed$', 'VBD'),
-        (r'.*', 'NN')
-    ])
-unigram_tagger = nltk.UnigramTagger(brown_train, backoff=regexp_tagger)
-bigram_tagger = nltk.BigramTagger(brown_train, backoff=unigram_tagger)
-#############################################################################
-
-# This is our semi-CFG; Extend it according to your own needs
-#############################################################################
-cfg = {}
-cfg["NNP+NNP"] = "NNP"
-cfg["NN+NN"] = "NNI"
-cfg["NNI+NN"] = "NNI"
-cfg["JJ+JJ"] = "JJ"
-cfg["JJ+NN"] = "NNI"
-
-#############################################################################
-
-
 class TopicExtractor(object):
     """Class to provide methods to extrac the topic from given sentence using NLTK library.
     """
 
-    def __init__(self, sentence):
+    def __init__(self):
         """Initialization method of :class:`TopicExtractor` class.
-
-        Args:
-            sentence (str):  A sentence.
         """
 
-        self.sentence = sentence
+        # This is our fast Part of Speech tagger
+        #############################################################################
+        brown_train = brown.tagged_sents(categories='news')
+        regexp_tagger = nltk.RegexpTagger(
+            [(r'^-?[0-9]+(.[0-9]+)?$', 'CD'),
+                (r'(-|:|;)$', ':'),
+                (r'\'*$', 'MD'),
+                (r'(The|the|A|a|An|an)$', 'AT'),
+                (r'.*able$', 'JJ'),
+                (r'^[A-Z].*$', 'NNP'),
+                (r'.*ness$', 'NN'),
+                (r'.*ly$', 'RB'),
+                (r'.*s$', 'NNS'),
+                (r'.*ing$', 'VBG'),
+                (r'.*ed$', 'VBD'),
+                (r'.*', 'NN')
+            ])
+        unigram_tagger = nltk.UnigramTagger(brown_train, backoff=regexp_tagger)
+        self.bigram_tagger = nltk.BigramTagger(brown_train, backoff=unigram_tagger)
+        #############################################################################
+
+        # This is our semi-CFG; Extend it according to your own needs
+        #############################################################################
+        self.cfg = {}
+        self.cfg["NNP+NNP"] = "NNP"
+        self.cfg["NN+NN"] = "NNI"
+        self.cfg["NNI+NN"] = "NNI"
+        self.cfg["JJ+JJ"] = "JJ"
+        self.cfg["JJ+NN"] = "NNI"
+
+        #############################################################################
 
     def tokenize_sentence(self, sentence):
         """Tokenize the given sentence.
@@ -143,15 +137,15 @@ class TopicExtractor(object):
             n_tagged.append((t[0], t[1]))
         return n_tagged
 
-    def extract(self):
+    def extract(self, sentence):
         """Extract the main topics from the sentence.
 
         Returns:
             (list) of (str)s:  List of strings.
         """
 
-        tokens = self.tokenize_sentence(self.sentence)
-        tags = self.normalize_tags(bigram_tagger.tag(tokens))
+        tokens = self.tokenize_sentence(sentence)
+        tags = self.normalize_tags(self.bigram_tagger.tag(tokens))
 
         merge = True
         while merge:
@@ -160,7 +154,7 @@ class TopicExtractor(object):
                 t1 = tags[x]
                 t2 = tags[x + 1]
                 key = "%s+%s" % (t1[1], t2[1])
-                value = cfg.get(key, '')
+                value = self.cfg.get(key, '')
                 if value:
                     merge = True
                     tags.pop(x)
@@ -217,7 +211,10 @@ class Helper():
             bool:  True or False
         """
 
-        return self.doc[n].lemma_ == word
+        try:
+            return self.doc[n].lemma_ == word
+        except IndexError:
+            return False
 
     def check_verb_lemma(self, verb):
         """Method to check if there is a verb with given lemma.
@@ -260,7 +257,7 @@ class Helper():
         """
 
         for chunk in self.doc.noun_chunks:
-            if chunk.text == phrase:
+            if chunk.text.lower() == phrase.lower():
                 return True
         return False
 
@@ -274,7 +271,7 @@ class Helper():
             bool:  True or False
         """
 
-        return len(self.doc.noun_chunks) == 1 and self.doc.noun_chunks[0].text == phrase
+        return sum(1 for _ in self.doc.noun_chunks) == 1 and self.doc.noun_chunks.__next__().text.lower() == phrase.lower()
 
     def check_noun_lemma(self, noun):
         """Method to check if there is a verb noun given lemma.
@@ -359,6 +356,8 @@ class Helper():
         """
 
         for token in self.doc:
+            if token.is_stop:
+                break
             if token.tag_ in ['WDT', 'WP', 'WP$', 'WRB']:
                 return True
         return False
@@ -374,15 +373,3 @@ class Helper():
         """
 
         return len(self.doc) <= n
-
-
-if __name__ == "__main__":
-    print(Classifier.gender("James"))
-    print(Classifier.gender("Robert"))
-    print(Classifier.gender("Mary"))
-    print(Classifier.gender("Linda"))
-
-    sentence = "Do you know the birthdate of Barrack Obama"
-    topic_obj = TopicExtractor(sentence)
-    result = topic_obj.extract()
-    print("This sentence is about: %s" % ", ".join(result))

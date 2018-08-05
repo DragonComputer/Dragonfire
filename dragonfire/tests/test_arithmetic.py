@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 """
-.. module:: text_dragonfire
+.. module:: test_arithmetic
     :platform: Unix
     :synopsis: tests for the arithmetic submodule.
 

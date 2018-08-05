@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 """
-.. module:: text_dragonfire
+.. module:: test_learn
     :platform: Unix
     :synopsis: tests for the learn submodule.
 
@@ -11,10 +11,10 @@
 
 import os
 from os.path import expanduser
-import spacy
 
 from dragonfire.learn import Learner
 
+import spacy
 import pytest
 
 
