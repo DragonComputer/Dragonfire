@@ -94,19 +94,3 @@ def SystemTrayInit():
     """
 
     SystemTrayIcon()
-
-
-if __name__ == '__main__':
-    DEVELOPMENT_DIR = os.path.abspath(
-        os.path.join(os.path.dirname(os.path.realpath(__file__)),
-                     os.pardir)) + '/'
-    from multiprocessing import Process, Event
-    import time
-    e = Event()
-    SystemTrayExitListenerSet(e)
-    Process(target=SystemTrayInit).start()
-    while (1):
-        time.sleep(1)
-        print(e.is_set())
-        if (e.is_set()):
-            break
