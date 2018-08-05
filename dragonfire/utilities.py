@@ -227,3 +227,54 @@ def nostderr():
     sys.stderr = cStringIO.StringIO()
     yield
     sys.stderr = save_stderr
+
+
+def omniscient_coefficient_optimizer():
+    from dragonfire.omniscient import Omniscient
+    import spacy
+
+    dataset = [
+        ("Where is the Times Square", ["New York City"]),
+        ("What is the height of Burj Khalifa", ["828 m"]),
+        ("Where is Burj Khalifa", ["Dubai"]),
+        ("What is the height of Great Pyramid of Giza", ["480.6 ft"]),
+        ("Who is playing Jon Snow in Game of Thrones", ["Kit Harington"]),
+        ("What is the atomic number of oxygen", ["8"]),
+        ("What is the official language of Japan", ["Japanese"]),
+        ("What is the real name of Iron Man", ["Tony", "Stark", "Tony Stark"]),
+        ("Who is the conqueror of Constantinople", ["Mehmed II", "Mehmet II", "Mehmet"]),
+        ("When Constantinople was conquered", ["1453"]),
+        ("What is the capital of Turkey", ["Ankara"]),
+        ("What is the largest city of Turkey", ["Istanbul"]),
+        ("What is the name of the world's best university", ["Harvard", "Peking University"]),
+        ("What is the name of the world's longest river", ["Nile", "Amazon"]),
+        ("What is the brand of the world's most expensive car", ["Rolls-Royce"]),
+        ("What is the bloodiest war in human history", ["World War II", "World War I"]),
+        ("What is the name of the best seller book", ["Real Marriage", "'Real Marriage' on"]),
+        ("What is the lowest point in the ocean", ["the Mariana Trench"]),
+        ("Who invented General Relativity", ["Einstein"]),
+        ("When was United Nations formed", ["1945"])
+    ]
+
+    omniscient = Omniscient(spacy.load('en'))
+    best_score = 0
+    best_coefficient = None
+    i = 0
+    while True:
+        i += 1
+        print("Iteration: " + str(i))
+        score = 0
+        omniscient.randomize_coefficients()
+        print(omniscient.coefficient)
+
+        for (question, answers) in dataset:
+            if omniscient.respond(question) in answers: score += 1
+
+        # purpose of this block is finding the optimum value for coefficients
+        if score > best_score:
+            print("\n--- !!! NEW BEST !!! ---")
+            best_score = score
+            best_coefficient = omniscient.coefficient
+            print(str(best_score) + ' / ' + len(dataset))
+            print(best_coefficient)
+            print("------------------------\n")
