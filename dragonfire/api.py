@@ -79,7 +79,7 @@ def tagger(text):
             'shape': token.shape_,
             'is_alpha': token.is_alpha,
             'is_stop': token.is_stop
-            }
+        }
         data.append(parse)
     return data
 

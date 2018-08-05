@@ -227,8 +227,3 @@ def nostderr():
     sys.stderr = cStringIO.StringIO()
     yield
     sys.stderr = save_stderr
-
-
-if __name__ == "__main__":
-    userin = TextToAction()
-    userin.say("Hello world!")
