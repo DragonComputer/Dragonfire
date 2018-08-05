@@ -40,6 +40,8 @@ The following is a set of guidelines for contributing to Dragonfire an open sour
 
 - [Build the Debian package](#build-the-debian-package)
 
+- [API Reference](#api-reference)
+
 ## Code of Conduct
 
 This project and everyone participating in it is governed by the [Dragonfire's Code of Conduct](CODE_OF_CONDUCT.md). By participating, you are expected to uphold this code. Please report unacceptable behavior to [mert.yildiran@bil.omu.edu.tr](mailto:mert.yildiran@bil.omu.edu.tr).
@@ -272,3 +274,17 @@ dpkg-buildpackage -us -uc
 ```
 
 It will save the `.deb` file into parent directory. `debian/` directory is the directory contains all the configuration files and pre/post-installation scripts related to Debian packaging.
+
+## API Reference
+
+API reference of Dragonfire [hosted on Read the Docs](https://dragonfire.readthedocs.io/en/latest/dragonfire.html#module-dragonfire.api) and the build of documentation is automatically triggered by a webhook so you don't have to really do anything about it.
+
+We use [Google Style Python Docstrings](http://sphinxcontrib-napoleon.readthedocs.io/en/latest/example_google.html) and [Sphinx](http://sphinx-doc.org/) to build the documentation.
+
+If you want to build the documentation on your local machine for some reason then do the following:
+
+```
+cd docs/
+sphinx-apidoc -f -o source/ ../dragonfire/
+sphinx-build -b html source/ build/
+```
