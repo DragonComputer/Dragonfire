@@ -9,7 +9,7 @@ Package: dragonfire
 Architecture: any
 X-Python3-Version: >= 3.2
 Pre-Depends: dpkg (>= 1.16.1), python2.7-minimal, ${misc:Pre-Depends}
-Depends: ${python3:Depends}, ${misc:Depends}, flite, python3-xlib, portaudio19-dev, python3-all-dev, flac, libnotify-bin, python-egenix-mx-base-dev, python3-lxml, python3-nltk, python3-pyaudio, python3-httplib2, python3-pip, libgstreamer1.0-dev, gstreamer1.0-plugins-good, gstreamer1.0-tools, subversion, libatlas-base-dev, automake, autoconf, libtool, libgtk2.0-0, gir1.2-gtk-3.0
+Depends: ${python3:Depends}, ${misc:Depends}, flite, python3-xlib, portaudio19-dev, python3-all-dev, flac, libnotify-bin, python-egenix-mx-base-dev, python3-lxml, python3-nltk, python3-pyaudio, python3-httplib2, python3-pip, python3-setuptools, python3-wheel, libgstreamer1.0-dev, gstreamer1.0-plugins-good, gstreamer1.0-tools, subversion, libatlas-base-dev, automake, autoconf, libtool, libgtk2.0-0, gir1.2-gtk-3.0
 Description: Virtual assistant for Debian based Linux distributions.
 	The user can execute it either from
 	command line or from the Application Launcher. It receives

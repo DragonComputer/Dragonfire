@@ -65,4 +65,4 @@ def test_api_wikipedia():
 
 
 def test_api_youtube():
-    assert json.loads(API.youtube("Katy Perry", "sir")) == {'url': 'https://www.youtube.com/watch?v=CevxZvSJLk8', 'response': 'Katy Perry - Roar (Official)'}
+    assert json.loads(API.youtube("Turn Down for What", "sir")) == {'url': 'https://www.youtube.com/watch?v=HMUDVMiITOU', 'response': 'DJ Snake, Lil Jon - Turn Down for What'}

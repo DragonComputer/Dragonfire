@@ -518,15 +518,14 @@ class VirtualAssistant():
                         else:
                             youtube_title = "No video found, " + user_prefix + "."
                             response = userin.say(youtube_title)
-                        if not args["server"]:
-                            k = PyKeyboard()
-                            if not self.testing:
-                                time.sleep(5)
-                                k.tap_key(k.tab_key)
-                                k.tap_key(k.tab_key)
-                                k.tap_key(k.tab_key)
-                                k.tap_key(k.tab_key)
-                                k.tap_key('f')
+                        k = PyKeyboard()
+                        if not args["server"] and not self.testing:
+                            time.sleep(5)
+                            k.tap_key(k.tab_key)
+                            k.tap_key(k.tab_key)
+                            k.tap_key(k.tab_key)
+                            k.tap_key(k.tab_key)
+                            k.tap_key('f')
                         return response
         if (h.check_lemma("search") or h.check_lemma("find")) and (h.check_lemma("google") or h.check_lemma("web") or h.check_lemma("internet")) and not h.check_lemma("image"):
             with nostdout():

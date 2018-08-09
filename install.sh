@@ -13,9 +13,10 @@ while true; do
 done
 NO_MODEL=$NO_MODEL
 
+apt-get update
 apt-get -y install python3 python3-all-dev libglib2.0-dev libcairo2-dev libgtk2.0-dev && \
 apt-get -y install python3-minimal ${misc:Pre-Depends} && \
-apt-get -y install ${python3:Depends} ${misc:Depends} flite python3-xlib portaudio19-dev python3-all-dev flac libnotify-bin python-egenix-mx-base-dev python3-lxml python3-nltk python3-pyaudio python3-httplib2 python3-pip libgstreamer1.0-dev gstreamer1.0-plugins-good gstreamer1.0-tools subversion libatlas-base-dev automake autoconf libtool && \
+apt-get -y install ${python3:Depends} ${misc:Depends} flite python3-xlib portaudio19-dev python3-all-dev flac libnotify-bin python-egenix-mx-base-dev python3-lxml python3-nltk python3-pyaudio python3-httplib2 python3-pip python3-setuptools python3-wheel libgstreamer1.0-dev gstreamer1.0-plugins-good gstreamer1.0-tools subversion libatlas-base-dev automake autoconf libtool && \
 
 pip3 install .
 
@@ -53,5 +54,5 @@ if [ ! ${verified::-3} = "$CHECKSUM2" ]; then
   wget -nc -O - https://github.com/DragonComputer/Dragonfire/releases/download/v0.9.9/deepconv-v2.tar.gz | tar xvfz -
 fi
 
-pip3 install --upgrade PyAudio==0.2.11 wikipedia==1.4.0 PyUserInput==0.1.11 tinydb==3.9.0.post1 youtube_dl spacy==2.0.11 pyowm==2.8.0 tensorflow==1.0.0 deepspeech==0.2.0a5 SpeechRecognition tweepy==3.6.0 metadata_parser hug==2.4.0 hug-middleware-cors==1.0.0 waitress==1.1.0 PyMySQL==0.8.1 requests==2.18.4 && python3 -m spacy download en \
+pip3 install --upgrade wikipedia==1.4.0 PyUserInput==0.1.11 tinydb==3.9.0.post1 youtube_dl spacy==2.0.11 pyowm==2.8.0 tensorflow==1.0.0 deepspeech==0.2.0a5 SpeechRecognition tweepy==3.6.0 metadata_parser==0.9.20 hug==2.4.0 hug-middleware-cors==1.0.0 waitress==1.1.0 PyMySQL==0.8.1 requests==2.18.4 && python3 -m spacy download en \
 && printf "import nltk\nnltk.download('names')\nnltk.download('brown')\nnltk.download('wordnet')\nnltk.download('punkt')" | python3 && echo -e "\n\n${GREEN}Dragonfire is successfully installed to your computer.${NC}\n"

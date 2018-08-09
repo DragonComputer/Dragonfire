@@ -1,17 +1,27 @@
+dist: xenial
+sudo: required
 language: python
-cache: pip3
-python:
-    - "3.6"
+virtualenv:
+  system_site_packages: true
+addons:
+  apt:
+    packages:
+      - xvfb
+cache:
+  directories:
+    - /usr/share/dragonfire
 install:
-    #- pip install -r requirements.txt
-    - pip3 install flake8  # pytest  # add another testing frameworks later
+    - sudo ./install-dev.sh --no-model
+    - sudo pip3 install pytest-faulthandler
+    - export DISPLAY=':99.0'
+    - Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
 before_script:
     # stop the build if there are Python syntax errors or undefined names
     - flake8 . --count --select=E901,E999,F822,F823 --show-source --statistics
     # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
     - flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
 script:
-    - true  # pytest --capture=sys  # add other tests here
+    - python3 -m pytest --capture=sys
 notifications:
     on_success: change
     on_failure: change  # `always` will be the setting once code changes slow down
