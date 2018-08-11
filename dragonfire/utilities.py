@@ -80,7 +80,7 @@ class TextToAction:
         self.speak = speak
 
         if self.server or not self.testing:
-            if self.speak == True:
+            if self.speak:
                 self.say(msg)
             try:
                 subprocess.Popen(["notify-send", "Dragonfire", msg])
@@ -119,7 +119,7 @@ class TextToAction:
         """
 
         if self.server:
-            text = "@" + self.twitter_user + " " + msg#.upper()
+            text = "@" + self.twitter_user + " " + msg  # .upper()
             text = (text[:TWITTER_CHAR_LIMIT]) if len(text) > TWITTER_CHAR_LIMIT else text
             if cmd:
                 if len(cmd) > 1:
@@ -140,7 +140,7 @@ class TextToAction:
 
                             try:
                                 self.twitter_api.update_with_media(filename, text)
-                                if randint(1,3) == 1:
+                                if randint(1, 3) == 1:
                                     self.twitter_api.create_friendship(self.twitter_user, follow=True)
                             except TweepError as e:
                                 print("Warning: " + e.response.text)
@@ -149,7 +149,7 @@ class TextToAction:
                             return msg
             try:
                 self.twitter_api.update_status(text)
-                if randint(1,10) == 1:
+                if randint(1, 10) == 1:
                     self.twitter_api.create_friendship(self.twitter_user, follow=True)
             except TweepError as e:
                 print("Warning: " + e.response.text)
@@ -206,6 +206,30 @@ class TextToAction:
         """
 
         subprocess.Popen(["espeak", "-v", "en-uk-north", msg])
+
+    def pretty_print_nlp_parsing_results(self, doc):
+        """Method to print the nlp parsing results in a pretty way.
+
+        Args:
+            doc:  A :class:`Doc` instance from :mod:`spacy` library.
+
+        .. note::
+
+            This method is only called when `--verbose` option fed.
+
+        """
+
+        if len(doc) > 0:
+            print("")
+            print("{:12}  {:12}  {:12}  {:12} {:12}  {:12}  {:12}  {:12}".format("TEXT", "LEMMA", "POS", "TAG", "DEP", "SHAPE", "ALPHA", "STOP"))
+            for token in doc:
+                print("{:12}  {:12}  {:12}  {:12} {:12}  {:12}  {:12}  {:12}".format(token.text, token.lemma_, token.pos_, token.tag_, token.dep_, token.shape_, str(token.is_alpha), str(token.is_stop)))
+            print("")
+        if len(list(doc.noun_chunks)) > 0:
+            print("{:12}  {:12}  {:12}  {:12}".format("TEXT", "ROOT.TEXT", "ROOT.DEP_", "ROOT.HEAD.TEXT"))
+            for chunk in doc.noun_chunks:
+                print("{:12}  {:12}  {:12}  {:12}".format(chunk.text, chunk.root.text, chunk.root.dep_, chunk.root.head.text))
+            print("")
 
 
 @contextlib.contextmanager

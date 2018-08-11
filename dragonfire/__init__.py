@@ -37,7 +37,7 @@ from dragonfire.deepconv import DeepConversation  # Submodule of Dragonfire to a
 from dragonfire.config import Config  # Submodule of Dragonfire to store configurations
 
 import spacy  # Industrial-strength Natural Language Processing in Python
-import pyowm  # A Python wrapper around the OpenWeatherMap API
+import pyowm  # A Python wrapper around the OpenWeatherMap API
 import wikipedia  # Python library that makes it easy to access and parse data from Wikipedia
 import wikipedia.exceptions  # Exceptions of wikipedia library
 import requests.exceptions  # HTTP for Humans
@@ -195,17 +195,7 @@ class VirtualAssistant():
         h = Helper(doc)
 
         if args["verbose"]:
-            if len(doc) > 0:
-                print("")
-                print("{:12}  {:12}  {:12}  {:12} {:12}  {:12}  {:12}  {:12}".format("TEXT", "LEMMA", "POS", "TAG", "DEP", "SHAPE", "ALPHA", "STOP"))
-                for token in doc:
-                    print("{:12}  {:12}  {:12}  {:12} {:12}  {:12}  {:12}  {:12}".format(token.text, token.lemma_, token.pos_, token.tag_, token.dep_, token.shape_, str(token.is_alpha), str(token.is_stop)))
-                print("")
-            if len(list(doc.noun_chunks)) > 0:
-                print("{:12}  {:12}  {:12}  {:12}".format("TEXT", "ROOT.TEXT", "ROOT.DEP_", "ROOT.HEAD.TEXT"))
-                for chunk in doc.noun_chunks:
-                    print("{:12}  {:12}  {:12}  {:12}".format(chunk.text, chunk.root.text, chunk.root.dep_, chunk.root.head.text))
-                print("")
+            userin.pretty_print_nlp_parsing_results(doc)
 
         if self.inactive and not (h.directly_equal(["dragonfire", "hey"]) or (h.check_verb_lemma("wake") and h.check_nth_lemma(-1, "up")) or (h.check_nth_lemma(0, "dragon") and h.check_nth_lemma(1, "fire") and h.max_word_count(2))):
             return ""
