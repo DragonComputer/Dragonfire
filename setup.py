@@ -126,10 +126,10 @@ setup(
         'tinydb==3.9.0.post1',
         'youtube_dl',
         'spacy==2.0.11',
-        'pyowm==2.8.0',
+        'pyowm==2.9.0',
         'tensorflow==1.0.0',
         'deepspeech==0.2.0a5',
-        'requests==2.18.4'
+        'requests==2.19.1'
     ],
 
     # List additional groups of dependencies here (e.g. development
