@@ -34,6 +34,7 @@ from dragonfire.stray import SystemTrayExitListenerSet, SystemTrayInit  # Submod
 from dragonfire.utilities import TextToAction, nostdout, nostderr  # Submodule of Dragonfire to provide various utilities
 from dragonfire.arithmetic import arithmetic_parse  # Submodule of Dragonfire to analyze arithmetic expressions
 from dragonfire.deepconv import DeepConversation  # Submodule of Dragonfire to answer questions directly using an Artificial Neural Network
+from dragonfire.coref import NeuralCoref  # Submodule of Dragonfire that aims to create corefference based dialogs
 from dragonfire.config import Config  # Submodule of Dragonfire to store configurations
 
 import spacy  # Industrial-strength Natural Language Processing in Python
@@ -56,6 +57,7 @@ nlp = spacy.load('en')  # Load en_core_web_sm, English, 50 MB, default model
 learner = Learner(nlp)
 omniscient = Omniscient(nlp)
 dc = DeepConversation()
+coref = NeuralCoref()
 e = Event()
 
 USER_ANSWERING = {
@@ -185,8 +187,8 @@ class VirtualAssistant():
         if self.testing:
             config_file = self.config_file
 
-        if isinstance(com, str):
-            com.strip()
+        if isinstance(com, str) and com:
+            com = com.strip()
         else:
             return False
 
@@ -540,6 +542,10 @@ class VirtualAssistant():
                         tab_url = "http://google.com/?#q=" + search_query + "&tbm=isch"
                         return userin.execute(["sensible-browser", tab_url], search_query, True)
 
+        original_com = com
+        com = coref.resolve(com)
+        if args["verbose"]:
+            print("After Coref Resolution: " + com)
         arithmetic_response = arithmetic_parse(com)
         if arithmetic_response:
             return userin.say(arithmetic_response)
@@ -552,7 +558,7 @@ class VirtualAssistant():
                 if omniscient_response:
                     return omniscient_response
                 else:
-                    dc_response = dc.respond(com, user_prefix)
+                    dc_response = dc.respond(original_com, user_prefix)
                     if dc_response:
                         return userin.say(dc_response)
 
