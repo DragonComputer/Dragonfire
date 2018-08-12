@@ -132,8 +132,8 @@ def test_arithmetic_response(virtual_assistant):
 def test_learner_response(virtual_assistant):
 
     assert virtual_assistant.command("hey") in hey_answers
-    assert virtual_assistant.command("the Sun is hot") == "OK, I get it. the Sun is hot ."
-    assert virtual_assistant.command("It is yellow") == "OK, I get it. the Sun is yellow ."
+    assert virtual_assistant.command("the Sun is hot") == "OK, I get it. the Sun is hot"
+    assert virtual_assistant.command("It is yellow") == "OK, I get it. the Sun is yellow"
     assert virtual_assistant.command("Describe the Sun") == "the Sun is hot and yellow"
     assert virtual_assistant.command("What is the Sun") == "the Sun is hot and yellow"
 

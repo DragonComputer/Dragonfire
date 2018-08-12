@@ -79,6 +79,7 @@ class Learner():
 
         self.is_server = is_server
         is_public = True
+        com = self.clean(com)
         doc = self.nlp(com)  # Command(user's speech) must be decoded from utf-8 to unicode because spaCy only supports unicode strings, self.nlp() handles all parsing
         subject = []  # subject list (subjects here usually are; I'M, YOU, HE, SHE, IT, etc.)
         types = []  # types of the previous noun phrases
@@ -406,3 +407,20 @@ class Learner():
             result.append(word.capitalize())
             result.append(word.upper())
         return result
+
+    def clean(self, com):
+        """Return a version of user's command that cleaned from punctuations, symbols, etc.
+
+        Args:
+            com (str):  User's command.
+
+        Returns:
+            str:  Cleaned version of user's command.
+        """
+
+        doc = self.nlp(com)
+        for token in doc:
+            if token.pos_ in ["PUNCT", "SYM"]:
+                com = com.replace(token.tag_, '')
+
+        return com

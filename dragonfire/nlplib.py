@@ -12,8 +12,8 @@
 from random import shuffle  # Generate pseudo-random numbers
 
 import nltk  # Natural Language Toolkit
-from nltk.corpus import names  # The Names Corpus
-from nltk.corpus import brown  # The Brown Corpus
+from nltk.corpus import names  # The Names Corpus
+from nltk.corpus import brown  # The Brown Corpus
 
 
 class Classifier():
@@ -177,10 +177,10 @@ class Helper():
     """
 
     def __init__(self, doc):
-        """Initialization method of :class:`Helper` class.
+        """Initialization method of :class:`dragonfire.nlplib.Helper` class.
 
         Args:
-            doc:  Doc instance from spaCy NLP library. Pre-parsed version of user's input/command.
+            doc:  :class:`Doc` instance from spaCy NLP library. Pre-parsed version of user's input/command.
         """
 
         self.doc = doc
