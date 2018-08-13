@@ -48,6 +48,8 @@ from pymouse import PyMouse  # Cross-platform Python mouse module
 from tinydb import Query, TinyDB  # TinyDB is a lightweight document oriented database optimized for your happiness
 
 
+__version__ = '1.0.0'
+
 DRAGONFIRE_PATH = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 FNULL = open(os.devnull, 'w')
 GENDER_PREFIX = {'male': 'Sir', 'female': 'My Lady'}
