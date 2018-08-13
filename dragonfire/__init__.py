@@ -643,7 +643,7 @@ def initiate():
     ap.add_argument("-j", "--headless", help="Headless mode. Do not display an avatar animation on the screen. Disable the female head model.", action="store_true")
     ap.add_argument("-v", "--verbose", help="Increase verbosity of log output.", action="store_true")
     ap.add_argument("-g", "--gspeech", help="Instead of using the default speech recognition method(Mozilla DeepSpeech), use Google Speech Recognition service. (more accurate results)", action="store_true")
-    ap.add_argument("--server", help="Server mode. Disable any audio functionality, serve a RESTful spaCy API and become a Twitter integrated chatbot.", metavar="API_KEY")
+    ap.add_argument("--server", help="Server mode. Disable any audio functionality, serve a RESTful spaCy API and become a Twitter integrated chatbot.", metavar="REG_KEY")
     ap.add_argument("-p", "--port", help="Port number for server mode.", default="3301", metavar="PORT")
     ap.add_argument("--version", help="Display the version number of Dragonfire.", action="store_true")
     args = vars(ap.parse_args())

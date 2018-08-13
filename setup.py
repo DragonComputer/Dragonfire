@@ -152,6 +152,7 @@ setup(
             'waitress==1.1.0',
             'PyMySQL==0.8.1',
             'SpeechRecognition',
+            'pyjwt==1.6.4',
             'flake8',
             'sphinx',
             'sphinx_rtd_theme',

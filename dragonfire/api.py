@@ -21,6 +21,7 @@ import re  # Regular expression operations
 import youtube_dl  # Command-line program to download videos from YouTube.com and other video sites
 import pymysql  # Pure Python MySQL Client
 from random import choice  # Generate pseudo-random numbers
+import jwt  # JSON Web Token implementation in Python
 
 
 @hug.authentication.token
@@ -37,8 +38,11 @@ def token_authentication(token):
             False -- The token is invalid!
     """
 
-    if token == precomptoken:
+    try:
+        jwt.decode(token, Config.SUPER_SECRET_KEY, algorithm='HS256')
         return True
+    except:
+        return False
 
 
 # Natural Language Processing realted API endpoints START
@@ -472,18 +476,22 @@ def notification(user_id, location, gender_prefix):
 
 
 # Endpoint to handle registration requests
-@hug.post('/register', requires=token_authentication)
-def register(name, gender, birth_date):
+@hug.post('/register')
+def register(name, gender, birth_date, reg_key):
     """**Endpoint** to handle **registration requests**.
 
     Args:
         name (str):         User's name.
         gender (str):       User's gender.
         birth_date (str):   User's birth date.
+        reg_key (str):      Registration key.
 
     Returns:
         JSON document.
     """
+
+    if reg_key != server_reg_key:
+        return hug.HTTP_403
 
     id = ""
 
@@ -502,7 +510,11 @@ def register(name, gender, birth_date):
         print (">>>>>>>>>>>>>", code, message)
     db.close()
 
-    return json.dumps(id, indent=4)
+    data = {}
+    data['id'] = id
+    data['token'] = jwt.encode({'id': id, 'name': name, 'gender': gender, 'birth_date': birth_date}, Config.SUPER_SECRET_KEY, algorithm='HS256')
+
+    return json.dumps(data, indent=4)
 
 
 class Run():
@@ -514,7 +526,7 @@ class Run():
 
     """
 
-    def __init__(self, nlp_ref, learner_ref, omniscient_ref, dc_ref, userin_ref, token, port_number):
+    def __init__(self, nlp_ref, learner_ref, omniscient_ref, dc_ref, userin_ref, reg_key, port_number):
         """Initialization method of :class:`dragonfire.api.Run` class
 
         This method starts an API server using :mod:`waitress` (*a pure-Python WSGI server*)
@@ -526,7 +538,7 @@ class Run():
             omniscient_ref:         :class:`dragonfire.omniscient.Omniscient` instance.
             dc_ref:                 :class:`dragonfire.deepconv.DeepConversation` instance.
             userin_ref:             :class:`dragonfire.utilities.TextToAction` instance.
-            token (str):            API token.
+            reg_key (str):          Registration key of the API.
             port_number (int):      Port number that the API will be served.
         """
 
@@ -535,13 +547,13 @@ class Run():
         global omniscient
         global dc
         global userin
-        global precomptoken
+        global server_reg_key
         nlp = nlp_ref  # Load en_core_web_sm, English, 50 MB, default model
         learner = learner_ref
         omniscient = omniscient_ref
         dc = dc_ref
         userin = userin_ref
-        precomptoken = token
+        server_reg_key = reg_key_ref
         app = hug.API(__name__)
         app.http.output_format = hug.output_format.text
         app.http.add_middleware(CORSMiddleware(app))
