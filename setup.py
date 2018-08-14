@@ -129,7 +129,22 @@ setup(
         'pyowm==2.9.0',
         'tensorflow==1.0.0',
         'deepspeech==0.2.0a5',
-        'requests==2.19.1'
+        'requests==2.19.1',
+        'egenix-mx-base',
+        'lxml==3.5.0',
+        'nltk==3.1',
+        'httplib2>=0.9.1',
+        'imutils',
+        'pyqtgraph',
+        'PeakUtils',
+        'tweepy==3.6.0',
+        'metadata_parser==0.9.20',
+        'hug==2.4.0',
+        'hug-middleware-cors==1.0.0',
+        'waitress==1.1.0',
+        'PyMySQL==0.8.1',
+        'SpeechRecognition',
+        'pyjwt==1.6.4'
     ],
 
     # List additional groups of dependencies here (e.g. development
@@ -138,21 +153,6 @@ setup(
     # $ pip install -e .[dev,test]
     extras_require={
         'optionals': [
-            'egenix-mx-base',
-            'lxml==3.5.0',
-            'nltk==3.1',
-            'httplib2>=0.9.1',
-            'imutils',
-            'pyqtgraph',
-            'PeakUtils',
-            'tweepy==3.6.0',
-            'metadata_parser==0.9.20',
-            'hug==2.4.0',
-            'hug-middleware-cors==1.0.0',
-            'waitress==1.1.0',
-            'PyMySQL==0.8.1',
-            'SpeechRecognition',
-            'pyjwt==1.6.4',
             'flake8',
             'sphinx',
             'sphinx_rtd_theme',
