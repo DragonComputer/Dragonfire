@@ -328,7 +328,7 @@ def deep(text, gender_prefix):
 
 # All-in-One Answering
 @hug.post('/answer', requires=token_authentication)
-def answer(text, gender_prefix, user_id):
+def answer(text, gender_prefix, user_id, previous=None):
     """Serves the **all Q&A related API endpoints** in a single **endpoint**.
 
     Combines the results of these methods into a single JSON document:
@@ -339,14 +339,16 @@ def answer(text, gender_prefix, user_id):
      - :func:`dragonfire.deepconv.DeepConversation.respond` method
 
     Args:
-        text (str):             Text.
+        text (str):             User's current command.
         gender_prefix (str):    Prefix to address/call user when answering.
         user_id (int):          User's ID.
+        previous (str):         User's previous command.
 
     Returns:
         JSON document.
     """
 
+    text = coref.resolve_api(text, previous)
     answer = arithmetic_parse(text)
     if not answer:
         answer = learner.respond(text, is_server=True, user_id=user_id)
@@ -526,7 +528,7 @@ class Run():
 
     """
 
-    def __init__(self, nlp_ref, learner_ref, omniscient_ref, dc_ref, userin_ref, reg_key, port_number):
+    def __init__(self, nlp_ref, learner_ref, omniscient_ref, dc_ref, coref_ref, userin_ref, reg_key, port_number):
         """Initialization method of :class:`dragonfire.api.Run` class
 
         This method starts an API server using :mod:`waitress` (*a pure-Python WSGI server*)
@@ -546,14 +548,16 @@ class Run():
         global learner
         global omniscient
         global dc
+        global coref
         global userin
         global server_reg_key
         nlp = nlp_ref  # Load en_core_web_sm, English, 50 MB, default model
         learner = learner_ref
         omniscient = omniscient_ref
         dc = dc_ref
+        coref = coref_ref
         userin = userin_ref
-        server_reg_key = reg_key_ref
+        server_reg_key = reg_key
         app = hug.API(__name__)
         app.http.output_format = hug.output_format.text
         app.http.add_middleware(CORSMiddleware(app))

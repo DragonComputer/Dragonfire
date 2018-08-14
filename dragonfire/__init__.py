@@ -99,7 +99,7 @@ def start(args, userin):
             l = MentionListener(args, userin)
             stream = Stream(auth, l)
             stream.filter(track=['DragonfireAI'], async=True)
-        API.Run(nlp, learner, omniscient, dc, userin, args["server"], args["port"])
+        API.Run(nlp, learner, omniscient, dc, coref, userin, args["server"], args["port"])
     else:
         global user_full_name
         global user_prefix
