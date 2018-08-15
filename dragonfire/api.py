@@ -348,7 +348,11 @@ def answer(text, gender_prefix, user_id, previous=None):
         JSON document.
     """
 
+    data = {}
     text = coref.resolve_api(text, previous)
+    subject, subjects, focus, subject_with_objects = omniscient.semantic_extractor(text)
+    data['subject'] = subject
+    data['focus'] = focus
     answer = arithmetic_parse(text)
     if not answer:
         answer = learner.respond(text, is_server=True, user_id=user_id)
@@ -356,7 +360,8 @@ def answer(text, gender_prefix, user_id, previous=None):
             answer = omniscient.respond(text, userin=userin, user_prefix=gender_prefix, is_server=True)
             if not answer:
                 answer = dc.respond(text, user_prefix=gender_prefix)
-    return json.dumps(answer, indent=4)
+    data['answer'] = answer
+    return json.dumps(data, indent=4)
 
 # Directly on server-side Q&A related API endpoints END
 
