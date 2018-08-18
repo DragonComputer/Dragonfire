@@ -143,7 +143,8 @@ setup(
         'waitress==1.1.0',
         'PyMySQL==0.8.1',
         'SpeechRecognition',
-        'pyjwt==1.6.4'
+        'pyjwt==1.6.4',
+        'SQLAlchemy==1.2.10'
     ],
 
     # List additional groups of dependencies here (e.g. development
