@@ -183,3 +183,6 @@ nohup.out
 
 # pytest
 .pytest_cache
+
+# SQLite database file
+dragonfire.db
