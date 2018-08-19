@@ -36,6 +36,7 @@ from dragonfire.arithmetic import arithmetic_parse  # Submodule of Dragonfire to
 from dragonfire.deepconv import DeepConversation  # Submodule of Dragonfire to answer questions directly using an Artificial Neural Network
 from dragonfire.coref import NeuralCoref  # Submodule of Dragonfire that aims to create corefference based dialogs
 from dragonfire.config import Config  # Submodule of Dragonfire to store configurations
+from dragonfire.database import Base  # Submodule of Dragonfire module that contains the database schema
 
 import spacy  # Industrial-strength Natural Language Processing in Python
 import pyowm  # A Python wrapper around the OpenWeatherMap API
@@ -46,6 +47,8 @@ import youtube_dl  # Command-line program to download videos from YouTube.com an
 from pykeyboard import PyKeyboard  # A simple, cross-platform Python module for providing keyboard control
 from pymouse import PyMouse  # Cross-platform Python mouse module
 from tinydb import Query, TinyDB  # TinyDB is a lightweight document oriented database optimized for your happiness
+from sqlalchemy import create_engine  # the Python SQL toolkit and Object Relational Mapper
+from sqlalchemy.orm import sessionmaker  # ORM submodule of SQLAlchemy
 
 
 __version__ = '1.0.0'
@@ -83,6 +86,14 @@ def start(args, userin):
         userin:     :class:`dragonfire.utilities.TextToAction` instance.
     """
 
+    if args["sqlite"]:
+        engine = create_engine('sqlite:///dragonfire.db', connect_args={'check_same_thread': False}, echo=True)
+    else:
+        engine = create_engine('mysql://' + Config.MYSQL_USER + ':' + Config.MYSQL_PASS + '@' + Config.MYSQL_HOST + '/' + Config.MYSQL_DB)
+    Base.metadata.bind = engine
+    DBSession = sessionmaker(bind=engine)
+    db_session = DBSession()
+
     if args["server"]:
         import dragonfire.api as API  # API of Dragonfire
         import tweepy  # An easy-to-use Python library for accessing the Twitter API
@@ -99,7 +110,7 @@ def start(args, userin):
             l = MentionListener(args, userin)
             stream = Stream(auth, l)
             stream.filter(track=['DragonfireAI'], async=True)
-        API.Run(nlp, learner, omniscient, dc, coref, userin, args["server"], args["port"])
+        API.Run(nlp, learner, omniscient, dc, coref, userin, args["server"], args["port"], db_session)
     else:
         global user_full_name
         global user_prefix
@@ -646,6 +657,7 @@ def initiate():
     ap.add_argument("--server", help="Server mode. Disable any audio functionality, serve a RESTful spaCy API and become a Twitter integrated chatbot.", metavar="REG_KEY")
     ap.add_argument("-p", "--port", help="Port number for server mode.", default="3301", metavar="PORT")
     ap.add_argument("--version", help="Display the version number of Dragonfire.", action="store_true")
+    ap.add_argument("--sqlite", help="Use SQLite as the database engine.", action="store_true")
     args = vars(ap.parse_args())
     if args["version"]:
         import pkg_resources

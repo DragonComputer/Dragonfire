@@ -16,12 +16,14 @@ from threading import Thread  # Thread-based parallelism
 import json  # JSON encoder and decoder
 from dragonfire.config import Config  # Credentials for the database connection
 from dragonfire.arithmetic import arithmetic_parse  # Submodule of Dragonfire to analyze arithmetic expressions
+from dragonfire.database import User, Notification
 import wikipedia as wikipedia_lib  # Python library that makes it easy to access and parse data from Wikipedia
 import re  # Regular expression operations
 import youtube_dl  # Command-line program to download videos from YouTube.com and other video sites
-import pymysql  # Pure Python MySQL Client
-from random import choice  # Generate pseudo-random numbers
+from random import randrange  # Generate pseudo-random numbers
 import jwt  # JSON Web Token implementation in Python
+from datetime import datetime  # Basic date and time types
+from sqlalchemy.orm.exc import NoResultFound  # the Python SQL toolkit and Object Relational Mapper
 
 
 @hug.authentication.token
@@ -429,7 +431,7 @@ def youtube(query, gender_prefix):
 
 
 @hug.post('/notification', requires=token_authentication)
-def notification(user_id, location, gender_prefix):
+def notification(user_id, location, gender_prefix, response=None):
     """**Endpoint** to serve the **notifications** from the **database**.
 
     Args:
@@ -441,50 +443,31 @@ def notification(user_id, location, gender_prefix):
         JSON document.
     """
 
-    url = ""
-    title = ""
-    message = ""
-
-    db = pymysql.connect(Config.MYSQL_HOST, Config.MYSQL_USER, Config.MYSQL_PASS, Config.MYSQL_DB)
-    cursor = db.cursor(pymysql.cursors.DictCursor)
-    sql1 = "SELECT * FROM users WHERE id = {}".format(user_id)
-    sql2 = "SELECT * FROM notifications"
     try:
-        cursor.execute(sql1)
-        results = cursor.fetchall()
-        if results:
-            row = results[0]
-            name = row["name"]
-            gender = row["gender"]
-            birth_date = row["birth_date"]
-        else:
-            name = "Master"
-            gender = 1
-            birth_date = "1980-01-01"
+        user = db_session.query(User).filter(User.id == int(user_id)).one()
+        if not db_session.query(Notification).count() > 0:
+            response.status = hug.HTTP_404
+            return
+        rand = randrange(0, db_session.query(Notification).count())
 
-        cursor.execute(sql2)
-        results = cursor.fetchall()
-        row = choice(results)
-        if row["capitalize"] == 1:
+        notification = db_session.query(Notification).filter(Notification.is_active)[rand]
+
+        if notification.capitalize == 1:
             gender_prefix = gender_prefix.capitalize()
-        url = row["url"]
-        title = row["title"]
-        message = row["message"].format(gender_prefix, name)
-    except pymysql.InternalError as error:
-        code, message = error.args
-        print (">>>>>>>>>>>>>", code, message)
-    db.close()
 
-    data = {}
-    data['url'] = url
-    data['title'] = title
-    data['message'] = message
-    return json.dumps(data, indent=4)
+        data = {}
+        data['url'] = notification.url
+        data['title'] = notification.title
+        data['message'] = notification.message.format(gender_prefix, user.name)
+        return json.dumps(data, indent=4)
+    except NoResultFound:
+        response.status = hug.HTTP_404
+        return
 
 
 # Endpoint to handle registration requests
 @hug.post('/register')
-def register(name, gender, birth_date, reg_key):
+def register(name, gender, birth_date, reg_key, response=None):
     """**Endpoint** to handle **registration requests**.
 
     Args:
@@ -498,29 +481,16 @@ def register(name, gender, birth_date, reg_key):
     """
 
     if reg_key != server_reg_key:
-        return hug.HTTP_403
+        response.status = hug.HTTP_403
+        return
 
-    id = ""
-
-    db = pymysql.connect(Config.MYSQL_HOST, Config.MYSQL_USER, Config.MYSQL_PASS, Config.MYSQL_DB)
-    cursor = db.cursor(pymysql.cursors.DictCursor)
-    sql = """
-        INSERT INTO users (name, gender, birth_date)
-        VALUES('{}', '{}', '{}')
-        """.format(name, gender, birth_date)
-    try:
-        cursor.execute(sql)
-        db.commit()
-        id = cursor.lastrowid
-    except pymysql.InternalError as error:
-        code, message = error.args
-        print (">>>>>>>>>>>>>", code, message)
-    db.close()
+    new_user = User(name=name, gender=gender, birth_date=datetime.strptime(birth_date, "%Y-%m-%d").date())
+    db_session.add(new_user)
+    db_session.commit()
 
     data = {}
-    data['id'] = id
-    data['token'] = jwt.encode({'id': id, 'name': name, 'gender': gender, 'birth_date': birth_date}, Config.SUPER_SECRET_KEY, algorithm='HS256')
-
+    data['id'] = new_user.id
+    data['token'] = jwt.encode({'id': new_user.id, 'name': name, 'gender': gender, 'birth_date': birth_date}, Config.SUPER_SECRET_KEY, algorithm='HS256').decode('ascii')
     return json.dumps(data, indent=4)
 
 
@@ -533,7 +503,7 @@ class Run():
 
     """
 
-    def __init__(self, nlp_ref, learner_ref, omniscient_ref, dc_ref, coref_ref, userin_ref, reg_key, port_number):
+    def __init__(self, nlp_ref, learner_ref, omniscient_ref, dc_ref, coref_ref, userin_ref, reg_key, port_number, db_session_ref):
         """Initialization method of :class:`dragonfire.api.Run` class
 
         This method starts an API server using :mod:`waitress` (*a pure-Python WSGI server*)
@@ -547,6 +517,7 @@ class Run():
             userin_ref:             :class:`dragonfire.utilities.TextToAction` instance.
             reg_key (str):          Registration key of the API.
             port_number (int):      Port number that the API will be served.
+            db_session_ref:         SQLAlchemy's :class:`DBSession()` instance.
         """
 
         global nlp
@@ -556,6 +527,7 @@ class Run():
         global coref
         global userin
         global server_reg_key
+        global db_session
         nlp = nlp_ref  # Load en_core_web_sm, English, 50 MB, default model
         learner = learner_ref
         omniscient = omniscient_ref
@@ -563,6 +535,7 @@ class Run():
         coref = coref_ref
         userin = userin_ref
         server_reg_key = reg_key
+        db_session = db_session_ref
         app = hug.API(__name__)
         app.http.output_format = hug.output_format.text
         app.http.add_middleware(CORSMiddleware(app))

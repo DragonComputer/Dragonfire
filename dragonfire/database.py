@@ -26,7 +26,7 @@ class User(Base):
     __tablename__ = 'users'
     id = Column(Integer, primary_key=True)
     name = Column(String(255), nullable=False)
-    gender = Column(Boolean, nullable=False)
+    gender = Column(String(1), nullable=False)
     birth_date = Column(Date, nullable=False)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
 
