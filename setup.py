@@ -141,7 +141,6 @@ setup(
         'hug==2.4.0',
         'hug-middleware-cors==1.0.0',
         'waitress==1.1.0',
-        'PyMySQL==0.8.1',
         'SpeechRecognition',
         'pyjwt==1.6.4',
         'SQLAlchemy==1.2.10'
