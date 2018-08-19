@@ -160,15 +160,11 @@ class Learner():
         """
 
         if self.is_server:
-            u_id = 0
-            if not is_public and user_id:
-                u_id = user_id
-
             try:
                 if invert:
-                    fact = self.db_session.query(Fact).filter(Fact.clause == subject, Fact.user_id == u_id).order_by(Fact.counter.desc()).first()
+                    fact = self.db_session.query(Fact).filter(Fact.clause == subject, Fact.user_id == user_id, Fact.is_public == is_public).order_by(Fact.counter.desc()).first()
                 else:
-                    fact = self.db_session.query(Fact).filter(Fact.subject == subject, Fact.user_id == u_id).order_by(Fact.counter.desc()).first()
+                    fact = self.db_session.query(Fact).filter(Fact.subject == subject, Fact.user_id == user_id, Fact.is_public == is_public).order_by(Fact.counter.desc()).first()
                 answer = fact.subject + ' ' + fact.verbtense + ' ' + fact.clause
                 return self.mirror(answer)
             except NoResultFound:
@@ -226,13 +222,9 @@ class Learner():
         """
 
         if self.is_server:
-            u_id = 0
-            if not is_public and user_id:
-                u_id = user_id
-
-            fact = self.db_session.query(Fact).filter(Fact.subject == subject, Fact.verbtense == verbtense, Fact.clause == clause, Fact.user_id == u_id).one_or_none()
+            fact = self.db_session.query(Fact).filter(Fact.subject == subject, Fact.verbtense == verbtense, Fact.clause == clause, Fact.user_id == user_id, Fact.is_public == is_public).one_or_none()
             if not fact:
-                new_fact = Fact(subject=subject, verbtense=verbtense, clause=clause, user_id=u_id)
+                new_fact = Fact(subject=subject, verbtense=verbtense, clause=clause, user_id=user_id, is_public=is_public)
                 self.db_session.add(new_fact)
                 self.db_session.commit()
             else:
@@ -263,7 +255,7 @@ class Learner():
 
         if self.is_server:
             if not is_public and user_id:
-                fact = self.db_session.query(Fact).filter(Fact.subject == subject, Fact.user_id == u_id).one_or_none()
+                fact = self.db_session.query(Fact).filter(Fact.subject == subject, Fact.user_id == user_id).one_or_none()
                 if not fact:
                     return "I don't even know anything about " + self.mirror(subject)
                 else:

@@ -111,7 +111,7 @@ def test_api_math(token):
 def test_api_learn(token):
     headers = {'Content-Type': 'application/x-www-form-urlencoded', 'Authorization': token}
     url = API_SERVER + '/learn'
-    params = {"text": "the Sun is hot", "user_id": 0}
+    params = {"text": "the Sun is hot", "user_id": 1}
     response = requests.post(url, params=params, headers=headers)
     assert json.loads(response.text) == 'OK, I get it. the Sun is hot'
 

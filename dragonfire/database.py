@@ -45,6 +45,7 @@ class Fact(Base):
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     user_id = Column(Integer, ForeignKey('users.id'), default=0)
     user = relationship(User)
+    is_public = Column(Boolean, default=True)
     counter = Column(Integer, default=1)
 
 
