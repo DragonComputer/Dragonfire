@@ -90,6 +90,7 @@ def start(args, userin):
         engine = create_engine('sqlite:///dragonfire.db', connect_args={'check_same_thread': False}, echo=True)
     else:
         engine = create_engine('mysql://' + Config.MYSQL_USER + ':' + Config.MYSQL_PASS + '@' + Config.MYSQL_HOST + '/' + Config.MYSQL_DB)
+    Base.metadata.create_all(engine)
     Base.metadata.bind = engine
     DBSession = sessionmaker(bind=engine)
     db_session = DBSession()

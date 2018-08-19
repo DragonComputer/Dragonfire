@@ -24,6 +24,7 @@ class User(Base):
     """
 
     __tablename__ = 'users'
+    __table_args__ = {'useexisting': True}
     id = Column(Integer, primary_key=True)
     name = Column(String(255), nullable=False)
     gender = Column(String(1), nullable=False)
@@ -36,6 +37,7 @@ class Fact(Base):
     """
 
     __tablename__ = 'facts'
+    __table_args__ = {'useexisting': True}
     id = Column(Integer, primary_key=True)
     subject = Column(String(255), nullable=False)
     verbtense = Column(String(255), nullable=False)
@@ -51,6 +53,7 @@ class Notification(Base):
     """
 
     __tablename__ = 'notifications'
+    __table_args__ = {'useexisting': True}
     id = Column(Integer, primary_key=True)
     url = Column(String(255), nullable=False)
     title = Column(String(63), nullable=False)
@@ -58,10 +61,3 @@ class Notification(Base):
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     is_active = Column(Boolean, default=True)
     capitalize = Column(Boolean, default=False)
-
-
-# Create an engine that stores data in the local directory's dragonfire.db file.
-engine = create_engine('sqlite:///dragonfire.db')
-
-# Create all tables in the engine. This is equivalent to "Create Table" statements in raw SQL.
-Base.metadata.create_all(engine)

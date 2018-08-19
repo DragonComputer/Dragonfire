@@ -2,14 +2,18 @@ dist: xenial
 sudo: required
 language: python
 virtualenv:
-  system_site_packages: true
+    system_site_packages: true
+services:
+    - mysql
 addons:
-  apt:
-    packages:
-      - xvfb
+    apt:
+        packages:
+            - xvfb
 cache:
-  directories:
-    - /usr/share/dragonfire
+    directories:
+        - /usr/share/dragonfire
+before_install:
+    - mysql -u root -e "CREATE DATABASE dragonfire;"
 install:
     - sudo ./install-dev.sh --no-model
     - sudo pip3 install pytest-faulthandler
