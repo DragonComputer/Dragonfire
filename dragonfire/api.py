@@ -505,7 +505,7 @@ class Run():
 
     """
 
-    def __init__(self, nlp_ref, learner_ref, omniscient_ref, dc_ref, coref_ref, userin_ref, reg_key, port_number, db_session_ref):
+    def __init__(self, nlp_ref, learner_ref, omniscient_ref, dc_ref, coref_ref, userin_ref, reg_key, port_number, db_session_ref, dont_block=False):
         """Initialization method of :class:`dragonfire.api.Run` class
 
         This method starts an API server using :mod:`waitress` (*a pure-Python WSGI server*)
@@ -541,9 +541,12 @@ class Run():
         app = hug.API(__name__)
         app.http.output_format = hug.output_format.text
         app.http.add_middleware(CORSMiddleware(app))
-        t = Thread(target=waitress.serve, args=(__hug_wsgi__, ), kwargs={"port": port_number})
-        t.start()
-        t.join()
+        self.waitress_thread = Thread(target=waitress.serve, args=(__hug_wsgi__, ), kwargs={"port": port_number})
+        if dont_block:
+            self.waitress_thread.daemon = True
+        self.waitress_thread.start()
+        if not dont_block:
+            self.waitress_thread.join()
 
 
 if __name__ == '__main__':
