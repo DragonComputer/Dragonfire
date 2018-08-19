@@ -9,20 +9,22 @@
 .. moduleauthor:: Mehmet Mert Yıldıran <mert.yildiran@bil.omu.edu.tr>
 """
 
-import hug  # Embrace the APIs of the future
-from hug_middleware_cors import CORSMiddleware  # Middleware for allowing CORS (cross-origin resource sharing) requests from hug servers
-import waitress  # A production-quality pure-Python WSGI server with very acceptable performance
 from threading import Thread  # Thread-based parallelism
 import json  # JSON encoder and decoder
+import re  # Regular expression operations
+from random import randrange  # Generate pseudo-random numbers
+from datetime import datetime  # Basic date and time types
+
 from dragonfire.config import Config  # Credentials for the database connection
 from dragonfire.arithmetic import arithmetic_parse  # Submodule of Dragonfire to analyze arithmetic expressions
 from dragonfire.database import User, Notification  # Submodule of Dragonfire module that contains the database schema
+
+import hug  # Embrace the APIs of the future
+from hug_middleware_cors import CORSMiddleware  # Middleware for allowing CORS (cross-origin resource sharing) requests from hug servers
+import waitress  # A production-quality pure-Python WSGI server with very acceptable performance
 import wikipedia as wikipedia_lib  # Python library that makes it easy to access and parse data from Wikipedia
-import re  # Regular expression operations
 import youtube_dl  # Command-line program to download videos from YouTube.com and other video sites
-from random import randrange  # Generate pseudo-random numbers
 import jwt  # JSON Web Token implementation in Python
-from datetime import datetime  # Basic date and time types
 from sqlalchemy.orm.exc import NoResultFound  # the Python SQL toolkit and Object Relational Mapper
 
 
