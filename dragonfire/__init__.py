@@ -93,6 +93,7 @@ def start(args, userin):
     Base.metadata.bind = engine
     DBSession = sessionmaker(bind=engine)
     db_session = DBSession()
+    learner.db_session = db_session
 
     if args["server"]:
         import dragonfire.api as API  # API of Dragonfire

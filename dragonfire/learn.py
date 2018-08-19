@@ -13,7 +13,8 @@ import collections  # Imported to support ordered dictionaries in Python
 from tinydb import TinyDB, Query  # TinyDB is a lightweight document oriented database
 from os.path import expanduser  # Imported to get the home directory
 from dragonfire.config import Config  # Credentials for the database connection
-import pymysql  # Pure Python MySQL Client
+from dragonfire.database import Fact  # Submodule of Dragonfire module that contains the database schema
+from sqlalchemy.orm.exc import NoResultFound  # the Python SQL toolkit and Object Relational Mapper
 
 
 class Learner():
@@ -57,6 +58,7 @@ class Learner():
         self.db = TinyDB(home + '/.dragonfire_db.json')  # This is where we store the database; /home/USERNAME/.dragonfire_db.json
         self.nlp = nlp  # Load en_core_web_sm, English, 50 MB, default model
         self.is_server = False
+        self.db_session = None
 
     def respond(self, com, is_server=False, user_id=None):
         """Method to respond the user's input/command using learning ability.
@@ -161,25 +163,16 @@ class Learner():
             u_id = 0
             if not is_public and user_id:
                 u_id = user_id
-            db = pymysql.connect(Config.MYSQL_HOST, Config.MYSQL_USER, Config.MYSQL_PASS, Config.MYSQL_DB)
-            cursor = db.cursor(pymysql.cursors.DictCursor)
-            if invert:
-                sql = "SELECT * FROM facts WHERE clause = '{}' AND user_id = '{}' ORDER BY counter DESC".format(subject, u_id)
-            else:
-                sql = "SELECT * FROM facts WHERE subject = '{}' AND user_id = '{}' ORDER BY counter DESC".format(subject, u_id)
+
             try:
-                cursor.execute(sql)
-                results = cursor.fetchall()
-                if not results:
-                    return None
-                row = results[0]
-                answer = row['subject'] + ' ' + row['verbtense'] + ' ' + row['clause']
+                if invert:
+                    fact = self.db_session.query(Fact).filter(Fact.clause == subject, Fact.user_id == u_id).order_by(Fact.counter.desc()).first()
+                else:
+                    fact = self.db_session.query(Fact).filter(Fact.subject == subject, Fact.user_id == u_id).order_by(Fact.counter.desc()).first()
+                answer = fact.subject + ' ' + fact.verbtense + ' ' + fact.clause
                 return self.mirror(answer)
-            except pymysql.InternalError as error:
-                code, message = error.args
-                print (">>>>>>>>>>>>>", code, message)
-                return "Sorry, I encountered with a database problem."
-            db.close()
+            except NoResultFound:
+                return None
         else:
             if invert:
                 result = self.db.search(Query().clause == subject)  # make a database search by giving subject string (inverted)
@@ -236,32 +229,15 @@ class Learner():
             u_id = 0
             if not is_public and user_id:
                 u_id = user_id
-            db = pymysql.connect(Config.MYSQL_HOST, Config.MYSQL_USER, Config.MYSQL_PASS, Config.MYSQL_DB)
-            cursor = db.cursor(pymysql.cursors.DictCursor)
-            sql1 = "SELECT * FROM facts WHERE subject = '{}' AND verbtense = '{}' AND clause = '{}' AND user_id = '{}'".format(subject, verbtense, clause, u_id)
-            sql2 = """
-                INSERT INTO facts (subject, verbtense, clause, user_id)
-                VALUES('{}', '{}', '{}', '{}')
-                """.format(subject, verbtense, clause, u_id)
-            sql3 = """
-                UPDATE facts
-                SET counter = counter + 1
-                WHERE subject = '{}' AND verbtense = '{}' AND clause = '{}' AND user_id = '{}'
-            """.format(subject, verbtense, clause, u_id)
-            try:
-                cursor.execute(sql1)
-                results = cursor.fetchall()
-                if not results:
-                    cursor.execute(sql2)
-                    db.commit()
-                else:
-                    cursor.execute(sql3)
-                    db.commit()
-            except pymysql.InternalError as error:
-                code, message = error.args
-                print (">>>>>>>>>>>>>", code, message)
-                return "Sorry, I encountered with a database problem."
-            db.close()
+
+            fact = self.db_session.query(Fact).filter(Fact.subject == subject, Fact.verbtense == verbtense, Fact.clause == clause, Fact.user_id == u_id).one_or_none()
+            if not fact:
+                new_fact = Fact(subject=subject, verbtense=verbtense, clause=clause, user_id=u_id)
+                self.db_session.add(new_user)
+                self.db_session.commit()
+            else:
+                fact.counter += 1
+                self.db_session.commit()
         else:
             if not self.db.search((Query().subject == subject) & (Query().verbtense == verbtense) & (Query().clause == clause)):  # if there is no exacty record on the database then
                 self.db.insert({
@@ -287,27 +263,15 @@ class Learner():
 
         if self.is_server:
             if not is_public and user_id:
-                db = pymysql.connect(Config.MYSQL_HOST, Config.MYSQL_USER, Config.MYSQL_PASS, Config.MYSQL_DB)
-                cursor = db.cursor(pymysql.cursors.DictCursor)
-                sql1 = "SELECT * FROM facts WHERE subject = '{}' AND user_id = '{}'".format(subject, user_id)
-                sql2 = "DELETE FROM facts WHERE subject = '{}' AND user_id = '{}'".format(subject, user_id)
-                try:
-                    cursor.execute(sql1)
-                    results = cursor.fetchall()
-                    if not results:
-                        db.close()
-                        return "I don't even know anything about " + self.mirror(subject)
-                    else:
-                        cursor.execute(sql2)
-                        db.commit()
-                        db.close()
-                        return "OK, I forgot everything I know about " + self.mirror(subject)
-                except pymysql.InternalError as error:
-                    code, message = error.args
-                    print (">>>>>>>>>>>>>", code, message)
-                    return "Sorry, I encountered with a database problem."
+                fact = self.db_session.query(Fact).filter(Fact.subject == subject, Fact.user_id == u_id).one_or_none()
+                if not fact:
+                    return "I don't even know anything about " + self.mirror(subject)
+                else:
+                    fact.delete()
+                    self.db_session.commit()
+                    return "OK, I forgot everything I know about " + self.mirror(subject)
             else:
-                return "I don't even know anything about " + self.mirror(subject)
+                return "I cannot forget a general fact about " + self.mirror(subject)
         else:
             if self.db.remove(Query().subject == self.fix_pronoun(subject)):
                 return "OK, I forgot everything I know about " + self.mirror(subject)

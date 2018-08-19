@@ -16,7 +16,7 @@ from threading import Thread  # Thread-based parallelism
 import json  # JSON encoder and decoder
 from dragonfire.config import Config  # Credentials for the database connection
 from dragonfire.arithmetic import arithmetic_parse  # Submodule of Dragonfire to analyze arithmetic expressions
-from dragonfire.database import User, Notification
+from dragonfire.database import User, Notification  # Submodule of Dragonfire module that contains the database schema
 import wikipedia as wikipedia_lib  # Python library that makes it easy to access and parse data from Wikipedia
 import re  # Regular expression operations
 import youtube_dl  # Command-line program to download videos from YouTube.com and other video sites
