@@ -29,7 +29,7 @@ API_SERVER = 'http://localhost:' + str(PORT)
 is_travis = 'TRAVIS' in os.environ
 
 if is_travis:
-    engine = create_engine('mysql://' + Config.MYSQL_USER + ':' + Config.MYSQL_PASS + '@' + Config.MYSQL_HOST + '/' + Config.MYSQL_DB)
+    engine = create_engine('mysql+pymysql://' + Config.MYSQL_USER + ':' + Config.MYSQL_PASS + '@' + Config.MYSQL_HOST + '/' + Config.MYSQL_DB)
 else:
     engine = create_engine('sqlite:///dragonfire.db', connect_args={'check_same_thread': False}, echo=True)
 Base.metadata.create_all(engine)
