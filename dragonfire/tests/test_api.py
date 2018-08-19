@@ -37,6 +37,7 @@ Base.metadata.bind = engine
 DBSession = sessionmaker(bind=engine)
 db_session = DBSession()
 dragonfire.learner.db_session = db_session
+dragonfire.learner.is_server = True
 
 api_ref = API.Run(dragonfire.nlp, dragonfire.learner, dragonfire.omniscient, dragonfire.dc, dragonfire.coref, dragonfire.userin, REG_KEY, PORT, db_session, dont_block=True)
 time.sleep(5)
@@ -105,6 +106,14 @@ def test_api_math(token):
     params = {"text": "How much is 12 + 14?"}
     response = requests.post(url, params=params, headers=headers)
     assert json.loads(response.text) == '12 + 14 = 26'
+
+
+def test_api_learn(token):
+    headers = {'Content-Type': 'application/x-www-form-urlencoded', 'Authorization': token}
+    url = API_SERVER + '/learn'
+    params = {"text": "the Sun is hot", "user_id": 0}
+    response = requests.post(url, params=params, headers=headers)
+    assert json.loads(response.text) == 'OK, I get it. the Sun is hot'
 
 
 def test_api_omni(token):

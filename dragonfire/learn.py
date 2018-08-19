@@ -233,7 +233,7 @@ class Learner():
             fact = self.db_session.query(Fact).filter(Fact.subject == subject, Fact.verbtense == verbtense, Fact.clause == clause, Fact.user_id == u_id).one_or_none()
             if not fact:
                 new_fact = Fact(subject=subject, verbtense=verbtense, clause=clause, user_id=u_id)
-                self.db_session.add(new_user)
+                self.db_session.add(new_fact)
                 self.db_session.commit()
             else:
                 fact.counter += 1
