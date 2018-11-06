@@ -129,7 +129,7 @@ setup(
         'pyowm==2.9.0',
         'tensorflow==1.0.0',
         'deepspeech==0.2.0a5',
-        'requests==2.19.1',
+        'requests>=2.20.0',
         'lxml==3.5.0',
         'nltk==3.1',
         'httplib2>=0.9.1',
