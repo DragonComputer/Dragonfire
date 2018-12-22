@@ -1,8 +1,11 @@
 dist: xenial
-sudo: required
 language: python
-virtualenv:
-    system_site_packages: true
+python:
+    - 3.5
+    - 3.6
+    - 3.7
+# virtualenv:
+#    system_site_packages: true
 services:
     - mysql
 addons:
@@ -16,7 +19,7 @@ before_install:
     - mysql -u root -e "CREATE DATABASE dragonfire;"
 install:
     - sudo ./install-dev.sh --no-model
-    - sudo pip3 install pytest-faulthandler
+    - sudo pip3 install pytest-faulthandler tinydb
     - export DISPLAY=':99.0'
     - Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
 before_script:
@@ -25,7 +28,7 @@ before_script:
     # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
     - flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
 script:
-    - python3 -m pytest --capture=sys
+    - python -m pytest --capture=sys
 notifications:
     on_success: change
     on_failure: change  # `always` will be the setting once code changes slow down
