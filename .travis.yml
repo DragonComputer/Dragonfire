@@ -3,10 +3,6 @@ sudo: required
 language: python
 virtualenv:
     system_site_packages: true
-python:
-    - "3.5"
-    - "3.6"
-    - "3.7"
 services:
     - mysql
 addons:
