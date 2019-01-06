@@ -10,6 +10,7 @@ __pycache__/
 
 # Distribution / packaging
 .Python
+.pybuild/
 build/
 develop-eggs/
 dist/
@@ -165,9 +166,11 @@ dragonfire/sr/plots/*
 dragonfire/sr/out/*
 
 # Debian packaging (dh-virtualenv) related
+debian/.debhelper/
 debian/dragonfire/
 debian/debhelper-build-stamp
 debian/dragonfire.postinst.debhelper
+debian/dragonfire.prerm.debhelper
 debian/dragonfire.substvars
 debian/files
 
