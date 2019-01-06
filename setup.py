@@ -125,7 +125,7 @@ setup(
         'PyUserInput==0.1.11',
         'tinydb==3.9.0.post1',
         'youtube_dl',
-        'spacy==2.0.18',
+        'spacy==2.0.13',
         'pyowm==2.9.0',
         'tensorflow==1.0.0',
         'deepspeech==0.2.0a5',
@@ -143,7 +143,8 @@ setup(
         'SpeechRecognition',
         'pyjwt==1.6.4',
         'SQLAlchemy==1.2.10',
-        'PyMySQL==0.8.1'
+        'PyMySQL==0.8.1',
+        'msgpack==0.5.6'
     ],
 
     # List additional groups of dependencies here (e.g. development
