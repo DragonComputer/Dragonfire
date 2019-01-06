@@ -1,10 +1,8 @@
 dist: xenial
 sudo: required
 language: python
-python:
-    - "3.5_with_system_site_packages"
-    - "3.6_with_system_site_packages"
-    - "3.7_with_system_site_packages"
+virtualenv:
+    system_site_packages: true
 services:
     - mysql
 addons:
@@ -27,7 +25,7 @@ before_script:
     # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
     - flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
 script:
-    - python -m pytest --capture=sys
+    - python3 -m pytest --capture=sys
 notifications:
     on_success: change
     on_failure: change  # `always` will be the setting once code changes slow down
