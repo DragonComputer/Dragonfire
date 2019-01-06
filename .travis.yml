@@ -1,11 +1,12 @@
 dist: xenial
+sudo: required
 language: python
+virtualenv:
+    system_site_packages: true
 python:
     - 3.5
     - 3.6
     - 3.7
-# virtualenv:
-#    system_site_packages: true
 services:
     - mysql
 addons:
@@ -19,7 +20,7 @@ before_install:
     - mysql -u root -e "CREATE DATABASE dragonfire;"
 install:
     - sudo ./install-dev.sh --no-model
-    - sudo pip3 install pytest-faulthandler tinydb
+    - sudo pip3 install pytest-faulthandler
     - export DISPLAY=':99.0'
     - Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
 before_script:
