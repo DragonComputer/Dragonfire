@@ -1,3 +1,20 @@
+dragonfire (1.0.1) unstable; urgency=medium
+
+  * Dependency issues are fixed
+  * Several minor bugs are fixed
+  * Python 3.6 support added
+  * Several linguistic mistakes are fixed
+  * A Dockerfile added
+  * Command-line formatting improved
+  * Add SQLite and MySQL support for the learning ability
+  * The knowledge base used in learning, migrated from TinyDB to SQLite/MySQL
+  * Module imports are fixed
+  * Automatic documentation generation added using Sphinx
+  * 134 different tests added and being checked with pytest using Travis CI
+  * Coreference resolution added  using NeuralCoref model
+
+ -- Mehmet Mert Yildiran <mehmetmertyildiran@gmail.com>  Mon, 7 Jan 2019 00:26:12 +0300
+
 dragonfire (1.0.0) unstable; urgency=medium
 
   * Post-installation scripts are fixed

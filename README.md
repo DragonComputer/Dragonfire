@@ -50,7 +50,7 @@ Feel free to join [our Gitter chat room](https://gitter.im/DragonComputer/Lobby)
 Download the [latest release](https://github.com/DragonComputer/Dragonfire/releases/latest) (the `.deb` file) and:
 
 ```Shell
-sudo dpkg -i dragonfire_1.0.0_amd64.deb
+sudo dpkg -i dragonfire_1.0.1_amd64.deb
 ```
 
 or with Docker: `docker pull dragoncomputer/dragonfire`
