@@ -86,10 +86,10 @@ def start(args, userin):
         userin:     :class:`dragonfire.utilities.TextToAction` instance.
     """
 
-    if args["sqlite"]:
-        engine = create_engine('sqlite:///dragonfire.db', connect_args={'check_same_thread': False}, echo=True)
-    else:
+    if 'TRAVIS' in os.environ or args["db"] == "mysql":
         engine = create_engine('mysql+pymysql://' + Config.MYSQL_USER + ':' + Config.MYSQL_PASS + '@' + Config.MYSQL_HOST + '/' + Config.MYSQL_DB)
+    else:
+        engine = create_engine('sqlite:///dragonfire.db', connect_args={'check_same_thread': False}, echo=True)
     Base.metadata.create_all(engine)
     Base.metadata.bind = engine
     DBSession = sessionmaker(bind=engine)
@@ -659,7 +659,7 @@ def initiate():
     ap.add_argument("--server", help="Server mode. Disable any audio functionality, serve a RESTful spaCy API and become a Twitter integrated chatbot.", metavar="REG_KEY")
     ap.add_argument("-p", "--port", help="Port number for server mode.", default="3301", metavar="PORT")
     ap.add_argument("--version", help="Display the version number of Dragonfire.", action="store_true")
-    ap.add_argument("--sqlite", help="Use SQLite as the database engine.", action="store_true")
+    ap.add_argument("--db", help="Specificy the database engine for the knowledge base of learning feature. Values: 'mysql' for MySQL, 'sqlite' for SQLite. Default database engine is SQLite.", action="store", type=str)
     args = vars(ap.parse_args())
     if args["version"]:
         import pkg_resources
