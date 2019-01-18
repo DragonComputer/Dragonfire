@@ -22,7 +22,7 @@ ADD . /app
 RUN apt-get install -y python3-pip
 
 # Install Dragonfire Python package
-RUN pip3 install --no-cache-dir .
+RUN pip3 install .
 
 # Define environment variables
 ENV DRAGONFIRE_DIR /usr/share/dragonfire
@@ -40,7 +40,7 @@ RUN cd $DEEPCONV_DIR && tar xvfz deepconv-v2.tar.gz
 RUN apt-get -qqy install libssl-dev libffi-dev
 
 # Retry to install the Python package dependencies in case of a failure
-RUN pip3 install --no-cache-dir --upgrade PyAudio==0.2.11 wikipedia==1.4.0 PyUserInput==0.1.11 tinydb==3.9.0.post1 youtube_dl spacy==2.0.11 pyowm==2.8.0 tensorflow==1.0.0 deepspeech==0.2.0a5 SpeechRecognition tweepy==3.6.0 metadata_parser hug==2.4.0 hug-middleware-cors==1.0.0 waitress==1.1.0 PyMySQL==0.8.1 requests==2.18.4
+RUN pip3 install --upgrade PyAudio==0.2.11 wikipedia==1.4.0 PyUserInput==0.1.11 tinydb==3.9.0.post1 youtube_dl spacy==2.0.11 pyowm==2.8.0 tensorflow==1.0.0 deepspeech==0.2.0a5 SpeechRecognition tweepy==3.6.0 metadata_parser hug==2.4.0 hug-middleware-cors==1.0.0 waitress==1.1.0 PyMySQL==0.8.1 requests==2.18.4
 
 # Download the spaCy English model
 RUN python3 -m spacy download en
