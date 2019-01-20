@@ -71,7 +71,7 @@ USER_ANSWERING = {
     'reason': None,
     'options': None
 }
- 
+
 try:
     raw_input  # Python 2
 except NameError:
@@ -629,7 +629,7 @@ def greet(userin):
     elif datetime.time(12) < time < datetime.time(18):
         time_of_day = "afternoon"
     elif datetime.time(18) < time < datetime.time(22):
-        time_of_day = "afternoon"
+        time_of_day = "evening"
     else:
         time_of_day = "night"
     userin.execute(["echo"], "To activate say 'Dragonfire!' or 'Wake Up!'")
