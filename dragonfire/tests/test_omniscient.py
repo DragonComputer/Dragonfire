@@ -25,7 +25,6 @@ def omniscient():
     ("Where is the Times Square", ["New York City", "\n"]),
     ("What is the height of Burj Khalifa", ["828 m"]),
     ("What is the real name of Iron Man", ["Tony", "Stark", "Tony Stark"]),
-    ("When Constantinople was conquered", ["1453"]),
     ("What is the name of the world's longest river", ["Nile", "Amazon"])
 ])
 def test_omniscient_respond(omniscient, question, answers):
