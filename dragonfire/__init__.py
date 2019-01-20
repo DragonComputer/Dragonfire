@@ -330,6 +330,10 @@ class VirtualAssistant():
                 userin.execute(["plasma-discover"], "Software Center")  # KDE neon
                 userin.execute(["software-center"], "Software Center")  # elementary OS & Ubuntu
                 return userin.say("Software Center")
+            if h.check_noun_lemma("console"):                                                                 #for openin terminal.
+                userin.execute(["konsole"], "Terminal")  # KDE neon
+                userin.execute(["gnome-terminal"], "Terminal")  # elementary OS & Ubuntu
+                return userin.say("console")
         if h.check_lemma("be") and h.check_lemma("-PRON-") and (h.check_lemma("lady") or h.check_lemma("woman") or h.check_lemma("girl")):
             config_file.update({'gender': 'female'}, Query().datatype == 'gender')
             config_file.remove(Query().datatype == 'callme')
@@ -620,12 +624,14 @@ def greet(userin):
             config_file.insert({'datatype': 'gender', 'gender': gender})
             user_prefix = GENDER_PREFIX[gender]
 
-    if time < datetime.time(12):
+    if datetime.time(4) < time < datetime.time(12):
         time_of_day = "morning"
     elif datetime.time(12) < time < datetime.time(18):
         time_of_day = "afternoon"
-    else:
+    elif datetime.time(18) < time < datetime.time(22):
         time_of_day = "evening"
+    else:
+        time_of_day = "night"
     userin.execute(["echo"], "To activate say 'Dragonfire!' or 'Wake Up!'")
     return userin.say(" ".join(["Good", time_of_day, user_prefix]))
 
