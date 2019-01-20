@@ -1,0 +1,14 @@
+[Unit]
+Description=Dragonfire API Service
+After=network.target
+StartLimitIntervalSec=0
+
+[Service]
+Type=simple
+Restart=always
+RestartSec=1
+User=dragon
+ExecStart=/usr/local/bin/dragonfire --server API_KEY
+
+[Install]
+WantedBy=multi-user.target
