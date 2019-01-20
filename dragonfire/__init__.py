@@ -71,7 +71,7 @@ USER_ANSWERING = {
     'reason': None,
     'options': None
 }
-
+ 
 try:
     raw_input  # Python 2
 except NameError:
