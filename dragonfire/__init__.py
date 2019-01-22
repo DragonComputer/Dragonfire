@@ -125,13 +125,15 @@ def start(args, userin):
         elif args["gspeech"]:
             from dragonfire.sr.gspeech import GspeechRecognizer
 
+            her = VirtualAssistant(args, userin, user_full_name, user_prefix)
             recognizer = GspeechRecognizer()
-            recognizer.recognize(args, userin, user_full_name, user_prefix)
+            recognizer.recognize(her)
         else:
             from dragonfire.sr.deepspeech import DeepSpeechRecognizer
 
+            her = VirtualAssistant(args, userin, user_full_name, user_prefix)
             recognizer = DeepSpeechRecognizer()
-            recognizer.recognize(args, userin, user_full_name, user_prefix)
+            recognizer.recognize(her)
 
 
 class VirtualAssistant():
