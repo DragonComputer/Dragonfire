@@ -57,7 +57,7 @@ or with Docker: `docker pull dragoncomputer/dragonfire`
 
 or simply: `sudo ./install.sh`
 
-<sup><i>To install the dependencies run `sudo apt-get -f install` right after the `dpkg -i` command. The installation will automatically download the pre-trained English model of Mozilla DeepSpeech (1.31 GB download size) and will place it under `/usr/share/dragonfire/deepspeech/models` directory. You can manually [download the model](https://github.com/mozilla/DeepSpeech/releases/download/v0.1.1/deepspeech-0.1.1-models.tar.gz) if you want.</i></sup>
+<sup><i>To install the dependencies run `sudo apt-get -f install` right after the `dpkg -i` command. The installation will automatically download the pre-trained English model of Mozilla DeepSpeech (1.31 GB download size) and will place it under `/usr/share/dragonfire/deepspeech/models` directory. You can manually [download the model](https://github.com/mozilla/DeepSpeech/releases/download/v0.4.1/deepspeech-0.4.1-models.tar.gz) if you want.</i></sup>
 
 ### Usage <a href="https://dragonfire.readthedocs.io/en/latest/dragonfire.html#module-dragonfire.api"><img src="https://media.readthedocs.com/corporate/img/header-logo.png" align="right" height="25px" /></a>
 
