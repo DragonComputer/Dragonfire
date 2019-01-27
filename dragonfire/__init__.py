@@ -83,7 +83,10 @@ USER_ANSWERING_WIKI = {
 USER_ANSWERING_NOTE = {
     'status': False,
     'isRemind': False,
-    'isTodo': False
+    'isTodo': False,
+    'toDo_listname': None,
+    'toDo_listcount': 0,
+    'note_keeper': None
 }
 
 try:
@@ -236,10 +239,10 @@ class VirtualAssistant():
                 h.check_verb_lemma("wake") and h.check_nth_lemma(-1, "up")) or (
                                           h.check_nth_lemma(0, "dragon") and h.check_nth_lemma(1,
                                                                                                "fire") and h.max_word_count(
-                                          2))):
+                                      2))):
             return ""
 
-        if takeNoteCommand.second_compare(com, noteTaker, USER_ANSWERING_NOTE, userin, user_prefix):
+        if takeNoteCommand.second_compare(com, noteTaker, USER_ANSWERING_NOTE, userin, user_prefix):   #take note command.
             return ""
 
         if USER_ANSWERING_WIKI['status']:
@@ -374,7 +377,7 @@ class VirtualAssistant():
                 userin.execute(["konsole"], "Terminal")  # KDE neon
                 userin.execute(["gnome-terminal"], "Terminal")  # elementary OS & Ubuntu
                 return userin.say("console")
-        if takeNoteCommand.first_compare(com, noteTaker, USER_ANSWERING_NOTE, userin, user_prefix):
+        if takeNoteCommand.first_compare(com, noteTaker, USER_ANSWERING_NOTE, userin, user_prefix):  #take note command
             return ""
 
         if h.check_lemma("be") and h.check_lemma("-PRON-") and (
