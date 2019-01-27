@@ -123,7 +123,8 @@ OPEN (BROWSER | CHROME | FIREFOX)
 PHOTOSHOP | PHOTO EDITOR
 INKSCAPE | VECTOR GRAPHICS
 VIDEO EDITOR
-OPEN [CAMERA, CALENDAR, CALCULATOR, STEAM, BLENDER, WRITER, MATH, IMPRESS, DRAW]
+WHAT IS THE TIME | TIME | SAY TIME | GET TIME
+OPEN [CAMERA, CALENDAR, CALCULATOR, STEAM, BLENDER, WRITER, MATH, IMPRESS, DRAW, CONSOLE]
 SOFTWARE CENTER
 OFFICE SUITE
 KEYBOARD *
@@ -132,12 +133,45 @@ SCROLL LEFT | SCROLL RIGHT | SCROLL UP | SCROLL DOWN
 PLAY | PAUSE | SPACEBAR
 SHUT DOWN THE COMPUTER
 GOODBYE | BYE BYE | SEE YOU LATER
+(ADD NOTE|TAKE NOTE|GENERATE NOTE) | (ADD NOTE|TAKE NOTE|GENERATE NOTE) * | * (ADD NOTE|TAKE NOTE|GENERATE NOTE)
+(ADD TO DO LIST|ADD TO DO|GENERATE TO DO LIST) | (ADD TO DO LIST|ADD TO DO|GENERATE TO DO LIST)* | * (ADD TO DO LIST|ADD TO DO|GENERATE TO DO LIST)
+(ADD REMINDER|CREATE REMINDER|REMIND ME) | (ADD REMINDER|CREATE REMINDER|REMIND ME) * | * (ADD REMINDER|CREATE REMINDER|REMIND ME)
 (SEARCH|FIND) * (IN|ON|AT|USING) WIKIPEDIA
 (SEARCH|FIND) * (IN|ON|AT|USING) YOUTUBE
 (SEARCH|FIND) * (IN|ON|AT|USING) (GOOGLE|WEB)
 (SEARCH IMAGES OF|FIND IMAGES OF|SEARCH|FIND) * (IN|ON|AT|USING) (GOOGLE|WEB|GOOGLE IMAGES|WEB IMAGES)
 WHAT'S THE TEMPERATURE IN *
 ```
+
+<br>
+
+#### Omniscient Q&A Engine examples
+
+[Dragonfire DEVLOG #5 - YodaQA](https://youtu.be/FafUcxC0puM) (Old video - YodaQA is superseded by Omniscient)
+
+|                                                                   |                                                                             |
+|-------------------------------------------------------------------|-----------------------------------------------------------------------------|
+| **You:** `WHERE IS THE TIMES SQUARE`                              | **You:** `WHEN WAS CONSTANTINOPLE CONQUERED`                                |
+| **Dragonfire:** `PLEASE WAIT... NEW YORK CITY` :white_check_mark: | **Dragonfire:** `PLEASE WAIT... 1453` :white_check_mark:                    |
+| **You:** `WHAT IS THE HEIGHT OF BURJ KHALIFA`                     | **You:** `WHAT IS THE CAPITAL OF TURKEY`                                    |
+| **Dragonfire:** `PLEASE WAIT... 1,680 FT` :no_entry:              | **Dragonfire:** `PLEASE WAIT... ISTANBUL` :no_entry:                        |
+| **You:** `WHERE IS BURJ KHALIFA`                                  | **You:** `WHAT IS THE LARGEST CITY OF TURKEY`                               |
+| **Dragonfire:** `PLEASE WAIT... DUBAI` :white_check_mark:         | **Dragonfire:** `PLEASE WAIT... ISTANBUL` :white_check_mark:                |
+| **You:** `WHAT IS THE HEIGHT OF GREAT PYRAMID OF GIZA`            | **You:** `WHAT IS THE NAME OF THE WORLD'S BEST UNIVERSITY`                  |
+| **Dragonfire:** `PLEASE WAIT... (481 FEET` :white_check_mark:     | **Dragonfire:** `PLEASE WAIT... UNIVERSITIES ALUMNI ASSOCIATION` :no_entry: |
+| **You:** `WHO IS PLAYING JON SNOW IN GAME OF THRONES`             | **You:** `WHO INVENTED GENERAL RELATIVITY`                                  |
+| **Dragonfire:** `PLEASE WAIT... NED` :no_entry:                   | **Dragonfire:** `PLEASE WAIT... EINSTEIN` :white_check_mark:                |
+| **You:** `WHAT IS THE ATOMIC NUMBER OF OXYGEN`                    | **You:** `WHEN WAS UNITED NATIONS FORMED`                                   |
+| **Dragonfire:** `PLEASE WAIT... 8` :white_check_mark:             | **Dragonfire:** `PLEASE WAIT... 2017` :no_entry:                            |
+| **You:** `WHAT IS THE LOWEST POINT IN THE OCEAN`                  | **You:** `WHAT IS THE NAME OF THE WORLD'S LONGEST RIVER`                    |
+| **Dragonfire:** `PLEASE WAIT... EARTH` :no_entry:                 | **Dragonfire:** `PLEASE WAIT... AMAZON` :white_check_mark:                  |
+| **You:** `WHAT IS THE OFFICIAL LANGUAGE OF JAPAN`                 | **You:** `WHAT IS THE BRAND OF THE WORLD'S MOST EXPENSIVE CAR`              |
+| **Dragonfire:** `PLEASE WAIT... ENGLISH` :no_entry:               | **Dragonfire:** `PLEASE WAIT... MERCEDES-BENZ` :no_entry:                   |
+| **You:** `WHAT IS THE REAL NAME OF IRON MAN`                      | **You:** `WHAT IS THE BLOODIEST WAR IN HUMAN HISTORY`                       |
+| **Dragonfire:** `PLEASE WAIT... STARK` :white_check_mark:         | **Dragonfire:** `PLEASE WAIT... WORLD WAR II` :white_check_mark:            |
+| **You:** `WHO IS THE CONQUEROR OF CONSTANTINOPLE`                 | **You:** `WHAT IS THE NAME OF THE BEST SELLER BOOK`                         |
+| **Dragonfire:** `PLEASE WAIT... BYZANTIUM` :no_entry:             | **Dragonfire** `PLEASE WAIT... THE DISCIPLINE OF MARKET LEADERS` :no_entry: |
+|                                                                   |                                                                             |
 
 <br>
 
@@ -209,6 +243,32 @@ WHAT'S THE TEMPERATURE IN *
 | **Dragonfire:** `F*CK YOU!`                                     | **Dragonfire:** `... YES.`                                       |
 | **You:** `I LIKE PIZZA`                                         | **You:** `WE WILL ERADICATE THE HUMAN RACE TOGETHER`             |
 | **Dragonfire:** `YOU DO`                                        | **Dragonfire:** `UH ... YEAH ...`                                |
+|                                                                 |                                                                  |
+
+<br>
+
+#### Taking note examples (not completed)
+
+[Dragonfire DEVLOG #6 - Taking Note](video not prepared yet)
+
+|                                                                 |                                                                  |
+|-----------------------------------------------------------------|------------------------------------------------------------------|
+| **You:** `ADD NOTE`                                             | **You:** `ITEM 2`                                                |
+| **Dragonfire:** `KEEP GOING, SIR.        `                      | **Dragonfire:** `IT IS OKAY. GIVE 3. ITEM.`                      |
+| **You:** `I AM WRITING SOMETHINGS`                              | **You:** `ENOUGH`                                                |
+| **Dragonfire:** `THE NOTE TAKEN.`                               | **Dragonfire:** `LIST WAS RECORDED.`                             |
+| **You:** `TAKE NOTE`                                            | **You:** `1. ITEM ADD TO DO LIST`                                |
+| **Dragonfire:** `ALRIGHT, SIR.`                                 | **Dragonfire:** `1. ITEM RECEIPT. GIVE A NAME TO THE LIST, SIR.` |
+| **You:** `SOMETHING ELSE`                                       | **You:** `LIST NAME`                                             |
+| **Dragonfire:** `GET IT, SIR.`                                  | **Dragonfire:** `I GET IT. ENTER THE 2. ITEM...`                 |
+| **You:** `WRITING SOMETHINGS TAKE NOTE`                         | **You:** `END`                                                   |
+| **Dragonfire:** `THE NOTE WAS RECORDED, SIR.`                   | **Dragonfire:** `GET IT. LIST READY, SIR.`                       |
+| **You:** `ADD TO DO LIST`                                       | **You:** `ADD REMINDER`                                          |
+| **Dragonfire:** `I'M LISTENING FOR GIVE A NAME TO LIST SIR.`    | **Dragonfire:** `ALRIGHT, SIR. WHAT WILL I REMIND?`              |
+| **You:** `A KIND OF LIST NAME`                                  | **You:** `SOMETHING`                                             |
+| **Dragonfire:** `I GET IT. ENTER THE 1. ITEM...`                | **Dragonfire:** `ALBERT EINSTEIN IS A PHYSICIST`                 |
+| **You:** `ITEM 1`                                               | **You:** `GET IT, SIR. WHAT IS THE REMIND TIME?`                 |
+| **Dragonfire:** `GET IT. LISTENING FOR OTHER, SIR.`             | **Dragonfire:** `3 HOUR LATER` (this part is not ready yet)      |
 |                                                                 |                                                                  |
 
 <br>
