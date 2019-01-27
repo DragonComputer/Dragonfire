@@ -8,7 +8,7 @@
 
 .. moduleauthor:: Mehmet Mert Yıldıran <mert.yildiran@bil.omu.edu.tr>
 """
-
+from pygments.lexer import default
 from sqlalchemy import Column, ForeignKey, Integer, String, DateTime, Date, Boolean
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
@@ -62,3 +62,23 @@ class Notification(Base):
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     is_active = Column(Boolean, default=True)
     capitalize = Column(Boolean, default=False)
+
+
+class NotePad(Base):
+    """Schema of 'notepad' table.
+    """
+
+    __tablename__ = 'notepad'
+    __table_args__ = {'useexisting': True}
+    id = Column(Integer, primary_key=True)
+    note = Column(String(255))
+    is_todolist = Column(Boolean, default=False)
+    list_name = Column(String(63), nullable=True)
+    list_sequence = Column(Integer, default=None)
+    is_reminder = Column(Boolean, default=False)
+    user_id = Column(Integer, ForeignKey('users.id'), default=0)
+    is_public = Column(Boolean, default=True)
+    category = Column(String(63))
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+    remind_time = Column(DateTime, nullable=True)
+    counter = Column(Integer, default=1)
