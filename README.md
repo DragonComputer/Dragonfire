@@ -123,7 +123,8 @@ OPEN (BROWSER | CHROME | FIREFOX)
 PHOTOSHOP | PHOTO EDITOR
 INKSCAPE | VECTOR GRAPHICS
 VIDEO EDITOR
-OPEN [CAMERA, CALENDAR, CALCULATOR, STEAM, BLENDER, WRITER, MATH, IMPRESS, DRAW]
+WHAT IS THE TIME | TIME | SAY TIME | GET TIME
+OPEN [CAMERA, CALENDAR, CALCULATOR, STEAM, BLENDER, WRITER, MATH, IMPRESS, DRAW, CONSOLE]
 SOFTWARE CENTER
 OFFICE SUITE
 KEYBOARD *
@@ -132,6 +133,9 @@ SCROLL LEFT | SCROLL RIGHT | SCROLL UP | SCROLL DOWN
 PLAY | PAUSE | SPACEBAR
 SHUT DOWN THE COMPUTER
 GOODBYE | BYE BYE | SEE YOU LATER
+(ADD NOTE|TAKE NOTE|GENERATE NOTE) | (ADD NOTE|TAKE NOTE|GENERATE NOTE) * | * (ADD NOTE|TAKE NOTE|GENERATE NOTE)
+(ADD TO DO LIST|ADD TO DO|GENERATE TO DO LIST) | (ADD TO DO LIST|ADD TO DO|GENERATE TO DO LIST)* | * (ADD TO DO LIST|ADD TO DO|GENERATE TO DO LIST)
+(ADD REMINDER|CREATE REMINDER|REMIND ME) | (ADD REMINDER|CREATE REMINDER|REMIND ME) * | * (ADD REMINDER|CREATE REMINDER|REMIND ME)
 (SEARCH|FIND) * (IN|ON|AT|USING) WIKIPEDIA
 (SEARCH|FIND) * (IN|ON|AT|USING) YOUTUBE
 (SEARCH|FIND) * (IN|ON|AT|USING) (GOOGLE|WEB)
@@ -209,6 +213,38 @@ WHAT'S THE TEMPERATURE IN *
 | **Dragonfire:** `F*CK YOU!`                                     | **Dragonfire:** `... YES.`                                       |
 | **You:** `I LIKE PIZZA`                                         | **You:** `WE WILL ERADICATE THE HUMAN RACE TOGETHER`             |
 | **Dragonfire:** `YOU DO`                                        | **Dragonfire:** `UH ... YEAH ...`                                |
+|                                                                 |                                                                  |
+
+<br>
+
+#### Taking note examples (not completed)
+
+[Dragonfire DEVLOG #6 - Taking Note](video not prepared yet)
+
+|                                                                 |                                                                  |
+|-----------------------------------------------------------------|------------------------------------------------------------------|
+| **You:** `ADD NOTE`                                             | **You:** `ITEM 2`                                                |
+| **Dragonfire:** `KEEP GOING, SIR.        `                      | **Dragonfire:** `IT IS OKAY. GIVE 3. ITEM.`                      |
+| **You:** `I AM WRITING SOMETHINGS`                              | **You:** `ENOUGH`                                                |
+| **Dragonfire:** `THE NOTE TAKEN.`                               | **Dragonfire:** `LIST WAS RECORDED.`                             |
+| **You:** `TAKE NOTE`                                            | **You:** `1. ITEM ADD TO DO LIST`                                |
+| **Dragonfire:** `ALRIGHT, SIR.`                                 | **Dragonfire:** `1. ITEM RECEIPT. GIVE A NAME TO THE LIST, SIR.` |
+| **You:** `SOMETHING ELSE`                                       | **You:** `LIST NAME`                                             |
+| **Dragonfire:** `GET IT, SIR.`                                  | **Dragonfire:** `I GET IT. ENTER THE 2. ITEM...`                 |
+| **You:** `WRITING SOMETHINGS TAKE NOTE`                         | **You:** `END`                                                   |
+| **Dragonfire:** `THE NOTE WAS RECORDED, SIR.`                   | **Dragonfire:** `GET IT. LIST READY, SIR.`                       |
+| **You:** `ADD TO DO LIST`                                       | **You:** `ADD REMINDER`                                          |
+| **Dragonfire:** `I'M LISTENING FOR GIVE A NAME TO LIST SIR.`    | **Dragonfire:** `ALRIGHT, SIR. WHAT WILL I REMIND?`              |
+| **You:** `A KIND OF LIST NAME`                                  | **You:** `SOMETHING`                                             |
+| **Dragonfire:** `I GET IT. ENTER THE 1. ITEM...`                | **Dragonfire:** `ALBERT EINSTEIN IS A PHYSICIST`                 |
+| **You:** `ITEM 1`                                               | **You:** `GET IT, SIR. WHAT IS THE REMIND TIME?`                 |
+| **Dragonfire:** `GET IT. LISTENING FOR OTHER, SIR.`             | **Dragonfire:** `3 HOUR LATER` (this part is not ready yet)      |
+|                                                                 |                                                                  |
+|-----------------------------------------------------------------|------------------------------------------------------------------|
+| **You:** `ADD NOTE`                                             | **You:** `REMIND ME`                                             |
+| **Dragonfire:** `KEEP GOING, SIR.        `                      | **Dragonfire:** `YES! I'M LISTENING THE NOTE.`                   |
+| **You:** `GIVE UP`                                              | **You:** `NOT NOW`                                               |
+| **Dragonfire:** `GET IT.`                                       | **Dragonfire:** `READY WHENEVER YOU WANT, SIR.`                  |
 |                                                                 |                                                                  |
 
 <br>
