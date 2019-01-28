@@ -133,6 +133,11 @@ class TakeNoteCommand():
             if com.startswith("whatever") or com.startswith("give up") or com.startswith("not now") or com.startswith(
                     "WHATEVER") or com.startswith("GIVE UP") or com.startswith("NOT NOW"):  # for writing interrupr while taking notes and creating reminders.
                 USER_ANSWERING_NOTE['status'] = False
+                USER_ANSWERING_NOTE['isTodo'] = False
+                USER_ANSWERING_NOTE['toDo_listname'] = None
+                USER_ANSWERING_NOTE['toDo_listcount'] = 0
+                USER_ANSWERING_NOTE['note_keeper'] = None
+                USER_ANSWERING_NOTE['isRemind'] = False
                 return userin.say(
                     choice(["As you wish", "I understand", "Alright", "Ready whenever you want", "Get it"]) + choice(
                         [". ", ", " + user_prefix + ". "]))
