@@ -44,6 +44,7 @@ from dragonfire.config import Config  # Submodule of Dragonfire to store configu
 from dragonfire.database import Base  # Submodule of Dragonfire module that contains the database schema
 
 from dragonfire.commands.takenote import TakeNoteCommand
+from dragonfire.commands.findInWikipedia import FindInWikiCommand
 
 import spacy  # Industrial-strength Natural Language Processing in Python
 import pyowm  # A Python wrapper around the OpenWeatherMap API
@@ -67,20 +68,21 @@ userin = None
 nlp = spacy.load('en')  # Load en_core_web_sm, English, 50 MB, default model
 learner = Learner(nlp)
 takeNoteCommand = TakeNoteCommand()
+findInWikiCommand = FindInWikiCommand()
 noteTaker = NoteTaker()
 omniscient = Omniscient(nlp)
 dc = DeepConversation()
 coref = NeuralCoref()
 e = Event()
 
-USER_ANSWERING_WIKI = {
+USER_ANSWERING_WIKI = {      # user answering for wikipedia search
     'status': False,
     'for': None,
     'reason': None,
     'options': None
 }
 
-USER_ANSWERING_NOTE = {
+USER_ANSWERING_NOTE = {     # user answering for taking notes.
     'status': False,
     'isRemind': False,
     'isTodo': False,
@@ -245,38 +247,8 @@ class VirtualAssistant():
         if takeNoteCommand.second_compare(com, noteTaker, USER_ANSWERING_NOTE, userin, user_prefix):   #take note command.
             return ""
 
-        if USER_ANSWERING_WIKI['status']:
-            if com.startswith("FIRST") or com.startswith("THE FIRST") or com.startswith("SECOND") or com.startswith(
-                    "THE SECOND") or com.startswith("THIRD") or com.startswith("THE THIRD"):
-                USER_ANSWERING_WIKI['status'] = False
-                selection = None
-                if com.startswith("FIRST") or com.startswith("THE FIRST"):
-                    selection = 0
-                elif com.startswith("SECOND") or com.startswith("THE SECOND"):
-                    selection = 1
-                elif com.startswith("THIRD") or com.startswith("THE THIRD"):
-                    selection = 2
-
-                if USER_ANSWERING_WIKI['for'] == 'wikipedia':
-                    with nostderr():
-                        search_query = USER_ANSWERING_WIKI['options'][selection]
-                        try:
-                            wikiresult = wikipedia.search(search_query)
-                            if len(wikiresult) == 0:
-                                userin.say(
-                                    "Sorry, " + user_prefix + ". But I couldn't find anything about " + search_query + " in Wikipedia.")
-                                return True
-                            wikipage = wikipedia.page(wikiresult[0])
-                            wikicontent = "".join([i if ord(i) < 128 else ' ' for i in wikipage.content])
-                            wikicontent = re.sub(r'\([^)]*\)', '', wikicontent)
-                            userin.execute(["sensible-browser", wikipage.url], search_query)
-                            return userin.say(wikicontent, cmd=["sensible-browser", wikipage.url])
-                        except requests.exceptions.ConnectionError:
-                            userin.execute([" "], "Wikipedia connection error.")
-                            return userin.say(
-                                "Sorry, " + user_prefix + ". But I'm unable to connect to Wikipedia servers.")
-                        except Exception:
-                            return False
+        if findInWikiCommand.second_compare(com, USER_ANSWERING_WIKI, userin, user_prefix):
+            return ""
 
         if h.directly_equal(["dragonfire", "hey"]) or (h.check_verb_lemma("wake") and h.check_nth_lemma(-1, "up")) or (
                 h.check_nth_lemma(0, "dragon") and h.check_nth_lemma(1, "fire") and h.max_word_count(2)):
@@ -525,46 +497,10 @@ class VirtualAssistant():
                 # raise KeyboardInterrupt
                 thread.interrupt_main()
             return response
-        if (h.check_lemma("search") or h.check_lemma("find")) and h.check_lemma("wikipedia"):
-            with nostderr():
-                search_query = ""
-                for token in doc:
-                    if not (
-                            token.lemma_ == "search" or token.lemma_ == "find" or token.lemma_ == "wikipedia" or token.is_stop):
-                        search_query += ' ' + token.text
-                search_query = search_query.strip()
-                if search_query:
-                    try:
-                        wikiresult = wikipedia.search(search_query)
-                        if len(wikiresult) == 0:
-                            userin.say(
-                                "Sorry, " + user_prefix + ". But I couldn't find anything about " + search_query + " in Wikipedia.")
-                            return True
-                        wikipage = wikipedia.page(wikiresult[0])
-                        wikicontent = "".join([i if ord(i) < 128 else ' ' for i in wikipage.content])
-                        wikicontent = re.sub(r'\([^)]*\)', '', wikicontent)
-                        userin.execute(["sensible-browser", wikipage.url], search_query)
-                        return userin.say(wikicontent, cmd=["sensible-browser", wikipage.url])
-                    except requests.exceptions.ConnectionError:
-                        userin.execute([" "], "Wikipedia connection error.")
-                        return userin.say("Sorry, " + user_prefix + ". But I'm unable to connect to Wikipedia servers.")
-                    except wikipedia.exceptions.DisambiguationError as disambiguation:
-                        USER_ANSWERING_WIKI['status'] = True
-                        USER_ANSWERING_WIKI['for'] = 'wikipedia'
-                        USER_ANSWERING_WIKI['reason'] = 'disambiguation'
-                        USER_ANSWERING_WIKI['options'] = disambiguation.options[:3]
-                        notify = "Wikipedia disambiguation. Which one of these you meant?:\n - " + \
-                                 disambiguation.options[0]
-                        msg = user_prefix + ", there is a disambiguation. Which one of these you meant? " + \
-                              disambiguation.options[0]
-                        for option in disambiguation.options[1:3]:
-                            msg += ", or " + option
-                            notify += "\n - " + option
-                        notify += '\nSay, for example: "THE FIRST ONE" to choose.'
-                        userin.execute([" "], notify)
-                        return userin.say(msg)
-                    except BaseException:
-                        pass
+
+        if findInWikiCommand.first_compare(com, USER_ANSWERING_WIKI, userin, user_prefix):
+            return ""
+
         if (h.check_lemma("search") or h.check_lemma("find")) and h.check_lemma("youtube"):
             with nostdout():
                 with nostderr():
