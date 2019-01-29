@@ -23,12 +23,13 @@ import requests.exceptions  # HTTP for Humans
 
 nlp = spacy.load('en')  # Load en_core_web_sm, English, 50 MB, default model
 
+
 class FindInWikiCommand():
     """Class to contains taking notes process with simply if-else struct.
     """
 
     def first_compare(self, com, USER_ANSWERING_WIKI, userin, user_prefix):
-        """Method to dragonfire's first command struct of taking note ability.
+        """Method to dragonfire's first command struct of searching in wikipedia ability.
 
         Args:
             com (str):                 User's command.
@@ -81,7 +82,7 @@ class FindInWikiCommand():
                         pass
 
     def second_compare(self, com, USER_ANSWERING_WIKI, userin, user_prefix):
-        """Method to dragonfire's first command struct of taking note ability.
+        """Method to dragonfire's first command struct of searching in wikipedia ability.
 
         Args:
             com (str):                 User's command.
