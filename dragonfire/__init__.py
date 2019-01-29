@@ -46,6 +46,10 @@ from dragonfire.database import Base  # Submodule of Dragonfire module that cont
 from dragonfire.commands.takenote import TakeNoteCommand
 from dragonfire.commands.findInWikipedia import FindInWikiCommand
 from dragonfire.commands.directCliExecute import CliExecuteCommands
+from dragonfire.commands.findInYoutube import FindInYoutubeCommand
+from dragonfire.commands.findInBrowser import FindInBrowserCommand
+from dragonfire.commands.keyboard import KeyboardCommands
+from dragonfire.commands.setUserTitle import SetUserTitleCommands
 
 import spacy  # Industrial-strength Natural Language Processing in Python
 import pyowm  # A Python wrapper around the OpenWeatherMap API
@@ -76,7 +80,11 @@ e = Event()
 
 takeNoteCommand = TakeNoteCommand()
 findInWikiCommand = FindInWikiCommand()
+findInYoutubeCommand = FindInYoutubeCommand()
+findInBrowserCommand = FindInBrowserCommand()
 cliExecuteCommands = CliExecuteCommands()
+keyboardCommands = KeyboardCommands()
+setUserTitleCommands = SetUserTitleCommands()
 
 USER_ANSWERING_WIKI = {      # user answering for wikipedia search
     'status': False,
@@ -249,10 +257,8 @@ class VirtualAssistant():
 
         if takeNoteCommand.second_compare(com, noteTaker, USER_ANSWERING_NOTE, userin, user_prefix):   #take note command.
             return ""
-
         if findInWikiCommand.second_compare(com, USER_ANSWERING_WIKI, userin, user_prefix):
             return ""
-
         if h.directly_equal(["dragonfire", "hey"]) or (h.check_verb_lemma("wake") and h.check_nth_lemma(-1, "up")) or (
                 h.check_nth_lemma(0, "dragon") and h.check_nth_lemma(1, "fire") and h.max_word_count(2)):
             self.inactive = False
@@ -282,44 +288,28 @@ class VirtualAssistant():
                 h.check_verb_lemma("say") and h.check_text("my") and h.check_lemma("name")):
             userin.execute([" "], user_full_name)
             return userin.say("Your name is " + user_full_name + ", " + user_prefix + ".")
+
         if (h.check_verb_lemma("what") and h.check_deps_contains("the time")) or h.check_noun_lemma("time") or (
                 h.check_verb_lemma("get") or h.check_verb_lemma("say") and h.check_deps_contains("the time")) or (
                 h.check_verb_lemma("what") and h.check_noun_lemma("time") and h.check_text("it")):
-            atthemoment = datetime.datetime.now().strftime("%H:%M")
-            return userin.say(atthemoment + ", " + user_prefix + ".")
+            takenote_query = ""
+            for token in doc:
+                if not (
+                        token.lemma_ == "what" or token.lemma_ == "time" or token.lemma_ == "get" or token.lemma_ == "say" or
+                        token.lemma_ == "it" or token.is_stop):
+                    takenote_query += ' ' + token.text
+            takenote_query = takenote_query.strip()
+            if not takenote_query:                                             # for filter of other sentences.
+                atthemoment = datetime.datetime.now().strftime("%H:%M")
+                return userin.say(atthemoment + ", " + user_prefix + ".")
 
         if cliExecuteCommands.compare(com, userin, user_prefix):
             return ""
-
         if takeNoteCommand.first_compare(com, noteTaker, USER_ANSWERING_NOTE, userin, user_prefix):  #take note command
             return ""
+        if setUserTitleCommands.compare(com, args, userin, config_file):
+            return ""
 
-        if h.check_lemma("be") and h.check_lemma("-PRON-") and (
-                h.check_lemma("lady") or h.check_lemma("woman") or h.check_lemma("girl")):
-            config_file.update({'gender': 'female'}, Query().datatype == 'gender')
-            config_file.remove(Query().datatype == 'callme')
-            user_prefix = "my lady"
-            return userin.say("Pardon, " + user_prefix + ".")
-        if h.check_lemma("be") and h.check_lemma("-PRON-") and (
-                h.check_lemma("sir") or h.check_lemma("man") or h.check_lemma("boy")):
-            config_file.update({'gender': 'male'}, Query().datatype == 'gender')
-            config_file.remove(Query().datatype == 'callme')
-            user_prefix = "sir"
-            return userin.say("Pardon, " + user_prefix + ".")
-        if h.check_lemma("call") and h.check_lemma("-PRON-"):
-            title = ""
-            for token in doc:
-                if token.pos_ == "NOUN":
-                    title += ' ' + token.text
-            title = title.strip()
-            if not args["server"]:
-                callme_config = config_file.search(Query().datatype == 'callme')
-                if callme_config:
-                    config_file.update({'title': title}, Query().datatype == 'callme')
-                else:
-                    config_file.insert({'datatype': 'callme', 'title': title})
-            user_prefix = title
-            return userin.say("OK, " + user_prefix + ".")
         if h.is_wh_question() and h.check_lemma("temperature"):
             city = ""
             for ent in doc.ents:
@@ -339,96 +329,9 @@ class VirtualAssistant():
                     msg = "Sorry, " + user_prefix + " but I couldn't find a city named " + city + " on the internet."
                     userin.execute([" "], msg)
                     return userin.say(msg)
-        if (h.check_nth_lemma(0, "keyboard") or h.check_nth_lemma(0, "type")) and not args["server"]:
-            n = len(doc[0].text) + 1
-            with nostdout():
-                with nostderr():
-                    k = PyKeyboard()
-                    if not self.testing:
-                        for character in com[n:]:
-                            k.tap_key(character)
-                        k.tap_key(" ")
-            return "keyboard"
-        if (h.directly_equal(["enter"]) or (h.check_adj_lemma("new") and h.check_noun_lemma("line"))) and not args[
-            "server"]:
-            with nostdout():
-                with nostderr():
-                    k = PyKeyboard()
-                    if not self.testing:
-                        k.tap_key(k.enter_key)
-            return "enter"
-        if h.check_adj_lemma("new") and h.check_noun_lemma("tab") and not args["server"]:
-            with nostdout():
-                with nostderr():
-                    k = PyKeyboard()
-                    if not self.testing:
-                        k.press_keys([k.control_l_key, 't'])
-            return "new tab"
-        if h.check_verb_lemma("switch") and h.check_noun_lemma("tab") and not args["server"]:
-            with nostdout():
-                with nostderr():
-                    k = PyKeyboard()
-                    if not self.testing:
-                        k.press_keys([k.control_l_key, k.tab_key])
-            return "switch tab"
-        if h.directly_equal(["CLOSE", "ESCAPE"]) and not args["server"]:
-            with nostdout():
-                with nostderr():
-                    k = PyKeyboard()
-                    if not self.testing:
-                        k.press_keys([k.control_l_key, 'w'])
-                        k.tap_key(k.escape_key)
-            return "close"
-        if h.check_lemma("back") and h.max_word_count(4) and not args["server"]:
-            with nostdout():
-                with nostderr():
-                    k = PyKeyboard()
-                    if not self.testing:
-                        k.press_keys([k.alt_l_key, k.left_key])
-            return "back"
-        if h.check_lemma("forward") and h.max_word_count(4) and not args["server"]:
-            with nostdout():
-                with nostderr():
-                    k = PyKeyboard()
-                    if not self.testing:
-                        k.press_keys([k.alt_l_key, k.right_key])
-            return "forward"
-        if (h.check_text("swipe") or h.check_text("scroll")) and not args["server"]:
-            if h.check_text("left"):
-                with nostdout():
-                    with nostderr():
-                        m = PyMouse()
-                        if not self.testing:
-                            m.scroll(0, -5)
-                return "swipe left"
-            if h.check_text("right"):
-                with nostdout():
-                    with nostderr():
-                        m = PyMouse()
-                        if not self.testing:
-                            m.scroll(0, 5)
-                return "swipe right"
-            if h.check_text("up"):
-                with nostdout():
-                    with nostderr():
-                        m = PyMouse()
-                        if not self.testing:
-                            m.scroll(5, 0)
-                return "swipe up"
-            if h.check_text("down"):
-                with nostdout():
-                    with nostderr():
-                        m = PyMouse()
-                        if not self.testing:
-                            m.scroll(-5, 0)
-                return "swipe down"
-        if h.directly_equal(["PLAY", "PAUSE", "SPACEBAR"]) and not args["server"]:
-            with nostdout():
-                with nostderr():
-                    k = PyKeyboard()
-                    if not self.testing:
-                        k.tap_key(" ")
-            return "play"
+        if keyboardCommands.compare(com, args, self.testing):
+            return ""
+
         if ((h.check_text("shut") and h.check_text("down")) or (
                 h.check_text("power") and h.check_text("off"))) and h.check_text("computer") and not args["server"]:
             return userin.execute(["sudo", "poweroff"], "Shutting down", True, 3)
@@ -442,65 +345,12 @@ class VirtualAssistant():
 
         if findInWikiCommand.first_compare(com, USER_ANSWERING_WIKI, userin, user_prefix):
             return ""
-
-        if (h.check_lemma("search") or h.check_lemma("find")) and h.check_lemma("youtube"):
-            with nostdout():
-                with nostderr():
-                    search_query = ""
-                    for token in doc:
-                        if not (
-                                token.lemma_ == "search" or token.lemma_ == "find" or token.lemma_ == "youtube" or token.is_stop):
-                            search_query += ' ' + token.text
-                    search_query = search_query.strip()
-                    if search_query:
-                        info = youtube_dl.YoutubeDL({}).extract_info('ytsearch:' + search_query, download=False,
-                                                                     ie_key='YoutubeSearch')
-                        if len(info['entries']) > 0:
-                            youtube_title = info['entries'][0]['title']
-                            youtube_url = "https://www.youtube.com/watch?v=%s" % (info['entries'][0]['id'])
-                            userin.execute(["sensible-browser", youtube_url], youtube_title)
-                            youtube_title = "".join([i if ord(i) < 128 else ' ' for i in youtube_title])
-                            response = userin.say(youtube_title, ["sensible-browser", youtube_url])
-                        else:
-                            youtube_title = "No video found, " + user_prefix + "."
-                            response = userin.say(youtube_title)
-                        k = PyKeyboard()
-                        if not args["server"] and not self.testing:
-                            time.sleep(5)
-                            k.tap_key(k.tab_key)
-                            k.tap_key(k.tab_key)
-                            k.tap_key(k.tab_key)
-                            k.tap_key(k.tab_key)
-                            k.tap_key('f')
-                        return response
-        if (h.check_lemma("search") or h.check_lemma("find")) and (
-                h.check_lemma("google") or h.check_lemma("web") or h.check_lemma("internet")) and not h.check_lemma(
-                "image"):
-            with nostdout():
-                with nostderr():
-                    search_query = ""
-                    for token in doc:
-                        if not (
-                                token.lemma_ == "search" or token.lemma_ == "find" or token.lemma_ == "google" or token.lemma_ == "web" or token.lemma_ == "internet" or token.is_stop):
-                            search_query += ' ' + token.text
-                    search_query = search_query.strip()
-                    if search_query:
-                        tab_url = "http://google.com/?#q=" + search_query
-                        return userin.execute(["sensible-browser", tab_url], search_query, True)
-        if (h.check_lemma("search") or h.check_lemma("find")) and (
-                h.check_lemma("google") or h.check_lemma("web") or h.check_lemma("internet")) and h.check_lemma(
-                "image"):
-            with nostdout():
-                with nostderr():
-                    search_query = ""
-                    for token in doc:
-                        if not (
-                                token.lemma_ == "search" or token.lemma_ == "find" or token.lemma_ == "google" or token.lemma_ == "web" or token.lemma_ == "internet" or token.lemma_ == "image" or token.is_stop):
-                            search_query += ' ' + token.text
-                    search_query = search_query.strip()
-                    if search_query:
-                        tab_url = "http://google.com/?#q=" + search_query + "&tbm=isch"
-                        return userin.execute(["sensible-browser", tab_url], search_query, True)
+        if findInYoutubeCommand.compare(com, args, userin, user_prefix):
+            return ""
+        if findInBrowserCommand.compare_content(com, userin, user_prefix):
+            return ""
+        if findInBrowserCommand.compare_image(com, userin, user_prefix):
+            return ""
 
         original_com = com
         com = coref.resolve(com)

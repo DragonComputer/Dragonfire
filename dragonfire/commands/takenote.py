@@ -22,7 +22,8 @@ class TakeNoteCommand():
     """Class to contains taking notes process with simply if-else struct.
     """
 
-    def first_compare(self, com, noteTaker, USER_ANSWERING_NOTE, userin, user_prefix):
+    @staticmethod
+    def first_compare(com, noteTaker, USER_ANSWERING_NOTE, userin, user_prefix):
         """Method to dragonfire's first command struct of taking note ability.
 
         Args:
@@ -117,7 +118,9 @@ class TakeNoteCommand():
                     USER_ANSWERING_NOTE['status'] = False
                     return userin.say(choice(["The note taken", "The note was recorded", "I get it"]) + choice(
                         [".", ", " + user_prefix + "."]))
-    def second_compare(self, com, noteTaker, USER_ANSWERING_NOTE, userin, user_prefix):
+
+    @staticmethod
+    def second_compare(com, noteTaker, USER_ANSWERING_NOTE, userin, user_prefix):
         """Method to dragonfire's first command struct of taking note ability.
 
         Args:
