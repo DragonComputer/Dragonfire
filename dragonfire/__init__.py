@@ -256,12 +256,18 @@ class VirtualAssistant():
                                       2))):
             return ""
 
-        if takeNoteCommand.takenote_compare2(com, noteTaker, USER_ANSWERING_NOTE, userin, user_prefix):   #take note command.
-            return ""
-        if takeNoteCommand.getnote_compare2(com, noteTaker, USER_ANSWERING_NOTE, userin, user_prefix):
-            return ""
-        if findInWikiCommand.second_compare(com, USER_ANSWERING_WIKI, userin, user_prefix):
-            return ""
+        tnc = takeNoteCommand.takenote_compare2(com, noteTaker, USER_ANSWERING_NOTE, userin, user_prefix)   #take note command.
+        if tnc:
+            return tnc
+
+        tnc = takeNoteCommand.getnote_compare2(com, noteTaker, USER_ANSWERING_NOTE, userin, user_prefix)
+        if tnc:
+            return tnc
+
+        fiwc = findInWikiCommand.second_compare(com, USER_ANSWERING_WIKI, userin, user_prefix)
+        if fiwc:
+            return fiwc
+
         if h.directly_equal(["dragonfire", "hey"]) or (h.check_verb_lemma("wake") and h.check_nth_lemma(-1, "up")) or (
                 h.check_nth_lemma(0, "dragon") and h.check_nth_lemma(1, "fire") and h.max_word_count(2)):
             self.inactive = False
@@ -306,18 +312,21 @@ class VirtualAssistant():
                 atthemoment = datetime.datetime.now().strftime("%H:%M")
                 return userin.say(atthemoment + choice([", "+user_prefix + ".", "."]))
 
-        if takeNoteCommand.getnote_compare1(com, noteTaker, USER_ANSWERING_NOTE, userin, user_prefix):
-            return ""
+        tnc = takeNoteCommand.getnote_compare1(com, noteTaker, USER_ANSWERING_NOTE, userin, user_prefix)
+        if tnc:
+            return tnc
 
         cec = cliExecuteCommands.compare(com, userin, user_prefix)
         if cec:
             return cec
 
-        if takeNoteCommand.takenote_compare1(com, noteTaker, USER_ANSWERING_NOTE, userin, user_prefix):  #take note command
-            return ""
+        tnc = takeNoteCommand.takenote_compare1(com, noteTaker, USER_ANSWERING_NOTE, userin, user_prefix)  #take note command
+        if tnc:
+            return tnc
 
-        if setUserTitleCommands.compare(com, args, userin, config_file, user_prefix):
-            return ""
+        sutc = setUserTitleCommands.compare(com, args, userin, config_file, user_prefix)
+        if sutc:
+            return sutc
 
         if h.is_wh_question() and h.check_lemma("temperature"):
             city = ""
@@ -338,8 +347,10 @@ class VirtualAssistant():
                     msg = "Sorry, " + user_prefix + " but I couldn't find a city named " + city + " on the internet."
                     userin.execute([" "], msg)
                     return userin.say(msg)
-        if keyboardCommands.compare(com, args, self.testing):
-            return ""
+
+        keycom = keyboardCommands.compare(com, args, self.testing)
+        if keycom:
+            return keycom
 
         if ((h.check_text("shut") and h.check_text("down")) or (
                 h.check_text("power") and h.check_text("off"))) and h.check_text("computer") and not args["server"]:
@@ -352,17 +363,21 @@ class VirtualAssistant():
                 thread.interrupt_main()
             return response
 
-        if findInWikiCommand.first_compare(com, USER_ANSWERING_WIKI, userin, user_prefix):
-            return ""
+        fiwc = findInWikiCommand.first_compare(com, USER_ANSWERING_WIKI, userin, user_prefix)
+        if fiwc:
+            return fiwc
 
         response = findInYoutubeCommand.compare(com, args, userin, user_prefix)
         if response:
             return response
 
-        if findInBrowserCommand.compare_content(com, userin, user_prefix):
-            return ""
-        if findInBrowserCommand.compare_image(com, userin, user_prefix):
-            return ""
+        fibc = findInBrowserCommand.compare_content(com, userin, user_prefix)
+        if fibc:
+            return fibc
+
+        fibc = findInBrowserCommand.compare_image(com, userin, user_prefix)
+        if fibc:
+            return fibc
 
         original_com = com
         com = coref.resolve(com)

@@ -23,7 +23,6 @@ class TakeNoteCommand():
     """Class to contains taking notes process with simply if-else struct.
     """
 
-
     def takenote_compare1(self, com, noteTaker, USER_ANSWERING_NOTE, userin, user_prefix):
         """Method to dragonfire's first command struct of taking note ability.
 
@@ -119,7 +118,7 @@ class TakeNoteCommand():
                     USER_ANSWERING_NOTE['status'] = False
                     return userin.say(choice(["The note taken", "The note was recorded", "I get it"]) + choice(
                         [".", ", " + user_prefix + "."]))
-
+        return None
 
     def takenote_compare2(self, com, noteTaker, USER_ANSWERING_NOTE, userin, user_prefix):
         """Method to dragonfire's first command struct of taking note ability.
@@ -247,13 +246,14 @@ class TakeNoteCommand():
                             ["Reminder Added.", "I'm waiting to remind.", "I will remind.",
                              "Reminder has been set."]))
 
-
             else:
                 USER_ANSWERING_NOTE['status'] = False
                 noteTaker.db_upsert(com)
                 return userin.say(choice(
                     ["The note Taken", "Alright", "I understand", "Ready whenever you want", "Get it"]) + choice(
                     [".", ", " + user_prefix + ". "]))
+
+        return None
 
     def getnote_compare1(self, com, noteTaker, USER_ANSWERING_NOTE, userin, user_prefix):
         """Method to dragonfire's first command struct of getting note ability.
@@ -300,6 +300,7 @@ class TakeNoteCommand():
                         ]) + choice(["?", ", " + user_prefix + "?"]))
                     else:
                         return userin.say(noteTaker.db_get(None, com, True))
+        return None
 
     def getnote_compare2(self, com, noteTaker, USER_ANSWERING_NOTE, userin, user_prefix):
         """Method to dragonfire's second command struct of getting note ability.
@@ -330,6 +331,7 @@ class TakeNoteCommand():
             else:
                 USER_ANSWERING_NOTE['has_listname'] = True
                 return userin.say(noteTaker.db_get(None, com, True))
+        return None
 
     def is_float(self, value):
         """Method to dragonfire's checking float various struct of taking reminder note ability.
@@ -343,9 +345,6 @@ class TakeNoteCommand():
         except:
             return False
 
-    # def set_reminder(self, note, time, noteTaker):
-    #
-    #     noteTaker.db_upsert(note, None, time, None, None, False, True)
 
 
 

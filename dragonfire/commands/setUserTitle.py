@@ -61,3 +61,4 @@ class SetUserTitleCommands():
                     config_file.insert({'datatype': 'callme', 'title': title})
             user_prefix = title
             return userin.say("OK, " + user_prefix + ".")
+        return None

@@ -22,7 +22,6 @@ class FindInBrowserCommand():
     """Class to contains browser content finder with simply if-else struct.
     """
 
-
     def compare_content(self, com, userin, user_prefix):
         """Method to dragonfire's command structures of Searching on Browser ability.
 
@@ -50,7 +49,7 @@ class FindInBrowserCommand():
                     if search_query:
                         tab_url = "http://google.com/?#q=" + search_query
                         return userin.execute(["sensible-browser", tab_url], search_query, True)
-
+        return None
 
     def compare_image(self, com, userin, user_prefix):
         """Method to dragonfire's command structures of Searching on Browser ability.
@@ -79,3 +78,4 @@ class FindInBrowserCommand():
                     if search_query:
                         tab_url = "http://google.com/?#q=" + search_query + "&tbm=isch"
                         return userin.execute(["sensible-browser", tab_url], search_query, True)
+        return None
