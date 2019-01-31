@@ -24,7 +24,7 @@ class SetUserTitleCommands():
     """
 
     def compare(self, com, args, userin, config_file, user_prefix):
-        """Method to dragonfire's command structures of searching in youtube ability.
+        """Method to dragonfire's command structures of setting user title ability.
 
         Args:
             com (str):                 User's command.
