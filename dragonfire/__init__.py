@@ -96,10 +96,11 @@ USER_ANSWERING_WIKI = {      # user answering for wikipedia search
 USER_ANSWERING_NOTE = {     # user answering for taking notes.
     'status': False,
     'isRemind': False,
-    'isTodo': False,
+    'isTodo': False,          # using taking and getting notes both.
     'toDo_listname': None,
     'toDo_listcount': 0,
-    'note_keeper': None
+    'note_keeper': None,
+    'has_listname': True
 }
 
 try:
@@ -255,7 +256,9 @@ class VirtualAssistant():
                                       2))):
             return ""
 
-        if takeNoteCommand.second_compare(com, noteTaker, USER_ANSWERING_NOTE, userin, user_prefix):   #take note command.
+        if takeNoteCommand.takenote_compare2(com, noteTaker, USER_ANSWERING_NOTE, userin, user_prefix):   #take note command.
+            return ""
+        if takeNoteCommand.getnote_compare2(com, noteTaker, USER_ANSWERING_NOTE, userin, user_prefix):
             return ""
         if findInWikiCommand.second_compare(com, USER_ANSWERING_WIKI, userin, user_prefix):
             return ""
@@ -301,14 +304,45 @@ class VirtualAssistant():
             takenote_query = takenote_query.strip()
             if not takenote_query:                                             # for filter of other sentences.
                 atthemoment = datetime.datetime.now().strftime("%H:%M")
-                return userin.say(atthemoment + ", " + user_prefix + ".")
+                return userin.say(atthemoment + choice([", "+user_prefix + ".", "."]))
+
+        if takeNoteCommand.getnote_compare1(com, noteTaker, USER_ANSWERING_NOTE, userin, user_prefix):
+            return ""
+
+
+        # if h.check_verb_lemma("say") or h.check_verb_lemma("get") or h.check_verb_lemma("give"):
+        #     if h.check_noun_lemma("note") or h.check_noun_lemma("notes"):
+        #         return userin.say(noteTaker.db_get(None, None))
+        #     if h.check_verb_lemma("do") or (h.check_verb_lemma("do") and h.check_noun_lemma("list")):
+        #         takenote_query = ""
+        #         for token in doc:
+        #             if not (
+        #                     token.lemma_ == "say" or token.lemma_ == "get" or token.lemma_ == "give" or
+        #                     token.lemma_ == "do" or token.lemma_ == "list" or token.lemma_ == "dragonfire" or token.is_stop):
+        #                 takenote_query += ' ' + token.text
+        #         takenote_query = takenote_query.strip()
+        #         if not takenote_query:  # when command come without note.
+        #             USER_ANSWERING_NOTE['has_listname'] = True
+        #             return userin.say(choice([
+        #                 "which list",
+        #                 "Alright, say a list name.",
+        #                 "Okay, What is the name of list",
+        #                 "List name"
+        #             ]) + choice(["?", ", " + user_prefix + "?"]))
+        #         else:  # when command came with note.
+        #             return userin.say(choice([
+        #                 "1. item receipt. Give a name to the list, " + user_prefix + "."
+        #
+        #             ]))
 
         if cliExecuteCommands.compare(com, userin, user_prefix):
             return ""
-        if takeNoteCommand.first_compare(com, noteTaker, USER_ANSWERING_NOTE, userin, user_prefix):  #take note command
+        if takeNoteCommand.takenote_compare1(com, noteTaker, USER_ANSWERING_NOTE, userin, user_prefix):  #take note command
             return ""
-        if setUserTitleCommands.compare(com, args, userin, config_file):
+
+        if setUserTitleCommands.compare(com, args, userin, config_file, user_prefix):
             return ""
+
 
         if h.is_wh_question() and h.check_lemma("temperature"):
             city = ""

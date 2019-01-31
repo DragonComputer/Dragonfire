@@ -28,8 +28,8 @@ class FindInWikiCommand():
     """Class to contains taking notes process with simply if-else struct.
     """
 
-    @staticmethod
-    def first_compare(com, USER_ANSWERING_WIKI, userin, user_prefix):
+
+    def first_compare(self, com, USER_ANSWERING_WIKI, userin, user_prefix):
         """Method to dragonfire's first command struct of searching in wikipedia ability.
 
         Args:
@@ -82,8 +82,8 @@ class FindInWikiCommand():
                     except BaseException:
                         pass
 
-    @staticmethod
-    def second_compare(com, USER_ANSWERING_WIKI, userin, user_prefix):
+
+    def second_compare(self, com, USER_ANSWERING_WIKI, userin, user_prefix):
         """Method to dragonfire's first command struct of searching in wikipedia ability.
 
         Args:
