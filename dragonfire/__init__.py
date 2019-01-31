@@ -367,7 +367,7 @@ class VirtualAssistant():
         if fiwc:
             return fiwc
 
-        response = findInYoutubeCommand.compare(com, args, userin, user_prefix)
+        response = findInYoutubeCommand.compare(com, args, self.testing, userin, user_prefix)
         if response:
             return response
 
