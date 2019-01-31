@@ -80,6 +80,7 @@ class FindInWikiCommand():
                         return userin.say(msg)
                     except BaseException:
                         pass
+        return None
 
     def second_compare(self, com, USER_ANSWERING_WIKI, userin, user_prefix):
         """Method to dragonfire's first command struct of searching in wikipedia ability.
@@ -123,3 +124,4 @@ class FindInWikiCommand():
                                 "Sorry, " + user_prefix + ". But I'm unable to connect to Wikipedia servers.")
                         except Exception:
                             return False
+        return None

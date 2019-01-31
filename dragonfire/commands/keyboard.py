@@ -137,3 +137,4 @@ class KeyboardCommands():
                     if not self.testing:
                         k.tap_key(" ")
             return "play"
+        return None
