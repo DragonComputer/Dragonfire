@@ -236,9 +236,9 @@ WHAT'S THE TEMPERATURE IN *
 | **You:** `ADD TO DO LIST`                                       | **You:** `ADD REMINDER`                                          |
 | **Dragonfire:** `I'M LISTENING FOR GIVE A NAME TO LIST SIR.`    | **Dragonfire:** `ALRIGHT, SIR. WHAT WILL I REMIND?`              |
 | **You:** `A KIND OF LIST NAME`                                  | **You:** `SOMETHING`                                             |
-| **Dragonfire:** `I GET IT. ENTER THE 1. ITEM...`                | **Dragonfire:** `ALBERT EINSTEIN IS A PHYSICIST`                 |
-| **You:** `ITEM 1`                                               | **You:** `GET IT, SIR. WHAT IS THE REMIND TIME?`                 |
-| **Dragonfire:** `GET IT. LISTENING FOR OTHER, SIR.`             | **Dragonfire:** `3 HOUR LATER` (this part is not ready yet)      |
+| **Dragonfire:** `I GET IT. ENTER THE 1. ITEM...`                | **Dragonfire:** `GET IT, SIR. WHAT IS THE REMIND TIME?`          |
+| **You:** `ITEM 1`                                               | **You:** `3.5 HOURS LATER`                                       |
+| **Dragonfire:** `GET IT. LISTENING FOR OTHER, SIR.`             | **Dragonfire:** `GET IT, SIR. REMINDER HAS BEEN SET.`            |
 |                                                                 |                                                                  |
 |-----------------------------------------------------------------|------------------------------------------------------------------|
 | **You:** `ADD NOTE`                                             | **You:** `REMIND ME`                                             |

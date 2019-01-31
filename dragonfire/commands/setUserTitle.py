@@ -23,7 +23,7 @@ class SetUserTitleCommands():
     """Class to contains user title setting commands with simply if-else struct.
     """
 
-    def compare(self, com, args, userin, config_file):
+    def compare(self, com, args, userin, config_file, user_prefix):
         """Method to dragonfire's command structures of searching in youtube ability.
 
         Args:
