@@ -25,9 +25,8 @@ nlp = spacy.load('en')  # Load en_core_web_sm, English, 50 MB, default model
 
 
 class FindInWikiCommand():
-    """Class to contains taking notes process with simply if-else struct.
+    """Class to contains searching in wikipedia process with simply if-else struct.
     """
-
 
     def first_compare(self, com, USER_ANSWERING_WIKI, userin, user_prefix):
         """Method to dragonfire's first command struct of searching in wikipedia ability.
@@ -81,7 +80,6 @@ class FindInWikiCommand():
                         return userin.say(msg)
                     except BaseException:
                         pass
-
 
     def second_compare(self, com, USER_ANSWERING_WIKI, userin, user_prefix):
         """Method to dragonfire's first command struct of searching in wikipedia ability.

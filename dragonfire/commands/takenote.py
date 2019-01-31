@@ -255,8 +255,16 @@ class TakeNoteCommand():
                     ["The note Taken", "Alright", "I understand", "Ready whenever you want", "Get it"]) + choice(
                     [".", ", " + user_prefix + ". "]))
 
-
     def getnote_compare1(self, com, noteTaker, USER_ANSWERING_NOTE, userin, user_prefix):
+        """Method to dragonfire's first command struct of getting note ability.
+
+                Args:
+                    com (str):                 User's command.
+                    noteTaker (object):        NoteTaker class's object.
+                    USER_ANSWERING_NOTE:       User answering string array.
+                    userin:                    :class:`dragonfire.utilities.TextToAction` instance.
+                    user_prefix:               user's preferred titles.
+                """
         doc = nlp(com)
         h = Helper(doc)
         if h.check_verb_lemma("say") or h.check_verb_lemma("get") or h.check_verb_lemma("give"):
@@ -294,7 +302,7 @@ class TakeNoteCommand():
                         return userin.say(noteTaker.db_get(None, com, True))
 
     def getnote_compare2(self, com, noteTaker, USER_ANSWERING_NOTE, userin, user_prefix):
-        """Method to dragonfire's first command struct of taking note ability.
+        """Method to dragonfire's second command struct of getting note ability.
 
         Args:
             com (str):                 User's command.
@@ -324,6 +332,11 @@ class TakeNoteCommand():
                 return userin.say(noteTaker.db_get(None, com, True))
 
     def is_float(self, value):
+        """Method to dragonfire's checking float various struct of taking reminder note ability.
+
+                Args:
+                    value:     expect float.
+                """
         try:
             float(value)
             return True

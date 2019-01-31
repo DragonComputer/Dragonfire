@@ -309,40 +309,15 @@ class VirtualAssistant():
         if takeNoteCommand.getnote_compare1(com, noteTaker, USER_ANSWERING_NOTE, userin, user_prefix):
             return ""
 
+        cec = cliExecuteCommands.compare(com, userin, user_prefix)
+        if cec:
+            return userin.say(cec)
 
-        # if h.check_verb_lemma("say") or h.check_verb_lemma("get") or h.check_verb_lemma("give"):
-        #     if h.check_noun_lemma("note") or h.check_noun_lemma("notes"):
-        #         return userin.say(noteTaker.db_get(None, None))
-        #     if h.check_verb_lemma("do") or (h.check_verb_lemma("do") and h.check_noun_lemma("list")):
-        #         takenote_query = ""
-        #         for token in doc:
-        #             if not (
-        #                     token.lemma_ == "say" or token.lemma_ == "get" or token.lemma_ == "give" or
-        #                     token.lemma_ == "do" or token.lemma_ == "list" or token.lemma_ == "dragonfire" or token.is_stop):
-        #                 takenote_query += ' ' + token.text
-        #         takenote_query = takenote_query.strip()
-        #         if not takenote_query:  # when command come without note.
-        #             USER_ANSWERING_NOTE['has_listname'] = True
-        #             return userin.say(choice([
-        #                 "which list",
-        #                 "Alright, say a list name.",
-        #                 "Okay, What is the name of list",
-        #                 "List name"
-        #             ]) + choice(["?", ", " + user_prefix + "?"]))
-        #         else:  # when command came with note.
-        #             return userin.say(choice([
-        #                 "1. item receipt. Give a name to the list, " + user_prefix + "."
-        #
-        #             ]))
-
-        if cliExecuteCommands.compare(com, userin, user_prefix):
-            return ""
         if takeNoteCommand.takenote_compare1(com, noteTaker, USER_ANSWERING_NOTE, userin, user_prefix):  #take note command
             return ""
 
         if setUserTitleCommands.compare(com, args, userin, config_file, user_prefix):
             return ""
-
 
         if h.is_wh_question() and h.check_lemma("temperature"):
             city = ""
