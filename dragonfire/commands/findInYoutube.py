@@ -25,7 +25,12 @@ class FindInYoutubeCommand():
     """Class to contains youtube video finder with simply if-else struct.
     """
 
-    def compare(self, com, args, userin, user_prefix):
+    def __init__(self):
+        """Initialization method of :class:`dragonfire.commands.findInYoutube.FindInYoutubeCommand` class.
+        """
+        self.testing = None
+
+    def compare(self, com, args, testing, userin, user_prefix):
         """Method to dragonfire's command structures of searching in youtube ability.
 
         Args:
@@ -36,7 +41,7 @@ class FindInYoutubeCommand():
         Keyword Args:
             user_prefix:               user's preferred titles.
         """
-
+        self.testing = testing
         doc = nlp(com)
         h = Helper(doc)
         if (h.check_lemma("search") or h.check_lemma("find")) and h.check_lemma("youtube"):
