@@ -69,3 +69,4 @@ class FindInYoutubeCommand():
                             k.tap_key(k.tab_key)
                             k.tap_key('f')
                         return response
+        return None
