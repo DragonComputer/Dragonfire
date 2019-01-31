@@ -311,7 +311,7 @@ class VirtualAssistant():
 
         cec = cliExecuteCommands.compare(com, userin, user_prefix)
         if cec:
-            return userin.say(cec)
+            return cec
 
         if takeNoteCommand.takenote_compare1(com, noteTaker, USER_ANSWERING_NOTE, userin, user_prefix):  #take note command
             return ""
@@ -354,8 +354,11 @@ class VirtualAssistant():
 
         if findInWikiCommand.first_compare(com, USER_ANSWERING_WIKI, userin, user_prefix):
             return ""
-        if findInYoutubeCommand.compare(com, args, userin, user_prefix):
-            return ""
+
+        response = findInYoutubeCommand.compare(com, args, userin, user_prefix)
+        if response:
+            return response
+
         if findInBrowserCommand.compare_content(com, userin, user_prefix):
             return ""
         if findInBrowserCommand.compare_image(com, userin, user_prefix):
