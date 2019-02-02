@@ -28,6 +28,7 @@ from random import choice  # Generate pseudo-random numbers
 import shutil  # High-level file operations
 
 from dragonfire.learn import Learner  # Submodule of Dragonfire that forms her learning ability
+from dragonfire.take_note import NoteTaker  # Submodule of Dragonfire that forms her taking note# ability
 from dragonfire.nlplib import Classifier, Helper  # Submodule of Dragonfire to handle extra NLP tasks
 from dragonfire.omniscient import Omniscient  # Submodule of Dragonfire that serves as a Question Answering Engine
 from dragonfire.stray import SystemTrayExitListenerSet, SystemTrayInit  # Submodule of Dragonfire for System Tray Icon related functionalities
