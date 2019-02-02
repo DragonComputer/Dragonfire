@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 """
-.. module:: finddInWikipedia
+.. module:: find_in_wikipedia
     :platform: Unix
     :synopsis: the top-level submodule of Dragonfire.commands that contains the classes related to Dragonfire's simple if-else struct of searching in wikipedia ability.
 
@@ -28,12 +28,12 @@ class FindInWikiCommand():
     """Class to contains searching in wikipedia process with simply if-else struct.
     """
 
-    def first_compare(self, com, USER_ANSWERING_WIKI, userin, user_prefix):
+    def first_compare(self, com, user_answering_wiki, userin, user_prefix):
         """Method to dragonfire's first command struct of searching in wikipedia ability.
 
         Args:
             com (str):                 User's command.
-            USER_ANSWERING_WIKI:       User answering string array.
+            user_answering_wiki:       User answering string array.
             userin:                    :class:`dragonfire.utilities.TextToAction` instance.
             user_prefix:               user's preferred titles.
         """
@@ -64,10 +64,10 @@ class FindInWikiCommand():
                         userin.execute([" "], "Wikipedia connection error.")
                         return userin.say("Sorry, " + user_prefix + ". But I'm unable to connect to Wikipedia servers.")
                     except wikipedia.exceptions.DisambiguationError as disambiguation:
-                        USER_ANSWERING_WIKI['status'] = True
-                        USER_ANSWERING_WIKI['for'] = 'wikipedia'
-                        USER_ANSWERING_WIKI['reason'] = 'disambiguation'
-                        USER_ANSWERING_WIKI['options'] = disambiguation.options[:3]
+                        user_answering_wiki['status'] = True
+                        user_answering_wiki['for'] = 'wikipedia'
+                        user_answering_wiki['reason'] = 'disambiguation'
+                        user_answering_wiki['options'] = disambiguation.options[:3]
                         notify = "Wikipedia disambiguation. Which one of these you meant?:\n - " + \
                                  disambiguation.options[0]
                         msg = user_prefix + ", there is a disambiguation. Which one of these you meant? " + \
@@ -82,20 +82,20 @@ class FindInWikiCommand():
                         pass
         return None
 
-    def second_compare(self, com, USER_ANSWERING_WIKI, userin, user_prefix):
+    def second_compare(self, com, user_answering_wiki, userin, user_prefix):
         """Method to dragonfire's first command struct of searching in wikipedia ability.
 
         Args:
             com (str):                 User's command.
-            USER_ANSWERING_WIKI:       User answering string array.
+            user_answering_wiki:       User answering string array.
             userin:                    :class:`dragonfire.utilities.TextToAction` instance.
             user_prefix:               user's preferred titles.
         """
 
-        if USER_ANSWERING_WIKI['status']:
+        if user_answering_wiki['status']:
             if com.startswith("FIRST") or com.startswith("THE FIRST") or com.startswith("SECOND") or com.startswith(
                     "THE SECOND") or com.startswith("THIRD") or com.startswith("THE THIRD"):
-                USER_ANSWERING_WIKI['status'] = False
+                user_answering_wiki['status'] = False
                 selection = None
                 if com.startswith("FIRST") or com.startswith("THE FIRST"):
                     selection = 0
@@ -104,9 +104,9 @@ class FindInWikiCommand():
                 elif com.startswith("THIRD") or com.startswith("THE THIRD"):
                     selection = 2
 
-                if USER_ANSWERING_WIKI['for'] == 'wikipedia':
+                if user_answering_wiki['for'] == 'wikipedia':
                     with nostderr():
-                        search_query = USER_ANSWERING_WIKI['options'][selection]
+                        search_query = user_answering_wiki['options'][selection]
                         try:
                             wikiresult = wikipedia.search(search_query)
                             if len(wikiresult) == 0:

@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 """
-.. module:: findInYoutube
+.. module:: find_in_youtube
     :platform: Unix
     :synopsis: the top-level submodule of Dragonfire.commands that contains the classes related to Dragonfire's simple if-else struct of Searching in Youtube ability.
 

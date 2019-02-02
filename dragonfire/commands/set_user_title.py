@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 """
-.. module:: setUseerTitle
+.. module:: set_user_title
     :platform: Unix
     :synopsis: the top-level submodule of Dragonfire.commands that contains the classes related to Dragonfire's simple if-else struct of setting
     user title ability.
@@ -23,7 +23,7 @@ class SetUserTitleCommands():
     """Class to contains user title setting commands with simply if-else struct.
     """
 
-    def compare(self, com, args, userin, config_file, user_prefix):
+    def compare(self, com, args, userin, config_file):
         """Method to dragonfire's command structures of setting user title ability.
 
         Args:

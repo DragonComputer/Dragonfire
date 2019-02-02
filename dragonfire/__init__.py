@@ -44,12 +44,12 @@ from dragonfire.config import Config  # Submodule of Dragonfire to store configu
 from dragonfire.database import Base  # Submodule of Dragonfire module that contains the database schema
 
 from dragonfire.commands.takenote import TakeNoteCommand
-from dragonfire.commands.findInWikipedia import FindInWikiCommand
-from dragonfire.commands.directCliExecute import CliExecuteCommands
-from dragonfire.commands.findInYoutube import FindInYoutubeCommand
-from dragonfire.commands.findInBrowser import FindInBrowserCommand
+from dragonfire.commands.find_in_wikipedia import FindInWikiCommand
+from dragonfire.commands.direct_cli_execute import CliExecuteCommands
+from dragonfire.commands.find_in_youtube import FindInYoutubeCommand
+from dragonfire.commands.find_in_browser import FindInBrowserCommand
 from dragonfire.commands.keyboard import KeyboardCommands
-from dragonfire.commands.setUserTitle import SetUserTitleCommands
+from dragonfire.commands.set_user_title import SetUserTitleCommands
 
 import spacy  # Industrial-strength Natural Language Processing in Python
 import pyowm  # A Python wrapper around the OpenWeatherMap API
@@ -256,17 +256,17 @@ class VirtualAssistant():
                                       2))):
             return ""
 
-        tnc = takeNoteCommand.takenote_compare2(com, noteTaker, USER_ANSWERING_NOTE, userin, user_prefix)   #take note command.
-        if tnc:
-            return tnc
+        response = takeNoteCommand.takenote_compare2(com, noteTaker, USER_ANSWERING_NOTE, userin, user_prefix)   #take note command.
+        if response:
+            return response
 
-        tnc = takeNoteCommand.getnote_compare2(com, noteTaker, USER_ANSWERING_NOTE, userin, user_prefix)
-        if tnc:
-            return tnc
+        response = takeNoteCommand.getnote_compare2(com, noteTaker, USER_ANSWERING_NOTE, userin, user_prefix)
+        if response:
+            return response
 
-        fiwc = findInWikiCommand.second_compare(com, USER_ANSWERING_WIKI, userin, user_prefix)
-        if fiwc:
-            return fiwc
+        response = findInWikiCommand.second_compare(com, USER_ANSWERING_WIKI, userin, user_prefix)
+        if response:
+            return response
 
         if h.directly_equal(["dragonfire", "hey"]) or (h.check_verb_lemma("wake") and h.check_nth_lemma(-1, "up")) or (
                 h.check_nth_lemma(0, "dragon") and h.check_nth_lemma(1, "fire") and h.max_word_count(2)):
@@ -312,21 +312,21 @@ class VirtualAssistant():
                 atthemoment = datetime.datetime.now().strftime("%H:%M")
                 return userin.say(atthemoment + choice([", "+user_prefix + ".", "."]))
 
-        tnc = takeNoteCommand.getnote_compare1(com, noteTaker, USER_ANSWERING_NOTE, userin, user_prefix)
-        if tnc:
-            return tnc
+        response = takeNoteCommand.getnote_compare1(com, noteTaker, USER_ANSWERING_NOTE, userin, user_prefix)
+        if response:
+            return response
 
-        cec = cliExecuteCommands.compare(com, userin, user_prefix)
-        if cec:
-            return cec
+        response = cliExecuteCommands.compare(com, userin, user_prefix)
+        if response:
+            return response
 
-        tnc = takeNoteCommand.takenote_compare1(com, noteTaker, USER_ANSWERING_NOTE, userin, user_prefix)  #take note command
-        if tnc:
-            return tnc
+        response = takeNoteCommand.takenote_compare1(com, noteTaker, USER_ANSWERING_NOTE, userin, user_prefix)  #take note command
+        if response:
+            return response
 
-        sutc = setUserTitleCommands.compare(com, args, userin, config_file, user_prefix)
-        if sutc:
-            return sutc
+        response = setUserTitleCommands.compare(com, args, userin, config_file)
+        if response:
+            return response
 
         if h.is_wh_question() and h.check_lemma("temperature"):
             city = ""
@@ -348,9 +348,9 @@ class VirtualAssistant():
                     userin.execute([" "], msg)
                     return userin.say(msg)
 
-        keycom = keyboardCommands.compare(com, args, self.testing)
-        if keycom:
-            return keycom
+        response = keyboardCommands.compare(com, args, self.testing)
+        if response:
+            return response
 
         if ((h.check_text("shut") and h.check_text("down")) or (
                 h.check_text("power") and h.check_text("off"))) and h.check_text("computer") and not args["server"]:
@@ -363,21 +363,21 @@ class VirtualAssistant():
                 thread.interrupt_main()
             return response
 
-        fiwc = findInWikiCommand.first_compare(com, USER_ANSWERING_WIKI, userin, user_prefix)
-        if fiwc:
-            return fiwc
+        response = findInWikiCommand.first_compare(com, USER_ANSWERING_WIKI, userin, user_prefix)
+        if response:
+            return response
 
         response = findInYoutubeCommand.compare(com, args, self.testing, userin, user_prefix)
         if response:
             return response
 
-        fibc = findInBrowserCommand.compare_content(com, userin, user_prefix)
-        if fibc:
-            return fibc
+        response = findInBrowserCommand.compare_content(com, userin, user_prefix)
+        if response:
+            return response
 
-        fibc = findInBrowserCommand.compare_image(com, userin, user_prefix)
-        if fibc:
-            return fibc
+        response = findInBrowserCommand.compare_image(com, userin, user_prefix)
+        if response:
+            return response
 
         original_com = com
         com = coref.resolve(com)
