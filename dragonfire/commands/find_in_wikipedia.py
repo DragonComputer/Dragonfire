@@ -13,8 +13,7 @@
 import re  # Regular expression operations
 
 from dragonfire.nlplib import Classifier, Helper  # Submodule of Dragonfire to handle extra NLP tasks
-from dragonfire.utilities import TextToAction, nostdout, \
-    nostderr  # Submodule of Dragonfire to provide various utilities
+from dragonfire.utilities import TextToAction, nostdout, nostderr  # Submodule of Dragonfire to provide various utilities
 
 import spacy  # Industrial-strength Natural Language Processing in Python
 import wikipedia  # Python library that makes it easy to access and parse data from Wikipedia
@@ -68,10 +67,8 @@ class FindInWikiCommand():
                         user_answering_wiki['for'] = 'wikipedia'
                         user_answering_wiki['reason'] = 'disambiguation'
                         user_answering_wiki['options'] = disambiguation.options[:3]
-                        notify = "Wikipedia disambiguation. Which one of these you meant?:\n - " + \
-                                 disambiguation.options[0]
-                        msg = user_prefix + ", there is a disambiguation. Which one of these you meant? " + \
-                              disambiguation.options[0]
+                        notify = "Wikipedia disambiguation. Which one of these you meant?:\n - " + disambiguation.options[0]
+                        msg = user_prefix + ", there is a disambiguation. Which one of these you meant? " + disambiguation.options[0]
                         for option in disambiguation.options[1:3]:
                             msg += ", or " + option
                             notify += "\n - " + option

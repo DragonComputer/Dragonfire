@@ -11,8 +11,6 @@
 import datetime  # Basic date and time types
 from random import choice  # Generate pseudo-random numbers
 from dragonfire.nlplib import Classifier, Helper  # Submodule of Dragonfire to handle extra NLP tasks
-from dragonfire.utilities import TextToAction, nostdout, \
-    nostderr  # Submodule of Dragonfire to provide various utilities
 
 import spacy  # Industrial-strength Natural Language Processing in Python
 

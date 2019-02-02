@@ -32,13 +32,10 @@ from dragonfire.learn import Learner  # Submodule of Dragonfire that forms her l
 from dragonfire.take_note import NoteTaker  # Submodule of Dragonfire that forms her taking note# ability
 from dragonfire.nlplib import Classifier, Helper  # Submodule of Dragonfire to handle extra NLP tasks
 from dragonfire.omniscient import Omniscient  # Submodule of Dragonfire that serves as a Question Answering Engine
-from dragonfire.stray import SystemTrayExitListenerSet, \
-    SystemTrayInit  # Submodule of Dragonfire for System Tray Icon related functionalities
-from dragonfire.utilities import TextToAction, nostdout, \
-    nostderr  # Submodule of Dragonfire to provide various utilities
+from dragonfire.stray import SystemTrayExitListenerSet, SystemTrayInit  # Submodule of Dragonfire for System Tray Icon related functionalities
+from dragonfire.utilities import TextToAction, nostdout, nostderr  # Submodule of Dragonfire to provide various utilities
 from dragonfire.arithmetic import arithmetic_parse  # Submodule of Dragonfire to analyze arithmetic expressions
-from dragonfire.deepconv import \
-    DeepConversation  # Submodule of Dragonfire to answer questions directly using an Artificial Neural Network
+from dragonfire.deepconv import DeepConversation  # Submodule of Dragonfire to answer questions directly using an Artificial Neural Network
 from dragonfire.coref import NeuralCoref  # Submodule of Dragonfire that aims to create corefference based dialogs
 from dragonfire.config import Config  # Submodule of Dragonfire to store configurations
 from dragonfire.database import Base  # Submodule of Dragonfire module that contains the database schema
