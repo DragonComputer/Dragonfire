@@ -16,7 +16,6 @@ import os  # Miscellaneous operating system interfaces
 import re  # Regular expression operations
 import subprocess  # Subprocess managements
 import sys  # System-specific parameters and functions
-
 try:
     import thread  # Low-level threading API (Python 2.7)
 except ImportError:
@@ -29,7 +28,6 @@ from random import choice  # Generate pseudo-random numbers
 import shutil  # High-level file operations
 
 from dragonfire.learn import Learner  # Submodule of Dragonfire that forms her learning ability
-from dragonfire.take_note import NoteTaker  # Submodule of Dragonfire that forms her taking note# ability
 from dragonfire.nlplib import Classifier, Helper  # Submodule of Dragonfire to handle extra NLP tasks
 from dragonfire.omniscient import Omniscient  # Submodule of Dragonfire that serves as a Question Answering Engine
 from dragonfire.stray import SystemTrayExitListenerSet, SystemTrayInit  # Submodule of Dragonfire for System Tray Icon related functionalities
@@ -59,6 +57,7 @@ from pymouse import PyMouse  # Cross-platform Python mouse module
 from tinydb import Query, TinyDB  # TinyDB is a lightweight document oriented database optimized for your happiness
 from sqlalchemy import create_engine  # the Python SQL toolkit and Object Relational Mapper
 from sqlalchemy.orm import sessionmaker  # ORM submodule of SQLAlchemy
+
 
 __version__ = '1.0.0'
 
@@ -115,8 +114,7 @@ def start(args, userin):
     """
 
     if 'TRAVIS' in os.environ or args["db"] == "mysql":
-        engine = create_engine(
-            'mysql+pymysql://' + Config.MYSQL_USER + ':' + Config.MYSQL_PASS + '@' + Config.MYSQL_HOST + '/' + Config.MYSQL_DB)
+        engine = create_engine('mysql+pymysql://' + Config.MYSQL_USER + ':' + Config.MYSQL_PASS + '@' + Config.MYSQL_HOST + '/' + Config.MYSQL_DB)
     else:
         engine = create_engine('sqlite:///dragonfire.db', connect_args={'check_same_thread': False}, echo=True)
     Base.metadata.create_all(engine)
@@ -124,7 +122,6 @@ def start(args, userin):
     DBSession = sessionmaker(bind=engine)
     db_session = DBSession()
     learner.db_session = db_session
-    noteTaker.db_session = db_session
 
     if args["server"]:
         import dragonfire.api as API  # API of Dragonfire
@@ -142,7 +139,7 @@ def start(args, userin):
             l = MentionListener(args, userin)
             stream = Stream(auth, l)
             stream.filter(track=['DragonfireAI'], async=True)
-        API.Run(nlp, learner, noteTaker, omniscient, dc, coref, userin, args["server"], args["port"], db_session)
+        API.Run(nlp, learner, omniscient, dc, coref, userin, args["server"], args["port"], db_session)
     else:
         global user_full_name
         global user_prefix
@@ -246,11 +243,7 @@ class VirtualAssistant():
         if args["verbose"]:
             userin.pretty_print_nlp_parsing_results(doc)
 
-        if self.inactive and not (h.directly_equal(["dragonfire", "hey"]) or (
-                h.check_verb_lemma("wake") and h.check_nth_lemma(-1, "up")) or (
-                                          h.check_nth_lemma(0, "dragon") and h.check_nth_lemma(1,
-                                                                                               "fire") and h.max_word_count(
-                                      2))):
+        if self.inactive and not (h.directly_equal(["dragonfire", "hey"]) or (h.check_verb_lemma("wake") and h.check_nth_lemma(-1, "up")) or (h.check_nth_lemma(0, "dragon") and h.check_nth_lemma(1, "fire") and h.max_word_count(2))):
             return ""
 
         response = takeNoteCommand.takenote_compare2(com, noteTaker, USER_ANSWERING_NOTE, userin, user_prefix)   #take note command.
@@ -265,8 +258,7 @@ class VirtualAssistant():
         if response:
             return response
 
-        if h.directly_equal(["dragonfire", "hey"]) or (h.check_verb_lemma("wake") and h.check_nth_lemma(-1, "up")) or (
-                h.check_nth_lemma(0, "dragon") and h.check_nth_lemma(1, "fire") and h.max_word_count(2)):
+        if h.directly_equal(["dragonfire", "hey"]) or (h.check_verb_lemma("wake") and h.check_nth_lemma(-1, "up")) or (h.check_nth_lemma(0, "dragon") and h.check_nth_lemma(1, "fire") and h.max_word_count(2)):
             self.inactive = False
             return userin.say(choice([
                 "Yes, " + user_prefix + ".",
@@ -275,8 +267,7 @@ class VirtualAssistant():
                 "Ready for the orders!",
                 user_prefix.capitalize() + ", tell me your wish."
             ]))
-        if (h.check_verb_lemma("go") and h.check_noun_lemma("sleep")) or (
-                h.check_verb_lemma("stop") and h.check_verb_lemma("listen")):
+        if (h.check_verb_lemma("go") and h.check_noun_lemma("sleep")) or (h.check_verb_lemma("stop") and h.check_verb_lemma("listen")):
             self.inactive = True
             userin.execute(["echo"], "Dragonfire deactivated. To reactivate say 'Dragonfire!' or 'Wake Up!'")
             return userin.say("I'm going to sleep")
@@ -288,10 +279,8 @@ class VirtualAssistant():
         if h.check_wh_lemma("what") and h.check_deps_contains("your name"):
             return userin.execute([" "], "My name is Dragonfire.", True)
         if h.check_wh_lemma("what") and h.check_deps_contains("your gender"):
-            return userin.say(
-                "I have a female voice but I don't have a gender identity. I'm a computer program, " + user_prefix + ".")
-        if (h.check_wh_lemma("who") and h.check_text("I")) or (
-                h.check_verb_lemma("say") and h.check_text("my") and h.check_lemma("name")):
+            return userin.say("I have a female voice but I don't have a gender identity. I'm a computer program, " + user_prefix + ".")
+        if (h.check_wh_lemma("who") and h.check_text("I")) or (h.check_verb_lemma("say") and h.check_text("my") and h.check_lemma("name")):
             userin.execute([" "], user_full_name)
             return userin.say("Your name is " + user_full_name + ", " + user_prefix + ".")
 
@@ -300,9 +289,7 @@ class VirtualAssistant():
                 h.check_verb_lemma("what") and h.check_noun_lemma("time") and h.check_text("it")):
             takenote_query = ""
             for token in doc:
-                if not (
-                        token.lemma_ == "what" or token.lemma_ == "time" or token.lemma_ == "get" or token.lemma_ == "say" or
-                        token.lemma_ == "it" or token.is_stop):
+                if not (token.lemma_ == "what" or token.lemma_ == "time" or token.lemma_ == "get" or token.lemma_ == "say" or token.lemma_ == "it" or token.is_stop):
                     takenote_query += ' ' + token.text
             takenote_query = takenote_query.strip()
             if not takenote_query:                                             # for filter of other sentences.
@@ -349,11 +336,9 @@ class VirtualAssistant():
         if response:
             return response
 
-        if ((h.check_text("shut") and h.check_text("down")) or (
-                h.check_text("power") and h.check_text("off"))) and h.check_text("computer") and not args["server"]:
+        if ((h.check_text("shut") and h.check_text("down")) or (h.check_text("power") and h.check_text("off"))) and h.check_text("computer") and not args["server"]:
             return userin.execute(["sudo", "poweroff"], "Shutting down", True, 3)
-        if h.check_nth_lemma(0, "goodbye") or h.check_nth_lemma(0, "bye") or (
-                h.check_verb_lemma("see") and h.check_text("you") and h.check_adv_lemma("later")):
+        if h.check_nth_lemma(0, "goodbye") or h.check_nth_lemma(0, "bye") or (h.check_verb_lemma("see") and h.check_text("you") and h.check_adv_lemma("later")):
             response = userin.say("Goodbye, " + user_prefix)
             if not args["server"] and not self.testing:
                 # raise KeyboardInterrupt
@@ -472,27 +457,15 @@ def initiate():
     """
 
     ap = argparse.ArgumentParser()
-    ap.add_argument("-c", "--cli",
-                    help="Command-line interface mode. Give commands to Dragonfire via command-line inputs (keyboard) instead of audio inputs (microphone).",
-                    action="store_true")
-    ap.add_argument("-s", "--silent",
-                    help="Silent mode. Disable Text-to-Speech output. Dragonfire won't generate any audio output.",
-                    action="store_true")
-    ap.add_argument("-j", "--headless",
-                    help="Headless mode. Do not display an avatar animation on the screen. Disable the female head model.",
-                    action="store_true")
+    ap.add_argument("-c", "--cli", help="Command-line interface mode. Give commands to Dragonfire via command-line inputs (keyboard) instead of audio inputs (microphone).", action="store_true")
+    ap.add_argument("-s", "--silent", help="Silent mode. Disable Text-to-Speech output. Dragonfire won't generate any audio output.", action="store_true")
+    ap.add_argument("-j", "--headless", help="Headless mode. Do not display an avatar animation on the screen. Disable the female head model.", action="store_true")
     ap.add_argument("-v", "--verbose", help="Increase verbosity of log output.", action="store_true")
-    ap.add_argument("-g", "--gspeech",
-                    help="Instead of using the default speech recognition method(Mozilla DeepSpeech), use Google Speech Recognition service. (more accurate results)",
-                    action="store_true")
-    ap.add_argument("--server",
-                    help="Server mode. Disable any audio functionality, serve a RESTful spaCy API and become a Twitter integrated chatbot.",
-                    metavar="REG_KEY")
+    ap.add_argument("-g", "--gspeech", help="Instead of using the default speech recognition method(Mozilla DeepSpeech), use Google Speech Recognition service. (more accurate results)", action="store_true")
+    ap.add_argument("--server", help="Server mode. Disable any audio functionality, serve a RESTful spaCy API and become a Twitter integrated chatbot.", metavar="REG_KEY")
     ap.add_argument("-p", "--port", help="Port number for server mode.", default="3301", metavar="PORT")
     ap.add_argument("--version", help="Display the version number of Dragonfire.", action="store_true")
-    ap.add_argument("--db",
-                    help="Specificy the database engine for the knowledge base of learning feature. Values: 'mysql' for MySQL, 'sqlite' for SQLite. Default database engine is SQLite.",
-                    action="store", type=str)
+    ap.add_argument("--db", help="Specificy the database engine for the knowledge base of learning feature. Values: 'mysql' for MySQL, 'sqlite' for SQLite. Default database engine is SQLite.", action="store", type=str)
     args = vars(ap.parse_args())
     if args["version"]:
         import pkg_resources
