@@ -213,38 +213,6 @@ WHAT'S THE TEMPERATURE IN *
 
 <br>
 
-#### Taking note examples (not completed)
-
-[Dragonfire DEVLOG #6 - Taking Note](video not prepared yet)
-
-|                                                                 |                                                                  |
-|-----------------------------------------------------------------|------------------------------------------------------------------|
-| **You:** `ADD NOTE`                                             | **You:** `ITEM 2`                                                |
-| **Dragonfire:** `KEEP GOING, SIR.        `                      | **Dragonfire:** `IT IS OKAY. GIVE 3. ITEM.`                      |
-| **You:** `I AM WRITING SOMETHINGS`                              | **You:** `ENOUGH`                                                |
-| **Dragonfire:** `THE NOTE TAKEN.`                               | **Dragonfire:** `LIST WAS RECORDED.`                             |
-| **You:** `TAKE NOTE`                                            | **You:** `1. ITEM ADD TO DO LIST`                                |
-| **Dragonfire:** `ALRIGHT, SIR.`                                 | **Dragonfire:** `1. ITEM RECEIPT. GIVE A NAME TO THE LIST, SIR.` |
-| **You:** `SOMETHING ELSE`                                       | **You:** `LIST NAME`                                             |
-| **Dragonfire:** `GET IT, SIR.`                                  | **Dragonfire:** `I GET IT. ENTER THE 2. ITEM...`                 |
-| **You:** `WRITING SOMETHINGS TAKE NOTE`                         | **You:** `END`                                                   |
-| **Dragonfire:** `THE NOTE WAS RECORDED, SIR.`                   | **Dragonfire:** `GET IT. LIST READY, SIR.`                       |
-| **You:** `ADD TO DO LIST`                                       | **You:** `ADD REMINDER`                                          |
-| **Dragonfire:** `I'M LISTENING FOR GIVE A NAME TO LIST SIR.`    | **Dragonfire:** `ALRIGHT, SIR. WHAT WILL I REMIND?`              |
-| **You:** `A KIND OF LIST NAME`                                  | **You:** `SOMETHING`                                             |
-| **Dragonfire:** `I GET IT. ENTER THE 1. ITEM...`                | **Dragonfire:** `GET IT, SIR. WHAT IS THE REMIND TIME?`          |
-| **You:** `ITEM 1`                                               | **You:** `3.5 HOURS LATER`                                       |
-| **Dragonfire:** `GET IT. LISTENING FOR OTHER, SIR.`             | **Dragonfire:** `GET IT, SIR. REMINDER HAS BEEN SET.`            |
-|                                                                 |                                                                  |
-|-----------------------------------------------------------------|------------------------------------------------------------------|
-| **You:** `ADD NOTE`                                             | **You:** `REMIND ME`                                             |
-| **Dragonfire:** `KEEP GOING, SIR.        `                      | **Dragonfire:** `YES! I'M LISTENING THE NOTE.`                   |
-| **You:** `GIVE UP`                                              | **You:** `NOT NOW`                                               |
-| **Dragonfire:** `GET IT.`                                       | **Dragonfire:** `READY WHENEVER YOU WANT, SIR.`                  |
-|                                                                 |                                                                  |
-
-<br>
-
 **Supported Distributions:** KDE neon, elementary OS and Ubuntu. All modern releases (Ubuntu 12.04 LTS and above) of these distributions are fully supported. Any other Ubuntu based distributions are partially supported.
 
 ### Contribute
