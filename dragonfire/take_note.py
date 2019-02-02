@@ -48,18 +48,44 @@ class NoteTaker():
         if self.is_server:
             try:
                 notepad = self.db_session.query(NotePad).filter(NotePad.note == note, NotePad.is_reminder == is_reminder, NotePad.user_id == user_id, NotePad.is_public == is_public).order_by(NotePad.counter.desc()).first()
-                notepad.__sizeof__()
                 answer = notepad.note
                 return self.mirror(answer)
             except NoResultFound:
                 return None
         else:
-            result = self.db.search(Query().note == note)  # make a database search by giving note string
-            if result:  # if there is a result
-                answer = note  # the answer we will return
-                return self.mirror(answer)  # mirror the answer (for example: I'M to YOU ARE)
-            else:
-                return None  # if there is no result return None
+            if is_reminder:
+                return
+
+            if is_todolist:
+                result = self.db.search((Query().is_todolist == is_todolist) & (Query().list_name == list_name))
+                if not result:
+                    return "*#$"  # for the recursive compare
+                answer = ""
+                for row in result:
+                    answer += "item " + str(row['list_sequence']) + ": " + row['note'] + ". \n"
+                return answer
+
+                return
+
+            result = self.db.search((Query().is_todolist == is_todolist) & (Query().is_reminder == is_reminder))
+            if not result:
+                return "There is no note"
+
+            counter = 0
+            answer = ""
+            for row in result:
+                counter += 1
+                answer += "note " + str(counter) + ": " + row['note'] + ". \n"
+            return answer
+
+
+
+            # result = self.db.search(Query().note == note)  # make a database search by giving note string
+            # if result:  # if there is a result
+            #     answer = note  # the answer we will return
+            #     return self.mirror(answer)  # mirror the answer (for example: I'M to YOU ARE)
+            # else:
+            #     return None  # if there is no result return None
 
     def db_upsert(self, note, category=None, remind_time=None, list_name=None, list_sequence=None, is_todolist=False, is_reminder=False, is_public=True, user_id=None):
         """Function to insert(or update) a note record to the database.
