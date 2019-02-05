@@ -28,7 +28,8 @@ from random import choice  # Generate pseudo-random numbers
 import shutil  # High-level file operations
 
 from dragonfire.learn import Learner  # Submodule of Dragonfire that forms her learning ability
-from dragonfire.take_note import NoteTaker  # Submodule of Dragonfire that forms her taking note# ability
+from dragonfire.take_note import NoteTaker  # Submodule of Dragonfire that forms her taking note ability
+from dragonfire.reminder import Reminder  # Submodule of Dragonfire that forms her reminde note ability
 from dragonfire.nlplib import Classifier, Helper  # Submodule of Dragonfire to handle extra NLP tasks
 from dragonfire.omniscient import Omniscient  # Submodule of Dragonfire that serves as a Question Answering Engine
 from dragonfire.stray import SystemTrayExitListenerSet, SystemTrayInit  # Submodule of Dragonfire for System Tray Icon related functionalities
@@ -70,6 +71,7 @@ userin = None
 nlp = spacy.load('en')  # Load en_core_web_sm, English, 50 MB, default model
 learner = Learner(nlp)
 noteTaker = NoteTaker()
+reminder = Reminder()
 omniscient = Omniscient(nlp)
 dc = DeepConversation()
 coref = NeuralCoref()
@@ -97,7 +99,8 @@ USER_ANSWERING_NOTE = {     # user answering for taking notes.
     'toDo_listname': None,
     'toDo_listcount': 0,
     'note_keeper': None,
-    'has_listname': True
+    'has_listname': True,
+    'is_again': False
 }
 
 try:
@@ -201,6 +204,8 @@ class VirtualAssistant():
         if self.testing:
             home = expanduser("~")
             self.config_file = TinyDB(home + '/.dragonfire_config.json')
+
+        thread.start_new_thread(reminder.reminde, (noteTaker, userin, user_prefix, USER_ANSWERING_NOTE))
 
     def command(self, com):
         """Function that serves as the entry point for each one of the user commands.

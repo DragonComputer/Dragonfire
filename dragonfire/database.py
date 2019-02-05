@@ -79,5 +79,5 @@ class NotePad(Base):
     is_public = Column(Boolean, default=True)
     category = Column(String(63))
     created_at = Column(DateTime(timezone=True), server_default=func.now())
-    remind_time = Column(DateTime, nullable=True)
+    remind_time_stamp = Column(DateTime, nullable=True)        # remind time timestamp version
     counter = Column(Integer, default=1)
