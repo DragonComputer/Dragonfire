@@ -13,7 +13,6 @@ import argparse  # Parser for command-line options, arguments and sub-commands
 import datetime  # Basic date and time types
 import inspect  # Inspect live objects
 import os  # Miscellaneous operating system interfaces
-import re  # Regular expression operations
 import subprocess  # Subprocess managements
 import sys  # System-specific parameters and functions
 try:
@@ -40,7 +39,7 @@ from dragonfire.coref import NeuralCoref  # Submodule of Dragonfire that aims to
 from dragonfire.config import Config  # Submodule of Dragonfire to store configurations
 from dragonfire.database import Base  # Submodule of Dragonfire module that contains the database schema
 
-from dragonfire.commands.takenote import TakeNoteCommand
+from dragonfire.commands.take_note.takenote import TakeNoteCommand
 from dragonfire.commands.find_in_wikipedia import FindInWikiCommand
 from dragonfire.commands.direct_cli_execute import CliExecuteCommands
 from dragonfire.commands.find_in_youtube import FindInYoutubeCommand
@@ -50,12 +49,6 @@ from dragonfire.commands.set_user_title import SetUserTitleCommands
 
 import spacy  # Industrial-strength Natural Language Processing in Python
 import pyowm  # A Python wrapper around the OpenWeatherMap API
-import wikipedia  # Python library that makes it easy to access and parse data from Wikipedia
-import wikipedia.exceptions  # Exceptions of wikipedia library
-import requests.exceptions  # HTTP for Humans
-import youtube_dl  # Command-line program to download videos from YouTube.com and other video sites
-from pykeyboard import PyKeyboard  # A simple, cross-platform Python module for providing keyboard control
-from pymouse import PyMouse  # Cross-platform Python mouse module
 from tinydb import Query, TinyDB  # TinyDB is a lightweight document oriented database optimized for your happiness
 from sqlalchemy import create_engine  # the Python SQL toolkit and Object Relational Mapper
 from sqlalchemy.orm import sessionmaker  # ORM submodule of SQLAlchemy
