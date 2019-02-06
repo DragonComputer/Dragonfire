@@ -93,7 +93,8 @@ USER_ANSWERING_NOTE = {     # user answering for taking notes.
     'toDo_listcount': 0,
     'note_keeper': None,
     'has_listname': True,
-    'is_again': False
+    'is_again': False,
+    'is_active': True     # for increasing reminder performans with checking this.
 }
 
 try:

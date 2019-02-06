@@ -10,12 +10,17 @@
 """
 import datetime  # Basic date and time types
 from random import choice  # Generate pseudo-random numbers
+try:
+    import thread  # Low-level threading API (Python 2.7)
+except ImportError:
+    import _thread as thread  # Low-level threading API (Python 3.x)
 from dragonfire.nlplib import Classifier, Helper  # Submodule of Dragonfire to handle extra NLP tasks
 
+from dragonfire.reminder import Reminder
 import spacy  # Industrial-strength Natural Language Processing in Python
 
 nlp = spacy.load('en')  # Load en_core_web_sm, English, 50 MB, default model
-
+reminder = Reminder()
 
 def is_todo(com, note_taker, user_answering_note, userin, user_prefix):
     """Method to dragonfire's second command struct for checking to do list of taking note ability.
@@ -110,7 +115,7 @@ def is_reminder(com, h, doc, note_taker, user_answering_note, userin, user_prefi
                                 # timestamp is a kind of second.
                                 time = datetime.datetime.now().timestamp() + mnt * 60
                                 time = int(time / 60)
-                                note_taker.db_upsert(user_answering_note['note_keeper'], None, time, None, None, False, True)
+                                note_taker.db_upsert(user_answering_note['note_keeper'], None, time, None, None, False, True, True)
                                 # return userin.say(str(time.strftime("%H:%M")))
                             else:
                                 return userin.say("Repeat!")
@@ -126,7 +131,7 @@ def is_reminder(com, h, doc, note_taker, user_answering_note, userin, user_prefi
                                 # timestamp is a kind of second.
                                 time = datetime.datetime.now().timestamp() + hr * 60 * 60
                                 time = int(time / 60)
-                                note_taker.db_upsert(user_answering_note['note_keeper'], None, time, None, None, False, True)
+                                note_taker.db_upsert(user_answering_note['note_keeper'], None, time, None, None, False, True,  True)
                                 # return userin.say(str(time))
                             else:
                                 return userin.say("Repeat!")
@@ -142,13 +147,15 @@ def is_reminder(com, h, doc, note_taker, user_answering_note, userin, user_prefi
                                 # timestamp is a kind of second.
                                 time = datetime.datetime.now().timestamp() + dy * 24 * 60 * 60
                                 time = int(time / 60)
-                                note_taker.db_upsert(user_answering_note['note_keeper'], None, time, None, None, False, True)
+                                note_taker.db_upsert(user_answering_note['note_keeper'], None, time, None, None, False, True,  True)
                                 # return userin.say(str(time))
                             else:
                                 return userin.say("Repeat!")
                 user_answering_note['status'] = False
                 user_answering_note['isRemind'] = False
                 user_answering_note['note_keeper'] = None
+                if not user_answering_note['is_active']:   # if reminder checker loop not run, start the loop.
+                    thread.start_new_thread(reminder.reminde, (note_taker, userin, user_prefix, user_answering_note))
                 return userin.say(choice(["It's okay", "Get it", "note was recorded", "The note taken"]) + choice(
                     [", " + user_prefix + ". ", ". "]) + choice(
                     ["Reminder Added.", "I'm waiting to remind.", "I will remind.",

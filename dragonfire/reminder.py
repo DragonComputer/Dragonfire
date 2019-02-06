@@ -57,6 +57,7 @@ class Reminder():
         while True:
             now_timestamp = int(datetime.datetime.now().timestamp() / 60)
             result = note_taker.db_get(None, None, False, True)
+            is_there_active = False
             for row in result:
                 if self.check_time(str(now_timestamp), str(row['remind_time_stamp'])):
                     try:
@@ -68,9 +69,17 @@ class Reminder():
                     user_answering_note['is_again'] = True
                     user_answering_note['note_keeper'] = row['note']
 
+                    note_taker.db_upsert(user_answering_note['note_keeper'], None, time, None, None, False, True, False)
+
                     userin.say(choice(["You have reminder", "Reminder", "Remind Time"]) + choice([":", ", " + user_prefix + ":"]) + "\n" + row['note'] + ",\n" + choice(["Wanna ", ""]) + choice(["Repeat?", "Suspend?", "See again?"]))
                 # else:
                 #     userin.say("nothing found to remind ")
+                if not is_there_active:
+                    if row['is_active']:
+                        is_there_active = True
+            user_answering_note['is_active'] = is_there_active
+            if not is_there_active:   # if there is no active reminder, loop will be interrupted.
+                break
             time.sleep(60)
 
 

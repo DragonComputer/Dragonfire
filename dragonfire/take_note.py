@@ -77,7 +77,7 @@ class NoteTaker():
                 answer += "note " + str(counter) + ": " + row['note'] + ". \n"
             return answer
 
-    def db_upsert(self, note, category=None, remind_time_stamp=None, list_name=None, list_sequence=None, is_todolist=False, is_reminder=False, is_public=True, user_id=None):
+    def db_upsert(self, note, category=None, remind_time_stamp=None, list_name=None, list_sequence=None, is_todolist=False, is_reminder=False, is_active=False, is_public=True, user_id=None):
         """Function to insert(or update) a note record to the database.
 
         Args:
@@ -100,11 +100,12 @@ class NoteTaker():
                                                             NotePad.is_reminder == is_reminder,
                                                             NotePad.user_id == user_id, NotePad.is_public == is_public,
                                                             NotePad.category == category,
-                                                            NotePad.remind_time_stamp == remind_time_stamp).one_or_none()
+                                                            NotePad.remind_time_stamp == remind_time_stamp,
+                                                            NotePad.is_active == is_active).one_or_none()
             if not notepad:
                 new_notepad = NotePad(note=note, is_todolist=is_todolist, list_name=list_name,
                                       list_sequence=list_sequence, is_reminder=is_reminder,
-                                      user_id=user_id, is_public=is_public, category=category, remind_time_stamp=remind_time_stamp)
+                                      user_id=user_id, is_public=is_public, category=category, remind_time_stamp=remind_time_stamp, is_active=is_active)
                 self.db_session.add(new_notepad)
                 self.db_session.commit()
             else:
@@ -125,27 +126,20 @@ class NoteTaker():
                 return ""
             elif is_reminder and not is_todolist:
                 if not self.db.search((Query().note == note)):  # if there is no exacty record on the database then
-                    self.db.insert({
-                        'note': note,
-                        'category': category,
-                        'is_reminder': is_reminder,
-                        'list_name': list_name,
-                        'is_todolist': is_todolist,
-                        'remind_time_stamp': remind_time_stamp,
-                        'list_sequence': list_sequence
-                    })  # insert the given data
+                    pass
                 else:
                     while self.db.search((Query().note == note)):
                         self.db.remove((Query().note == note))
-                    self.db.insert({
-                        'note': note,
-                        'category': category,
-                        'is_reminder': is_reminder,
-                        'list_name': list_name,
-                        'is_todolist': is_todolist,
-                        'remind_time_stamp': remind_time_stamp,
-                        'list_sequence': list_sequence
-                    })  # insert the given data
+                self.db.insert({
+                    'note': note,
+                    'category': category,
+                    'is_reminder': is_reminder,
+                    'list_name': list_name,
+                    'is_todolist': is_todolist,
+                    'remind_time_stamp': remind_time_stamp,
+                    'list_sequence': list_sequence,
+                    'is_active': is_active
+                })  # insert the given data
 
                 return ""
             else:

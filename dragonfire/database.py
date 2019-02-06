@@ -80,4 +80,5 @@ class NotePad(Base):
     category = Column(String(63))
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     remind_time_stamp = Column(DateTime, nullable=True)        # remind time timestamp version
+    is_active = Column(Boolean, default=False)
     counter = Column(Integer, default=1)
