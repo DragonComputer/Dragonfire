@@ -2,9 +2,9 @@
 # -*- coding: utf-8 -*-
 
 """
-.. module:: check_todo_compare1
+.. module:: check_take_compare1
     :platform: Unix
-    :synopsis: the top-level submodule of Dragonfire.commands.take_note that contains the function related to Dragonfire's simple if-else struct of 1. compare of creating to do list in taking note ability.
+    :synopsis: the top-level submodule of Dragonfire.commands.takenote_submodules that contains the function related to Dragonfire's simple if-else struct of taking note ability.
 
 .. moduleauthor:: Cem Baybars GÜÇLÜ <cem.baybars@gmail.com>
 """
@@ -18,10 +18,11 @@ nlp = spacy.load('en')  # Load en_core_web_sm, English, 50 MB, default model
 
 
 def is_todo(h, doc, note_taker, user_answering_note, userin, user_prefix):
-    """Method to dragonfire's first command struct of taking note ability.
+    """Method to dragonfire's first command struct for checking to do list of taking note ability.
 
     Args:
-        com (str):                 User's command.
+        h:                          doc's helper.
+        doc:                        object with nlp from user answering to doc.
         note_taker (object):        note_taker class's object.
         user_answering_note:       User answering string array.
         userin:                    :class:`dragonfire.utilities.TextToAction` instance.
@@ -60,10 +61,11 @@ def is_todo(h, doc, note_taker, user_answering_note, userin, user_prefix):
 
 
 def is_reminder(h, doc, note_taker, user_answering_note, userin, user_prefix):
-    """Method to dragonfire's first command struct of taking note ability.
+    """Method to dragonfire's first command struct for checking reminder of taking note ability.
 
     Args:
-        com (str):                 User's command.
+        h:                          doc's helper.
+        doc:                        object with nlp from user answering to doc.
         note_taker (object):        note_taker class's object.
         user_answering_note:       User answering string array.
         userin:                    :class:`dragonfire.utilities.TextToAction` instance.
@@ -101,10 +103,11 @@ def is_reminder(h, doc, note_taker, user_answering_note, userin, user_prefix):
 
 
 def is_note(h, doc, note_taker, user_answering_note, userin, user_prefix):
-    """Method to dragonfire's first command struct of taking note ability.
+    """Method to dragonfire's first command struct for checking note of taking note ability.
 
     Args:
-        com (str):                 User's command.
+        h:                          doc's helper.
+        doc:                        object with nlp from user answering to doc.
         note_taker (object):        note_taker class's object.
         user_answering_note:       User answering string array.
         userin:                    :class:`dragonfire.utilities.TextToAction` instance.

@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 """
-.. module:: take_note
+.. module:: takenote_submodules
     :platform: Unix
     :synopsis: the top-level submodule of Dragonfire that contains the class related to Dragonfire's taking notes ability.
 
@@ -21,7 +21,7 @@ class NoteTaker():
     """
 
     def __init__(self):
-        """Initialization method of :class:`dragonfire.take_note.NoteTaker` class.
+        """Initialization method of :class:`dragonfire.takenote_submodules.NoteTaker` class.
         """
 
         home = expanduser("~")  # Get the home directory of the user

@@ -39,7 +39,7 @@ from dragonfire.coref import NeuralCoref  # Submodule of Dragonfire that aims to
 from dragonfire.config import Config  # Submodule of Dragonfire to store configurations
 from dragonfire.database import Base  # Submodule of Dragonfire module that contains the database schema
 
-from dragonfire.commands.take_note.takenote import TakeNoteCommand
+from dragonfire.commands.takenote import TakeNoteCommand
 from dragonfire.commands.find_in_wikipedia import FindInWikiCommand
 from dragonfire.commands.direct_cli_execute import CliExecuteCommands
 from dragonfire.commands.find_in_youtube import FindInYoutubeCommand
