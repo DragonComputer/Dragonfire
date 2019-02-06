@@ -63,7 +63,7 @@ CONVERSATION_ID = uuid.uuid4()
 userin = None
 nlp = spacy.load('en')  # Load en_core_web_sm, English, 50 MB, default model
 learner = Learner(nlp)
-noteTaker = NoteTaker()
+note_taker = NoteTaker()
 reminder = Reminder()
 omniscient = Omniscient(nlp)
 dc = DeepConversation()
@@ -198,7 +198,7 @@ class VirtualAssistant():
             home = expanduser("~")
             self.config_file = TinyDB(home + '/.dragonfire_config.json')
 
-        thread.start_new_thread(reminder.reminde, (noteTaker, userin, user_prefix, USER_ANSWERING_NOTE))
+        thread.start_new_thread(reminder.reminde, (note_taker, userin, user_prefix, USER_ANSWERING_NOTE))
 
     def command(self, com):
         """Function that serves as the entry point for each one of the user commands.
@@ -245,11 +245,11 @@ class VirtualAssistant():
         if self.inactive and not (h.directly_equal(["dragonfire", "hey"]) or (h.check_verb_lemma("wake") and h.check_nth_lemma(-1, "up")) or (h.check_nth_lemma(0, "dragon") and h.check_nth_lemma(1, "fire") and h.max_word_count(2))):
             return ""
 
-        response = takeNoteCommand.takenote_compare2(com, noteTaker, USER_ANSWERING_NOTE, userin, user_prefix)   #take note command.
+        response = takeNoteCommand.takenote_compare2(com, note_taker, USER_ANSWERING_NOTE, userin, user_prefix)   #take note command.
         if response:
             return response
 
-        response = takeNoteCommand.getnote_compare2(com, noteTaker, USER_ANSWERING_NOTE, userin, user_prefix)
+        response = takeNoteCommand.getnote_compare2(com, note_taker, USER_ANSWERING_NOTE, userin, user_prefix)
         if response:
             return response
 
@@ -295,7 +295,7 @@ class VirtualAssistant():
                 atthemoment = datetime.datetime.now().strftime("%H:%M")
                 return userin.say(atthemoment + choice([", "+user_prefix + ".", "."]))
 
-        response = takeNoteCommand.getnote_compare1(com, noteTaker, USER_ANSWERING_NOTE, userin, user_prefix)
+        response = takeNoteCommand.getnote_compare1(com, note_taker, USER_ANSWERING_NOTE, userin, user_prefix)
         if response:
             return response
 
@@ -303,7 +303,7 @@ class VirtualAssistant():
         if response:
             return response
 
-        response = takeNoteCommand.takenote_compare1(com, noteTaker, USER_ANSWERING_NOTE, userin, user_prefix)  #take note command
+        response = takeNoteCommand.takenote_compare1(com, note_taker, USER_ANSWERING_NOTE, userin, user_prefix)  #take note command
         if response:
             return response
 
