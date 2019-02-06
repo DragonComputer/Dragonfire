@@ -93,6 +93,9 @@ def is_reminder(com, h, doc, note_taker, user_answering_note, userin, user_prefi
                     ["What is the remind time?", "When do you want to remind?", "Give remind time.",
                      "Say the time"]))
             else:
+                user_answering_note['status'] = False
+                user_answering_note['isRemind'] = False
+                user_answering_note['note_keeper'] = None
                 return userin.say(choice(["As you wish", "I understand", "Alright", "Ready whenever you want", "Get it"]) + choice([". ", ", " + user_prefix + ". "]))
 
         if not user_answering_note['note_keeper']:
