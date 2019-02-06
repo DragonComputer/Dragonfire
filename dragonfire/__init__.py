@@ -70,13 +70,13 @@ dc = DeepConversation()
 coref = NeuralCoref()
 e = Event()
 
-takeNoteCommand = TakeNoteCommand()
-findInWikiCommand = FindInWikiCommand()
-findInYoutubeCommand = FindInYoutubeCommand()
-findInBrowserCommand = FindInBrowserCommand()
-cliExecuteCommands = CliExecuteCommands()
-keyboardCommands = KeyboardCommands()
-setUserTitleCommands = SetUserTitleCommands()
+take_note_command = TakeNoteCommand()
+find_in_wiki_command = FindInWikiCommand()
+find_in_youtube_command = FindInYoutubeCommand()
+find_in_browser_command = FindInBrowserCommand()
+cli_execute_commands = CliExecuteCommands()
+keyboard_commands = KeyboardCommands()
+set_user_title_commands = SetUserTitleCommands()
 
 USER_ANSWERING_WIKI = {      # user answering for wikipedia search
     'status': False,
@@ -245,15 +245,15 @@ class VirtualAssistant():
         if self.inactive and not (h.directly_equal(["dragonfire", "hey"]) or (h.check_verb_lemma("wake") and h.check_nth_lemma(-1, "up")) or (h.check_nth_lemma(0, "dragon") and h.check_nth_lemma(1, "fire") and h.max_word_count(2))):
             return ""
 
-        response = takeNoteCommand.takenote_compare2(com, note_taker, USER_ANSWERING_NOTE, userin, user_prefix)   #take note command.
+        response = take_note_command.takenote_compare2(com, note_taker, USER_ANSWERING_NOTE, userin, user_prefix)   #take note command.
         if response:
             return response
 
-        response = takeNoteCommand.getnote_compare2(com, note_taker, USER_ANSWERING_NOTE, userin, user_prefix)
+        response = take_note_command.getnote_compare2(com, note_taker, USER_ANSWERING_NOTE, userin, user_prefix)
         if response:
             return response
 
-        response = findInWikiCommand.second_compare(com, USER_ANSWERING_WIKI, userin, user_prefix)
+        response = find_in_wiki_command.second_compare(com, USER_ANSWERING_WIKI, userin, user_prefix)
         if response:
             return response
 
@@ -295,19 +295,19 @@ class VirtualAssistant():
                 atthemoment = datetime.datetime.now().strftime("%H:%M")
                 return userin.say(atthemoment + choice([", "+user_prefix + ".", "."]))
 
-        response = takeNoteCommand.getnote_compare1(com, note_taker, USER_ANSWERING_NOTE, userin, user_prefix)
+        response = take_note_command.getnote_compare1(com, note_taker, USER_ANSWERING_NOTE, userin, user_prefix)
         if response:
             return response
 
-        response = cliExecuteCommands.compare(com, userin, user_prefix)
+        response = cli_execute_commands.compare(com, userin, user_prefix)
         if response:
             return response
 
-        response = takeNoteCommand.takenote_compare1(com, note_taker, USER_ANSWERING_NOTE, userin, user_prefix)  #take note command
+        response = take_note_command.takenote_compare1(com, note_taker, USER_ANSWERING_NOTE, userin, user_prefix)  #take note command
         if response:
             return response
 
-        response = setUserTitleCommands.compare(com, args, userin, config_file)
+        response = set_user_title_commands.compare(com, args, userin, config_file)
         if response:
             return response
 
@@ -331,7 +331,7 @@ class VirtualAssistant():
                     userin.execute([" "], msg)
                     return userin.say(msg)
 
-        response = keyboardCommands.compare(com, args, self.testing)
+        response = keyboard_commands.compare(com, args, self.testing)
         if response:
             return response
 
@@ -344,19 +344,19 @@ class VirtualAssistant():
                 thread.interrupt_main()
             return response
 
-        response = findInWikiCommand.first_compare(com, USER_ANSWERING_WIKI, userin, user_prefix)
+        response = find_in_wiki_command.first_compare(com, USER_ANSWERING_WIKI, userin, user_prefix)
         if response:
             return response
 
-        response = findInYoutubeCommand.compare(com, args, self.testing, userin, user_prefix)
+        response = find_in_youtube_command.compare(com, args, self.testing, userin, user_prefix)
         if response:
             return response
 
-        response = findInBrowserCommand.compare_content(com, userin, user_prefix)
+        response = find_in_browser_command.compare_content(com, userin, user_prefix)
         if response:
             return response
 
-        response = findInBrowserCommand.compare_image(com, userin, user_prefix)
+        response = find_in_browser_command.compare_image(com, userin, user_prefix)
         if response:
             return response
 
