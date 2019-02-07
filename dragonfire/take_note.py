@@ -123,7 +123,6 @@ class NoteTaker():
                         'remind_time_stamp': remind_time_stamp,
                         'list_sequence': list_sequence
                     })  # insert the given data
-                return ""
             elif is_reminder and not is_todolist:
                 if not self.db.search((Query().note == note)):  # if there is no exacty record on the database then
                     pass
@@ -140,11 +139,9 @@ class NoteTaker():
                     'list_sequence': list_sequence,
                     'is_active': is_active
                 })  # insert the given data
-
-                return ""
             else:
-                # the note is to do list and reminder both at the same time. This compare will using on future.
-                return ""
+                pass     # the note is to do list and reminder both at the same time. This compare will using on future.
+            return ""
 
     def db_delete(self, note, is_reminder, is_public=True, user_id=None):
         """Function to delete a note record from the database.  NOT COMPLETED.
