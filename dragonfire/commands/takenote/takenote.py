@@ -12,12 +12,16 @@ import datetime  # Basic date and time types
 from random import choice  # Generate pseudo-random numbers
 from dragonfire.nlplib import Classifier, Helper  # Submodule of Dragonfire to handle extra NLP tasks
 
-from dragonfire.commands.takenote import check_take_compare1
-from dragonfire.commands.takenote import check_take_compare2
+from dragonfire.commands.takenote.is_reminder import IsReminder
+from dragonfire.commands.takenote.is_todo import IsToDo
+from dragonfire.commands.takenote.is_note import IsNote
 
 import spacy  # Industrial-strength Natural Language Processing in Python
 
 nlp = spacy.load('en')  # Load en_core_web_sm, English, 50 MB, default model
+is_reminder = IsReminder()
+is_todo = IsToDo()
+is_note = IsNote()
 
 
 class TakeNoteCommand():
@@ -41,15 +45,15 @@ class TakeNoteCommand():
                 "create") or (
                 h.check_verb_lemma("take") and h.check_noun_lemma("note")) or h.check_verb_lemma("remind"):
 
-            response = check_take_compare1.is_todo(h, doc, note_taker, user_answering_note, userin, user_prefix)   # FOR creating To Do list
+            response = is_todo.compare1(h, doc, note_taker, user_answering_note, userin, user_prefix)   # FOR creating To Do list
             if response:
                 return response
 
-            response = check_take_compare1.is_reminder(h, doc, note_taker, user_answering_note, userin, user_prefix)  # FOR reminder
+            response = is_reminder.compare1(h, doc, note_taker, user_answering_note, userin, user_prefix)  # FOR reminder
             if response:
                 return response
 
-            response = check_take_compare1.is_note(h, doc, note_taker, user_answering_note, userin, user_prefix)  # FOR taking note
+            response = is_note.compare(h, doc, note_taker, user_answering_note, userin, user_prefix)  # FOR taking note
             if response:
                 return response
 
@@ -78,11 +82,11 @@ class TakeNoteCommand():
                 return userin.say(
                     choice(["As you wish", "I understand", "Alright", "Ready whenever you want", "Get it"]) + choice([".", ", " + user_prefix + "."]))
 
-            response = check_take_compare2.is_todo(com, note_taker, user_answering_note, userin, user_prefix)  # FOR taking note
+            response = is_todo.compare2(com, note_taker, user_answering_note, userin, user_prefix)  # FOR taking note
             if response:
                 return response
 
-            response = check_take_compare2.is_reminder(com, h, doc, note_taker, user_answering_note, userin, user_prefix)  # FOR taking note
+            response = is_reminder.compare2(com, h, doc, note_taker, user_answering_note, userin, user_prefix)  # FOR taking note
             if response:
                 return response
 
