@@ -76,7 +76,7 @@ class TakeNoteCommand():
                 user_answering_note['note_keeper'] = None
                 user_answering_note['isRemind'] = False
                 return userin.say(
-                    choice(["As you wish", "I understand", "Alright", "Ready whenever you want", "Get it"]) + choice([". ", ", " + user_prefix + ". "]))
+                    choice(["As you wish", "I understand", "Alright", "Ready whenever you want", "Get it"]) + choice([".", ", " + user_prefix + "."]))
 
             response = check_take_compare2.is_todo(com, note_taker, user_answering_note, userin, user_prefix)  # FOR taking note
             if response:
