@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 """
-.. module:: takenote_submodules
+.. module:: takenote
     :platform: Unix
     :synopsis: the top-level submodule of Dragonfire.commands that contains the classes related to Dragonfire's simple if-else struct of taking note ability.
 
@@ -12,8 +12,8 @@ import datetime  # Basic date and time types
 from random import choice  # Generate pseudo-random numbers
 from dragonfire.nlplib import Classifier, Helper  # Submodule of Dragonfire to handle extra NLP tasks
 
-from dragonfire.commands.takenote_submodules import check_take_compare1
-from dragonfire.commands.takenote_submodules import check_take_compare2
+from dragonfire.commands.takenote import check_take_compare1
+from dragonfire.commands.takenote import check_take_compare2
 
 import spacy  # Industrial-strength Natural Language Processing in Python
 

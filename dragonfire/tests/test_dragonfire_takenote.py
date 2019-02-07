@@ -93,7 +93,8 @@ def test_take_note_compare(virtual_assistant):
     assert virtual_assistant.command("create to do list") in create_todo_list_answers
     assert virtual_assistant.command("forget it") in take_note_cancel_answers
     assert virtual_assistant.command("remind me") in create_reminder_answers
-    assert virtual_assistant.command("this is sample of reminder note.") in create_reminder_answers2
+    assert virtual_assistant.command("give up") in take_note_cancel_answers
+    assert virtual_assistant.command("this is sample of reminder note. remind me this note.") in create_reminder_answers2
     assert virtual_assistant.command("give up") in take_note_cancel_answers
 
 

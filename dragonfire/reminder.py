@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 """
-.. module:: takenote_submodules
+.. module:: takenote
     :platform: Unix
     :synopsis: the top-level submodule of Dragonfire that contains the classes related to Dragonfire's reminder for taking note ability.
 

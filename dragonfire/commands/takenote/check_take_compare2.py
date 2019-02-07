@@ -4,7 +4,7 @@
 """
 .. module:: check_take_compare
     :platform: Unix
-    :synopsis: the top-level submodule of Dragonfire.commands.takenote_submodules that contains the function related to Dragonfire's simple if-else struct of 2. compare of taking note ability.
+    :synopsis: the top-level submodule of Dragonfire.commands.takenote that contains the function related to Dragonfire's simple if-else struct of 2. compare of taking note ability.
 
 .. moduleauthor:: Cem Baybars GÜÇLÜ <cem.baybars@gmail.com>
 """

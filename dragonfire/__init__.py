@@ -27,7 +27,7 @@ from random import choice  # Generate pseudo-random numbers
 import shutil  # High-level file operations
 
 from dragonfire.learn import Learner  # Submodule of Dragonfire that forms her learning ability
-from dragonfire.take_note import NoteTaker  # Submodule of Dragonfire that forms her taking note ability
+from dragonfire.takenote import NoteTaker  # Submodule of Dragonfire that forms her taking note ability
 from dragonfire.reminder import Reminder  # Submodule of Dragonfire that forms her reminde note ability
 from dragonfire.nlplib import Classifier, Helper  # Submodule of Dragonfire to handle extra NLP tasks
 from dragonfire.omniscient import Omniscient  # Submodule of Dragonfire that serves as a Question Answering Engine
@@ -39,7 +39,7 @@ from dragonfire.coref import NeuralCoref  # Submodule of Dragonfire that aims to
 from dragonfire.config import Config  # Submodule of Dragonfire to store configurations
 from dragonfire.database import Base  # Submodule of Dragonfire module that contains the database schema
 
-from dragonfire.commands.takenote import TakeNoteCommand
+from dragonfire.commands.takenote.takenote import TakeNoteCommand
 from dragonfire.commands.find_in_wikipedia import FindInWikiCommand
 from dragonfire.commands.direct_cli_execute import CliExecuteCommands
 from dragonfire.commands.find_in_youtube import FindInYoutubeCommand

@@ -11,7 +11,7 @@
 import os
 from os.path import expanduser
 
-from dragonfire.take_note import NoteTaker
+from dragonfire.takenote import NoteTaker
 
 import pytest
 
