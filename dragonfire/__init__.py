@@ -13,7 +13,6 @@ import argparse  # Parser for command-line options, arguments and sub-commands
 import datetime  # Basic date and time types
 import inspect  # Inspect live objects
 import os  # Miscellaneous operating system interfaces
-import re  # Regular expression operations
 import subprocess  # Subprocess managements
 import sys  # System-specific parameters and functions
 try:
@@ -28,7 +27,7 @@ from random import choice  # Generate pseudo-random numbers
 import shutil  # High-level file operations
 
 from dragonfire.learn import Learner  # Submodule of Dragonfire that forms her learning ability
-from dragonfire.take_note import NoteTaker  # Submodule of Dragonfire that forms her taking note ability
+from dragonfire.takenote import NoteTaker  # Submodule of Dragonfire that forms her taking note ability
 from dragonfire.reminder import Reminder  # Submodule of Dragonfire that forms her reminde note ability
 from dragonfire.nlplib import Classifier, Helper  # Submodule of Dragonfire to handle extra NLP tasks
 from dragonfire.omniscient import Omniscient  # Submodule of Dragonfire that serves as a Question Answering Engine
@@ -50,12 +49,6 @@ from dragonfire.commands.set_user_title import SetUserTitleCommands
 
 import spacy  # Industrial-strength Natural Language Processing in Python
 import pyowm  # A Python wrapper around the OpenWeatherMap API
-import wikipedia  # Python library that makes it easy to access and parse data from Wikipedia
-import wikipedia.exceptions  # Exceptions of wikipedia library
-import requests.exceptions  # HTTP for Humans
-import youtube_dl  # Command-line program to download videos from YouTube.com and other video sites
-from pykeyboard import PyKeyboard  # A simple, cross-platform Python module for providing keyboard control
-from pymouse import PyMouse  # Cross-platform Python mouse module
 from tinydb import Query, TinyDB  # TinyDB is a lightweight document oriented database optimized for your happiness
 from sqlalchemy import create_engine  # the Python SQL toolkit and Object Relational Mapper
 from sqlalchemy.orm import sessionmaker  # ORM submodule of SQLAlchemy
@@ -70,20 +63,20 @@ CONVERSATION_ID = uuid.uuid4()
 userin = None
 nlp = spacy.load('en')  # Load en_core_web_sm, English, 50 MB, default model
 learner = Learner(nlp)
-noteTaker = NoteTaker()
+note_taker = NoteTaker()
 reminder = Reminder()
 omniscient = Omniscient(nlp)
 dc = DeepConversation()
 coref = NeuralCoref()
 e = Event()
 
-takeNoteCommand = TakeNoteCommand()
-findInWikiCommand = FindInWikiCommand()
-findInYoutubeCommand = FindInYoutubeCommand()
-findInBrowserCommand = FindInBrowserCommand()
-cliExecuteCommands = CliExecuteCommands()
-keyboardCommands = KeyboardCommands()
-setUserTitleCommands = SetUserTitleCommands()
+take_note_command = TakeNoteCommand()
+find_in_wiki_command = FindInWikiCommand()
+find_in_youtube_command = FindInYoutubeCommand()
+find_in_browser_command = FindInBrowserCommand()
+cli_execute_commands = CliExecuteCommands()
+keyboard_commands = KeyboardCommands()
+set_user_title_commands = SetUserTitleCommands()
 
 USER_ANSWERING_WIKI = {      # user answering for wikipedia search
     'status': False,
@@ -100,7 +93,8 @@ USER_ANSWERING_NOTE = {     # user answering for taking notes.
     'toDo_listcount': 0,
     'note_keeper': None,
     'has_listname': True,
-    'is_again': False
+    'is_again': False,
+    'is_active': True     # for increasing reminder performans with checking this.
 }
 
 try:
@@ -205,7 +199,7 @@ class VirtualAssistant():
             home = expanduser("~")
             self.config_file = TinyDB(home + '/.dragonfire_config.json')
 
-        thread.start_new_thread(reminder.reminde, (noteTaker, userin, user_prefix, USER_ANSWERING_NOTE))
+        thread.start_new_thread(reminder.reminde, (note_taker, userin, user_prefix, USER_ANSWERING_NOTE))
 
     def command(self, com):
         """Function that serves as the entry point for each one of the user commands.
@@ -252,15 +246,15 @@ class VirtualAssistant():
         if self.inactive and not (h.directly_equal(["dragonfire", "hey"]) or (h.check_verb_lemma("wake") and h.check_nth_lemma(-1, "up")) or (h.check_nth_lemma(0, "dragon") and h.check_nth_lemma(1, "fire") and h.max_word_count(2))):
             return ""
 
-        response = takeNoteCommand.takenote_compare2(com, noteTaker, USER_ANSWERING_NOTE, userin, user_prefix)   #take note command.
+        response = take_note_command.takenote_compare2(com, note_taker, USER_ANSWERING_NOTE, userin, user_prefix)   #take note command.
         if response:
             return response
 
-        response = takeNoteCommand.getnote_compare2(com, noteTaker, USER_ANSWERING_NOTE, userin, user_prefix)
+        response = take_note_command.getnote_compare2(com, note_taker, USER_ANSWERING_NOTE, userin, user_prefix)
         if response:
             return response
 
-        response = findInWikiCommand.second_compare(com, USER_ANSWERING_WIKI, userin, user_prefix)
+        response = find_in_wiki_command.second_compare(com, USER_ANSWERING_WIKI, userin, user_prefix)
         if response:
             return response
 
@@ -302,19 +296,19 @@ class VirtualAssistant():
                 atthemoment = datetime.datetime.now().strftime("%H:%M")
                 return userin.say(atthemoment + choice([", "+user_prefix + ".", "."]))
 
-        response = takeNoteCommand.getnote_compare1(com, noteTaker, USER_ANSWERING_NOTE, userin, user_prefix)
+        response = take_note_command.getnote_compare1(com, note_taker, USER_ANSWERING_NOTE, userin, user_prefix)
         if response:
             return response
 
-        response = cliExecuteCommands.compare(com, userin, user_prefix)
+        response = cli_execute_commands.compare(com, userin, user_prefix)
         if response:
             return response
 
-        response = takeNoteCommand.takenote_compare1(com, noteTaker, USER_ANSWERING_NOTE, userin, user_prefix)  #take note command
+        response = take_note_command.takenote_compare1(com, note_taker, USER_ANSWERING_NOTE, userin, user_prefix)  #take note command
         if response:
             return response
 
-        response = setUserTitleCommands.compare(com, args, userin, config_file)
+        response = set_user_title_commands.compare(com, args, userin, config_file)
         if response:
             return response
 
@@ -338,7 +332,7 @@ class VirtualAssistant():
                     userin.execute([" "], msg)
                     return userin.say(msg)
 
-        response = keyboardCommands.compare(com, args, self.testing)
+        response = keyboard_commands.compare(com, args, self.testing)
         if response:
             return response
 
@@ -351,19 +345,19 @@ class VirtualAssistant():
                 thread.interrupt_main()
             return response
 
-        response = findInWikiCommand.first_compare(com, USER_ANSWERING_WIKI, userin, user_prefix)
+        response = find_in_wiki_command.first_compare(com, USER_ANSWERING_WIKI, userin, user_prefix)
         if response:
             return response
 
-        response = findInYoutubeCommand.compare(com, args, self.testing, userin, user_prefix)
+        response = find_in_youtube_command.compare(com, args, self.testing, userin, user_prefix)
         if response:
             return response
 
-        response = findInBrowserCommand.compare_content(com, userin, user_prefix)
+        response = find_in_browser_command.compare_content(com, userin, user_prefix)
         if response:
             return response
 
-        response = findInBrowserCommand.compare_image(com, userin, user_prefix)
+        response = find_in_browser_command.compare_image(com, userin, user_prefix)
         if response:
             return response
 

@@ -27,7 +27,7 @@ hey_answers = [
 
 @pytest.fixture
 def virtual_assistant():
-    '''Returns a :class:`dragonfire.VirtualAssistant` instance.'''
+    """Returns a :class:`dragonfire.VirtualAssistant` instance."""
 
     args = {}
     args["cli"] = True
@@ -70,6 +70,7 @@ def virtual_assistant():
     ("open calendar", "Calendar"),
     ("open calculator", "Calculator"),
     ("open software center", "Software Center"),
+    ("open console", "console"),
     ("I'm a girl", "Pardon, my lady."),
     ("call me master", "OK, master."),
     ("I'm a boy", "Pardon, sir."),
