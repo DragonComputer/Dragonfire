@@ -288,7 +288,7 @@ class TakeNoteCommand():
                     user_answering_note['has_listname'] = False
                     return userin.say(choice([
                         "which list",
-                        "Alright, say a list name",
+                        "Alright, say the list name",
                         "Okay, What is the name of list",
                         "List name"
                     ]) + choice(["?", ", " + user_prefix + "?"]))
@@ -318,7 +318,7 @@ class TakeNoteCommand():
         """
 
         if not user_answering_note['has_listname']:
-            if com.startswith("whatever") or com.startswith("give up") or com.startswith("not now") or com.startswith("WHATEVER") or com.startswith("GIVE UP") or com.startswith("NOT NOW"):  # for writing interrupr while taking notes and creating reminders.
+            if com.startswith("whatever") or com.startswith("give up") or com.startswith("not now") or com.startswith("forget it") or com.startswith("WHATEVER") or com.startswith("GIVE UP") or com.startswith("NOT NOW") or com.startswith("FORGET IT"):  # for writing interrupr while taking notes and creating reminders.
                 user_answering_note['has_listname'] = True
                 return userin.say(
                     choice(["As you wish", "I understand", "Alright", "Ready whenever you want", "Get it"]) + choice(
@@ -334,6 +334,36 @@ class TakeNoteCommand():
             else:
                 user_answering_note['has_listname'] = True
                 return userin.say(note_taker.db_get(None, com, True))
+        return None
+
+    def deletenote_(self, com, doc, h, note_taker, user_answering_note, userin, user_prefix):
+        """Method to dragonfire's first command struct of getting note ability.
+
+                Args:
+                    com (str):                 User's command.
+                    note_taker (object):        note_taker class's object.
+                    user_answering_note:       User answering string array.
+                    userin:                    :class:`dragonfire.utilities.TextToAction` instance.
+                    user_prefix:               user's preferred titles.
+                """
+
+        if h.check_lemma("delete") or h.check_verb_lemma("remove"):
+            if h.check_lemma("all"):
+                if h.check_lemma("over") and h.check_noun_lemma("database"):
+                    note_taker.db_delete(None, None, True)
+                    return userin.say("notes database cleared")
+
+                if h.check_lemma("note") or h.check_lemma("notes"):
+                    note_taker.db_delete()
+                    return userin.say("All notes Deleted")
+
+                if (h.check_verb_lemma("do") and h.check_noun_lemma("lists")) or (h.check_verb_lemma("do") and h.check_noun_lemma("list")):
+                    note_taker.db_delete(None, None, False, None, None, True)
+                    return userin.say("All to do lists deleted")
+
+                if h.check_lemma("reminder") or h.check_lemma("reminders"):
+                    note_taker.db_delete(None, None, False, None, None, False, True)
+                    return userin.say("All reminders deleted")
         return None
 
     def is_float(self, value):

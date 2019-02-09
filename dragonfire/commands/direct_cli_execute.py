@@ -24,8 +24,7 @@ class CliExecuteCommands():
             user_prefix:               user's preferred titles.
         """
 
-        if h.check_verb_lemma("open") or h.check_adj_lemma("open") or h.check_verb_lemma("run") or h.check_verb_lemma(
-                "start") or h.check_verb_lemma("show"):
+        if h.check_verb_lemma("open") or h.check_adj_lemma("open") or h.check_verb_lemma("run") or h.check_verb_lemma("start") or h.check_verb_lemma("show"):
             if h.check_text("blender"):
                 userin.execute(["blender"], "Blender")
                 return userin.say("Blender 3D computer graphics software")

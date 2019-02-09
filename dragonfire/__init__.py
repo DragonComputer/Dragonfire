@@ -296,6 +296,10 @@ class VirtualAssistant():
                 atthemoment = datetime.datetime.now().strftime("%H:%M")
                 return userin.say(atthemoment + choice([", "+user_prefix + ".", "."]))
 
+        response = take_note_command.deletenote_(com, doc, h, note_taker, USER_ANSWERING_NOTE, userin, user_prefix)
+        if response:
+            return response
+
         response = take_note_command.getnote_first_compare(com, doc, h, note_taker, USER_ANSWERING_NOTE, userin, user_prefix)
         if response:
             return response
