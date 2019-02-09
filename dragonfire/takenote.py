@@ -57,9 +57,26 @@ class NoteTaker():
                 return result
 
             if is_todolist:
+
+                if not list_name:               # if user don't remember the list name.
+                    result = self.db.search((Query().is_todolist == is_todolist))
+                    if not result:
+                        return None
+                    name_keeper = []
+                    for row in result:
+                        if row['list_name'] in name_keeper:
+                            pass
+                        else:
+                            name_keeper.append(row['list_name'])
+                    counter = 0
+                    response = ""
+                    for row in name_keeper:
+                        response += row + ",\n"
+                    return response
+
                 result = self.db.search((Query().is_todolist == is_todolist) & (Query().list_name == list_name))
                 if not result:
-                    return "*#$"  # for the recursive compare
+                    return None  # for the recursive compare
                 answer = ""
                 for row in result:
                     answer += "item " + str(row['list_sequence']) + ": " + row['note'] + ". \n"

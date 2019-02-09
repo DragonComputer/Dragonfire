@@ -286,15 +286,19 @@ class TakeNoteCommand():
                 takenote_query = takenote_query.strip()
                 if not takenote_query:  # when command come without note.
                     user_answering_note['has_listname'] = False
+                    result = note_taker.db_get(None, None, True)
+                    if not result:
+                        user_answering_note['has_listname'] = True
+                        return userin.say("There is no list")
                     return userin.say(choice([
                         "which list",
                         "Alright, say the list name",
                         "Okay, What is the name of list",
                         "List name"
                     ]) + choice(["?", ", " + user_prefix + "?"]))
-                else:  # when command came with note.                    # BU KISMI HALLEDECEĞİM. SİLME İŞLEMLERİ, TOPLU SİLME, İTEM SİLME,
+                else:  # when command came with note.
                     result = note_taker.db_get(None, com, True)
-                    if result == "*#$":
+                    if not result:
                         user_answering_note['has_listname'] = False
                         return userin.say(choice([
                             "This name is not exist",
@@ -303,7 +307,7 @@ class TakeNoteCommand():
                             "Not exist, speak again"
                         ]) + choice(["?", ", " + user_prefix + "?"]))
                     else:
-                        return userin.say(note_taker.db_get(None, com, True))
+                        return userin.say(result)
         return None
 
     def getnote_second_compare(self, com, doc, h, note_taker, user_answering_note, userin, user_prefix):
@@ -323,8 +327,14 @@ class TakeNoteCommand():
                 return userin.say(
                     choice(["As you wish", "I understand", "Alright", "Ready whenever you want", "Get it"]) + choice(
                         [". ", ", " + user_prefix + ". "]))
+
+            if (h.check_lemma("give") or h.check_lemma("say") or h.check_lemma("get")) or h.check_verb_lemma("remind"):
+                if h.check_noun_lemma("names") or h.check_noun_lemma("them") or not h.check_noun_lemma(""):
+                    result = note_taker.db_get(None, None, True)
+                    return userin.say("list of the lists:\n" + result)
+
             result = note_taker.db_get(None, com, True)
-            if result == "*#$":
+            if not result:
                 return userin.say(choice([
                     "This name is not exist",
                     "I couldn't find it, say again",
@@ -333,7 +343,7 @@ class TakeNoteCommand():
                 ]) + choice(["?", ", " + user_prefix + "?"]))
             else:
                 user_answering_note['has_listname'] = True
-                return userin.say(note_taker.db_get(None, com, True))
+                return userin.say(result)
         return None
 
     def deletenote_(self, com, doc, h, note_taker, user_answering_note, userin, user_prefix):
