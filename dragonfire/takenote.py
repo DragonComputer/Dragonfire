@@ -11,7 +11,6 @@
 
 from tinydb import TinyDB, Query  # TinyDB is a lightweight document oriented database
 from os.path import expanduser  # Imported to get the home directory
-from dragonfire.config import Config  # Credentials for the database connection
 from dragonfire.database import NotePad  # Submodule of Dragonfire module that contains the database schema
 from sqlalchemy.orm.exc import NoResultFound  # the Python SQL toolkit and Object Relational Mapper
 
@@ -58,9 +57,25 @@ class NoteTaker():
                 return result
 
             if is_todolist:
+
+                if not list_name:               # if user don't remember the list name.
+                    result = self.db.search((Query().is_todolist == is_todolist))
+                    if not result:
+                        return None
+                    name_keeper = []
+                    for row in result:
+                        if row['list_name'] in name_keeper:
+                            pass
+                        else:
+                            name_keeper.append(row['list_name'])
+                    response = ""
+                    for row in name_keeper:
+                        response += row + ",\n"
+                    return response
+
                 result = self.db.search((Query().is_todolist == is_todolist) & (Query().list_name == list_name))
                 if not result:
-                    return "*#$"  # for the recursive compare
+                    return None  # for the recursive compare
                 answer = ""
                 for row in result:
                     answer += "item " + str(row['list_sequence']) + ": " + row['note'] + ". \n"
@@ -124,7 +139,7 @@ class NoteTaker():
                         'list_sequence': list_sequence
                     })  # insert the given data
             elif is_reminder and not is_todolist:
-                if not self.db.search((Query().note == note)):  # if there is no exacty record on the database then
+                if not self.db.search((Query().note == note)):  # if there is no exact record on the database then
                     pass
                 else:
                     while self.db.search((Query().note == note)):
@@ -143,7 +158,7 @@ class NoteTaker():
                 pass     # the note is to do list and reminder both at the same time. This compare will using on future.
             return ""
 
-    def db_delete(self, note, is_reminder, is_public=True, user_id=None):
+    def db_delete(self, note=None, category=None, are_all=False, list_name=None, list_sequence=None, is_todolist=False, is_reminder=False, is_active=False, is_public=True, user_id=None):
         """Function to delete a note record from the database.  NOT COMPLETED.
 
         Args:
@@ -170,10 +185,13 @@ class NoteTaker():
             else:
                 return "I cannot forget a general note about " + self.mirror(note)
         else:
-            if self.db.remove(Query().note == self.fix_pronoun(note)):
-                return "OK, I forgot everything I know about " + self.mirror(note)
+            if are_all:
+                self.db.remove((Query().is_todolist == is_todolist) | (Query().is_reminder == is_reminder))  #İf added the "to do list for remind" to the future, this line will be reworked.
+                return ""
+            if self.db.remove((Query().is_todolist == is_todolist) & (Query().is_reminder == is_reminder)):
+                return ""
             else:
-                return "I don't remember anything about " + self.mirror(note)
+                return "There is no note."
 
     #   THIS CODE WILL BE DELETED
     # def mirror(self, answer):

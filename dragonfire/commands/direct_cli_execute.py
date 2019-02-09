@@ -10,30 +10,20 @@
                    Cem Baybars GÜÇLÜ <cem.baybars@gmail.com>
 """
 
-from dragonfire.nlplib import Classifier, Helper  # Submodule of Dragonfire to handle extra NLP tasks
-
-import spacy  # Industrial-strength Natural Language Processing in Python
-
-nlp = spacy.load('en')  # Load en_core_web_sm, English, 50 MB, default model
-
 
 class CliExecuteCommands():
     """Class to contains taking notes process with simply if-else struct.
     """
 
-    def compare(self, com, userin, user_prefix):
+    def compare(self, h, userin):
         """Method to dragonfire's command structures of directly executed command on command line ability.
 
         Args:
-            com (str):                 User's command.
+            h:                         doc helper from __init__.py
             userin:                    :class:`dragonfire.utilities.TextToAction` instance.
-            user_prefix:               user's preferred titles.
         """
 
-        doc = nlp(com)
-        h = Helper(doc)
-        if h.check_verb_lemma("open") or h.check_adj_lemma("open") or h.check_verb_lemma("run") or h.check_verb_lemma(
-                "start") or h.check_verb_lemma("show"):
+        if h.check_verb_lemma("open") or h.check_adj_lemma("open") or h.check_verb_lemma("run") or h.check_verb_lemma("start") or h.check_verb_lemma("show"):
             if h.check_text("blender"):
                 userin.execute(["blender"], "Blender")
                 return userin.say("Blender 3D computer graphics software")
