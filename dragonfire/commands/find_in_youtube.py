@@ -14,7 +14,7 @@ import time
 import youtube_dl  # Command-line program to download videos from YouTube.com and other video sites
 from pykeyboard import PyKeyboard   # A simple, cross-platform Python module for providing keyboard control
 
-from dragonfire.utilities import TextToAction, nostdout, nostderr  # Submodule of Dragonfire to provide various utilities
+from dragonfire.utilities import nostdout, nostderr  # Submodule of Dragonfire to provide various utilities
 
 
 class FindInYoutubeCommand():
@@ -26,13 +26,15 @@ class FindInYoutubeCommand():
         """
         self.testing = None
 
-    def compare(self, com, doc, h, args, testing, userin, user_prefix):
+    def compare(self, doc, h, args, testing, userin, user_prefix):
         """Method to dragonfire's command structures of searching in youtube ability.
 
         Args:
-            com (str):                 User's command.
-            userin:                    :class:`dragonfire.utilities.TextToAction` instance.
+            doc:                       doc of com from __init__.py
+            h:                         doc helper from __init__.py
             args:                      Command-line arguments.
+            testing:                   testing form __init__.py
+            userin:                    :class:`dragonfire.utilities.TextToAction` instance.
 
         Keyword Args:
             user_prefix:               user's preferred titles.

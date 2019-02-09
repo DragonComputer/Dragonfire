@@ -68,7 +68,6 @@ class NoteTaker():
                             pass
                         else:
                             name_keeper.append(row['list_name'])
-                    counter = 0
                     response = ""
                     for row in name_keeper:
                         response += row + ",\n"

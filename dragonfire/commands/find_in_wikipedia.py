@@ -15,18 +15,19 @@ import wikipedia  # Python library that makes it easy to access and parse data f
 import wikipedia.exceptions  # Exceptions of wikipedia library
 import requests.exceptions  # HTTP for Humans
 
-from dragonfire.utilities import TextToAction, nostdout, nostderr  # Submodule of Dragonfire to provide various utilities
+from dragonfire.utilities import nostderr  # Submodule of Dragonfire to provide various utilities
 
 
 class FindInWikiCommand():
     """Class to contains searching in wikipedia process with simply if-else struct.
     """
 
-    def first_compare(self, com, doc, h, user_answering_wiki, userin, user_prefix):
+    def first_compare(self, doc, h, user_answering_wiki, userin, user_prefix):
         """Method to dragonfire's first command struct of searching in wikipedia ability.
 
         Args:
-            com (str):                 User's command.
+            doc:                       doc of com from __init__.py
+            h:                         doc helper from __init__.py
             user_answering_wiki:       User answering string array.
             userin:                    :class:`dragonfire.utilities.TextToAction` instance.
             user_prefix:               user's preferred titles.
@@ -72,7 +73,7 @@ class FindInWikiCommand():
                         pass
         return None
 
-    def second_compare(self, com, doc, h, user_answering_wiki, userin, user_prefix):
+    def second_compare(self, com, user_answering_wiki, userin, user_prefix):
         """Method to dragonfire's first command struct of searching in wikipedia ability.
 
         Args:

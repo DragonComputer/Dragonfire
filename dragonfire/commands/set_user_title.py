@@ -11,18 +11,19 @@
                    Cem Baybars GÜÇLÜ <cem.baybars@gmail.com>
 """
 
-from tinydb import Query, TinyDB  # TinyDB is a lightweight document oriented database optimized for your happiness
+from tinydb import Query  # TinyDB is a lightweight document oriented database optimized for your happiness
 
 
 class SetUserTitleCommands():
     """Class to contains user title setting commands with simply if-else struct.
     """
 
-    def compare(self, com, doc, h, args, userin, config_file):
+    def compare(self, doc, h, args, userin, config_file):
         """Method to dragonfire's command structures of setting user title ability.
 
         Args:
-            com (str):                 User's command.
+            doc:                       doc of com from __init__.py
+            h:                         doc helper from __init__.py
             userin:                    :class:`dragonfire.utilities.TextToAction` instance.
             args:                      Command-line arguments.
             config_file:               virtual assistant config file

@@ -15,13 +15,12 @@ class CliExecuteCommands():
     """Class to contains taking notes process with simply if-else struct.
     """
 
-    def compare(self, com, doc, h, userin, user_prefix):
+    def compare(self, h, userin):
         """Method to dragonfire's command structures of directly executed command on command line ability.
 
         Args:
-            com (str):                 User's command.
+            h:                         doc helper from __init__.py
             userin:                    :class:`dragonfire.utilities.TextToAction` instance.
-            user_prefix:               user's preferred titles.
         """
 
         if h.check_verb_lemma("open") or h.check_adj_lemma("open") or h.check_verb_lemma("run") or h.check_verb_lemma("start") or h.check_verb_lemma("show"):

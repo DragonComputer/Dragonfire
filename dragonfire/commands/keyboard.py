@@ -13,9 +13,9 @@
 from pykeyboard import PyKeyboard  # A simple, cross-platform Python module for providing keyboard control
 from pymouse import PyMouse  # Cross-platform Python mouse module
 from os.path import expanduser  # Common pathname manipulations
-from tinydb import Query, TinyDB  # TinyDB is a lightweight document oriented database optimized for your happiness
+from tinydb import TinyDB  # TinyDB is a lightweight document oriented database optimized for your happiness
 
-from dragonfire.utilities import TextToAction, nostdout, nostderr  # Submodule of Dragonfire to provide various utilities
+from dragonfire.utilities import nostdout, nostderr  # Submodule of Dragonfire to provide various utilities
 
 
 class KeyboardCommands():
@@ -36,7 +36,10 @@ class KeyboardCommands():
 
         Args:
             com (str):                 User's command.
+            doc:                       doc of com from __init__.py
+            h:                         doc helper from __init__.py
             args:                      Command-line arguments.
+            testing:                   testing form __init__.py
         """
 
         self.testing = testing

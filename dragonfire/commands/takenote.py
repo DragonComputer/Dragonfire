@@ -24,11 +24,10 @@ class TakeNoteCommand():
     """Class to contains taking notes process with simply if-else struct.
     """
 
-    def takenote_first_compare(self, com, doc, h, note_taker, user_answering_note, userin, user_prefix):
+    def takenote_first_compare(self, doc, h, note_taker, user_answering_note, userin, user_prefix):
         """Method to dragonfire's first command struct of taking note ability.
 
         Args:
-            com (str):                 User's command.
             note_taker (object):        note_taker class's object.
             user_answering_note:       User answering string array.
             userin:                    :class:`dragonfire.utilities.TextToAction` instance.
@@ -119,6 +118,8 @@ class TakeNoteCommand():
 
         Args:
             com (str):                 User's command.
+            doc:                       doc of com from __init__.py
+            h:                         doc helper from __init__.py
             note_taker (object):        note_taker class's object.
             user_answering_note:       User answering string array.
             userin:                    :class:`dragonfire.utilities.TextToAction` instance.
@@ -310,12 +311,13 @@ class TakeNoteCommand():
                         return userin.say(result)
         return None
 
-    def getnote_second_compare(self, com, doc, h, note_taker, user_answering_note, userin, user_prefix):
+    def getnote_second_compare(self, com, h, note_taker, user_answering_note, userin, user_prefix):
         """Method to dragonfire's second command struct of getting note ability.
 
         Args:
             com (str):                 User's command.
-            note_taker (object):        note_taker class's object.
+            h:                         doc helper from __init__.py
+            note_taker (object):       note_taker class's object.
             user_answering_note:       User answering string array.
             userin:                    :class:`dragonfire.utilities.TextToAction` instance.
             user_prefix:               user's preferred titles.
@@ -346,15 +348,12 @@ class TakeNoteCommand():
                 return userin.say(result)
         return None
 
-    def deletenote_(self, com, doc, h, note_taker, user_answering_note, userin, user_prefix):
+    def deletenote_(self, h, note_taker, userin):
         """Method to dragonfire's first command struct of getting note ability.
 
                 Args:
-                    com (str):                 User's command.
                     note_taker (object):        note_taker class's object.
-                    user_answering_note:       User answering string array.
                     userin:                    :class:`dragonfire.utilities.TextToAction` instance.
-                    user_prefix:               user's preferred titles.
                 """
 
         if h.check_lemma("delete") or h.check_verb_lemma("remove"):

@@ -250,11 +250,11 @@ class VirtualAssistant():
         if response:
             return response
 
-        response = take_note_command.getnote_second_compare(com, doc, h, note_taker, USER_ANSWERING_NOTE, userin, user_prefix)
+        response = take_note_command.getnote_second_compare(com, h, note_taker, USER_ANSWERING_NOTE, userin, user_prefix)
         if response:
             return response
 
-        response = find_in_wiki_command.second_compare(com, doc, h, USER_ANSWERING_WIKI, userin, user_prefix)
+        response = find_in_wiki_command.second_compare(com, USER_ANSWERING_WIKI, userin, user_prefix)
         if response:
             return response
 
@@ -296,7 +296,7 @@ class VirtualAssistant():
                 atthemoment = datetime.datetime.now().strftime("%H:%M")
                 return userin.say(atthemoment + choice([", "+user_prefix + ".", "."]))
 
-        response = take_note_command.deletenote_(com, doc, h, note_taker, USER_ANSWERING_NOTE, userin, user_prefix)
+        response = take_note_command.deletenote_(h, note_taker, userin)
         if response:
             return response
 
@@ -304,15 +304,15 @@ class VirtualAssistant():
         if response:
             return response
 
-        response = cli_execute_commands.compare(com, doc, h, userin, user_prefix)
+        response = cli_execute_commands.compare(h, userin)
         if response:
             return response
 
-        response = take_note_command.takenote_first_compare(com, doc, h, note_taker, USER_ANSWERING_NOTE, userin, user_prefix)  #take note command
+        response = take_note_command.takenote_first_compare(doc, h, note_taker, USER_ANSWERING_NOTE, userin, user_prefix)  # take note command
         if response:
             return response
 
-        response = set_user_title_commands.compare(com, doc, h, args, userin, config_file)
+        response = set_user_title_commands.compare(doc, h, args, userin, config_file)
         if response:
             return response
 
@@ -349,19 +349,19 @@ class VirtualAssistant():
                 thread.interrupt_main()
             return response
 
-        response = find_in_wiki_command.first_compare(com, doc, h, USER_ANSWERING_WIKI, userin, user_prefix)
+        response = find_in_wiki_command.first_compare(doc, h, USER_ANSWERING_WIKI, userin, user_prefix)
         if response:
             return response
 
-        response = find_in_youtube_command.compare(com, doc, h, args, self.testing, userin, user_prefix)
+        response = find_in_youtube_command.compare(doc, h, args, self.testing, userin, user_prefix)
         if response:
             return response
 
-        response = find_in_browser_command.compare_content(com, doc, h, userin, user_prefix)
+        response = find_in_browser_command.compare_content(doc, h, userin)
         if response:
             return response
 
-        response = find_in_browser_command.compare_image(com, doc, h, userin, user_prefix)
+        response = find_in_browser_command.compare_image(doc, h, userin)
         if response:
             return response
 
