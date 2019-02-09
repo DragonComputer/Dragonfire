@@ -24,7 +24,7 @@ class TakeNoteCommand():
     """Class to contains taking notes process with simply if-else struct.
     """
 
-    def takenote_compare1(self, com, doc, h, note_taker, user_answering_note, userin, user_prefix):
+    def takenote_first_compare(self, com, doc, h, note_taker, user_answering_note, userin, user_prefix):
         """Method to dragonfire's first command struct of taking note ability.
 
         Args:
@@ -114,7 +114,7 @@ class TakeNoteCommand():
                         [".", ", " + user_prefix + "."]))
         return None
 
-    def takenote_compare2(self, com, doc, h, note_taker, user_answering_note, userin, user_prefix):
+    def takenote_second_compare(self, com, doc, h, note_taker, user_answering_note, userin, user_prefix):
         """Method to dragonfire's first command struct of taking note ability.
 
         Args:
@@ -260,7 +260,7 @@ class TakeNoteCommand():
 
         return None
 
-    def getnote_compare1(self, com, doc, h, note_taker, user_answering_note, userin, user_prefix):
+    def getnote_first_compare(self, com, doc, h, note_taker, user_answering_note, userin, user_prefix):
         """Method to dragonfire's first command struct of getting note ability.
 
                 Args:
@@ -306,7 +306,7 @@ class TakeNoteCommand():
                         return userin.say(note_taker.db_get(None, com, True))
         return None
 
-    def getnote_compare2(self, com, doc, h, note_taker, user_answering_note, userin, user_prefix):
+    def getnote_second_compare(self, com, doc, h, note_taker, user_answering_note, userin, user_prefix):
         """Method to dragonfire's second command struct of getting note ability.
 
         Args:

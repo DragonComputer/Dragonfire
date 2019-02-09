@@ -246,11 +246,11 @@ class VirtualAssistant():
         if self.inactive and not (h.directly_equal(["dragonfire", "hey"]) or (h.check_verb_lemma("wake") and h.check_nth_lemma(-1, "up")) or (h.check_nth_lemma(0, "dragon") and h.check_nth_lemma(1, "fire") and h.max_word_count(2))):
             return ""
 
-        response = take_note_command.takenote_compare2(com, doc, h, note_taker, USER_ANSWERING_NOTE, userin, user_prefix)   #take note command.
+        response = take_note_command.takenote_second_compare(com, doc, h, note_taker, USER_ANSWERING_NOTE, userin, user_prefix)   #take note command.
         if response:
             return response
 
-        response = take_note_command.getnote_compare2(com, doc, h, note_taker, USER_ANSWERING_NOTE, userin, user_prefix)
+        response = take_note_command.getnote_second_compare(com, doc, h, note_taker, USER_ANSWERING_NOTE, userin, user_prefix)
         if response:
             return response
 
@@ -296,7 +296,7 @@ class VirtualAssistant():
                 atthemoment = datetime.datetime.now().strftime("%H:%M")
                 return userin.say(atthemoment + choice([", "+user_prefix + ".", "."]))
 
-        response = take_note_command.getnote_compare1(com, doc, h, note_taker, USER_ANSWERING_NOTE, userin, user_prefix)
+        response = take_note_command.getnote_first_compare(com, doc, h, note_taker, USER_ANSWERING_NOTE, userin, user_prefix)
         if response:
             return response
 
@@ -304,7 +304,7 @@ class VirtualAssistant():
         if response:
             return response
 
-        response = take_note_command.takenote_compare1(com, doc, h, note_taker, USER_ANSWERING_NOTE, userin, user_prefix)  #take note command
+        response = take_note_command.takenote_first_compare(com, doc, h, note_taker, USER_ANSWERING_NOTE, userin, user_prefix)  #take note command
         if response:
             return response
 
