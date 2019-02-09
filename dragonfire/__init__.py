@@ -246,15 +246,15 @@ class VirtualAssistant():
         if self.inactive and not (h.directly_equal(["dragonfire", "hey"]) or (h.check_verb_lemma("wake") and h.check_nth_lemma(-1, "up")) or (h.check_nth_lemma(0, "dragon") and h.check_nth_lemma(1, "fire") and h.max_word_count(2))):
             return ""
 
-        response = take_note_command.takenote_compare2(com, note_taker, USER_ANSWERING_NOTE, userin, user_prefix)   #take note command.
+        response = take_note_command.takenote_compare2(com, doc, h, note_taker, USER_ANSWERING_NOTE, userin, user_prefix)   #take note command.
         if response:
             return response
 
-        response = take_note_command.getnote_compare2(com, note_taker, USER_ANSWERING_NOTE, userin, user_prefix)
+        response = take_note_command.getnote_compare2(com, doc, h, note_taker, USER_ANSWERING_NOTE, userin, user_prefix)
         if response:
             return response
 
-        response = find_in_wiki_command.second_compare(com, USER_ANSWERING_WIKI, userin, user_prefix)
+        response = find_in_wiki_command.second_compare(com, doc, h, USER_ANSWERING_WIKI, userin, user_prefix)
         if response:
             return response
 
@@ -296,19 +296,19 @@ class VirtualAssistant():
                 atthemoment = datetime.datetime.now().strftime("%H:%M")
                 return userin.say(atthemoment + choice([", "+user_prefix + ".", "."]))
 
-        response = take_note_command.getnote_compare1(com, note_taker, USER_ANSWERING_NOTE, userin, user_prefix)
+        response = take_note_command.getnote_compare1(com, doc, h, note_taker, USER_ANSWERING_NOTE, userin, user_prefix)
         if response:
             return response
 
-        response = cli_execute_commands.compare(com, userin, user_prefix)
+        response = cli_execute_commands.compare(com, doc, h, userin, user_prefix)
         if response:
             return response
 
-        response = take_note_command.takenote_compare1(com, note_taker, USER_ANSWERING_NOTE, userin, user_prefix)  #take note command
+        response = take_note_command.takenote_compare1(com, doc, h, note_taker, USER_ANSWERING_NOTE, userin, user_prefix)  #take note command
         if response:
             return response
 
-        response = set_user_title_commands.compare(com, args, userin, config_file)
+        response = set_user_title_commands.compare(com, doc, h, args, userin, config_file)
         if response:
             return response
 
@@ -332,7 +332,7 @@ class VirtualAssistant():
                     userin.execute([" "], msg)
                     return userin.say(msg)
 
-        response = keyboard_commands.compare(com, args, self.testing)
+        response = keyboard_commands.compare(com, doc, h, args, self.testing)
         if response:
             return response
 
@@ -345,19 +345,19 @@ class VirtualAssistant():
                 thread.interrupt_main()
             return response
 
-        response = find_in_wiki_command.first_compare(com, USER_ANSWERING_WIKI, userin, user_prefix)
+        response = find_in_wiki_command.first_compare(com, doc, h, USER_ANSWERING_WIKI, userin, user_prefix)
         if response:
             return response
 
-        response = find_in_youtube_command.compare(com, args, self.testing, userin, user_prefix)
+        response = find_in_youtube_command.compare(com, doc, h, args, self.testing, userin, user_prefix)
         if response:
             return response
 
-        response = find_in_browser_command.compare_content(com, userin, user_prefix)
+        response = find_in_browser_command.compare_content(com, doc, h, userin, user_prefix)
         if response:
             return response
 
-        response = find_in_browser_command.compare_image(com, userin, user_prefix)
+        response = find_in_browser_command.compare_image(com, doc, h, userin, user_prefix)
         if response:
             return response
 

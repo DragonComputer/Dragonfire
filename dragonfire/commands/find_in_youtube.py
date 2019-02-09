@@ -11,14 +11,10 @@
 """
 import time
 
-import youtube_dl # Command-line program to download videos from YouTube.com and other video sites
-from pykeyboard import PyKeyboard # A simple, cross-platform Python module for providing keyboard control
-import spacy  # Industrial-strength Natural Language Processing in Python
+import youtube_dl  # Command-line program to download videos from YouTube.com and other video sites
+from pykeyboard import PyKeyboard   # A simple, cross-platform Python module for providing keyboard control
 
 from dragonfire.utilities import TextToAction, nostdout, nostderr  # Submodule of Dragonfire to provide various utilities
-from dragonfire.nlplib import Classifier, Helper  # Submodule of Dragonfire to handle extra NLP tasks
-
-nlp = spacy.load('en')  # Load en_core_web_sm, English, 50 MB, default model
 
 
 class FindInYoutubeCommand():
@@ -30,7 +26,7 @@ class FindInYoutubeCommand():
         """
         self.testing = None
 
-    def compare(self, com, args, testing, userin, user_prefix):
+    def compare(self, com, doc, h, args, testing, userin, user_prefix):
         """Method to dragonfire's command structures of searching in youtube ability.
 
         Args:
@@ -42,8 +38,7 @@ class FindInYoutubeCommand():
             user_prefix:               user's preferred titles.
         """
         self.testing = testing
-        doc = nlp(com)
-        h = Helper(doc)
+
         if (h.check_lemma("search") or h.check_lemma("find")) and h.check_lemma("youtube"):
             with nostdout():
                 with nostderr():

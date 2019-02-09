@@ -11,19 +11,14 @@
                    Cem Baybars GÜÇLÜ <cem.baybars@gmail.com>
 """
 
-import spacy  # Industrial-strength Natural Language Processing in Python
 from tinydb import Query, TinyDB  # TinyDB is a lightweight document oriented database optimized for your happiness
-
-from dragonfire.nlplib import Classifier, Helper  # Submodule of Dragonfire to handle extra NLP tasks
-
-nlp = spacy.load('en')  # Load en_core_web_sm, English, 50 MB, default model
 
 
 class SetUserTitleCommands():
     """Class to contains user title setting commands with simply if-else struct.
     """
 
-    def compare(self, com, args, userin, config_file):
+    def compare(self, com, doc, h, args, userin, config_file):
         """Method to dragonfire's command structures of setting user title ability.
 
         Args:
@@ -33,8 +28,6 @@ class SetUserTitleCommands():
             config_file:               virtual assistant config file
         """
 
-        doc = nlp(com)
-        h = Helper(doc)
         if h.check_lemma("be") and h.check_lemma("-PRON-") and (
                 h.check_lemma("lady") or h.check_lemma("woman") or h.check_lemma("girl")):
             config_file.update({'gender': 'female'}, Query().datatype == 'gender')

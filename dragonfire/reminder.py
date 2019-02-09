@@ -13,15 +13,6 @@ import subprocess  # Subprocess managements
 import time  # Time access and conversions
 from random import choice  # Generate pseudo-random numbers
 
-import youtube_dl # Command-line program to download videos from YouTube.com and other video sites
-from pykeyboard import PyKeyboard # A simple, cross-platform Python module for providing keyboard control
-import spacy  # Industrial-strength Natural Language Processing in Python
-
-from dragonfire.utilities import TextToAction, nostdout, nostderr  # Submodule of Dragonfire to provide various utilities
-from dragonfire.nlplib import Classifier, Helper  # Submodule of Dragonfire to handle extra NLP tasks
-
-nlp = spacy.load('en')  # Load en_core_web_sm, English, 50 MB, default model
-
 
 class Reminder():
     """Class to contains reminder feature for taking note ability.
@@ -36,13 +27,9 @@ class Reminder():
         """Method to dragonfire's command structures of searching in youtube ability.
 
         Args:
-            now_timetuple:                     current date.
-            reminde_timetuple:                 reminde date.
-
-        Keyword Args:
-                    user_prefix:               user's preferred titles.
+            now_timestamp:                     current date.
+            reminde_time_stamp:                 reminde date.
         """
-        #  PEP 8 suggested limit used because of necessity.
         return now_timestamp == reminde_time_stamp
 
     def reminde(self, note_taker, userin, user_prefix, user_answering_note):
@@ -53,7 +40,6 @@ class Reminder():
                     user_prefix:                user's preferred titles.
                     user_answering_note:       User answering string array.
         """
-        # userin = self.userin
         while True:
             now_timestamp = int(datetime.datetime.now().timestamp() / 60)
             result = note_taker.db_get(None, None, False, True)
@@ -81,5 +67,3 @@ class Reminder():
             if not is_there_active:   # if there is no active reminder, loop will be interrupted.
                 break
             time.sleep(60)
-
-

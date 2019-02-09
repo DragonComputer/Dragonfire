@@ -10,7 +10,6 @@
 """
 import datetime  # Basic date and time types
 from random import choice  # Generate pseudo-random numbers
-from dragonfire.nlplib import Helper  # Submodule of Dragonfire to handle extra NLP tasks
 try:
     import thread  # Low-level threading API (Python 2.7)
 except ImportError:
@@ -18,9 +17,6 @@ except ImportError:
 
 from dragonfire.reminder import Reminder
 
-import spacy  # Industrial-strength Natural Language Processing in Python
-
-nlp = spacy.load('en')  # Load en_core_web_sm, English, 50 MB, default model
 reminder = Reminder()
 
 
@@ -28,7 +24,7 @@ class TakeNoteCommand():
     """Class to contains taking notes process with simply if-else struct.
     """
 
-    def takenote_compare1(self, com, note_taker, user_answering_note, userin, user_prefix):
+    def takenote_compare1(self, com, doc, h, note_taker, user_answering_note, userin, user_prefix):
         """Method to dragonfire's first command struct of taking note ability.
 
         Args:
@@ -39,8 +35,6 @@ class TakeNoteCommand():
             user_prefix:               user's preferred titles.
         """
 
-        doc = nlp(com)
-        h = Helper(doc)
         if h.check_verb_lemma("add") or h.check_verb_lemma("generate") or h.check_verb_lemma("create") or (h.check_verb_lemma("take") and h.check_noun_lemma("note")) or h.check_verb_lemma("remind"):
             if h.check_verb_lemma("do") or (h.check_verb_lemma("do") and h.check_noun_lemma("list")):        # FOR creating To Do list
                 takenote_query = ""
@@ -120,7 +114,7 @@ class TakeNoteCommand():
                         [".", ", " + user_prefix + "."]))
         return None
 
-    def takenote_compare2(self, com, note_taker, user_answering_note, userin, user_prefix):
+    def takenote_compare2(self, com, doc, h, note_taker, user_answering_note, userin, user_prefix):
         """Method to dragonfire's first command struct of taking note ability.
 
         Args:
@@ -130,8 +124,7 @@ class TakeNoteCommand():
             userin:                    :class:`dragonfire.utilities.TextToAction` instance.
             user_prefix:               user's preferred titles.
         """
-        doc = nlp(com)
-        h = Helper(doc)
+
         if user_answering_note['status']:
             if com.startswith("whatever") or com.startswith("give up") or com.startswith("not now") or com.startswith("forget it") or com.startswith("WHATEVER") or com.startswith("GIVE UP") or com.startswith("NOT NOW") or com.startswith("FORGET IT"):  # for writing interrupt while taking notes and creating reminders.
                 user_answering_note['status'] = False
@@ -267,7 +260,7 @@ class TakeNoteCommand():
 
         return None
 
-    def getnote_compare1(self, com, note_taker, user_answering_note, userin, user_prefix):
+    def getnote_compare1(self, com, doc, h, note_taker, user_answering_note, userin, user_prefix):
         """Method to dragonfire's first command struct of getting note ability.
 
                 Args:
@@ -277,8 +270,7 @@ class TakeNoteCommand():
                     userin:                    :class:`dragonfire.utilities.TextToAction` instance.
                     user_prefix:               user's preferred titles.
                 """
-        doc = nlp(com)
-        h = Helper(doc)
+
         if h.check_verb_lemma("say") or h.check_verb_lemma("get") or h.check_verb_lemma("give"):
 
             if h.check_noun_lemma("note") or h.check_noun_lemma("notes"):
@@ -314,7 +306,7 @@ class TakeNoteCommand():
                         return userin.say(note_taker.db_get(None, com, True))
         return None
 
-    def getnote_compare2(self, com, note_taker, user_answering_note, userin, user_prefix):
+    def getnote_compare2(self, com, doc, h, note_taker, user_answering_note, userin, user_prefix):
         """Method to dragonfire's second command struct of getting note ability.
 
         Args:

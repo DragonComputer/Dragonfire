@@ -11,23 +11,18 @@
 """
 
 import re  # Regular expression operations
-
-from dragonfire.nlplib import Classifier, Helper  # Submodule of Dragonfire to handle extra NLP tasks
-from dragonfire.utilities import TextToAction, nostdout, nostderr  # Submodule of Dragonfire to provide various utilities
-
-import spacy  # Industrial-strength Natural Language Processing in Python
 import wikipedia  # Python library that makes it easy to access and parse data from Wikipedia
 import wikipedia.exceptions  # Exceptions of wikipedia library
 import requests.exceptions  # HTTP for Humans
 
-nlp = spacy.load('en')  # Load en_core_web_sm, English, 50 MB, default model
+from dragonfire.utilities import TextToAction, nostdout, nostderr  # Submodule of Dragonfire to provide various utilities
 
 
 class FindInWikiCommand():
     """Class to contains searching in wikipedia process with simply if-else struct.
     """
 
-    def first_compare(self, com, user_answering_wiki, userin, user_prefix):
+    def first_compare(self, com, doc, h, user_answering_wiki, userin, user_prefix):
         """Method to dragonfire's first command struct of searching in wikipedia ability.
 
         Args:
@@ -37,8 +32,6 @@ class FindInWikiCommand():
             user_prefix:               user's preferred titles.
         """
 
-        doc = nlp(com)
-        h = Helper(doc)
         if (h.check_lemma("search") or h.check_lemma("find")) and h.check_lemma("wikipedia"):
             with nostderr():
                 search_query = ""
@@ -79,7 +72,7 @@ class FindInWikiCommand():
                         pass
         return None
 
-    def second_compare(self, com, user_answering_wiki, userin, user_prefix):
+    def second_compare(self, com, doc, h, user_answering_wiki, userin, user_prefix):
         """Method to dragonfire's first command struct of searching in wikipedia ability.
 
         Args:

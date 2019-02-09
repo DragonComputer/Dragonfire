@@ -10,19 +10,14 @@
                    Cem Baybars GÜÇLÜ <cem.baybars@gmail.com>
 """
 
-import spacy  # Industrial-strength Natural Language Processing in Python
-
 from dragonfire.utilities import TextToAction, nostdout, nostderr  # Submodule of Dragonfire to provide various utilities
-from dragonfire.nlplib import Classifier, Helper  # Submodule of Dragonfire to handle extra NLP tasks
-
-nlp = spacy.load('en')  # Load en_core_web_sm, English, 50 MB, default model
 
 
 class FindInBrowserCommand():
     """Class to contains browser content finder with simply if-else struct.
     """
 
-    def compare_content(self, com, userin, user_prefix):
+    def compare_content(self, com, doc, h, userin, user_prefix):
         """Method to dragonfire's command structures of Searching on Browser ability.
 
         Args:
@@ -33,8 +28,6 @@ class FindInBrowserCommand():
             user_prefix:               user's preferred titles.
         """
 
-        doc = nlp(com)
-        h = Helper(doc)
         if (h.check_lemma("search") or h.check_lemma("find")) and (
                 h.check_lemma("google") or h.check_lemma("web") or h.check_lemma("internet")) and not h.check_lemma(
                 "image"):
@@ -51,7 +44,7 @@ class FindInBrowserCommand():
                         return userin.execute(["sensible-browser", tab_url], search_query, True)
         return None
 
-    def compare_image(self, com, userin, user_prefix):
+    def compare_image(self, com, doc, h, userin, user_prefix):
         """Method to dragonfire's command structures of Searching on Browser ability.
 
         Args:
@@ -62,8 +55,6 @@ class FindInBrowserCommand():
             user_prefix:               user's preferred titles.
         """
 
-        doc = nlp(com)
-        h = Helper(doc)
         if (h.check_lemma("search") or h.check_lemma("find")) and (
                 h.check_lemma("google") or h.check_lemma("web") or h.check_lemma("internet")) and h.check_lemma(
                 "image"):

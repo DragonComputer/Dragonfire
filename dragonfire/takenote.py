@@ -11,7 +11,6 @@
 
 from tinydb import TinyDB, Query  # TinyDB is a lightweight document oriented database
 from os.path import expanduser  # Imported to get the home directory
-from dragonfire.config import Config  # Credentials for the database connection
 from dragonfire.database import NotePad  # Submodule of Dragonfire module that contains the database schema
 from sqlalchemy.orm.exc import NoResultFound  # the Python SQL toolkit and Object Relational Mapper
 

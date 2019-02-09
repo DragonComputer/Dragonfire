@@ -11,16 +11,11 @@
 """
 
 from pykeyboard import PyKeyboard  # A simple, cross-platform Python module for providing keyboard control
-import spacy  # Industrial-strength Natural Language Processing in Python
 from pymouse import PyMouse  # Cross-platform Python mouse module
 from os.path import expanduser  # Common pathname manipulations
 from tinydb import Query, TinyDB  # TinyDB is a lightweight document oriented database optimized for your happiness
 
 from dragonfire.utilities import TextToAction, nostdout, nostderr  # Submodule of Dragonfire to provide various utilities
-from dragonfire.nlplib import Classifier, Helper  # Submodule of Dragonfire to handle extra NLP tasks
-
-
-nlp = spacy.load('en')  # Load en_core_web_sm, English, 50 MB, default model
 
 
 class KeyboardCommands():
@@ -36,7 +31,7 @@ class KeyboardCommands():
             home = expanduser("~")
             self.config_file = TinyDB(home + '/.dragonfire_config.json')
 
-    def compare(self, com, args, testing):
+    def compare(self, com, doc, h, args, testing):
         """Method to dragonfire's command structures of keyboard keys ability.
 
         Args:
@@ -46,8 +41,6 @@ class KeyboardCommands():
 
         self.testing = testing
 
-        doc = nlp(com)
-        h = Helper(doc)
         if (h.check_nth_lemma(0, "keyboard") or h.check_nth_lemma(0, "type")) and not args["server"]:
             n = len(doc[0].text) + 1
             with nostdout():
