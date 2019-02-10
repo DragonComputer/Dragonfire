@@ -84,8 +84,7 @@ class FindInWikiCommand():
         """
 
         if user_answering_wiki['status']:
-            if com.startswith("FIRST") or com.startswith("THE FIRST") or com.startswith("SECOND") or com.startswith(
-                    "THE SECOND") or com.startswith("THIRD") or com.startswith("THE THIRD"):
+            if com.startswith("FIRST") or com.startswith("THE FIRST") or com.startswith("SECOND") or com.startswith("THE SECOND") or com.startswith("THIRD") or com.startswith("THE THIRD"):
                 user_answering_wiki['status'] = False
                 selection = None
                 if com.startswith("FIRST") or com.startswith("THE FIRST"):
@@ -101,8 +100,7 @@ class FindInWikiCommand():
                         try:
                             wikiresult = wikipedia.search(search_query)
                             if len(wikiresult) == 0:
-                                userin.say(
-                                    "Sorry, " + user_prefix + ". But I couldn't find anything about " + search_query + " in Wikipedia.")
+                                userin.say("Sorry, " + user_prefix + ". But I couldn't find anything about " + search_query + " in Wikipedia.")
                                 return True
                             wikipage = wikipedia.page(wikiresult[0])
                             wikicontent = "".join([i if ord(i) < 128 else ' ' for i in wikipage.content])
@@ -111,8 +109,7 @@ class FindInWikiCommand():
                             return userin.say(wikicontent, cmd=["sensible-browser", wikipage.url])
                         except requests.exceptions.ConnectionError:
                             userin.execute([" "], "Wikipedia connection error.")
-                            return userin.say(
-                                "Sorry, " + user_prefix + ". But I'm unable to connect to Wikipedia servers.")
+                            return userin.say("Sorry, " + user_prefix + ". But I'm unable to connect to Wikipedia servers.")
                         except Exception:
                             return False
         return None

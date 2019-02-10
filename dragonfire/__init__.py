@@ -284,17 +284,8 @@ class VirtualAssistant():
             userin.execute([" "], user_full_name)
             return userin.say("Your name is " + user_full_name + ", " + user_prefix + ".")
 
-        if (h.check_verb_lemma("what") and h.check_deps_contains("the time")) or h.check_noun_lemma("time") or (
-                h.check_verb_lemma("get") or h.check_verb_lemma("say") and h.check_deps_contains("the time")) or (
-                h.check_verb_lemma("what") and h.check_noun_lemma("time") and h.check_text("it")):
-            takenote_query = ""
-            for token in doc:
-                if not (token.lemma_ == "what" or token.lemma_ == "time" or token.lemma_ == "get" or token.lemma_ == "say" or token.lemma_ == "it" or token.is_stop):
-                    takenote_query += ' ' + token.text
-            takenote_query = takenote_query.strip()
-            if not takenote_query:                                             # for filter of other sentences.
-                atthemoment = datetime.datetime.now().strftime("%H:%M")
-                return userin.say(atthemoment + choice([", "+user_prefix + ".", "."]))
+        if h.check_wh_lemma("what") and h.check_noun_lemma("time") and h.check_verb_lemma("be") and h.check_text("it"):
+            return userin.say(datetime.datetime.now().strftime("%H:%M") + choice([", " + user_prefix + ".", "."]))
 
         response = take_note_command.deletenote_(h, note_taker, userin)
         if response:
@@ -304,7 +295,7 @@ class VirtualAssistant():
         if response:
             return response
 
-        response = cli_execute_commands.compare(h, userin)
+        response = cli_execute_commands.check(h, userin)
         if response:
             return response
 

@@ -15,7 +15,7 @@ class CliExecuteCommands():
     """Class to contains taking notes process with simply if-else struct.
     """
 
-    def compare(self, h, userin):
+    def check(self, h, userin):
         """Method to dragonfire's command structures of directly executed command on command line ability.
 
         Args:
