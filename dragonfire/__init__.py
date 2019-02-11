@@ -69,23 +69,11 @@ note_taker = NoteTaker()
 reminder = Reminder()
 e = Event()
 
-USER_ANSWERING = {
+user_answering = {
     'status': False,
     'for': None,
     'reason': None,
     'options': None
-}
-
-USER_ANSWERING_NOTE = {     # user answering for taking notes.
-    'status': False,
-    'isRemind': False,
-    'isTodo': False,          # using taking and getting notes both.
-    'toDo_listname': None,
-    'toDo_listcount': 0,
-    'note_keeper': None,
-    'has_listname': True,
-    'is_again': False,
-    'is_active': True     # for increasing reminder performans with checking this.
 }
 
 try:
@@ -190,7 +178,7 @@ class VirtualAssistant():
             home = expanduser("~")
             self.config_file = TinyDB(home + '/.dragonfire_config.json')
 
-        thread.start_new_thread(reminder.remind, (note_taker, userin, user_prefix, USER_ANSWERING_NOTE))
+        thread.start_new_thread(reminder.remind, (note_taker, userin, user_prefix, user_answering))
 
     def command(self, com):
         """Function that serves as the entry point for each one of the user commands.
@@ -237,9 +225,9 @@ class VirtualAssistant():
         if self.inactive and not (h.directly_equal(["dragonfire", "hey"]) or (h.check_verb_lemma("wake") and h.check_nth_lemma(-1, "up")) or (h.check_nth_lemma(0, "dragon") and h.check_nth_lemma(1, "fire") and h.max_word_count(2))):
             return ""
 
-        if USER_ANSWERING['status']:
+        if user_answering['status']:
             if com.startswith("FIRST") or com.startswith("THE FIRST") or com.startswith("SECOND") or com.startswith("THE SECOND") or com.startswith("THIRD") or com.startswith("THE THIRD"):
-                USER_ANSWERING['status'] = False
+                user_answering['status'] = False
                 selection = None
                 if com.startswith("FIRST") or com.startswith("THE FIRST"):
                     selection = 0
@@ -248,9 +236,9 @@ class VirtualAssistant():
                 elif com.startswith("THIRD") or com.startswith("THE THIRD"):
                     selection = 2
 
-                if USER_ANSWERING['for'] == 'wikipedia':
+                if user_answering['for'] == 'wikipedia':
                     with nostderr():
-                        search_query = USER_ANSWERING['options'][selection]
+                        search_query = user_answering['options'][selection]
                         try:
                             wikiresult = wikipedia.search(search_query)
                             if len(wikiresult) == 0:
@@ -516,10 +504,10 @@ class VirtualAssistant():
                         userin.execute([" "], "Wikipedia connection error.")
                         return userin.say("Sorry, " + user_prefix + ". But I'm unable to connect to Wikipedia servers.")
                     except wikipedia.exceptions.DisambiguationError as disambiguation:
-                        USER_ANSWERING['status'] = True
-                        USER_ANSWERING['for'] = 'wikipedia'
-                        USER_ANSWERING['reason'] = 'disambiguation'
-                        USER_ANSWERING['options'] = disambiguation.options[:3]
+                        user_answering['status'] = True
+                        user_answering['for'] = 'wikipedia'
+                        user_answering['reason'] = 'disambiguation'
+                        user_answering['options'] = disambiguation.options[:3]
                         notify = "Wikipedia disambiguation. Which one of these you meant?:\n - " + disambiguation.options[0]
                         msg = user_prefix + ", there is a disambiguation. Which one of these you meant? " + disambiguation.options[0]
                         for option in disambiguation.options[1:3]:
@@ -581,10 +569,10 @@ class VirtualAssistant():
                         tab_url = "http://google.com/?#q=" + search_query + "&tbm=isch"
                         return userin.execute(["sensible-browser", tab_url], search_query, True)
 
-        response = note_taker.check_setnote(com, doc, h, USER_ANSWERING_NOTE, userin, user_prefix)
+        response = note_taker.check_setnote(com, doc, h, user_answering, userin, user_prefix)
         if response:
             return response
-        response = note_taker.check_getnote(com, doc, h, USER_ANSWERING_NOTE, userin, user_prefix)
+        response = note_taker.check_getnote(com, doc, h, user_answering, userin, user_prefix)
         if response:
             return response
 

@@ -32,13 +32,13 @@ class Reminder():
         """
         return now_timestamp == reminde_time_stamp
 
-    def remind(self, note_taker, userin, user_prefix, user_answering_note):
+    def remind(self, note_taker, userin, user_prefix, user_answering):
         """Method to dragonfire's command structures of searching in youtube ability.
         Keyword Args:
                     note_taker (object):        note_taker class's object.
                     userin:                     :class:`dragonfire.utilities.TextToAction` instance.
-                    user_prefix:                user's preferred titles.
-                    user_answering_note:       User answering string array.
+                    user_prefix:                User's preferred titles.
+                    user_answering:             User answering state dictionary
         """
         while True:
             now_timestamp = int(datetime.datetime.now().timestamp() / 60)
@@ -50,12 +50,13 @@ class Reminder():
                         subprocess.Popen(["notify-send", "Dragonfire", row['note']])
                     except BaseException:
                         pass
-                    user_answering_note['status'] = True
-                    user_answering_note['isRemind'] = True
-                    user_answering_note['is_again'] = True
-                    user_answering_note['note_keeper'] = row['note']
+                    user_answering['status'] = True
+                    user_answering['for'] = 'note_taking'
+                    user_answering['reason'] = 'remind'
+                    user_answering['remind_again'] = True
+                    user_answering['takenote_query'] = row['note']
 
-                    note_taker.db_upsert(user_answering_note['note_keeper'], None, time, None, None, False, True, False)
+                    note_taker.db_upsert(user_answering['takenote_query'], None, time, None, None, False, True, False)
 
                     userin.say(choice(["You have reminder", "Reminder", "Remind Time"]) + choice([":", ", " + user_prefix + ":"]) + "\n" + row['note'] + ",\n" + choice(["Wanna ", ""]) + choice(["Repeat?", "Suspend?", "See again?"]))
                 # else:
@@ -63,7 +64,7 @@ class Reminder():
                 if not is_there_active:
                     if row['is_active']:
                         is_there_active = True
-            user_answering_note['is_active'] = is_there_active
+            user_answering['is_reminder_active'] = is_there_active
             if not is_there_active:   # if there is no active reminder, loop will be interrupted.
                 break
             time.sleep(60)
