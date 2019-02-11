@@ -380,6 +380,8 @@ class VirtualAssistant():
                     msg = "Sorry, " + user_prefix + " but I couldn't find a city named " + city + " on the internet."
                     userin.execute([" "], msg)
                     return userin.say(msg)
+        if h.check_wh_lemma("what") and h.check_noun_lemma("time") and h.check_verb_lemma("be") and h.check_text("it"):
+            return userin.say(datetime.datetime.now().strftime("%H:%M") + choice([", " + user_prefix + ".", "."]))
         if (h.check_nth_lemma(0, "keyboard") or h.check_nth_lemma(0, "type")) and not args["server"]:
             n = len(doc[0].text) + 1
             with nostdout():
