@@ -32,7 +32,7 @@ class Reminder():
         """
         return now_timestamp == reminde_time_stamp
 
-    def reminde(self, note_taker, userin, user_prefix, user_answering_note):
+    def remind(self, note_taker, userin, user_prefix, user_answering_note):
         """Method to dragonfire's command structures of searching in youtube ability.
         Keyword Args:
                     note_taker (object):        note_taker class's object.

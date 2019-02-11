@@ -38,14 +38,13 @@ class NoteTaker():
         self.is_server = False
         self.db_session = None
 
-    def check_setnote(self, com, doc, h, note_taker, user_answering_note, userin, user_prefix):
+    def check_setnote(self, com, doc, h, user_answering_note, userin, user_prefix):
         """Method to Dragonfire's check set commands for note taking ability.
 
         Args:
             com (str):                 User's command.
             doc:                       doc of com from __init__.py
             h:                         doc helper from __init__.py
-            note_taker (object):        note_taker class's object.
             user_answering_note:       User answering string array.
             userin:                    :class:`dragonfire.utilities.TextToAction` instance.
             user_prefix:               user's preferred titles.
@@ -124,7 +123,7 @@ class NoteTaker():
                         "Keep going, " + user_prefix + "."
                     ]))
                 else:  # when command came with note.
-                    note_taker.db_upsert(takenote_query)
+                    self.db_upsert(takenote_query)
                     user_answering_note['status'] = False
                     return userin.say(choice(["The note taken", "The note was recorded", "I get it"]) + choice(
                         [".", ", " + user_prefix + "."]))
@@ -146,7 +145,7 @@ class NoteTaker():
                     if not user_answering_note['note_keeper']:  # keeper compare for the elastic usage.
                         return userin.say("I get it. Enter the 1. item...")
                     else:
-                        note_taker.db_upsert(user_answering_note['note_keeper'], None, None,
+                        self.db_upsert(user_answering_note['note_keeper'], None, None,
                                              user_answering_note['toDo_listname'],
                                              user_answering_note['toDo_listcount'], user_answering_note['isTodo'])
                         return userin.say(
@@ -168,7 +167,7 @@ class NoteTaker():
                             ["List was recorded", temporary_keeper + " ToDo List generated",
                              "Get it. List ready"]) + choice([".", ", " + user_prefix + "."]))
                     user_answering_note['toDo_listcount'] += 1
-                    note_taker.db_upsert(com, None, None, user_answering_note['toDo_listname'],
+                    self.db_upsert(com, None, None, user_answering_note['toDo_listname'],
                                          user_answering_note['toDo_listcount'], user_answering_note['isTodo'])
 
                     return userin.say(choice(
@@ -210,7 +209,7 @@ class NoteTaker():
                                         # timestamp is a kind of second.
                                         time = datetime.datetime.now().timestamp() + mnt * 60
                                         time = int(time / 60)
-                                        note_taker.db_upsert(user_answering_note['note_keeper'], None, time, None, None, False, True, True)
+                                        self.db_upsert(user_answering_note['note_keeper'], None, time, None, None, False, True, True)
                                         # return userin.say(str(time.strftime("%H:%M")))
                                     else:
                                         return userin.say("Repeat!")
@@ -226,7 +225,7 @@ class NoteTaker():
                                         # timestamp is a kind of second.
                                         time = datetime.datetime.now().timestamp() + hr * 60 * 60
                                         time = int(time / 60)
-                                        note_taker.db_upsert(user_answering_note['note_keeper'], None, time, None, None, False, True, True)
+                                        self.db_upsert(user_answering_note['note_keeper'], None, time, None, None, False, True, True)
                                         # return userin.say(str(time))
                                     else:
                                         return userin.say("Repeat!")
@@ -242,7 +241,7 @@ class NoteTaker():
                                         # timestamp is a kind of second.
                                         time = datetime.datetime.now().timestamp() + dy * 24 * 60 * 60
                                         time = int(time / 60)
-                                        note_taker.db_upsert(user_answering_note['note_keeper'], None, time, None, None, False, True, True)
+                                        self.db_upsert(user_answering_note['note_keeper'], None, time, None, None, False, True, True)
                                         # return userin.say(str(time))
                                     else:
                                         return userin.say("Repeat!")
@@ -250,14 +249,14 @@ class NoteTaker():
                         user_answering_note['isRemind'] = False
                         user_answering_note['note_keeper'] = None
                         if not user_answering_note['is_active']:  # if reminder checker loop not run, start the loop.
-                            thread.start_new_thread(reminder.reminde, (note_taker, userin, user_prefix, user_answering_note))
+                            thread.start_new_thread(reminder.remind, (self, userin, user_prefix, user_answering_note))
                         return userin.say(choice(["It's okay", "Get it", "note was recorded", "The note taken"]) + choice(
                             [", " + user_prefix + ". ", ". "]) + choice(
                             ["Reminder Added.", "I'm waiting to remind.", "I will remind.",
                              "Reminder has been set."]))
             else:                                      # taking note second compare here.
                 user_answering_note['status'] = False
-                note_taker.db_upsert(com)
+                self.db_upsert(com)
                 return userin.say(choice(
                     ["The note Taken", "Alright", "I noted", "Ready whenever you want to get it", "Get it"]) + choice(
                     [".", ", " + user_prefix + ". "]))
@@ -265,31 +264,30 @@ class NoteTaker():
         if h.check_lemma("delete") or h.check_verb_lemma("remove"):
             if h.check_lemma("all"):
                 if h.check_lemma("over") and h.check_noun_lemma("database"):
-                    note_taker.db_delete(None, None, True)
+                    self.db_delete(None, None, True)
                     return userin.say("notes database cleared")
 
                 if h.check_lemma("note") or h.check_lemma("notes"):
-                    note_taker.db_delete()
+                    self.db_delete()
                     return userin.say("All notes Deleted")
 
                 if (h.check_verb_lemma("do") and h.check_noun_lemma("lists")) or (h.check_verb_lemma("do") and h.check_noun_lemma("list")):
-                    note_taker.db_delete(None, None, False, None, None, True)
+                    self.db_delete(None, None, False, None, None, True)
                     return userin.say("All to do lists deleted")
 
                 if h.check_lemma("reminder") or h.check_lemma("reminders"):
-                    note_taker.db_delete(None, None, False, None, None, False, True)
+                    self.db_delete(None, None, False, None, None, False, True)
                     return userin.say("All reminders deleted")
         return None
 
 
-    def check_getnote(self, com, doc, h, note_taker, user_answering_note, userin, user_prefix):
+    def check_getnote(self, com, doc, h, user_answering_note, userin, user_prefix):
         """Method to Dragonfire's check get commands for note taking ability.
 
         Args:
             com (str):                 User's command.
             doc:                       doc of com from __init__.py
             h:                         doc helper from __init__.py
-            note_taker (object):        note_taker class's object.
             user_answering_note:       User answering string array.
             userin:                    :class:`dragonfire.utilities.TextToAction` instance.
             user_prefix:               user's preferred titles.
@@ -298,7 +296,7 @@ class NoteTaker():
         if h.check_verb_lemma("say") or h.check_verb_lemma("get") or h.check_verb_lemma("give"):
 
             if h.check_noun_lemma("note") or h.check_noun_lemma("notes"):
-                return userin.say(note_taker.db_get(None, None))
+                return userin.say(self.db_get(None, None))
 
             if h.check_verb_lemma("do") or (h.check_verb_lemma("do") and h.check_noun_lemma("list")):
                 takenote_query = ""
@@ -310,7 +308,7 @@ class NoteTaker():
                 takenote_query = takenote_query.strip()
                 if not takenote_query:  # when command come without note.
                     user_answering_note['has_listname'] = False
-                    result = note_taker.db_get(None, None, True)
+                    result = self.db_get(None, None, True)
                     if not result:
                         user_answering_note['has_listname'] = True
                         return userin.say("There is no list")
@@ -321,7 +319,7 @@ class NoteTaker():
                         "List name"
                     ]) + choice(["?", ", " + user_prefix + "?"]))
                 else:  # when command came with note.
-                    result = note_taker.db_get(None, com, True)
+                    result = self.db_get(None, com, True)
                     if not result:
                         user_answering_note['has_listname'] = False
                         return userin.say(choice([
@@ -342,10 +340,10 @@ class NoteTaker():
 
             if (h.check_lemma("give") or h.check_lemma("say") or h.check_lemma("get")) or h.check_verb_lemma("remind"):
                 if h.check_noun_lemma("names") or h.check_noun_lemma("them") or not h.check_noun_lemma(""):
-                    result = note_taker.db_get(None, None, True)
+                    result = self.db_get(None, None, True)
                     return userin.say("list of the lists:\n" + result)
 
-            result = note_taker.db_get(None, com, True)
+            result = self.db_get(None, com, True)
             if not result:
                 return userin.say(choice([
                     "This name is not exist",

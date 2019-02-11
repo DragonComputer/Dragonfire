@@ -190,7 +190,7 @@ class VirtualAssistant():
             home = expanduser("~")
             self.config_file = TinyDB(home + '/.dragonfire_config.json')
 
-        thread.start_new_thread(reminder.reminde, (note_taker, userin, user_prefix, USER_ANSWERING_NOTE))
+        thread.start_new_thread(reminder.remind, (note_taker, userin, user_prefix, USER_ANSWERING_NOTE))
 
     def command(self, com):
         """Function that serves as the entry point for each one of the user commands.
@@ -581,10 +581,10 @@ class VirtualAssistant():
                         tab_url = "http://google.com/?#q=" + search_query + "&tbm=isch"
                         return userin.execute(["sensible-browser", tab_url], search_query, True)
 
-        response = note_taker.check_setnote(com, doc, h, note_taker, USER_ANSWERING_NOTE, userin, user_prefix)
+        response = note_taker.check_setnote(com, doc, h, USER_ANSWERING_NOTE, userin, user_prefix)
         if response:
             return response
-        response = note_taker.check_getnote(com, doc, h, note_taker, USER_ANSWERING_NOTE, userin, user_prefix)
+        response = note_taker.check_getnote(com, doc, h, USER_ANSWERING_NOTE, userin, user_prefix)
         if response:
             return response
 
