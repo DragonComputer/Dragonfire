@@ -37,8 +37,6 @@ from dragonfire.deepconv import DeepConversation  # Submodule of Dragonfire to a
 from dragonfire.coref import NeuralCoref  # Submodule of Dragonfire that aims to create corefference based dialogs
 from dragonfire.config import Config  # Submodule of Dragonfire to store configurations
 from dragonfire.database import Base  # Submodule of Dragonfire module that contains the database schema
-from dragonfire.takenote import NoteTaker  # Submodule of Dragonfire that forms her note taking ability
-from dragonfire.reminder import Reminder  # Submodule of Dragonfire to remind stuff
 
 import spacy  # Industrial-strength Natural Language Processing in Python
 import pyowm  # A Python wrapper around the OpenWeatherMap API
@@ -65,8 +63,6 @@ learner = Learner(nlp)
 omniscient = Omniscient(nlp)
 dc = DeepConversation()
 coref = NeuralCoref()
-note_taker = NoteTaker()
-reminder = Reminder()
 e = Event()
 
 user_answering = {
@@ -178,7 +174,6 @@ class VirtualAssistant():
             home = expanduser("~")
             self.config_file = TinyDB(home + '/.dragonfire_config.json')
 
-        thread.start_new_thread(reminder.remind, (note_taker, userin, user_prefix, user_answering))
 
     def command(self, com):
         """Function that serves as the entry point for each one of the user commands.
@@ -569,12 +564,6 @@ class VirtualAssistant():
                         tab_url = "http://google.com/?#q=" + search_query + "&tbm=isch"
                         return userin.execute(["sensible-browser", tab_url], search_query, True)
 
-        response = note_taker.check_setnote(com, doc, h, user_answering, userin, user_prefix)
-        if response:
-            return response
-        response = note_taker.check_getnote(com, doc, h, user_answering, userin, user_prefix)
-        if response:
-            return response
 
         original_com = com
         com = coref.resolve(com)
