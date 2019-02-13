@@ -37,6 +37,7 @@ from dragonfire.deepconv import DeepConversation  # Submodule of Dragonfire to a
 from dragonfire.coref import NeuralCoref  # Submodule of Dragonfire that aims to create corefference based dialogs
 from dragonfire.config import Config  # Submodule of Dragonfire to store configurations
 from dragonfire.database import Base  # Submodule of Dragonfire module that contains the database schema
+from dragonfire.close_process import close
 
 import spacy  # Industrial-strength Natural Language Processing in Python
 import pyowm  # A Python wrapper around the OpenWeatherMap API
@@ -337,6 +338,9 @@ class VirtualAssistant():
                 userin.execute(["konsole"], "Terminal")  # KDE neon
                 userin.execute(["gnome-terminal"], "Terminal")  # elementary OS & Ubuntu
                 return userin.say("console")
+        response = close(h, userin)
+        if response:
+            return response
         if h.check_lemma("be") and h.check_lemma("-PRON-") and (h.check_lemma("lady") or h.check_lemma("woman") or h.check_lemma("girl")):
             config_file.update({'gender': 'female'}, Query().datatype == 'gender')
             config_file.remove(Query().datatype == 'callme')
