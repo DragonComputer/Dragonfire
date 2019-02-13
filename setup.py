@@ -144,7 +144,8 @@ setup(
         'pyjwt==1.6.4',
         'SQLAlchemy==1.2.10',
         'PyMySQL==0.8.1',
-        'msgpack==0.5.6'
+        'msgpack==0.5.6',
+        'psutil'
     ],
 
     # List additional groups of dependencies here (e.g. development
