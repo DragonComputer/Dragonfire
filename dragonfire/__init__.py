@@ -55,7 +55,7 @@ __version__ = '1.0.0'
 
 DRAGONFIRE_PATH = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 FNULL = open(os.devnull, 'w')
-GENDER_PREFIX = {'male': 'Sir', 'female': 'My Lady'}
+GENDER_PREFIX = {'male': 'sir', 'female': 'my lady'}
 CONVERSATION_ID = uuid.uuid4()
 userin = None
 nlp = spacy.load('en')  # Load en_core_web_sm, English, 50 MB, default model
@@ -297,9 +297,6 @@ class VirtualAssistant():
             if h.check_text("inkscape") or (h.check_noun_lemma("vector") and h.check_noun_lemma("graphic")) or (h.check_text("vectorial") and h.check_text("drawing")):
                 userin.execute(["inkscape"], "Inkscape")
                 return userin.say("Opening the vectorial drawing software.")
-            if h.check_noun_lemma("office") and h.check_noun_lemma("suite"):
-                userin.execute(["libreoffice"], "LibreOffice")
-                return userin.say("Opening LibreOffice")
             if h.check_text("kdenlive") or (h.check_noun_lemma("video") and h.check_noun_lemma("editor")):
                 userin.execute(["kdenlive"], "Kdenlive")
                 return userin.say("Opening the video editor software.")
@@ -309,7 +306,7 @@ class VirtualAssistant():
             if h.check_text("steam"):
                 userin.execute(["steam"], "Steam")
                 return userin.say("Opening Steam Game Store")
-            if h.check_text("files") or (h.check_noun_lemma("file") and h.check_noun_lemma("manager")):
+            if h.check_text("files"):
                 userin.execute(["dolphin"], "File Manager")  # KDE neon
                 userin.execute(["pantheon-files"], "File Manager")  # elementary OS
                 userin.execute(["nautilus", "--browser"], "File Manager")  # Ubuntu
@@ -329,14 +326,23 @@ class VirtualAssistant():
                 userin.execute(["pantheon-calculator"], "Calculator")  # elementary OS
                 userin.execute(["gnome-calculator"], "Calculator")  # Ubuntu
                 return userin.say("Calculator")
-            if h.check_noun_lemma("software") and h.check_text("center"):
-                userin.execute(["plasma-discover"], "Software Center")  # KDE neon
-                userin.execute(["software-center"], "Software Center")  # elementary OS & Ubuntu
-                return userin.say("Software Center")
-            if h.check_noun_lemma("console"):                                                                 #for openin terminal.
+            if h.check_noun_lemma("console") or h.check_noun_lemma("terminal"):
                 userin.execute(["konsole"], "Terminal")  # KDE neon
                 userin.execute(["gnome-terminal"], "Terminal")  # elementary OS & Ubuntu
-                return userin.say("console")
+                userin.execute(["guake"], "Terminal")  # Guake
+                return userin.say("Terminal")
+        if h.check_noun_lemma("file") and (h.check_noun_lemma("manager") or h.check_noun_lemma("explorer")):
+            userin.execute(["dolphin"], "File Manager")  # KDE neon
+            userin.execute(["pantheon-files"], "File Manager")  # elementary OS
+            userin.execute(["nautilus", "--browser"], "File Manager")  # Ubuntu
+            return userin.say("File Manager")
+        if h.check_noun_lemma("software") and h.check_text("center"):
+            userin.execute(["plasma-discover"], "Software Center")  # KDE neon
+            userin.execute(["software-center"], "Software Center")  # elementary OS & Ubuntu
+            return userin.say("Software Center")
+        if h.check_noun_lemma("office") and h.check_noun_lemma("suite"):
+            userin.execute(["libreoffice"], "LibreOffice")
+            return userin.say("Opening LibreOffice")
         if h.check_lemma("be") and h.check_lemma("-PRON-") and (h.check_lemma("lady") or h.check_lemma("woman") or h.check_lemma("girl")):
             config_file.update({'gender': 'female'}, Query().datatype == 'gender')
             config_file.remove(Query().datatype == 'callme')
@@ -384,7 +390,7 @@ class VirtualAssistant():
                     userin.execute([" "], msg)
                     return userin.say(msg)
         if h.check_wh_lemma("what") and h.check_noun_lemma("time") and h.check_verb_lemma("be") and h.check_text("it"):
-            return userin.say(datetime.datetime.now().strftime("%H:%M") + choice([", " + user_prefix + ".", "."]))
+            return userin.say("It's " + datetime.datetime.now().strftime("%I:%M %p") + choice([", " + user_prefix + ".", "."]))
         if (h.check_nth_lemma(0, "keyboard") or h.check_nth_lemma(0, "type")) and not args["server"]:
             n = len(doc[0].text) + 1
             with nostdout():
