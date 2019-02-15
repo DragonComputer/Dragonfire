@@ -26,6 +26,7 @@ from multiprocessing import Event, Process  # Process-based “threading” inte
 from os.path import expanduser  # Common pathname manipulations
 from random import choice  # Generate pseudo-random numbers
 import shutil  # High-level file operations
+import readline  # GNU readline interface
 
 from dragonfire.learn import Learner  # Submodule of Dragonfire that forms her learning ability
 from dragonfire.nlplib import Classifier, Helper  # Submodule of Dragonfire to handle extra NLP tasks
