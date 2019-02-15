@@ -11,6 +11,7 @@
 
 import inspect  # Inspect live objects
 import os  # Miscellaneous operating system interfaces
+import psutil
 import subprocess  # Subprocess managements
 import time  # Time access and conversions
 from multiprocessing import Pool  # Process-based “threading” interface
@@ -62,11 +63,11 @@ class TextToAction:
         if not self.headless:
             realhud.load_gif(DRAGONFIRE_PATH + "/realhud/animation/avatar.gif")
 
-    def execute(self, cmd="", msg="", speak=False, duration=0):
+    def execute(self, cmds, msg="", speak=False, duration=0, is_kill=False, user_answering={}):
         """Method to execute the given bash command and display a desktop environment independent notification.
 
         Keyword Args:
-            cmd (str):          Bash command.
+            cmds (str):          Bash commands.
             msg (str):          Message to be displayed.
             speak (bool):       Also call the :func:`dragonfire.utilities.TextToAction.say` method with this message?
             duration (int):     Wait n seconds before executing the bash command.
@@ -82,16 +83,50 @@ class TextToAction:
         if self.server or not self.testing:
             if self.speak:
                 self.say(msg)
-            try:
-                subprocess.Popen(["notify-send", "Dragonfire", msg])
-            except BaseException:
-                pass
-            if cmd != "":
-                time.sleep(duration)
+            if not is_kill:
                 try:
-                    subprocess.Popen(cmd, stdout=FNULL, stderr=FNULL)
+                    is_exist = False
+                    if cmds[0][0] != "":
+                        time.sleep(duration)
+                        for cmd in cmds:
+                            if not subprocess.call("type " + cmd[0], shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE):  # if given process exist, this function will return 0.
+                                subprocess.Popen(cmd, stdout=FNULL, stderr=FNULL)
+                                is_exist = True
                 except BaseException:
                     pass
+                if is_exist:
+                    pass
+                else:
+                    options = ""
+                    for cmd in cmds:
+                        options += cmd[0] + "\n"  # options are possible intallation programs.
+                    user_answering['options'] = options
+                    user_answering['status'] = True
+                    user_answering['for'] = 'execute'
+                    user_answering['reason'] = 'install'
+                    msg += " not found! Do you want to install?"
+                subprocess.Popen(["notify-send", "Dragonfire", msg])
+            else:
+                was_there_open = False
+                for cmd in cmds:
+                    for p in psutil.process_iter(attrs=['pid', 'name']):
+                        try:
+                            if cmd[0] in p.info['name']:
+                                replaced = p.info['name'].replace(cmd[0], "")  # Control point for similar named processes
+                                if replaced == "":
+                                    process = psutil.Process(p.info['pid'])
+                                    for proc in process.children(recursive=True):
+                                        proc.kill()
+                                    process.kill()
+                                    was_there_open = True
+                                    # subprocess.Popen(["kill", "-9", str(p.info['pid'])])
+                        except psutil.NoSuchProcess:
+                            pass
+                if was_there_open:
+                    msg += " closed"
+                else:
+                    msg += " is not open!"
+                subprocess.Popen(["notify-send", "Dragonfire", msg])  # triggered individually for each browser
         return msg
 
     def say(self, msg, dynamic=False, end=False, cmd=None):
