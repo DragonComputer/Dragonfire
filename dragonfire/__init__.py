@@ -340,12 +340,14 @@ class VirtualAssistant():
         if h.check_lemma("be") and h.check_lemma("-PRON-") and (h.check_lemma("lady") or h.check_lemma("woman") or h.check_lemma("girl")):
             config_file.update({'gender': 'female'}, Query().datatype == 'gender')
             config_file.remove(Query().datatype == 'callme')
-            user_prefix = "my lady"
+            self.user_prefix = GENDER_PREFIX['female']
+            user_prefix = self.user_prefix
             return userin.say("Pardon, " + user_prefix + ".")
         if h.check_lemma("be") and h.check_lemma("-PRON-") and (h.check_lemma("sir") or h.check_lemma("man") or h.check_lemma("boy")):
             config_file.update({'gender': 'male'}, Query().datatype == 'gender')
             config_file.remove(Query().datatype == 'callme')
-            user_prefix = "sir"
+            self.user_prefix = GENDER_PREFIX['male']
+            user_prefix = self.user_prefix
             return userin.say("Pardon, " + user_prefix + ".")
         if h.check_lemma("call") and h.check_lemma("-PRON-"):
             title = ""
@@ -359,7 +361,8 @@ class VirtualAssistant():
                     config_file.update({'title': title}, Query().datatype == 'callme')
                 else:
                     config_file.insert({'datatype': 'callme', 'title': title})
-            user_prefix = title
+            self.user_prefix = title
+            user_prefix = self.user_prefix
             return userin.say("OK, " + user_prefix + ".")
         if h.is_wh_question() and h.check_lemma("temperature"):
             city = ""
