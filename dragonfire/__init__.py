@@ -218,9 +218,11 @@ class VirtualAssistant():
         if args["verbose"]:
             userin.pretty_print_nlp_parsing_results(doc)
 
+        # Input: DRAGONFIRE | WAKE UP | HEY
         if self.inactive and not (h.directly_equal(["dragonfire", "hey"]) or (h.check_verb_lemma("wake") and h.check_nth_lemma(-1, "up")) or (h.check_nth_lemma(0, "dragon") and h.check_nth_lemma(1, "fire") and h.max_word_count(2))):
             return ""
 
+        # User is answering to Dragonfire
         if user_answering['status']:
             if com.startswith("FIRST") or com.startswith("THE FIRST") or com.startswith("SECOND") or com.startswith("THE SECOND") or com.startswith("THIRD") or com.startswith("THE THIRD"):
                 user_answering['status'] = False
@@ -251,6 +253,7 @@ class VirtualAssistant():
                         except Exception:
                             return False
 
+        # Input: DRAGONFIRE | WAKE UP | HEY
         if h.directly_equal(["dragonfire", "hey"]) or (h.check_verb_lemma("wake") and h.check_nth_lemma(-1, "up")) or (h.check_nth_lemma(0, "dragon") and h.check_nth_lemma(1, "fire") and h.max_word_count(2)):
             self.inactive = False
             return userin.say(choice([
@@ -260,22 +263,29 @@ class VirtualAssistant():
                 "Ready for the orders!",
                 user_prefix.capitalize() + ", tell me your wish."
             ]))
+        # Input: GO TO SLEEP
         if (h.check_verb_lemma("go") and h.check_noun_lemma("sleep")) or (h.check_verb_lemma("stop") and h.check_verb_lemma("listen")):
             self.inactive = True
             userin.execute(["echo"], "Dragonfire deactivated. To reactivate say 'Dragonfire!' or 'Wake Up!'")
             return userin.say("I'm going to sleep")
+        # Input: ENOUGH | SHUT UP
         if h.directly_equal(["enough"]) or (h.check_verb_lemma("shut") and h.check_nth_lemma(-1, "up")):
             tts_kill()
             msg = "Dragonfire quiets."
             print(msg)
             return msg
+        # Input: WHAT IS YOUR NAME
         if h.check_wh_lemma("what") and h.check_deps_contains("your name"):
             return userin.execute([" "], "My name is Dragonfire.", True)
+        # Input: WHAT IS YOUR GENDER
         if h.check_wh_lemma("what") and h.check_deps_contains("your gender"):
             return userin.say("I have a female voice but I don't have a gender identity. I'm a computer program, " + user_prefix + ".")
+        # Input: WHO AM I | SAY MY NAME
         if (h.check_wh_lemma("who") and h.check_text("I")) or (h.check_verb_lemma("say") and h.check_text("my") and h.check_lemma("name")):
             userin.execute([" "], user_full_name)
             return userin.say("Your name is " + user_full_name + ", " + user_prefix + ".")
+
+        # Input: OPEN [CAMERA, CALENDAR, CALCULATOR, STEAM, BLENDER, WRITER, MATH, IMPRESS, DRAW, TERMINAL]
         if h.check_verb_lemma("open") or h.check_adj_lemma("open") or h.check_verb_lemma("run") or h.check_verb_lemma("start") or h.check_verb_lemma("show"):
             if h.check_text("blender"):
                 userin.execute(["blender"], "Blender")
@@ -292,15 +302,6 @@ class VirtualAssistant():
             if h.check_text("writer"):
                 userin.execute(["libreoffice", "--writer"], "LibreOffice Writer")
                 return userin.say("Opening LibreOffice Writer")
-            if h.check_text("gimp") or (h.check_noun_lemma("photo") and (h.check_noun_lemma("editor") or h.check_noun_lemma("shop"))):
-                userin.execute(["gimp"], "GIMP")
-                return userin.say("Opening the photo editor software.")
-            if h.check_text("inkscape") or (h.check_noun_lemma("vector") and h.check_noun_lemma("graphic")) or (h.check_text("vectorial") and h.check_text("drawing")):
-                userin.execute(["inkscape"], "Inkscape")
-                return userin.say("Opening the vectorial drawing software.")
-            if h.check_text("kdenlive") or (h.check_noun_lemma("video") and h.check_noun_lemma("editor")):
-                userin.execute(["kdenlive"], "Kdenlive")
-                return userin.say("Opening the video editor software.")
             if h.check_noun_lemma("browser") or h.check_text("chrome") or h.check_text("firefox"):
                 userin.execute(["sensible-browser"], "Web Browser")
                 return userin.say("Web browser")
@@ -332,30 +333,49 @@ class VirtualAssistant():
                 userin.execute(["gnome-terminal"], "Terminal")  # elementary OS & Ubuntu
                 userin.execute(["guake"], "Terminal")  # Guake
                 return userin.say("Terminal")
+        # Input FILE MANAGER | FILE EXPLORER
         if h.check_noun_lemma("file") and (h.check_noun_lemma("manager") or h.check_noun_lemma("explorer")):
             userin.execute(["dolphin"], "File Manager")  # KDE neon
             userin.execute(["pantheon-files"], "File Manager")  # elementary OS
             userin.execute(["nautilus", "--browser"], "File Manager")  # Ubuntu
             return userin.say("File Manager")
+        # Input: SOFTWARE CENTER
         if h.check_noun_lemma("software") and h.check_text("center"):
             userin.execute(["plasma-discover"], "Software Center")  # KDE neon
             userin.execute(["software-center"], "Software Center")  # elementary OS & Ubuntu
             return userin.say("Software Center")
+        # Input: OFFICE SUITE
         if h.check_noun_lemma("office") and h.check_noun_lemma("suite"):
             userin.execute(["libreoffice"], "LibreOffice")
             return userin.say("Opening LibreOffice")
+        # Input: GIMP | PHOTOSHOP | PHOTO EDITOR
+        if h.check_text("gimp") or (h.check_noun_lemma("photo") and (h.check_noun_lemma("editor") or h.check_noun_lemma("shop"))):
+            userin.execute(["gimp"], "GIMP")
+            return userin.say("Opening the photo editor software.")
+        # Input: INKSCAPE | VECTOR GRAPHICS
+        if h.check_text("inkscape") or (h.check_noun_lemma("vector") and h.check_noun_lemma("graphic")) or (h.check_text("vectorial") and h.check_text("drawing")):
+            userin.execute(["inkscape"], "Inkscape")
+            return userin.say("Opening the vectorial drawing software.")
+        # Input: Kdenlive | VIDEO EDITOR
+        if h.check_text("kdenlive") or (h.check_noun_lemma("video") and h.check_noun_lemma("editor")):
+            userin.execute(["kdenlive"], "Kdenlive")
+            return userin.say("Opening the video editor software.")
+
+        # Input: MY TITLE IS LADY | I'M A LADY | I'M A WOMAN | I'M A GIRL
         if h.check_lemma("be") and h.check_lemma("-PRON-") and (h.check_lemma("lady") or h.check_lemma("woman") or h.check_lemma("girl")):
             config_file.update({'gender': 'female'}, Query().datatype == 'gender')
             config_file.remove(Query().datatype == 'callme')
             self.user_prefix = GENDER_PREFIX['female']
             user_prefix = self.user_prefix
             return userin.say("Pardon, " + user_prefix + ".")
+        # Input: MY TITLE IS SIR | I'M A MAN | I'M A BOY
         if h.check_lemma("be") and h.check_lemma("-PRON-") and (h.check_lemma("sir") or h.check_lemma("man") or h.check_lemma("boy")):
             config_file.update({'gender': 'male'}, Query().datatype == 'gender')
             config_file.remove(Query().datatype == 'callme')
             self.user_prefix = GENDER_PREFIX['male']
             user_prefix = self.user_prefix
             return userin.say("Pardon, " + user_prefix + ".")
+        # Input: CALL ME *
         if h.check_lemma("call") and h.check_lemma("-PRON-"):
             title = ""
             for token in doc:
@@ -371,6 +391,8 @@ class VirtualAssistant():
             self.user_prefix = title
             user_prefix = self.user_prefix
             return userin.say("OK, " + user_prefix + ".")
+
+        # Input: WHAT'S THE TEMPERATURE IN *
         if h.is_wh_question() and h.check_lemma("temperature"):
             city = ""
             for ent in doc.ents:
@@ -390,8 +412,11 @@ class VirtualAssistant():
                     msg = "Sorry, " + user_prefix + " but I couldn't find a city named " + city + " on the internet."
                     userin.execute([" "], msg)
                     return userin.say(msg)
+        # Input: WHAT TIME IS IT
         if h.check_wh_lemma("what") and h.check_noun_lemma("time") and h.check_verb_lemma("be") and h.check_text("it"):
             return userin.say("It's " + datetime.datetime.now().strftime("%I:%M %p") + choice([", " + user_prefix + ".", "."]))
+
+        # Input: KEYBOARD *
         if (h.check_nth_lemma(0, "keyboard") or h.check_nth_lemma(0, "type")) and not args["server"]:
             n = len(doc[0].text) + 1
             with nostdout():
@@ -402,6 +427,7 @@ class VirtualAssistant():
                             k.tap_key(character)
                         k.tap_key(" ")
             return "keyboard"
+        # Input: ENTER | NEW TAB | SWITCH TAB | CLOSE | GO BACK | GO FORWARD
         if (h.directly_equal(["enter"]) or (h.check_adj_lemma("new") and h.check_noun_lemma("line"))) and not args["server"]:
             with nostdout():
                 with nostderr():
@@ -445,6 +471,7 @@ class VirtualAssistant():
                     if not self.testing:
                         k.press_keys([k.alt_l_key, k.right_key])
             return "forward"
+        # Input: SCROLL LEFT | SCROLL RIGHT | SCROLL UP | SCROLL DOWN
         if (h.check_text("swipe") or h.check_text("scroll")) and not args["server"]:
             if h.check_text("left"):
                 with nostdout():
@@ -474,6 +501,7 @@ class VirtualAssistant():
                         if not self.testing:
                             m.scroll(-5, 0)
                 return "swipe down"
+        # Input: PLAY | PAUSE | SPACEBAR
         if h.directly_equal(["PLAY", "PAUSE", "SPACEBAR"]) and not args["server"]:
             with nostdout():
                 with nostderr():
@@ -481,14 +509,19 @@ class VirtualAssistant():
                     if not self.testing:
                         k.tap_key(" ")
             return "play"
+
+        # Input: SHUT DOWN THE COMPUTER
         if ((h.check_text("shut") and h.check_text("down")) or (h.check_text("power") and h.check_text("off"))) and h.check_text("computer") and not args["server"]:
             return userin.execute(["sudo", "poweroff"], "Shutting down", True, 3)
+        # Input: GOODBYE | BYE BYE | SEE YOU LATER
         if h.check_nth_lemma(0, "goodbye") or h.check_nth_lemma(0, "bye") or (h.check_verb_lemma("see") and h.check_text("you") and h.check_adv_lemma("later")):
             response = userin.say("Goodbye, " + user_prefix)
             if not args["server"] and not self.testing:
                 # raise KeyboardInterrupt
                 thread.interrupt_main()
             return response
+
+        # Input: (SEARCH|FIND) * (IN|ON|AT|USING) WIKIPEDIA
         if (h.check_lemma("search") or h.check_lemma("find")) and h.check_lemma("wikipedia"):
             with nostderr():
                 search_query = ""
@@ -525,6 +558,7 @@ class VirtualAssistant():
                         return userin.say(msg)
                     except BaseException:
                         pass
+        # Input: (SEARCH|FIND) * (IN|ON|AT|USING) YOUTUBE
         if (h.check_lemma("search") or h.check_lemma("find")) and h.check_lemma("youtube"):
             with nostdout():
                 with nostderr():
@@ -553,6 +587,7 @@ class VirtualAssistant():
                             k.tap_key(k.tab_key)
                             k.tap_key('f')
                         return response
+        # Input: (SEARCH|FIND) * (IN|ON|AT|USING) (GOOGLE|WEB)
         if (h.check_lemma("search") or h.check_lemma("find")) and (h.check_lemma("google") or h.check_lemma("web") or h.check_lemma("internet")) and not h.check_lemma("image"):
             with nostdout():
                 with nostderr():
@@ -564,6 +599,7 @@ class VirtualAssistant():
                     if search_query:
                         tab_url = "http://google.com/?#q=" + search_query
                         return userin.execute(["sensible-browser", tab_url], search_query, True)
+        # Input: (SEARCH IMAGES OF|FIND IMAGES OF|SEARCH|FIND) * (IN|ON|AT|USING) (GOOGLE|WEB|GOOGLE IMAGES|WEB IMAGES)
         if (h.check_lemma("search") or h.check_lemma("find")) and (h.check_lemma("google") or h.check_lemma("web") or h.check_lemma("internet")) and h.check_lemma("image"):
             with nostdout():
                 with nostderr():

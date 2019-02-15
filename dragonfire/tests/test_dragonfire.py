@@ -70,7 +70,7 @@ def virtual_assistant():
     ("open calendar", "Calendar"),
     ("open calculator", "Calculator"),
     ("open software center", "Software Center"),
-    ("open console", "console"),
+    ("open console", "Terminal"),
     ("I'm a girl", "Pardon, my lady."),
     ("call me master", "OK, master."),
     ("I'm a boy", "Pardon, sir."),
