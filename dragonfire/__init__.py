@@ -379,7 +379,7 @@ class VirtualAssistant():
                 gnome-terminal:        For elementary OS & Ubuntu
                 """
                 cmds = [["konsole"], ["gnome-terminal"]]
-                return userin.say(userin.execute(cmds, "Console", False, 0, is_kill, user_answering))
+                return userin.say(userin.execute(cmds, "Terminal", False, 0, is_kill, user_answering))
             if h.check_text("blender"):
                 """
                 blender:                 For All
