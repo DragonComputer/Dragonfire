@@ -91,7 +91,8 @@ class Omniscient():
                 except requests.exceptions.ConnectionError:  # if there is a connection error
                     result = "Sorry, " + user_prefix + ". But I'm unable to connect to Wikipedia servers."
                     if not is_server:
-                        userin.execute([" "], "Wikipedia connection error.")
+                        cmds = [{'distro': 'All', 'name': [" "]}]
+                        userin.execute(cmds, "Wikipedia connection error.")
                         if not tts_output: print(result)
                         if tts_output: userin.say(result)
                     return result
@@ -113,7 +114,8 @@ class Omniscient():
                     except requests.exceptions.ConnectionError:  # if there is a connection error
                         result = "Sorry, " + user_prefix + ". But I'm unable to connect to Wikipedia servers."
                         if not is_server:
-                            userin.execute([" "], "Wikipedia connection error.")
+                            cmds = [{'distro': 'All', 'name': [" "]}]
+                            userin.execute(cmds, "Wikipedia connection error.")
                             if not tts_output: print(result)
                             if tts_output: userin.say(result)
                         return result
@@ -251,7 +253,8 @@ class Omniscient():
                     except WordNetError:
                         if not is_server:
                             message = "Sorry, " + user_prefix + ". But I'm unable to understand the word '" + word + "'."
-                            userin.execute([" "], "NLP(WordNet) error. Unrecognized word: " + word)
+                            cmds = [{'distro': 'All', 'name': [" "]}]
+                            userin.execute(cmds, "NLP(WordNet) error. Unrecognized word: " + word)
                             if not tts_output: print(message)
                             if tts_output: userin.say(message)
                             return False
