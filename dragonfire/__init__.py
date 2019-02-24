@@ -263,7 +263,7 @@ class VirtualAssistant():
             if user_answering['reason'] == 'install':
                 user_answering['status'] = False
                 if h.check_text("yes") or (h.check_text("do") and h.check_text("it")) or h.check_text("yep") or h.check_text("okay"):
-                    cmds = [{'distro': 'KDE neon', 'name': ["konsole", "--command=gksudo apt-get install " + user_answering['options'][0]]}, {'distro': 'Linux Mint', 'name': ["gnome-terminal", "--command=gksudo apt-get install " + user_answering['options'][0]]},  {'distro': 'Ubuntu', 'name': ["gnome-terminal", "--command=gksudo apt-get install " + user_answering['options'][0]]}, {'distro': 'elementary OS', 'name': ["gnome-terminal", "--command=gksudo apt-get install " + user_answering['options'][0]]}]
+                    cmds = [{'distro': 'All', 'name': ["gksudo", "apt-get install " + user_answering['options'][0]]}]
                     userin.say("Installing " + user_answering['options'][1] + "...")
                     return userin.execute(cmds, "install**" + user_answering['options'][1])
                 else:

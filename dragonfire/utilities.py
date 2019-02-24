@@ -90,6 +90,7 @@ class TextToAction:
                 try:
                     if cmds[0] != "":
                         time.sleep(duration)
+                        # DETERMINE THE DISTRO
                         if cmds[0]['distro'] == 'All':
                             name = cmds[0]['name']
                         else:
@@ -101,24 +102,29 @@ class TextToAction:
                                 if cmd['distro'] == 'Ubuntu':
                                     name = cmd['name']
                             # msg = "Your system's distro is not support this program."
+                        # CHECK THE PROCCES IS EXIST
                         if not subprocess.call("type " + name[0], shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE):  # if given process exist, this function will return 0.
-                            if "install**" in msg:  # for the non-existing program's installation flag
+                            # for the non-existing program's installation flag
+                            if "install**" in msg:
                                 msg = msg.replace("install**", "")
-                                program_name = name[1].replace("--command=gksudo apt-get install ", "")
-                                subprocess.Popen(name, stdout=FNULL, stderr=FNULL)
-                                is_exist_counter = 0
+                                program_name = name[1].replace("apt-get install ", "")
+                                # proc = subprocess.Popen(name, stdout=FNULL, stderr=FNULL)
+                                proc = psutil.Process(subprocess.Popen(name, stdout=FNULL, stderr=FNULL).pid)
                                 while True:
                                     if not subprocess.call("type " + program_name, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE):
                                         time.sleep(0.5)  # For possible asynchronous delays.
                                         self.say(msg + " has been installed.")
                                         cmds = [{'distro': 'All', 'name': [program_name]}]  # For getting the procces name from iterated "self.execute" method.
                                         return self.say(self.execute(cmds, "Opening " + msg))
-                                    is_exist_counter += 1
-                                    if is_exist_counter > 60:  # If the user did not enter the password end of the one minute, checking terminate.
+                                    if proc.is_running() and proc.status() != psutil.STATUS_ZOMBIE:  # If the user wants cancel the installation, checking terminate.
+                                        pass
+                                    else:
+                                        self.say("Installation Cancelled!")
                                         return msg
-                                    time.sleep(1)
+                                    # time.sleep(0.5)
                             subprocess.Popen(name, stdout=FNULL, stderr=FNULL)
                             is_exist = True
+                        # PREPARE THE STATEMENTS FOR INSTALLING THE NON-EXISTING PROGRAMS
                         if is_exist:
                             pass
                         else:
