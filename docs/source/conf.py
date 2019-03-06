@@ -25,13 +25,13 @@ sys.path.insert(0, os.path.abspath('../..'))
 # -- Project information -----------------------------------------------------
 
 project = 'Dragonfire'
-copyright = '2018, Mehmet Mert Yıldıran'
+copyright = '2019, Mehmet Mert Yıldıran'
 author = 'Mehmet Mert Yıldıran'
 
 # The short X.Y version
-version = '1.0.0'
+version = '1.0.2'
 # The full version, including alpha/beta/rc tags
-release = '1.0.0'
+release = '1.0.2'
 
 
 # -- General configuration ---------------------------------------------------

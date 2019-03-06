@@ -1,3 +1,15 @@
+dragonfire (1.0.2) unstable; urgency=medium
+
+  * libgtk2.0-0 and gir1.2-gtk-3.0 dependencies are added
+  * The issue related to inactive lock in the speech recognizers is fixed
+  * deepspeech Python package dependency is upgraded from 0.2.0a5 to 0.4.1
+  * The DeepSpeech the model from 0.1.1 to 0.4.1
+  * Time telling feature(a built-in command) is added
+  * Several issues in built-in commands are fixed
+  * Release version mismatch is fixed
+
+ -- Mehmet Mert Yildiran <mehmetmertyildiran@gmail.com>  Wed, 6 Mar 2019 04:27:54 +0300
+
 dragonfire (1.0.1) unstable; urgency=medium
 
   * Dependency issues are fixed
