@@ -132,9 +132,6 @@ setup(
         'requests>=2.20.0',
         'nltk==3.1',
         'httplib2>=0.9.1',
-        'imutils',
-        'pyqtgraph',
-        'PeakUtils',
         'tweepy==3.6.0',
         'metadata_parser==0.9.20',
         'hug==2.4.0',
@@ -153,6 +150,8 @@ setup(
     # $ pip install -e .[dev,test]
     extras_require={
         'optionals': [
+            'pyqtgraph',
+            'PeakUtils',
             'flake8',
             'sphinx',
             'sphinx_rtd_theme',
