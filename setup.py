@@ -130,7 +130,7 @@ setup(
         'tensorflow==1.0.0',
         'deepspeech==0.4.1',
         'requests>=2.20.0',
-        'nltk==3.1',
+        'nltk',
         'httplib2>=0.9.1',
         'tweepy==3.6.0',
         'metadata_parser==0.9.20',
