@@ -27,7 +27,7 @@ Dragonfire goes through these steps for each one of your commands, respectively:
 
 Dragonfire uses [Mozilla DeepSpeech](https://github.com/mozilla/DeepSpeech) to understand your voice commands and [Festival Speech Synthesis System](http://www.cstr.ed.ac.uk/projects/festival/) to handle text-to-speech tasks.
 
-Feel free to join [our Gitter chat room](https://gitter.im/DragonComputer/Lobby). Also you can directly talk with Dragonfire's herself via [her Twitter account](https://twitter.com/DragonfireAI).
+Feel free to join [our Gitter chat room](https://gitter.im/DragonComputer/Lobby). You can also directly talk with Dragonfire herself via [her Twitter account](https://twitter.com/DragonfireAI).
 
 #### Supported Environments
 
@@ -43,17 +43,29 @@ Feel free to join [our Gitter chat room](https://gitter.im/DragonComputer/Lobby)
 
 ### Installation
 
-Download the [latest release](https://github.com/DragonComputer/Dragonfire/releases/latest) (the `.deb` file) and:
+To run Dragonfire on a desktop Debian or Ubuntu system, either download the [latest release](https://github.com/DragonComputer/Dragonfire/releases/latest) (the `.deb` file) and install as follows:
 
 ```Shell
 sudo dpkg -i dragonfire_1.0.2_amd64.deb
 ```
 
-or with Docker: `docker pull dragoncomputer/dragonfire`
 
-or simply: `sudo ./install.sh`
+or clone the GitHub repository and run
 
-<sup><i>To install the dependencies run `sudo apt-get -f install` right after the `dpkg -i` command. The installation will automatically download the pre-trained English model of Mozilla DeepSpeech (1.31 GB download size) and will place it under `/usr/share/dragonfire/deepspeech/models` directory. You can manually [download the model](https://github.com/mozilla/DeepSpeech/releases/download/v0.4.1/deepspeech-0.4.1-models.tar.gz) if you want.</i></sup>
+```Shell
+sudo ./install.sh
+```
+
+in the repository directory.
+
+<sup><i>To install the dependencies, run `sudo apt-get -f install` right after the `dpkg -i` command. The installation will automatically download the pre-trained English model of Mozilla DeepSpeech (1.31 GB download size) and will place it under `/usr/share/dragonfire/deepspeech/models` directory. You can manually [download the model](https://github.com/mozilla/DeepSpeech/releases/download/v0.4.1/deepspeech-0.4.1-models.tar.gz) if you wish.</i></sup>
+
+If you want to run Dragonfire on a server, you should install the Docker image (which does not install the huge
+DeepSpeech model required for speech recognition):
+
+```Shell
+docker pull dragoncomputer/dragonfire
+```
 
 ### Usage <a href="https://dragonfire.readthedocs.io/en/latest/dragonfire.html#module-dragonfire.api"><img src="https://media.readthedocs.com/corporate/img/header-logo.png" align="right" height="25px" /></a>
 
