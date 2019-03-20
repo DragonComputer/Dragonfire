@@ -132,7 +132,7 @@ setup(
         'requests>=2.20.0',
         'nltk',
         'httplib2>=0.9.1',
-        'tweepy==3.6.0',
+        'tweepy==3.7.0',
         'metadata_parser==0.9.20',
         'hug==2.4.0',
         'hug-middleware-cors==1.0.0',

@@ -112,7 +112,7 @@ def start(args, userin):
             print("Listening Twitter mentions...")
             l = MentionListener(args, userin)
             stream = Stream(auth, l)
-            stream.filter(track=['DragonfireAI'], async=True)
+            stream.filter(track=['DragonfireAI'], is_async=True)
         API.Run(nlp, learner, omniscient, dc, coref, userin, args["server"], args["port"], db_session)
     else:
         global user_full_name
