@@ -1,5 +1,4 @@
 dist: xenial
-sudo: required
 language: python
 virtualenv:
     system_site_packages: true
