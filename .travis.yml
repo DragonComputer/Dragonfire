@@ -1,14 +1,10 @@
 dist: xenial
-sudo: required
 language: python
 virtualenv:
     system_site_packages: true
 services:
     - mysql
-addons:
-    apt:
-        packages:
-            - xvfb
+    - xvfb
 cache:
     directories:
         - /usr/share/dragonfire
@@ -17,8 +13,6 @@ before_install:
 install:
     - sudo ./install-dev.sh --no-model
     - sudo pip3 install pytest-faulthandler
-    - export DISPLAY=':99.0'
-    - Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
 before_script:
     # stop the build if there are Python syntax errors or undefined names
     - flake8 . --count --select=E901,E999,F822,F823 --show-source --statistics
