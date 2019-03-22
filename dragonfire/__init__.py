@@ -52,7 +52,7 @@ from sqlalchemy import create_engine  # the Python SQL toolkit and Object Relati
 from sqlalchemy.orm import sessionmaker  # ORM submodule of SQLAlchemy
 
 
-__version__ = '1.0.0'
+__version__ = '1.0.2'
 
 DRAGONFIRE_PATH = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 FNULL = open(os.devnull, 'w')
@@ -112,7 +112,7 @@ def start(args, userin):
             print("Listening Twitter mentions...")
             l = MentionListener(args, userin)
             stream = Stream(auth, l)
-            stream.filter(track=['DragonfireAI'], async=True)
+            stream.filter(track=['DragonfireAI'], is_async=True)
         API.Run(nlp, learner, omniscient, dc, coref, userin, args["server"], args["port"], db_session)
     else:
         global user_full_name

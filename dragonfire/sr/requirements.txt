@@ -1,6 +1,5 @@
 PyAudio
 numpy
-imutils
 pyqtgraph
 PeakUtils
 theano
