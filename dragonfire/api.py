@@ -522,6 +522,7 @@ class Run():
             db_session_ref:         SQLAlchemy's :class:`DBSession()` instance.
         """
 
+        global __hug_wsgi__  # Fixes flake8 F821: Undefined name
         global nlp
         global learner
         global omniscient
@@ -550,6 +551,7 @@ class Run():
 
 
 if __name__ == '__main__':
+    global __hug_wsgi__  # Fixes flake8 F821: Undefined name
     app = hug.API(__name__)
     app.http.output_format = hug.output_format.text
     app.http.add_middleware(CORSMiddleware(app))
