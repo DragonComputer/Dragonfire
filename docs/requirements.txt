@@ -13,6 +13,6 @@ metadata_parser==0.9.20
 hug==2.4.0
 hug-middleware-cors==1.0.0
 waitress==1.1.0
-SQLAlchemy==1.2.10
+SQLAlchemy>=1.3.0
 PyMySQL==0.8.1
 m2r

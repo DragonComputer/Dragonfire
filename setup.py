@@ -139,7 +139,7 @@ setup(
         'waitress==1.1.0',
         'SpeechRecognition',
         'pyjwt==1.6.4',
-        'SQLAlchemy==1.2.10',
+        'SQLAlchemy>=1.3.0',
         'PyMySQL==0.8.1',
         'msgpack==0.5.6'
     ],
