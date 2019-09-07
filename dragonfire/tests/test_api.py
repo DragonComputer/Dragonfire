@@ -138,7 +138,7 @@ def test_api_wikipedia(token):
     params = {"query": "Albert Einstein", "gender_prefix": "sir"}
     response = requests.post(url, params=params, headers=headers)
     data = json.loads(response.text)
-    data.response = data.response[:15]
+    data['response'] = data['response'][:15]
     assert data == {'url': 'https://en.wikipedia.org/wiki/Albert_Einstein', 'response': 'Albert Einstein'}
 
 
