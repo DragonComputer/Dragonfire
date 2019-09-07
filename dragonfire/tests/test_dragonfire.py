@@ -93,8 +93,8 @@ def virtual_assistant():
     ("goodbye", "Goodbye, " + user_prefix),
     ("bye", "Goodbye, " + user_prefix),
     ("see you later", "Goodbye, " + user_prefix),
-    ("search Turn Down for What in YouTube", "DJ Snake, Lil Jon - Turn Down for What"),
-    ("find Turn Down for What on YouTube", "DJ Snake, Lil Jon - Turn Down for What"),
+    ("search Turn Down for What in YouTube", "DJ Snake, Lil Jon - Turn Down for What (Official Video)"),
+    ("find Turn Down for What on YouTube", "DJ Snake, Lil Jon - Turn Down for What (Official Video)"),
     ("search Albert Einstein on the internet", "Albert Einstein"),
     ("search the images of Albert Einstein in Google images", "Albert Einstein")
 ])
