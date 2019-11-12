@@ -227,15 +227,3 @@ WHAT TIME IS IT
 ### Contribute
 
 If you want to contribute to Dragonfire then please read [this guide](https://github.com/DragonComputer/Dragonfire/blob/master/CONTRIBUTING.md#contributing-to-dragonfire).
-
-Please consider to support us with buying a coffee:
-
-<a href="https://www.buymeacoffee.com/Dragonfire" target="_blank"><img src="https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png" alt="Buy Me A Coffee" style="height: auto !important;width: auto !important;" ></a>
-
-We have also a collective which you can donate:
-
-<a href="https://opencollective.com/dragonfire/donate" target="_blank">
-  <img src="https://opencollective.com/dragonfire/donate/button@2x.png?color=blue" width=300 />
-</a>
-
-Maybe you may want to become a [backer](https://opencollective.com/dragonfire) or a [sponsor](https://opencollective.com/dragonfire):
