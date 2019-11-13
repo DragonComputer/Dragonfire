@@ -9,8 +9,6 @@ jobs:
 
     steps:
     - uses: actions/checkout@v1
-    - name: Setup MySQL
-      uses: mirromutth/mysql-action@v1
     - name: Install dependencies
       run: |
         sudo ./install-dev.sh --no-model
