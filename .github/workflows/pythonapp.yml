@@ -9,17 +9,15 @@ jobs:
 
     steps:
     - uses: actions/checkout@v1
-    - name: Set up Python 3.7
-      uses: actions/setup-python@v1
-      with:
-        python-version: 3.7
+    - name: Setup MySQL
+      uses: mirromutth/mysql-action@v1
     - name: Install dependencies
       run: |
         sudo ./install-dev.sh --no-model
         sudo pip3 install pytest-faulthandler
     - name: Lint with flake8
       run: |
-        pip install flake8
+        sudo pip3 install flake8
         # stop the build if there are Python syntax errors or undefined names
         flake8 . --count --select=E9,F63,F72,F82 --show-source --statistics
         # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
