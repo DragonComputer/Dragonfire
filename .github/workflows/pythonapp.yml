@@ -13,6 +13,7 @@ jobs:
       run: |
         sudo ./install-dev.sh --no-model
         sudo pip3 install pytest-faulthandler
+        sudo apt install xvfb
     - name: Lint with flake8
       run: |
         sudo pip3 install flake8
@@ -23,4 +24,4 @@ jobs:
     - name: Test with pytest
       run: |
         sudo pip3 install pytest
-        python3 -m pytest --capture=sys --disable-pytest-warnings -vv
+        xvfb-run --auto-servernum python3 -m pytest --capture=sys --disable-pytest-warnings -vv
