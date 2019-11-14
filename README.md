@@ -1,6 +1,6 @@
 # Dragonfire
 
-<img src="https://travis-ci.org/DragonComputer/Dragonfire.svg?branch=master" align="right" />
+<img src="https://github.com/DragonComputer/Dragonfire/workflows/build/badge.svg?branch=master" align="right" />
 
 <img src="https://readthedocs.org/projects/dragonfire/badge/?version=latest" align="right" />
 
