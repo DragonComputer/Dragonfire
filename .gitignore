@@ -189,3 +189,6 @@ nohup.out
 
 # SQLite database file
 dragonfire.db
+
+# Editors and IDEs
+.vscode/
