@@ -11,18 +11,19 @@
 
 import itertools  # Functions creating iterators for efficient looping
 
-import en_coref_sm  # Small English model for NeuralCoref: a pipeline extension for spaCy 2.0
+import neuralcoref  # Fast Coreference Resolution in spaCy with Neural Networks
 
 
 class NeuralCoref():
     """Class to provide corefference based dialogs.
     """
 
-    def __init__(self):
+    def __init__(self, nlp):
         """Initialization method of :class:`dragonfire.coref.NeuralCoref` class.
         """
 
-        self.nlp = en_coref_sm.load()
+        self.nlp = nlp
+        neuralcoref.add_to_pipe(self.nlp)
         self.coms = []
 
     def resolve(self, com):

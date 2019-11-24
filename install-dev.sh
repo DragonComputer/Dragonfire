@@ -54,7 +54,7 @@ if [ ! ${verified::-3} = "$CHECKSUM2" ]; then
   wget -nc -O - https://github.com/DragonComputer/Dragonfire/releases/download/v0.9.9/deepconv-v2.tar.gz | tar xvfz -
 fi
 
-pip3 install --upgrade wikipedia==1.4.0 PyUserInput==0.1.11 tinydb==3.9.0.post1 youtube_dl spacy==2.0.13 pyowm==2.9.0 tensorflow==1.0.0 deepspeech==0.4.1 SpeechRecognition tweepy==3.7.0 metadata_parser==0.9.20 hug==2.4.0 hug-middleware-cors==1.0.0 waitress==1.1.0 requests==2.20.0 pyjwt==1.6.4 SQLAlchemy\>=1.3.0 PyMySQL==0.8.1 msgpack==0.5.6 && \
+pip3 install --upgrade wikipedia==1.4.0 PyUserInput==0.1.11 tinydb==3.9.0.post1 youtube_dl spacy==2.2.3 pyowm==2.9.0 tensorflow==1.14.0 deepspeech==0.4.1 SpeechRecognition tweepy==3.7.0 metadata_parser==0.9.20 hug==2.4.0 hug-middleware-cors==1.0.0 waitress==1.1.0 requests==2.20.0 pyjwt==1.6.4 SQLAlchemy\>=1.3.0 PyMySQL==0.8.1 msgpack==0.5.6 neuralcoref==4.0 && \
 pip3 install --upgrade flake8 sphinx sphinx_rtd_theme recommonmark m2r pytest && \
 python3 -m spacy download en && \
 pip3 install https://github.com/huggingface/neuralcoref-models/releases/download/en_coref_sm-3.0.0/en_coref_sm-3.0.0.tar.gz && \

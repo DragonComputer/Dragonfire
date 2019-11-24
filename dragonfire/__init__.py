@@ -63,7 +63,7 @@ nlp = spacy.load('en')  # Load en_core_web_sm, English, 50 MB, default model
 learner = Learner(nlp)
 omniscient = Omniscient(nlp)
 dc = DeepConversation()
-coref = NeuralCoref()
+coref = NeuralCoref(nlp)
 e = Event()
 
 user_answering = {
