@@ -35,4 +35,4 @@ build-ext-inplace:
 	python3 setup.py build_ext --inplace
 
 clean:
-	sudo rm -rf *.out *.bin *.exe *.o *.a *.so test build
+	sudo rm -rf *.out *.bin *.exe *.o *.a *.so build *.egg-info *.db .pytest_cache
