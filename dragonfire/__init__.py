@@ -181,11 +181,11 @@ class VirtualAssistant():
 
         This function goes through these steps for each one of user's commands, respectively:
 
-         - Search across the built-in commands via a simple if-else control flow.
-         - Try to get a response from :func:`dragonfire.arithmetic.arithmetic_parse` function.
-         - Try to get a response from :func:`dragonfire.learn.Learner.respond` method.
-         - Try to get a answer from :func:`dragonfire.omniscient.Omniscient.respond` method.
-         - Try to get a response from :func:`dragonfire.deepconv.DeepConversation.respond` method.
+        - Search across the built-in commands via a simple if-else control flow.
+        - Try to get a response from :func:`dragonfire.arithmetic.arithmetic_parse` function.
+        - Try to get a response from :func:`dragonfire.learn.Learner.respond` method.
+        - Try to get a answer from :func:`dragonfire.omniscient.Omniscient.respond` method.
+        - Try to get a response from :func:`dragonfire.deepconv.DeepConversation.respond` method.
 
         Args:
             com (str):  User's command.
@@ -522,11 +522,11 @@ class VirtualAssistant():
             return response
 
         # Input: (SEARCH|FIND) * (IN|ON|AT|USING) WIKIPEDIA
-        if (h.check_lemma("search") or h.check_lemma("find")) and h.check_lemma("wikipedia"):
+        if (h.check_lemma("search") or h.check_lemma("find")) and h.check_lemma("Wikipedia"):
             with nostderr():
                 search_query = ""
                 for token in doc:
-                    if not (token.lemma_ == "search" or token.lemma_ == "find" or token.lemma_ == "wikipedia" or token.is_stop):
+                    if not (token.lemma_ == "search" or token.lemma_ == "find" or token.lemma_ == "Wikipedia" or token.is_stop):
                         search_query += ' ' + token.text
                 search_query = search_query.strip()
                 if search_query:
@@ -559,12 +559,12 @@ class VirtualAssistant():
                     except BaseException:
                         pass
         # Input: (SEARCH|FIND) * (IN|ON|AT|USING) YOUTUBE
-        if (h.check_lemma("search") or h.check_lemma("find")) and h.check_lemma("youtube"):
+        if (h.check_lemma("search") or h.check_lemma("find")) and h.check_lemma("YouTube"):
             with nostdout():
                 with nostderr():
                     search_query = ""
                     for token in doc:
-                        if not (token.lemma_ == "search" or token.lemma_ == "find" or token.lemma_ == "youtube" or token.is_stop):
+                        if not (token.lemma_ == "search" or token.lemma_ == "find" or token.lemma_ == "YouTube" or token.is_stop):
                             search_query += ' ' + token.text
                     search_query = search_query.strip()
                     if search_query:
@@ -588,24 +588,24 @@ class VirtualAssistant():
                             k.tap_key('f')
                         return response
         # Input: (SEARCH|FIND) * (IN|ON|AT|USING) (GOOGLE|WEB)
-        if (h.check_lemma("search") or h.check_lemma("find")) and (h.check_lemma("google") or h.check_lemma("web") or h.check_lemma("internet")) and not h.check_lemma("image"):
+        if (h.check_lemma("search") or h.check_lemma("find")) and (h.check_lemma("Google") or h.check_lemma("web") or h.check_lemma("internet")) and not h.check_lemma("image"):
             with nostdout():
                 with nostderr():
                     search_query = ""
                     for token in doc:
-                        if not (token.lemma_ == "search" or token.lemma_ == "find" or token.lemma_ == "google" or token.lemma_ == "web" or token.lemma_ == "internet" or token.is_stop):
+                        if not (token.lemma_ == "search" or token.lemma_ == "find" or token.lemma_ == "Google" or token.lemma_ == "web" or token.lemma_ == "internet" or token.is_stop):
                             search_query += ' ' + token.text
                     search_query = search_query.strip()
                     if search_query:
                         tab_url = "http://google.com/?#q=" + search_query
                         return userin.execute(["sensible-browser", tab_url], search_query, True)
         # Input: (SEARCH IMAGES OF|FIND IMAGES OF|SEARCH|FIND) * (IN|ON|AT|USING) (GOOGLE|WEB|GOOGLE IMAGES|WEB IMAGES)
-        if (h.check_lemma("search") or h.check_lemma("find")) and (h.check_lemma("google") or h.check_lemma("web") or h.check_lemma("internet")) and h.check_lemma("image"):
+        if (h.check_lemma("search") or h.check_lemma("find")) and (h.check_lemma("Google") or h.check_lemma("web") or h.check_lemma("internet")) and h.check_lemma("image"):
             with nostdout():
                 with nostderr():
                     search_query = ""
                     for token in doc:
-                        if not (token.lemma_ == "search" or token.lemma_ == "find" or token.lemma_ == "google" or token.lemma_ == "web" or token.lemma_ == "internet" or token.lemma_ == "image" or token.is_stop):
+                        if not (token.lemma_ == "search" or token.lemma_ == "find" or token.lemma_ == "Google" or token.lemma_ == "web" or token.lemma_ == "internet" or token.lemma_ == "image" or token.is_stop):
                             search_query += ' ' + token.text
                     search_query = search_query.strip()
                     if search_query:

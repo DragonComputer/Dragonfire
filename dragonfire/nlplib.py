@@ -47,12 +47,11 @@ class Classifier():
 
         """
 
-        labeled_names = ([(name, 'male') for name in names.words('male.txt')] +
-                         [(name, 'female')
-                          for name in names.words('female.txt')])
+        labeled_names = (
+            [(name, 'male') for name in names.words('male.txt')]
+            + [(name, 'female') for name in names.words('female.txt')])
         shuffle(labeled_names)
-        featuresets = [(Classifier.gender_features(n), gender)
-                       for (n, gender) in labeled_names]
+        featuresets = [(Classifier.gender_features(n), gender) for (n, gender) in labeled_names]
         train_set = featuresets[500:]
         classifier = nltk.NaiveBayesClassifier.train(train_set)
         return classifier.classify(Classifier.gender_features(word))
@@ -356,8 +355,6 @@ class Helper():
         """
 
         for token in self.doc:
-            if token.is_stop:
-                break
             if token.tag_ in ['WDT', 'WP', 'WP$', 'WRB']:
                 return True
         return False

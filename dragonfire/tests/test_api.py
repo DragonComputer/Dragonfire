@@ -57,7 +57,7 @@ def test_api_tagger_end(token):
     url = API_SERVER + '/tag'
     params = {"text": "He is intelligent"}
     response = requests.post(url, params=params, headers=headers)
-    assert json.loads(response.text) == [{'text': 'He', 'tag': 'PRP', 'is_stop': False, 'lemma': '-PRON-', 'dep': 'nsubj', 'pos': 'PRON', 'shape': 'Xx', 'is_alpha': True}, {'text': 'is', 'tag': 'VBZ', 'is_stop': True, 'lemma': 'be', 'dep': 'ROOT', 'pos': 'VERB', 'shape': 'xx', 'is_alpha': True}, {'text': 'intelligent', 'tag': 'JJ', 'is_stop': False, 'lemma': 'intelligent', 'dep': 'acomp', 'pos': 'ADJ', 'shape': 'xxxx', 'is_alpha': True}]
+    assert json.loads(response.text) == [{'text': 'He', 'lemma': '-PRON-', 'pos': 'PRON', 'tag': 'PRP', 'dep': 'nsubj', 'shape': 'Xx', 'is_alpha': True, 'is_stop': True}, {'text': 'is', 'lemma': 'be', 'pos': 'VERB', 'tag': 'VBZ', 'dep': 'ROOT', 'shape': 'xx', 'is_alpha': True, 'is_stop': True}, {'text': 'intelligent', 'lemma': 'intelligent', 'pos': 'ADJ', 'tag': 'JJ', 'dep': 'acomp', 'shape': 'xxxx', 'is_alpha': True, 'is_stop': False}]
 
 
 def test_api_dependency_parser_end(token):
@@ -97,7 +97,7 @@ def test_api_cmd(token):
     url = API_SERVER + '/cmd'
     params = {"text": "He is intelligent"}
     response = requests.post(url, params=params, headers=headers)
-    assert json.loads(response.text) == [{'tags': [{'text': 'He', 'tag': 'PRP', 'is_stop': False, 'lemma': '-PRON-', 'dep': 'nsubj', 'pos': 'PRON', 'shape': 'Xx', 'is_alpha': True}, {'text': 'is', 'tag': 'VBZ', 'is_stop': True, 'lemma': 'be', 'dep': 'ROOT', 'pos': 'VERB', 'shape': 'xx', 'is_alpha': True}, {'text': 'intelligent', 'tag': 'JJ', 'is_stop': False, 'lemma': 'intelligent', 'dep': 'acomp', 'pos': 'ADJ', 'shape': 'xxxx', 'is_alpha': True}], 'deps': [{'root_head_text': 'is', 'text': 'He', 'root_text': 'He', 'root_dep': 'nsubj'}], 'ners': []}]
+    assert json.loads(response.text) == [{'tags': [{'text': 'He', 'lemma': '-PRON-', 'pos': 'PRON', 'tag': 'PRP', 'dep': 'nsubj', 'shape': 'Xx', 'is_alpha': True, 'is_stop': True}, {'text': 'is', 'lemma': 'be', 'pos': 'VERB', 'tag': 'VBZ', 'dep': 'ROOT', 'shape': 'xx', 'is_alpha': True, 'is_stop': True}, {'text': 'intelligent', 'lemma': 'intelligent', 'pos': 'ADJ', 'tag': 'JJ', 'dep': 'acomp', 'shape': 'xxxx', 'is_alpha': True, 'is_stop': False}], 'deps': [{'text': 'He', 'root_text': 'He', 'root_dep': 'nsubj', 'root_head_text': 'is'}], 'ners': []}]
 
 
 def test_api_math(token):
@@ -129,7 +129,7 @@ def test_api_deep(token):
     url = API_SERVER + '/deep'
     params = {"text": "Do you like to listen music?", "gender_prefix": "sir"}
     response = requests.post(url, params=params, headers=headers)
-    assert json.loads(response.text) == 'Of course.'
+    assert json.loads(response.text) == "No, i'm not sure."
 
 
 def test_api_wikipedia(token):

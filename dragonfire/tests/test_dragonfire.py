@@ -93,8 +93,8 @@ def virtual_assistant():
     ("goodbye", "Goodbye, " + user_prefix),
     ("bye", "Goodbye, " + user_prefix),
     ("see you later", "Goodbye, " + user_prefix),
-    ("search Turn Down for What in YouTube", "DJ Snake, Lil Jon - Turn Down for What (Official Video)"),
-    ("find Turn Down for What on YouTube", "DJ Snake, Lil Jon - Turn Down for What (Official Video)"),
+    ("search Dark Horse in YouTube", "Katy Perry - Dark Horse (Official) ft. Juicy J"),
+    ("find Chained To The Rhythm on YouTube", "Katy Perry - Chained To The Rhythm (Official) ft. Skip Marley"),
     ("search Albert Einstein on the internet", "Albert Einstein"),
     ("search the images of Albert Einstein in Google images", "Albert Einstein")
 ])
@@ -149,9 +149,9 @@ def test_omniscient_response(virtual_assistant):
 def test_deepconv_response(virtual_assistant):
 
     assert virtual_assistant.command("hey") in hey_answers
-    assert virtual_assistant.command("Do you like to listen music?") == "Of course."
-    assert virtual_assistant.command("Are you evil?") == "Yes."
-    assert virtual_assistant.command("You are so sexy") == "How do you know that?"
+    assert virtual_assistant.command("Do you like to listen music?") == "No, i'm not sure."
+    assert virtual_assistant.command("Are you evil?") == "No."
+    assert virtual_assistant.command("You are so sexy") == "I'm not sure."
 
 
 def test_greet(virtual_assistant):
