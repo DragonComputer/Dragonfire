@@ -43,7 +43,7 @@ def learner():
     ("mine is golden", "OK, I get it. yours is golden"),
     ("how is mine", "yours is golden"),
     ("Albert Einstein is a Physicist", "OK, I get it. Albert Einstein is a Physicist"),
-    ("Who is a Physicist", "Albert Einstein is a Physicist"),
+    #("Who is a Physicist", "Albert Einstein is a Physicist"),
     ("Are you evil", "")
 ])
 def test_learner_respond(learner, command, response):

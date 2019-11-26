@@ -125,10 +125,11 @@ def test_helper_check_text(helper):
 
 
 def test_helper_is_wh_question(helper):
-    doc = nlp("When was albert einstein born?")
+    doc = nlp("When was Albert Einstein born?")
     h = Helper(doc)
     assert h.is_wh_question()
-    h = helper
+    doc = nlp("Albert Einstein was born in 1879")
+    h = Helper(doc)
     assert not h.is_wh_question()
 
 
