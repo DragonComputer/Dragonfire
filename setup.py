@@ -125,7 +125,7 @@ setup(
         'PyUserInput==0.1.11',
         'tinydb==3.9.0.post1',
         'youtube_dl',
-        'spacy==2.2.3',
+        'spacy==2.1.3',
         'pyowm==2.9.0',
         'tensorflow==1.14.0',
         'deepspeech==0.4.1',
