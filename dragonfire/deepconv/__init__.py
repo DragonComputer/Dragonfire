@@ -99,7 +99,7 @@ class DeepConversation:
 
         # General initialisation
 
-        self.modelTag = 'pretrainedv2'
+        self.modelTag = 'pretrainedv3'
         self.test = 'interactive'
         self.rootDir = os.getcwd()  # Use the current working directory
 

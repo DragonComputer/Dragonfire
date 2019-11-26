@@ -94,7 +94,7 @@ class TextData:
         """Return the name of the base prefix of the current dataset
         """
         #path = os.path.join(self.args.rootDir, 'data' + os.sep + 'samples' + os.sep)
-        path = dirName = "/usr/share/dragonfire/deepconv/model-pretrainedv2/"
+        path = dirName = "/usr/share/dragonfire/deepconv/model-pretrainedv3/"
         path += 'dataset-{}'.format(self.args.corpus)
         if self.args.datasetTag:
             path += '-' + self.args.datasetTag
