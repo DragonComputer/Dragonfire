@@ -1,8 +1,8 @@
-# Dragonfire
-
 <a href="https://codecov.io/gh/DragonComputer/Dragonfire">
   <img src="https://badgen.net/codecov/c/github/dragoncomputer/dragonfire" align="right" />
 </a>
+
+<img src="https://travis-ci.org/DragonComputer/Dragonfire.svg?branch=master" align="right" />
 
 <img src="https://github.com/DragonComputer/Dragonfire/workflows/build/badge.svg?branch=master" align="right" />
 
@@ -11,6 +11,8 @@
 <img src="https://opencollective.com/dragonfire/tiers/backer/badge.svg?label=backer&color=brightgreen" align="right" />
 
 <img src="https://opencollective.com/dragonfire/tiers/sponsor/badge.svg?label=sponsor&color=brightgreen" align="right" />
+
+# Dragonfire
 
 the open-source virtual assistant for Ubuntu based Linux distributions
 
