@@ -145,6 +145,6 @@ def test_api_wikipedia(token):
 def test_api_youtube(token):
     headers = {'Content-Type': 'application/x-www-form-urlencoded', 'Authorization': token}
     url = API_SERVER + '/youtube'
-    params = {"query": "Turn Down for What", "gender_prefix": "sir"}
+    params = {"query": "Chained To The Rhythm", "gender_prefix": "sir"}
     response = requests.post(url, params=params, headers=headers)
-    assert json.loads(response.text) == {'url': 'https://www.youtube.com/watch?v=HMUDVMiITOU', 'response': 'DJ Snake, Lil Jon - Turn Down for What (Official Video)'}
+    assert json.loads(response.text) == {'url': 'https://www.youtube.com/watch?v=Um7pMggPnug', 'response': 'Katy Perry - Chained To The Rhythm (Official) ft. Skip Marley'}
