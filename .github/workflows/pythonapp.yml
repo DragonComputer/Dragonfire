@@ -23,5 +23,7 @@ jobs:
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
     - name: Test with pytest
       run: |
-        sudo pip3 install pytest
-        xvfb-run --auto-servernum python3 -m pytest --capture=sys --disable-pytest-warnings -vv
+        sudo pip3 install pytest pytest-cov codecov
+        xvfb-run --auto-servernum python3 -m pytest --cov=dragonfire/ --capture=sys --disable-pytest-warnings -vv
+        # send the code coverage report to Codeconv
+        codecov

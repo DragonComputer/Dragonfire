@@ -1,5 +1,9 @@
 # Dragonfire
 
+<a href="https://codecov.io/gh/DragonComputer/Dragonfire">
+  <img src="https://badgen.net/codecov/c/github/dragoncomputer/dragonfire" align="right" />
+</a>
+
 <img src="https://github.com/DragonComputer/Dragonfire/workflows/build/badge.svg?branch=master" align="right" />
 
 <img src="https://readthedocs.org/projects/dragonfire/badge/?version=latest" align="right" />

@@ -158,7 +158,9 @@ setup(
             'sphinx_rtd_theme',
             'recommonmark',
             'm2r',
-            'pytest'
+            'pytest',
+            'pytest-cov',
+            'codecov'
         ]
     },
 
