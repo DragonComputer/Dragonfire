@@ -1,16 +1,12 @@
-<a href="https://codecov.io/gh/DragonComputer/Dragonfire">
-  <img src="https://badgen.net/codecov/c/github/dragoncomputer/dragonfire" align="right" />
-</a>
-
-<img src="https://travis-ci.org/DragonComputer/Dragonfire.svg?branch=master" align="right" />
-
-<img src="https://github.com/DragonComputer/Dragonfire/workflows/build/badge.svg?branch=master" align="right" />
-
-<img src="https://readthedocs.org/projects/dragonfire/badge/?version=latest" align="right" />
-
-<img src="https://opencollective.com/dragonfire/tiers/backer/badge.svg?label=backer&color=brightgreen" align="right" />
-
-<img src="https://opencollective.com/dragonfire/tiers/sponsor/badge.svg?label=sponsor&color=brightgreen" align="right" />
+![GitHub Latest Tag](https://badgen.net/github/tag/DragonComputer/Dragonfire)
+![GitHub Downloads](https://badgen.net/github/assets-dl/DragonComputer/Dragonfire)
+![GitHub Docker Pulls](https://badgen.net/docker/pulls/dragoncomputer/dragonfire)
+![GitHub Last Commit](https://badgen.net/github/last-commit/DragonComputer/Dragonfire)
+![GitHub Status](https://badgen.net/github/status/DragonComputer/Dragonfire)
+![Read the Docs](https://readthedocs.org/projects/dragonfire/badge/?version=latest)
+![Travis CI Build](https://badgen.net/travis/DragonComputer/Dragonfire)
+![GitHub Checks](https://badgen.net/github/checks/DragonComputer/Dragonfire)
+![Code Coverage](https://badgen.net/codecov/c/github/dragoncomputer/dragonfire)
 
 # Dragonfire
 
