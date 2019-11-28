@@ -1,3 +1,20 @@
+dragonfire (1.0.4) unstable; urgency=medium
+
+  * Upgraded TensorFlow version from 1.0.0 to 1.14.0
+  * Upgraded spaCy version from 2.0.13 to 2.1.3
+  * Upgraded NeuralCoref version to 4.0
+  * Updated the DeepConversation Tensorflow model and published (v3)
+  * Refactored some of the NLP methods
+  * Updated the Docker image
+  * Added a Makefile to simplify installation commands
+  * Fixed some of the tests
+  * Fixed the CI pipelines
+  * Implemented code coverage by integrating CI to Codecov
+  * Integrated Code Climate to have automated code reviews and metrics
+  * Fixed Read the Docs documentation build pipeline
+
+ -- Mehmet Mert Yildiran <mehmetmertyildiran@gmail.com>  Fri, Nov 29 2019 01:20:45 +0300
+
 dragonfire (1.0.2) unstable; urgency=medium
 
   * libgtk2.0-0 and gir1.2-gtk-3.0 dependencies are added

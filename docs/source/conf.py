@@ -29,9 +29,9 @@ copyright = '2019, Mehmet Mert Yıldıran'
 author = 'Mehmet Mert Yıldıran'
 
 # The short X.Y version
-version = '1.0.2'
+version = '1.0.4'
 # The full version, including alpha/beta/rc tags
-release = '1.0.2'
+release = '1.0.4'
 
 
 # -- General configuration ---------------------------------------------------

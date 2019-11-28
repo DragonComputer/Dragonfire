@@ -28,7 +28,7 @@ fi
 cd $DEEPCONV_DIR
 verified=$(find . -type f -exec md5sum {} \; | md5sum)
 if [ ! ${verified::-3} = "$CHECKSUM2" ]; then
-  wget -nc -O - https://github.com/DragonComputer/Dragonfire/releases/download/v1.0.3/deepconv-v3.tar.gz | tar xvfz -
+  wget -nc -O - https://github.com/DragonComputer/Dragonfire/releases/download/v1.0.4/deepconv-v3.tar.gz | tar xvfz -
 fi
 
 

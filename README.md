@@ -55,14 +55,14 @@ Feel free to join [our Gitter chat room](https://gitter.im/DragonComputer/Lobby)
 To run Dragonfire on a desktop Debian or Ubuntu system, either download the [latest release](https://github.com/DragonComputer/Dragonfire/releases/latest) (the `.deb` file) and install as follows:
 
 ```Shell
-sudo dpkg -i dragonfire_1.0.2_amd64.deb
+sudo dpkg -i dragonfire_1.0.4_amd64.deb
 ```
 
 
 or clone the GitHub repository and run
 
 ```Shell
-sudo ./install.sh
+make install
 ```
 
 in the repository directory.

@@ -34,7 +34,7 @@ RUN mkdir $DRAGONFIRE_DIR
 RUN mkdir $DEEPCONV_DIR
 
 # Download the DeepConversation Tensorflow model
-ADD https://github.com/DragonComputer/Dragonfire/releases/download/v1.0.3/deepconv-v3.tar.gz $DEEPCONV_DIR
+ADD https://github.com/DragonComputer/Dragonfire/releases/download/v1.0.4/deepconv-v3.tar.gz $DEEPCONV_DIR
 RUN cd $DEEPCONV_DIR && tar xvfz deepconv-v3.tar.gz
 
 # Install OpenSSL and libffi for Tensorflow
