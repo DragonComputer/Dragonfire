@@ -10,7 +10,7 @@ the open-source virtual assistant for Ubuntu based Linux distributions
   <img alt="GitHub Latest Tag" src="https://badgen.net/github/tag/DragonComputer/Dragonfire">
   <img alt="GitHub Downloads" src="https://badgen.net/github/assets-dl/DragonComputer/Dragonfire">
   <img alt="GitHub Docker Pulls" src="https://badgen.net/docker/pulls/dragoncomputer/dragonfire">
-  <img alt="GitHub Last Commit" src="https://badgen.net/github/last-commit/DragonComputer/Dragonfire">
+  <img alt="GitHub Last Commit" src="https://badgen.net/github/last-commit/DragonComputer/Dragonfire/master">
   <img alt="GitHub Status" src="https://badgen.net/github/status/DragonComputer/Dragonfire/master">
   <img alt="GitHub License" src="https://badgen.net/github/license/DragonComputer/Dragonfire">
   <img alt="Read the Docs" src="https://readthedocs.org/projects/dragonfire/badge/?version=latest">
