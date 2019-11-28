@@ -1,13 +1,3 @@
-![GitHub Latest Tag](https://badgen.net/github/tag/DragonComputer/Dragonfire)
-![GitHub Downloads](https://badgen.net/github/assets-dl/DragonComputer/Dragonfire)
-![GitHub Docker Pulls](https://badgen.net/docker/pulls/dragoncomputer/dragonfire)
-![GitHub Last Commit](https://badgen.net/github/last-commit/DragonComputer/Dragonfire)
-![GitHub Status](https://badgen.net/github/status/DragonComputer/Dragonfire)
-![Read the Docs](https://readthedocs.org/projects/dragonfire/badge/?version=latest)
-![Travis CI Build](https://badgen.net/travis/DragonComputer/Dragonfire)
-![GitHub Checks](https://badgen.net/github/checks/DragonComputer/Dragonfire)
-![Code Coverage](https://badgen.net/codecov/c/github/dragoncomputer/dragonfire)
-
 # Dragonfire
 
 the open-source virtual assistant for Ubuntu based Linux distributions
@@ -15,6 +5,23 @@ the open-source virtual assistant for Ubuntu based Linux distributions
 ![Dragonfire](https://raw.githubusercontent.com/DragonComputer/Dragonfire/master/docs/img/demo.gif)
 
 <p align="center"><sup><i>Special thanks to Jassu Ilama for the beautiful 3D modelling and material design of this avatar.</i></sup></p>
+
+<p align="center">
+  <img alt="GitHub Latest Tag" src="https://badgen.net/github/tag/DragonComputer/Dragonfire">
+  <img alt="GitHub Downloads" src="https://badgen.net/github/assets-dl/DragonComputer/Dragonfire">
+  <img alt="GitHub Docker Pulls" src="https://badgen.net/docker/pulls/dragoncomputer/dragonfire">
+  <img alt="GitHub Last Commit" src="https://badgen.net/github/last-commit/DragonComputer/Dragonfire">
+  <img alt="GitHub Status" src="https://badgen.net/github/status/DragonComputer/Dragonfire">
+  <img alt="GitHub License" src="https://badgen.net/github/license/DragonComputer/Dragonfire">
+  <img alt="Read the Docs" src="https://readthedocs.org/projects/dragonfire/badge/?version=latest">
+  <img alt="Travis CI Build" src="https://badgen.net/travis/DragonComputer/Dragonfire">
+  <img alt="GitHub Checks" src="https://badgen.net/github/checks/DragonComputer/Dragonfire">
+  <img alt="Code Coverage" src="https://badgen.net/codecov/c/github/dragoncomputer/dragonfire">
+  <img alt="Code Climate Technical Dept" src="https://badgen.net/codeclimate/tech-debt/DragonComputer/Dragonfire">
+  <img alt="Code Climate Maintainability" src="https://badgen.net/codeclimate/maintainability-percentage/DragonComputer/Dragonfire">
+  <img alt="Code Climate Maintainability Score" src="https://badgen.net/codeclimate/maintainability/DragonComputer/Dragonfire">
+  <img alt="Code Climate Lines of Code" src="https://badgen.net/codeclimate/loc/DragonComputer/Dragonfire">
+</p>
 
 <br>
 
