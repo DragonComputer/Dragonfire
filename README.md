@@ -11,12 +11,12 @@ the open-source virtual assistant for Ubuntu based Linux distributions
   <img alt="GitHub Downloads" src="https://badgen.net/github/assets-dl/DragonComputer/Dragonfire">
   <img alt="GitHub Docker Pulls" src="https://badgen.net/docker/pulls/dragoncomputer/dragonfire">
   <img alt="GitHub Last Commit" src="https://badgen.net/github/last-commit/DragonComputer/Dragonfire">
-  <img alt="GitHub Status" src="https://badgen.net/github/status/DragonComputer/Dragonfire">
+  <img alt="GitHub Status" src="https://badgen.net/github/status/DragonComputer/Dragonfire/master">
   <img alt="GitHub License" src="https://badgen.net/github/license/DragonComputer/Dragonfire">
   <img alt="Read the Docs" src="https://readthedocs.org/projects/dragonfire/badge/?version=latest">
-  <img alt="Travis CI Build" src="https://badgen.net/travis/DragonComputer/Dragonfire">
+  <img alt="Travis CI Build" src="https://badgen.net/travis/DragonComputer/Dragonfire/master">
   <img alt="GitHub Checks" src="https://badgen.net/github/checks/DragonComputer/Dragonfire">
-  <img alt="Code Coverage" src="https://badgen.net/codecov/c/github/dragoncomputer/dragonfire">
+  <img alt="Code Coverage" src="https://badgen.net/codecov/c/github/DragonComputer/Dragonfire">
   <img alt="Code Climate Technical Dept" src="https://badgen.net/codeclimate/tech-debt/DragonComputer/Dragonfire">
   <img alt="Code Climate Maintainability" src="https://badgen.net/codeclimate/maintainability-percentage/DragonComputer/Dragonfire">
   <img alt="Code Climate Maintainability Score" src="https://badgen.net/codeclimate/maintainability/DragonComputer/Dragonfire">
