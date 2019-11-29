@@ -7,20 +7,56 @@ the open-source virtual assistant for Ubuntu based Linux distributions
 <p align="center"><sup><i>Special thanks to Jassu Ilama for the beautiful 3D modelling and material design of this avatar.</i></sup></p>
 
 <p align="center">
-  <img alt="GitHub Latest Tag" src="https://badgen.net/github/tag/DragonComputer/Dragonfire">
-  <img alt="GitHub Downloads" src="https://badgen.net/github/assets-dl/DragonComputer/Dragonfire">
-  <img alt="GitHub Docker Pulls" src="https://badgen.net/docker/pulls/dragoncomputer/dragonfire">
-  <img alt="GitHub Last Commit" src="https://badgen.net/github/last-commit/DragonComputer/Dragonfire/master">
-  <img alt="GitHub Status" src="https://badgen.net/github/status/DragonComputer/Dragonfire/master">
-  <img alt="GitHub License" src="https://badgen.net/github/license/DragonComputer/Dragonfire">
-  <img alt="Read the Docs" src="https://readthedocs.org/projects/dragonfire/badge/?version=latest">
-  <img alt="Travis CI Build" src="https://badgen.net/travis/DragonComputer/Dragonfire/master">
-  <img alt="GitHub Checks" src="https://badgen.net/github/checks/DragonComputer/Dragonfire">
-  <img alt="Code Coverage" src="https://badgen.net/codecov/c/github/DragonComputer/Dragonfire">
-  <img alt="Code Climate Technical Dept" src="https://badgen.net/codeclimate/tech-debt/DragonComputer/Dragonfire">
-  <img alt="Code Climate Maintainability" src="https://badgen.net/codeclimate/maintainability-percentage/DragonComputer/Dragonfire">
-  <img alt="Code Climate Maintainability Score" src="https://badgen.net/codeclimate/maintainability/DragonComputer/Dragonfire">
-  <img alt="Code Climate Lines of Code" src="https://badgen.net/codeclimate/loc/DragonComputer/Dragonfire">
+  <a href="https://github.com/DragonComputer/Dragonfire/releases/latest">
+    <img alt="GitHub Latest Tag" src="https://img.shields.io/github/v/release/DragonComputer/Dragonfire?logo=GitHub&style=flat-square">
+  </a>
+
+  <img alt="GitHub Downloads" src="https://img.shields.io/github/downloads/DragonComputer/Dragonfire/total?logo=GitHub&style=flat-square">
+  <img alt="GitHub Last Commit" src="https://img.shields.io/github/last-commit/DragonComputer/Dragonfire?logo=GitHub&style=flat-square">
+  <img alt="GitHub Commit Activity" src="https://img.shields.io/github/commit-activity/m/DragonComputer/Dragonfire?logo=GitHub&style=flat-square">
+
+  <a href="https://github.com/DragonComputer/Dragonfire/blob/master/LICENSE.txt">
+    <img alt="GitHub License" src="https://img.shields.io/github/license/DragonComputer/Dragonfire?logo=GitHub&style=flat-square">
+  </a>
+
+  <a href="https://github.com/DragonComputer/Dragonfire/actions?query=workflow%3Abuild">
+    <img alt="GitHub Workflow Status" src="https://img.shields.io/github/workflow/status/DragonComputer/Dragonfire/build?logo=GitHub&style=flat-square">
+  </a>
+
+  <a href="https://hub.docker.com/repository/docker/dragoncomputer/dragonfire">
+    <img alt="Docker Pulls" src="https://img.shields.io/docker/pulls/dragoncomputer/dragonfire?logo=Docker&style=flat-square">
+  </a>
+
+  <a href="https://dragonfire.readthedocs.io/en/latest/dragonfire.html#module-dragonfire.api">
+    <img alt="Read the Docs" src="https://img.shields.io/readthedocs/dragonfire?logo=Read%20the%20Docs&style=flat-square">
+  </a>
+
+  <a href="https://travis-ci.org/DragonComputer/Dragonfire/">
+    <img alt="Travis CI Build" src="https://img.shields.io/travis/DragonComputer/Dragonfire?logo=Travis&style=flat-square">
+  </a>
+
+  <a href="https://codecov.io/gh/DragonComputer/Dragonfire">
+    <img alt="Code Coverage (Codecov)" src="https://img.shields.io/codecov/c/github/DragonComputer/Dragonfire?logo=Codecov&style=flat-square">
+  </a>
+
+  <a href="https://codeclimate.com/github/DragonComputer/Dragonfire">
+    <img alt="Code Climate Technical Dept" src="https://img.shields.io/codeclimate/tech-debt/DragonComputer/Dragonfire?logo=Code%20Climate&style=flat-square">
+    <img alt="Code Climate Maintainability" src="https://img.shields.io/codeclimate/maintainability-percentage/DragonComputer/Dragonfire?logo=Code%20Climate&style=flat-square">
+    <img alt="Code Climate Maintainability Score" src="https://img.shields.io/codeclimate/maintainability/DragonComputer/Dragonfire?logo=Code%20Climate&style=flat-square">
+    <img alt="Code Climate Issues" src="https://img.shields.io/codeclimate/issues/DragonComputer/Dragonfire?logo=Code%20Climate&style=flat-square">
+  </a>
+
+  <a href="https://gitter.im/DragonComputer/Lobby">
+    <img alt="Gitter Chat" src="https://img.shields.io/gitter/room/DragonComputer/Dragonfire?logo=Gitter&style=flat-square">
+  </a>
+
+  <a href="https://opencollective.com/dragonfire">
+    <img alt="Open Collective Backers" src="https://img.shields.io/opencollective/backers/dragonfire?logo=Open%20Collective&style=flat-square">
+  </a>
+
+  <a href="https://twitter.com/DragonfireAI">
+    <img alt="Twitter" src="https://img.shields.io/twitter/follow/DragonfireAI?label=Mention%20Now%20%40DragonfireAI&logo=Twitter&style=flat-square">
+  </a>
 </p>
 
 <br>
