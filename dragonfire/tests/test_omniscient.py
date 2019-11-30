@@ -22,10 +22,12 @@ def omniscient():
 
 
 @pytest.mark.parametrize("question, answers", [
-    ("Where is the Times Square", ["New York City", "\n"]),
-    #("What is the height of Burj Khalifa", ["828 m", "660 ft", "340 long tons", "350 tonnes"]),
-    ("What is the real name of Iron Man", ["Tony", "Stark", "Tony Stark"]),
-    #("What is the name of the world's longest river", ["Nile", "Amazon"])
+    ("Where is Burj Khalifa?", ["Dubai, United Arab Emirates"]),
+    ("What is the height of Great Pyramid of Giza?", ["146.5 metres"]),
+    ("What is the atomic number of Oxygen?", ["8"]),
+    ("What is the capital of Germany?", ["Berlin"]),
+    ("What is the largest city of Turkey?", ["Istanbul"]),
+    ("Who invented General Relativity?", ["Albert Einstein"]),
 ])
 def test_omniscient_respond(omniscient, question, answers):
     assert omniscient.respond(question, user_prefix="sir") in answers
