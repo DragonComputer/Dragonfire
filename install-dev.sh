@@ -58,6 +58,6 @@ pip3 install --upgrade wikipedia==1.4.0 PyUserInput==0.1.11 tinydb==3.9.0.post1 
 pip3 install --upgrade flake8 sphinx sphinx_rtd_theme recommonmark m2r pytest pytest-cov codecov && \
 python3 -m spacy download en && \
 python3 -m deeppavlov install squad_bert && \
-printf "from deeppavlov import build_model, configs\nmodel = build_model(configs.squad.squad, download=True)" | python3 && \
+printf "from deeppavlov import build_model, configs\nmodel = build_model(configs.squad.squad, download=True)" | python3 &> /dev/null && \
 pip3 install https://github.com/huggingface/neuralcoref-models/releases/download/en_coref_sm-3.0.0/en_coref_sm-3.0.0.tar.gz && \
 printf "import nltk\nnltk.download('names')\nnltk.download('brown')\nnltk.download('wordnet')\nnltk.download('punkt')" | python3 && echo -e "\n\n${GREEN}Dragonfire is successfully installed to your computer.${NC}\n"
