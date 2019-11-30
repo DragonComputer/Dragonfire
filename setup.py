@@ -142,7 +142,8 @@ setup(
         'SQLAlchemy>=1.3.0',
         'PyMySQL==0.8.1',
         'msgpack==0.5.6',
-        'neuralcoref==4.0'
+        'neuralcoref==4.0',
+        'deeppavlov==0.6.1'
     ],
 
     # List additional groups of dependencies here (e.g. development

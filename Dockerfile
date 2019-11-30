@@ -41,10 +41,16 @@ RUN cd $DEEPCONV_DIR && tar xvfz deepconv-v3.tar.gz
 RUN apt-get -qqy install libssl-dev libffi-dev
 
 # Retry to install the Python package dependencies in case of a failure
-RUN pip3 install --upgrade wikipedia==1.4.0 PyUserInput==0.1.11 tinydb==3.9.0.post1 youtube_dl spacy==2.1.3 pyowm==2.9.0 tensorflow==1.14.0 deepspeech==0.4.1 SpeechRecognition tweepy==3.7.0 metadata_parser==0.9.20 hug==2.4.0 hug-middleware-cors==1.0.0 waitress==1.1.0 requests==2.20.0 pyjwt==1.6.4 SQLAlchemy\>=1.3.0 PyMySQL==0.8.1 msgpack==0.5.6 neuralcoref==4.0
+RUN pip3 install --upgrade wikipedia==1.4.0 PyUserInput==0.1.11 tinydb==3.9.0.post1 youtube_dl spacy==2.1.3 pyowm==2.9.0 tensorflow==1.14.0 deepspeech==0.4.1 SpeechRecognition tweepy==3.7.0 metadata_parser==0.9.20 hug==2.4.0 hug-middleware-cors==1.0.0 waitress==1.1.0 requests==2.20.0 pyjwt==1.6.4 SQLAlchemy\>=1.3.0 PyMySQL==0.8.1 msgpack==0.5.6 neuralcoref==4.0 deeppavlov==0.6.1
 
 # Download the spaCy English model
 RUN python3 -m spacy download en
+
+# Install the all required packages for the squad_bert model of DeepPavlov
+RUN python3 -m deeppavlov install squad_bert
+
+# Download the squad_bert model of DeepPavlov
+RUN printf "from deeppavlov import build_model, configs\nmodel = build_model(configs.squad.squad, download=True)" | python3
 
 # Install the model for the NeuralCoref coreference resolution module
 RUN pip3 install https://github.com/huggingface/neuralcoref-models/releases/download/en_coref_sm-3.0.0/en_coref_sm-3.0.0.tar.gz

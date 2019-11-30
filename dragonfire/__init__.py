@@ -627,7 +627,7 @@ class VirtualAssistant():
             else:
                 omniscient_response = omniscient.respond(com, not args["silent"], userin, user_prefix, args["server"])
                 if omniscient_response:
-                    return omniscient_response
+                    return userin.say(omniscient_response)
                 else:
                     dc_response = dc.respond(original_com, user_prefix)
                     if dc_response:

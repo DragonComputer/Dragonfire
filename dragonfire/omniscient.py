@@ -20,6 +20,8 @@ import wikipedia.exceptions  # Exceptions of wikipedia library
 from nltk.corpus import wordnet as wn  # The WordNet corpus
 from nltk.corpus.reader.wordnet import WordNetError  # To catch the errors
 
+from deeppavlov import build_model, configs
+
 
 class Omniscient():
     """Class to provide the factoid question answering ability.
@@ -40,6 +42,8 @@ class Omniscient():
             'WHERE': ['FACILITY', 'GPE', 'LOC']
         }  # Map wh question words to entity categories
         self.coefficient = {'frequency': 0.36, 'precedence': 0.13, 'proximity': 0.21, 'mention': 0.30}  # Coefficients for scoring
+
+        self.model = build_model(configs.squad.squad, download=True)
 
     def respond(self, com, tts_output=False, userin=None, user_prefix=None, is_server=False):
         """Method to respond the user's input/command using factoid question answering ability.
@@ -87,7 +91,9 @@ class Omniscient():
                         if not tts_output and not is_server: print(result)
                         if tts_output and not is_server: userin.say(result)
                         return result
-                    wikipedia.page(wikiresult[0])
+
+                    wikipage = wikipedia.page(wikiresult[0])
+                    return self.model([wikipage.content], [com])[0][0]
                 except requests.exceptions.ConnectionError:  # if there is a connection error
                     result = "Sorry, " + user_prefix + ". But I'm unable to connect to Wikipedia servers."
                     if not is_server:
@@ -102,96 +108,6 @@ class Omniscient():
                     if not tts_output and not is_server: print(result)
                     if tts_output and not is_server: userin.say(result)
                     return result
-            findings = []  # empty findings list for scoring
-            nth_page = 0  # nth Wikipedia page/article
-            while not findings:  # while there are no any findings
-                if not len(wikiresult) >= (nth_page + 1):  # prevent index error
-                    break
-                with nostderr():
-                    try:
-                        wikipage = wikipedia.page(wikiresult[nth_page])  # Get the next Wikipedia page/article from the search results (this line also handles the search at the same time)
-                    except requests.exceptions.ConnectionError:  # if there is a connection error
-                        result = "Sorry, " + user_prefix + ". But I'm unable to connect to Wikipedia servers."
-                        if not is_server:
-                            userin.execute([" "], "Wikipedia connection error.")
-                            if not tts_output: print(result)
-                            if tts_output: userin.say(result)
-                        return result
-                    except:
-                        result = "Sorry, " + user_prefix + ". But something went horribly wrong while I'm searching Wikipedia."
-                        if not tts_output and not is_server: print(result)
-                        if tts_output and not is_server: userin.say(result)
-                        return result
-                nth_page += 1  # increase the visited page/article count
-                if nth_page > 5: break  # if script searched more than 5 Wikipedia pages/articles then give up
-                wikidoc = self.nlp(wikipage.content)  # parse the Wikipedia page/article content using spaCy NLP library
-                sentences = [sent.string.strip() for sent in wikidoc.sents]  # each individual sentence in the current Wikipedia page/article
-                # return [' '.join(subjects),' '.join(pobjects)]
-                all_entities = []  # all entities, useful or not all of them
-                mention = {}  # sentences with focus mentioned
-                subject_entities_by_wordnet = None  # target entities according to the subject
-                if 'WHAT' in wh_question:  # if it's a WHAT question then
-                    subject_entities_by_wordnet = self.wordnet_entity_determiner(subject_with_objects, tts_output, is_server, userin, user_prefix)  # result of wordnet_entity_determiner()
-                    if not subject_entities_by_wordnet:
-                        return True
-                for sentence in reversed(sentences):  # iterate over the sentences (in reversed order)
-                    sentence = self.nlp(sentence)  # parse the sentence using spaCy NLP library
-                    for ent in sentence.ents:  # iterate over the all entities in the sentence (has been found by spaCy)
-                        all_entities.append(ent.text)  # append the entity to all_entities
-                        mention[ent.text] = 0.0  # the value if focus not even defined or the focus is NOT even mentioned
-                        for wh in wh_question:  # iterate over the all wh questions have been found in the Command(user's speech)
-                            if wh.upper() in self.entity_map:  # if the wh question is defined in entity_map (on top) then
-                                target_entities = self.entity_map[wh.upper()]  # get the target entities from the entity_map
-                                if wh.upper() == 'WHAT':  # if the question is WHAT then
-                                    target_entities = []  # empty the target entities because we will replace them with the result of wordnet_entity_determiner()
-                                    for subject_entity_by_wordnet in subject_entities_by_wordnet:  # for each entity in subject_entities_by_wordnet
-                                        target_entities.append(subject_entity_by_wordnet)  # append the entity to target entities
-                                if ent.label_ in target_entities:  # if entity label is in target entities listed then
-                                    findings.append(ent.text)  # WE FOUND! a possible entity so append the text to findings
-                                    if focus:  # if focus is defined then
-                                        if focus in sentence.text:  # if focus is in the sentence then
-                                            mention[ent.text] += 1.0 * sentence.text.count(focus)  # assign the how many times the entity mentioned in the sentence
-
-            if findings:  # if there is a finding or there are findings then
-
-                frequency = collections.Counter(findings)  # count the occurrences of the exacty same finding and return a unique dictionary. High frequency means high score
-                max_freq = max(frequency.values())  # max occurrence
-                for key, value in frequency.items():  # iterate over the unique dictionary
-                    frequency[key] = float(value) / max_freq  # divide the occurence by max occurence to find the real frequency value
-
-                precedence = {}  # precedence according to the location of the finding in the Wikipedia article. Closer to the top, greater the score is
-                unique = list(set(findings))  # unique the findings list
-                for i in range(len(unique)):  # iterate over that unqiue list
-                    precedence[unique[i]] = float(len(unique) - i) / len(unique)  # calculate the score
-
-                proximity = {}  # proximity to the subject. Closer to the subject (in terms of location), greater the score is
-                subject_indices = []  # index values of subject occurrences
-                for i in range(len(all_entities)):  # iterate over the all entities
-                    for subject in subjects:  # iterate over the all subjects
-                        for word in subject.split():  # iterate over the each word in the subject
-                            if word in all_entities[i]:  # if the word is in all entities then
-                                subject_indices.append(i)  # append the index
-                for i in range(len(all_entities)):  # iterate over the all entities, again
-                    for index in subject_indices:  # for each index
-                        inverse_distance = float((len(all_entities) - 1) - abs(i - index)) / (len(all_entities) - 1)  # calculate the proximity of the entity to the subject
-                        if all_entities[i] in proximity:  # if the entity is already appended then
-                            proximity[all_entities[i]] = (proximity[all_entities[i]] + inverse_distance) / 2  # assign the proximity by calculating the average
-                        else:
-                            proximity[all_entities[i]] = inverse_distance  # otherwise assign the proximity directly
-                    if all_entities[i] not in proximity:  # if it's somehow not appended then
-                        proximity[all_entities[i]] = 0  # give it a zero score
-
-                ranked = {}  # the eventual ranking/scoring
-                for key, value in frequency.items():  # iterate over the all findings (frequency, precedence, proximity, mention all of them holds all findings)
-                    if key not in query:  # eliminate the findings that already inside of the Wikipedia query
-                        ranked[key] = (value * self.coefficient['frequency'] + precedence[key] * self.coefficient['precedence'] + proximity[key] * self.coefficient['proximity'] + mention[key] * self.coefficient['mention'])  # calculate the absolute score
-
-                result = sorted(ranked.items(), key=lambda x: x[1])[::-1][0][0]
-                if not tts_output and not is_server: print(sorted(ranked.items(), key=lambda x: x[1])[::-1][:5])  # if not tts_output print the best 5 result
-                if tts_output and not is_server: userin.say(result, True, True)  # if tts_output say the best result (via TTS obviously)
-                return result  # also return the best result
-            else:  # if no any findings
-                return False  # in case of no any findings return False
 
     def wordnet_entity_determiner(self, subject, tts_output, is_server, userin=None, user_prefix=None):
         """Function to determine the named entity classification of the subject.
