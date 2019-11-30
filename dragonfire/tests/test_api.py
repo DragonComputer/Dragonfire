@@ -121,7 +121,7 @@ def test_api_omni(token):
     url = API_SERVER + '/omni'
     params = {"text": "Where is the Times Square?", "gender_prefix": "sir"}
     response = requests.post(url, params=params, headers=headers)
-    assert json.loads(response.text) == 'New York City'
+    assert json.loads(response.text) == 'Midtown Manhattan section of New York City'
 
 
 def test_api_deep(token):
