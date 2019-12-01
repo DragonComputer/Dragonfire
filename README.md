@@ -23,6 +23,10 @@ the open-source virtual assistant for Ubuntu based Linux distributions
     <img alt="GitHub Workflow Status" src="https://img.shields.io/github/workflow/status/DragonComputer/Dragonfire/build?logo=GitHub&style=flat-square">
   </a>
 
+  <a href="https://github.com/DragonComputer/Dragonfire/actions?query=workflow%3Adocker">
+    <img alt="GitHub Workflow Docker Build Status" src="https://img.shields.io/github/workflow/status/DragonComputer/Dragonfire/docker?logo=Docker&style=flat-square">
+  </a>
+
   <a href="https://hub.docker.com/repository/docker/dragoncomputer/dragonfire">
     <img alt="Docker Pulls" src="https://img.shields.io/docker/pulls/dragoncomputer/dragonfire?logo=Docker&style=flat-square">
   </a>
