@@ -12,6 +12,7 @@ from dragonfire import VirtualAssistant, greet
 from dragonfire.utilities import TextToAction
 
 import pytest
+import time
 
 
 user_full_name = "John Doe"
@@ -101,6 +102,7 @@ def virtual_assistant():
 def test_builtin_commands(virtual_assistant, command, response):
     assert virtual_assistant.command("hey") in hey_answers
     assert virtual_assistant.command(command) == response
+    time.sleep(1)
 
 
 def test_builtin_commands_sleep(virtual_assistant):
