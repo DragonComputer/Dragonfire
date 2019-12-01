@@ -50,7 +50,7 @@ RUN python3 -m spacy download en
 RUN python3 -m deeppavlov install squad_bert
 
 # Download the squad_bert model of DeepPavlov
-RUN printf "from deeppavlov import build_model, configs\nmodel = build_model(configs.squad.squad, download=True)" | python3
+RUN printf "import logging\nlogging.getLogger('tensorflow').setLevel(logging.ERROR)\nimport warnings\nwarnings.simplefilter(action='ignore', category=FutureWarning)\nfrom deeppavlov import build_model, configs\nmodel = build_model(configs.squad.squad, download=True)" | python3
 
 # Install the model for the NeuralCoref coreference resolution module
 RUN pip3 install https://github.com/huggingface/neuralcoref-models/releases/download/en_coref_sm-3.0.0/en_coref_sm-3.0.0.tar.gz
