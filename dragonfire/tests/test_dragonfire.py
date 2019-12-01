@@ -141,7 +141,7 @@ def test_learner_response(virtual_assistant):
     assert virtual_assistant.command("What is the Sun") == "the Sun is hot and yellow"
 
 
-def test_omniscient_response(virtual_assistant):
+def test_odqa_response(virtual_assistant):
 
     assert virtual_assistant.command("hey") in hey_answers
     assert virtual_assistant.command("Where is the Times Square?") == "Midtown Manhattan section of New York City"

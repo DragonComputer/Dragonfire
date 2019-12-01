@@ -298,7 +298,7 @@ def learn(text, user_id):
 
 @hug.post('/omni', requires=token_authentication)
 def omni(text, gender_prefix):
-    """**Endpoint** to return the answer of :func:`dragonfire.omniscient.Omniscient.respond` method.
+    """**Endpoint** to return the answer of :func:`dragonfire.odqa.ODQA.respond` method.
 
     Args:
         text (str):             Text.
@@ -308,7 +308,7 @@ def omni(text, gender_prefix):
         JSON document.
     """
 
-    answer = omniscient.respond(text, userin=userin, user_prefix=gender_prefix, is_server=True)
+    answer = odqa.respond(text, userin=userin, user_prefix=gender_prefix, is_server=True)
     if not answer:
         answer = ""
     return json.dumps(answer, indent=4)
@@ -339,7 +339,7 @@ def answer(text, gender_prefix, user_id, previous=None):
 
      - :func:`dragonfire.arithmetic.arithmetic_parse` function
      - :func:`dragonfire.learn.Learner.respond` method
-     - :func:`dragonfire.omniscient.Omniscient.respond` method
+     - :func:`dragonfire.odqa.ODQA.respond` method
      - :func:`dragonfire.deepconv.DeepConversation.respond` method
 
     Args:
@@ -354,14 +354,14 @@ def answer(text, gender_prefix, user_id, previous=None):
 
     data = {}
     text = coref.resolve_api(text, previous)
-    subject, subjects, focus, subject_with_objects = omniscient.semantic_extractor(text)
+    subject, subjects, focus, subject_with_objects = odqa.semantic_extractor(text)
     data['subject'] = subject
     data['focus'] = focus
     answer = arithmetic_parse(text)
     if not answer:
         answer = learner.respond(text, is_server=True, user_id=user_id)
         if not answer:
-            answer = omniscient.respond(text, userin=userin, user_prefix=gender_prefix, is_server=True)
+            answer = odqa.respond(text, userin=userin, user_prefix=gender_prefix, is_server=True)
             if not answer:
                 answer = dc.respond(text, user_prefix=gender_prefix)
     data['answer'] = answer
@@ -505,7 +505,7 @@ class Run():
 
     """
 
-    def __init__(self, nlp_ref, learner_ref, omniscient_ref, dc_ref, coref_ref, userin_ref, reg_key, port_number, db_session_ref, dont_block=False):
+    def __init__(self, nlp_ref, learner_ref, odqa_ref, dc_ref, coref_ref, userin_ref, reg_key, port_number, db_session_ref, dont_block=False):
         """Initialization method of :class:`dragonfire.api.Run` class
 
         This method starts an API server using :mod:`waitress` (*a pure-Python WSGI server*)
@@ -514,7 +514,7 @@ class Run():
         Args:
             nlp_ref:                :mod:`spacy` model instance.
             learner_ref:            :class:`dragonfire.learn.Learner` instance.
-            omniscient_ref:         :class:`dragonfire.omniscient.Omniscient` instance.
+            odqa_ref:               :class:`dragonfire.odqa.ODQA` instance.
             dc_ref:                 :class:`dragonfire.deepconv.DeepConversation` instance.
             userin_ref:             :class:`dragonfire.utilities.TextToAction` instance.
             reg_key (str):          Registration key of the API.
@@ -525,7 +525,7 @@ class Run():
         global __hug_wsgi__  # Fixes flake8 F821: Undefined name
         global nlp
         global learner
-        global omniscient
+        global odqa
         global dc
         global coref
         global userin
@@ -533,7 +533,7 @@ class Run():
         global db_session
         nlp = nlp_ref  # Load en_core_web_sm, English, 50 MB, default model
         learner = learner_ref
-        omniscient = omniscient_ref
+        odqa = odqa_ref
         dc = dc_ref
         coref = coref_ref
         userin = userin_ref

@@ -2,9 +2,9 @@
 # -*- coding: utf-8 -*-
 
 """
-.. module:: omniscient
+.. module:: odqa
     :platform: Unix
-    :synopsis: the top-level submodule of Dragonfire that contains the classes related to **Omniscient**: Dragonfire's Factoid Question Answering Engine.
+    :synopsis: the top-level submodule of Dragonfire that contains the classes related to **ODQA**: Dragonfire's DeepPavlov SQuAD BERT model based Open-Domain Question Answering Engine.
 
 .. moduleauthor:: Mehmet Mert Yıldıran <mert.yildiran@bil.omu.edu.tr>
 """
@@ -23,12 +23,12 @@ from nltk.corpus.reader.wordnet import WordNetError  # To catch the errors
 from deeppavlov import build_model, configs
 
 
-class Omniscient():
+class ODQA():
     """Class to provide the factoid question answering ability.
     """
 
     def __init__(self, nlp):
-        """Initialization method of :class:`dragonfire.omniscient.Omniscient` class.
+        """Initialization method of :class:`dragonfire.odqa.ODQA` class.
 
         Args:
             nlp:  :mod:`spacy` model instance.
@@ -54,7 +54,7 @@ class Omniscient():
 
         .. note::
 
-            Entry function for :class:`Omniscient` class. Dragonfire calls only this function. Unlike :func:`Learner.respond`, it executes TTS because of its late reponse nature.
+            Entry function for :class:`ODQA` class. Dragonfire calls only this function. Unlike :func:`Learner.respond`, it executes TTS because of its late reponse nature.
 
         """
 

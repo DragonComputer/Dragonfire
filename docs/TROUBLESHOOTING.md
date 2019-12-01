@@ -164,7 +164,7 @@ sudo ./install.sh
 
 Dragonfire's learning is far from perfect so by the time, the conversations filled with incorrect information can lead her to wrong answers like `THE SUN IS HOT AND COLD`. To fix this kind of situations you can always wipe out her memories about the subject by calling: `FORGET ABOUT THE SUN`
 
-#### Learning feature is blocking my way to reach to Omniscient Q&A Engine?
+#### Learning feature is blocking my way to reach to Open-Domain Question Answering Engine?
 
 Learning feature has a priority so if in the past, you said something like `ALBERT EINSTEIN IS A PHYSICIST` then it will block your way when you asked anything about **Albert Einstein**. To fix this you should say: `FORGET ABOUT ALBERT EINSTEIN`
 

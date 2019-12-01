@@ -53,10 +53,10 @@ dragonfire.nlplib module
     :undoc-members:
     :show-inheritance:
 
-dragonfire.omniscient module
+dragonfire.odqa module
 ----------------------------
 
-.. automodule:: dragonfire.omniscient
+.. automodule:: dragonfire.odqa
     :members:
     :undoc-members:
     :show-inheritance:

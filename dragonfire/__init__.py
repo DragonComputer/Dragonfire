@@ -35,7 +35,7 @@ warnings.simplefilter(action='ignore', category=FutureWarning)
 
 from dragonfire.learn import Learner  # Submodule of Dragonfire that forms her learning ability
 from dragonfire.nlplib import Classifier, Helper  # Submodule of Dragonfire to handle extra NLP tasks
-from dragonfire.omniscient import Omniscient  # Submodule of Dragonfire that serves as a Question Answering Engine
+from dragonfire.odqa import ODQA  # Submodule of Dragonfire that serves as an Open-Domain Question Answering Engine
 from dragonfire.stray import SystemTrayExitListenerSet, SystemTrayInit  # Submodule of Dragonfire for System Tray Icon related functionalities
 from dragonfire.utilities import TextToAction, nostdout, nostderr  # Submodule of Dragonfire to provide various utilities
 from dragonfire.arithmetic import arithmetic_parse  # Submodule of Dragonfire to analyze arithmetic expressions
@@ -66,7 +66,7 @@ CONVERSATION_ID = uuid.uuid4()
 userin = None
 nlp = spacy.load('en')  # Load en_core_web_sm, English, 50 MB, default model
 learner = Learner(nlp)
-omniscient = Omniscient(nlp)
+odqa = ODQA(nlp)
 dc = DeepConversation()
 coref = NeuralCoref(nlp)
 e = Event()
@@ -118,7 +118,7 @@ def start(args, userin):
             l = MentionListener(args, userin)
             stream = Stream(auth, l)
             stream.filter(track=['DragonfireAI'], is_async=True)
-        API.Run(nlp, learner, omniscient, dc, coref, userin, args["server"], args["port"], db_session)
+        API.Run(nlp, learner, odqa, dc, coref, userin, args["server"], args["port"], db_session)
     else:
         global user_full_name
         global user_prefix
@@ -189,7 +189,7 @@ class VirtualAssistant():
         - Search across the built-in commands via a simple if-else control flow.
         - Try to get a response from :func:`dragonfire.arithmetic.arithmetic_parse` function.
         - Try to get a response from :func:`dragonfire.learn.Learner.respond` method.
-        - Try to get a answer from :func:`dragonfire.omniscient.Omniscient.respond` method.
+        - Try to get a answer from :func:`dragonfire.odqa.ODQA.respond` method.
         - Try to get a response from :func:`dragonfire.deepconv.DeepConversation.respond` method.
 
         Args:
@@ -630,9 +630,9 @@ class VirtualAssistant():
             if learner_response:
                 return userin.say(learner_response)
             else:
-                omniscient_response = omniscient.respond(com, not args["silent"], userin, user_prefix, args["server"])
-                if omniscient_response:
-                    return userin.say(omniscient_response)
+                odqa_response = odqa.respond(com, not args["silent"], userin, user_prefix, args["server"])
+                if odqa_response:
+                    return userin.say(odqa_response)
                 else:
                     dc_response = dc.respond(original_com, user_prefix)
                     if dc_response:

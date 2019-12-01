@@ -39,7 +39,7 @@ db_session = DBSession()
 dragonfire.learner.db_session = db_session
 dragonfire.learner.is_server = True
 
-api_ref = API.Run(dragonfire.nlp, dragonfire.learner, dragonfire.omniscient, dragonfire.dc, dragonfire.coref, dragonfire.userin, REG_KEY, PORT, db_session, dont_block=True)
+api_ref = API.Run(dragonfire.nlp, dragonfire.learner, dragonfire.odqa, dragonfire.dc, dragonfire.coref, dragonfire.userin, REG_KEY, PORT, db_session, dont_block=True)
 time.sleep(5)
 
 
@@ -116,7 +116,7 @@ def test_api_learn(token):
     assert json.loads(response.text) == 'OK, I get it. the Sun is hot'
 
 
-def test_api_omni(token):
+def test_api_odqa(token):
     headers = {'Content-Type': 'application/x-www-form-urlencoded', 'Authorization': token}
     url = API_SERVER + '/omni'
     params = {"text": "Where is the Times Square?", "gender_prefix": "sir"}
