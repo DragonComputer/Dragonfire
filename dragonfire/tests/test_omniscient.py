@@ -33,10 +33,6 @@ def test_omniscient_respond(omniscient, question, answers):
     assert omniscient.respond(question, user_prefix="sir") in answers
 
 
-def test_wordnet_entity_determiner(omniscient):
-    assert omniscient.wordnet_entity_determiner("Luther", False, False) == ['PERSON']
-
-
 def test_phrase_cleaner(omniscient):
     assert omniscient.phrase_cleaner("modern, physics") == "modern physics"
 

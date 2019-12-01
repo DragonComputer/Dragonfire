@@ -35,14 +35,6 @@ class Omniscient():
         """
 
         self.nlp = nlp  # Load en_core_web_sm, English, 50 MB, default model
-        self.entity_map = {
-            'WHO': ['PERSON'],
-            'WHAT': ['PERSON', 'NORP', 'FACILITY', 'ORG', 'GPE', 'LOC', 'PRODUCT', 'EVENT', 'WORK_OF_ART', 'LANGUAGE', 'DATE', 'TIME', 'PERCENT', 'MONEY', 'QUANTITY', 'ORDINAL', 'CARDINAL'],
-            'WHEN': ['DATE', 'TIME', 'EVENT'],
-            'WHERE': ['FACILITY', 'GPE', 'LOC']
-        }  # Map wh question words to entity categories
-        self.coefficient = {'frequency': 0.36, 'precedence': 0.13, 'proximity': 0.21, 'mention': 0.30}  # Coefficients for scoring
-
         self.model = build_model(configs.squad.squad, download=True)
 
     def respond(self, com, tts_output=False, userin=None, user_prefix=None, is_server=False):
@@ -108,92 +100,6 @@ class Omniscient():
                     if not tts_output and not is_server: print(result)
                     if tts_output and not is_server: userin.say(result)
                     return result
-
-    def wordnet_entity_determiner(self, subject, tts_output, is_server, userin=None, user_prefix=None):
-        """Function to determine the named entity classification of the subject.
-
-        Args:
-            subject (str):  Subject that extracted from the user's input/command.
-            tts_output (bool):      Is text-to-speech output enabled?
-            is_server (bool):   Is Dragonfire running as an API server?
-
-        Keyword Args:
-            userin:                 :class:`dragonfire.utilities.TextToAction` instance.
-            user_prefix (str):      Prefix to address/call user when answering.
-
-        Returns:
-            (list) of (str)s: Entity list.
-
-        .. note::
-
-            `entity_samples_map` variable is used to fix some missing(or wrong) classififaction issue of spaCy NLP library detected while writing this code.
-
-        """
-
-        entity_samples_map = {
-            'PERSON': ['person', 'character', 'human', 'individual', 'name'],
-            'NORP': ['nationality', 'religion', 'politics'],
-            'FACILITY': ['building', 'airport', 'highway', 'bridge', 'port'],
-            'ORG': ['company', 'agency', 'institution', 'university'],
-            'GPE': ['country', 'city', 'state', 'address', 'capital'],
-            'LOC': ['geography', 'mountain', 'ocean', 'river'],
-            'PRODUCT': ['product', 'object', 'vehicle', 'food'],
-            'EVENT': ['hurricane', 'battle', 'war', 'sport'],
-            'WORK_OF_ART': ['art', 'book', 'song', 'painting'],
-            'LANGUAGE': ['language', 'accent', 'dialect', 'speech'],
-            'DATE': ['year', 'month', 'day'],
-            'TIME': ['time', 'hour', 'minute'],
-            'PERCENT': ['percent', 'rate', 'ratio', 'fee'],
-            'MONEY': ['money', 'cash', 'salary', 'wealth'],
-            'QUANTITY': ['measurement', 'amount', 'distance', 'height', 'population'],
-            'ORDINAL': ['ordinal', 'first', 'second', 'third'],
-            'CARDINAL': ['cardinal', 'number', 'amount', 'mathematics']
-        }  # entity samples to use it in WordNet similarity
-        doc = self.nlp(subject)  # spaCy does all kinds of NLP analysis in one function
-        subject = []  # empty list to hold the nouns in the subject string
-        for word in doc:  # for each word in the subject string
-            # if word.pos_ not in ['PUNCT','SYM','X','CONJ','DET','ADP','SPACE']:
-            if word.pos_ == 'NOUN':  # if word is a noun then
-                subject.append(word.text.lower())  # convert it to lowercase and append it
-        entity_scores = {}  # empty dictionary to hold entity scores
-        for entity, samples in entity_samples_map.items():  # iterate over the entity_samples_map
-            entity_scores[entity] = 0  # initial score of the entity is 0
-            for sample in samples:  # for each sample in the samples
-                sample_wn = wn.synset(sample + '.n.01')  # convert the sample to a WordNet noun
-                for word in subject:  # for each word in the subject
-                    try:
-                        word_wn = wn.synset(word + '.n.01')  # convert the word to a WodNet noun
-                        entity_scores[entity] += word_wn.path_similarity(sample_wn)  # calculate the similarity using WordNet path_similarity() and add it to the score of the entity
-                    except WordNetError:
-                        if not is_server:
-                            message = "Sorry, " + user_prefix + ". But I'm unable to understand the word '" + word + "'."
-                            userin.execute([" "], "NLP(WordNet) error. Unrecognized word: " + word)
-                            if not tts_output: print(message)
-                            if tts_output: userin.say(message)
-                            return False
-            entity_scores[entity] = entity_scores[entity] / len(samples)  # to calculate the average; divide the total by the amount of samples
-        if not tts_output and not is_server: print(sorted(entity_scores.items(), key=lambda x: x[1])[::-1][:3])  # if not tts_output print the best 3 result
-        result = sorted(entity_scores.items(), key=lambda x: x[1])[::-1][0][0]  # assign the best result
-        if result == 'FACILITY': return [result, 'ORG']  # currently, spaCy is incorrectly classifying many entities that belongs to FACILITY as ORG. Because of that include ORG to the return
-        if result == 'PRODUCT': return [result, 'ORG']  # currently, spaCy is incorrectly classifying many entities that belongs to PRODUCT as ORG. Because of that include ORG to the return
-        return [result]  # if there is no exception on above lines then return only one result but in an array. For example ['PERSON']
-
-    def randomize_coefficients(self):
-        """Function to randomize the coefficients for the purpose of optimizing their values.
-
-        Returns:
-            dict:  Randomized coefficients.
-
-        .. note::
-
-            This function is being used only for TESTING purposes.
-
-        """
-        coeff1 = round(uniform(0.00, 0.98), 2)
-        coeff2 = round(uniform(0.00, (1 - coeff1)), 2)
-        coeff3 = round(uniform(0.00, (1 - (coeff1 + coeff2))), 2)
-        coeff4 = 1 - (coeff1 + coeff2 + coeff3)
-        self.coefficient = {'frequency': coeff1, 'precedence': coeff2, 'proximity': coeff3, 'mention': coeff4}
 
     def phrase_cleaner(self, phrase):
         """Function to clean unnecessary words from the given phrase/string. (Punctuation mark, symbol, unknown, conjunction, determiner, subordinating or preposition and space)
