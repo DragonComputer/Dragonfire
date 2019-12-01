@@ -26,4 +26,4 @@ jobs:
         sudo pip3 install pytest pytest-cov codecov
         xvfb-run --auto-servernum python3 -m pytest --cov=dragonfire/ --capture=sys --disable-pytest-warnings -vv
         # send the code coverage report to Codeconv
-        codecov
+        codecov --token=${{ secrets.CODECOV_TOKEN }}
