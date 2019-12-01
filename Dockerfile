@@ -22,6 +22,9 @@ ADD . /app
 # Install pip3
 RUN apt-get install -y python3-pip
 
+# Install git
+RUN apt-get install -y git
+
 # Install Dragonfire Python package
 RUN pip3 install .
 
