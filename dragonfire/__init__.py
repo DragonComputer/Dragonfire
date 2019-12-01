@@ -28,6 +28,11 @@ from random import choice  # Generate pseudo-random numbers
 import shutil  # High-level file operations
 import readline  # GNU readline interface
 
+import logging  # Logging facility for Python
+logging.getLogger('tensorflow').setLevel(logging.ERROR)
+import warnings  # Warning control
+warnings.simplefilter(action='ignore', category=FutureWarning)
+
 from dragonfire.learn import Learner  # Submodule of Dragonfire that forms her learning ability
 from dragonfire.nlplib import Classifier, Helper  # Submodule of Dragonfire to handle extra NLP tasks
 from dragonfire.omniscient import Omniscient  # Submodule of Dragonfire that serves as a Question Answering Engine
