@@ -92,7 +92,7 @@ def start(args, userin):
         userin:     :class:`dragonfire.utilities.TextToAction` instance.
     """
 
-    if 'TRAVIS' in os.environ or args["db"] == "mysql":
+    if args["db"] == "mysql":
         engine = create_engine('mysql+pymysql://' + Config.MYSQL_USER + ':' + Config.MYSQL_PASS + '@' + Config.MYSQL_HOST + '/' + Config.MYSQL_DB)
     else:
         engine = create_engine('sqlite:///dragonfire.db', connect_args={'check_same_thread': False}, echo=True)

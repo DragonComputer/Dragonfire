@@ -35,10 +35,6 @@ the open-source virtual assistant for Ubuntu based Linux distributions
     <img alt="Read the Docs" src="https://img.shields.io/readthedocs/dragonfire?logo=Read%20the%20Docs&style=flat-square">
   </a>
 
-  <a href="https://travis-ci.org/DragonComputer/Dragonfire/">
-    <img alt="Travis CI Build" src="https://img.shields.io/travis/DragonComputer/Dragonfire?logo=Travis&style=flat-square">
-  </a>
-
   <a href="https://codecov.io/gh/DragonComputer/Dragonfire">
     <img alt="Code Coverage (Codecov)" src="https://img.shields.io/codecov/c/github/DragonComputer/Dragonfire?logo=Codecov&style=flat-square">
   </a>

@@ -26,12 +26,8 @@ import pytest
 REG_KEY = "REG_KEY"
 PORT = 3301
 API_SERVER = 'http://localhost:' + str(PORT)
-is_travis = 'TRAVIS' in os.environ
 
-if is_travis:
-    engine = create_engine('mysql+pymysql://' + Config.MYSQL_USER + ':' + Config.MYSQL_PASS + '@' + Config.MYSQL_HOST + '/' + Config.MYSQL_DB)
-else:
-    engine = create_engine('sqlite:///dragonfire.db', connect_args={'check_same_thread': False}, echo=True)
+engine = create_engine('sqlite:///dragonfire.db', connect_args={'check_same_thread': False}, echo=True)
 Base.metadata.create_all(engine)
 Base.metadata.bind = engine
 DBSession = sessionmaker(bind=engine)
