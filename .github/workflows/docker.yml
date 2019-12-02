@@ -1,6 +1,11 @@
 name: docker
 
-on: [push]
+on:
+  push:
+    paths:
+    - 'Dockerfile'
+    - 'setup.py'
+    - 'install*.sh'
 
 jobs:
   build:
