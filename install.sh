@@ -1,3 +1,3 @@
 #!/bin/bash
 
-sh debian/postinst "$@"
+bash ${BASH_SOURCE%/*}/debian/postinst "$@"
