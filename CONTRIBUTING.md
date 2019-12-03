@@ -6,41 +6,38 @@ The following is a set of guidelines for contributing to Dragonfire an open sour
 
 #### Table Of Contents
 
-- [Code of Conduct](#code-of-conduct)
-
-- [Getting Started](#getting-started)
-  - [Fork The Repo](#fork-the-repo)
-    - [Step 1: Set Up Git](#step-1-set-up-git)
-    - [Step 2: Fork The Repo](#step-2-fork-the-repo)
-    - [Step 3: Create a local clone of your fork](#step-3-create-a-local-clone-of-your-fork)
-  - [Install Dragonfire in Development Mode](#install-dragonfire-in-development-mode)
-    - [Use It](#use-it)
-    - [Missing Software Packages (Optional)](#missing-software-packages-optional)
-    - [Choice for Code Editor](#choice-for-code-editor)
-    - [About Packaging](#about-packaging)
-
-- [How Can I Contribute?](#how-can-i-contribute)
-  - [Decide What To Do](#decide-what-to-do)
-    - [Reporting Bugs](#reporting-bugs)
-    - [Suggesting Enhancements](#suggesting-enhancements)
-    - [Projects](#projects)
-    - [Your First Code Contribution](#your-first-code-contribution)
-  - [Push & Pull](#push--pull)
-    - [Step 1: Go to the local clone of your fork](#step-1-go-to-the-local-clone-of-your-fork)
-    - [Step 2: Pull the Latest Changes](#step-2-pull-the-latest-changes)
-    - [Step 3: Write Your Code](#step-3-write-your-code)
-    - [Step 4: Push To Your Fork](#step-4-push-to-your-fork)
-    - [Step 5: Creating a Pull Request](#step-5-creating-a-pull-request)
-
-- [Styleguides](#styleguides)
-  - [Git Commit Messages](#git-commit-messages)
-  - [Python Styleguide](#python-styleguide)
-
-- [Troubleshooting](https://github.com/DragonComputer/Dragonfire/blob/master/docs/TROUBLESHOOTING.md#troubleshooting)
-
-- [Build the Debian package](#build-the-debian-package)
-
-- [API Reference](#api-reference)
+- [Contributing to Dragonfire](#contributing-to-dragonfire)
+      - [Table Of Contents](#table-of-contents)
+  - [Code of Conduct](#code-of-conduct)
+      - [I don't want to read this whole thing I just have a question!!!](#i-dont-want-to-read-this-whole-thing-i-just-have-a-question)
+  - [Getting Started](#getting-started)
+    - [Fork The Repo](#fork-the-repo)
+      - [Step 1: Set Up Git](#step-1-set-up-git)
+      - [Step 2: Fork The Repo](#step-2-fork-the-repo)
+      - [Step 3: Create a local clone of your fork](#step-3-create-a-local-clone-of-your-fork)
+    - [Install Dragonfire in Development Mode](#install-dragonfire-in-development-mode)
+      - [Use It](#use-it)
+      - [Missing Software Packages (Optional)](#missing-software-packages-optional)
+      - [Choice for Code Editor](#choice-for-code-editor)
+      - [About Packaging](#about-packaging)
+  - [How Can I Contribute?](#how-can-i-contribute)
+    - [Decide What To Do](#decide-what-to-do)
+      - [Reporting Bugs](#reporting-bugs)
+      - [Suggesting Enhancements](#suggesting-enhancements)
+      - [Projects](#projects)
+      - [Your First Code Contribution](#your-first-code-contribution)
+    - [Push & Pull](#push--pull)
+      - [Step 1: Go to the local clone of your fork](#step-1-go-to-the-local-clone-of-your-fork)
+      - [Step 2: Pull the Latest Changes](#step-2-pull-the-latest-changes)
+      - [Step 3: Write Your Code](#step-3-write-your-code)
+      - [Step 4: Push To Your Fork](#step-4-push-to-your-fork)
+      - [Step 5: Creating a Pull Request](#step-5-creating-a-pull-request)
+  - [Styleguides](#styleguides)
+    - [Git Commit Messages](#git-commit-messages)
+    - [Python Styleguide](#python-styleguide)
+  - [Troubleshooting](#troubleshooting)
+  - [Build the Debian package](#build-the-debian-package)
+  - [API Reference](#api-reference)
 
 ## Code of Conduct
 
@@ -117,8 +114,8 @@ You need to install Dragonfire with `sudo` rights, even if you are installing ed
 ```Shell
 git clone https://github.com/YOUR-USERNAME/Dragonfire.git
 cd Dragonfire/
-chmod +x install-dev.sh
-sudo ./install-dev.sh
+chmod +x install.sh
+sudo ./install.sh --dev --pip
 ```
 
 #### Use It
@@ -257,6 +254,10 @@ All Python must adhere to [PEP 8](https://www.python.org/dev/peps/pep-0008/).
 [missing-dependency]:https://github.com/DragonComputer/Dragonfire/issues?q=is%3Aissue+is%3Aopen+label%3A%22missing+dependency%22
 [enhancement]:https://github.com/DragonComputer/Dragonfire/issues?q=is%3Aissue+is%3Aopen+label%3Aenhancement
 [bug]:https://github.com/DragonComputer/Dragonfire/issues?q=is%3Aissue+is%3Aopen+label%3Abug
+
+## Troubleshooting
+
+See the [Troubleshooting](https://github.com/DragonComputer/Dragonfire/blob/master/docs/TROUBLESHOOTING.md#troubleshooting) guide.
 
 ## Build the Debian package
 
