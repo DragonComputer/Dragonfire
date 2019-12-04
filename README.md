@@ -98,7 +98,7 @@ sudo dpkg -i dragonfire_1.0.4_amd64.deb
 or clone the GitHub repository and run
 
 ```Shell
-make install
+sudo make install
 ```
 
 in the repository directory.
