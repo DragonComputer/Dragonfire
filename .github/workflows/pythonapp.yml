@@ -8,14 +8,16 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/cache@v1
+    - uses: actions/checkout@v1
+
+    - name: Cache pip packages
+      uses: actions/cache@v1
       with:
         path: ~/.cache/pip
         key: ${{ runner.os }}-pip-${{ hashFiles('**/setup.py') }}
         restore-keys: |
           ${{ runner.os }}-pip-
 
-    - uses: actions/checkout@v1
     - name: Install dependencies
       run: |
         sudo make dev-install-no-model
