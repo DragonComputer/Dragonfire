@@ -9,7 +9,6 @@ jobs:
 
     steps:
     - uses: actions/cache@v1
-    - name: Get pip cache
       with:
         path: ~/.cache/pip
         key: ${{ runner.os }}-pip-${{ hashFiles('**/setup.py') }}
