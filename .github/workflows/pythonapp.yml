@@ -27,9 +27,17 @@ jobs:
       uses: actions/cache@v1
       with:
         path: ${{ steps.spacy-cache.outputs.dir }}
-        key: ${{ runner.os }}-spacy-${{ hashFiles('**/setup.py') }}
+        key: ${{ runner.os }}-spacy-${{ hashFiles('**/debian/postinst') }}
         restore-keys: |
           ${{ runner.os }}-spacy-
+
+    - name: Cache DeepPavlov models
+      uses: actions/cache@v1
+      with:
+        path: ~/.deeppavlov/
+        key: ${{ runner.os }}-deeppavlov-${{ hashFiles('**/debian/postinst') }}
+        restore-keys: |
+          ${{ runner.os }}-deeppavlov-
 
     - name: Install dependencies
       run: |
