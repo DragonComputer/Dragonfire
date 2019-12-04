@@ -18,6 +18,19 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-pip-
 
+    - name: Get spaCy cache path
+      id: spacy-cache
+      run: |
+        python3 -c "import site; print('::set-output name=dir::' + site.getsitepackages()[0] + '/en_core_web_sm')"
+
+    - name: Cache spaCy en_core_web_sm model
+      uses: actions/cache@v1
+      with:
+        path: ${{ steps.spacy-cache.outputs.dir }}
+        key: ${{ runner.os }}-spacy-${{ hashFiles('**/setup.py') }}
+        restore-keys: |
+          ${{ runner.os }}-spacy-
+
     - name: Install dependencies
       run: |
         sudo make dev-install-no-model
