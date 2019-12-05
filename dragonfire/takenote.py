@@ -446,9 +446,18 @@ class NoteTaker():
                                                             NotePad.remind_time_stamp == remind_time_stamp,
                                                             NotePad.is_active == is_active).one_or_none()
             if not notepad:
-                new_notepad = NotePad(note=note, is_todolist=is_todolist, list_name=list_name,
-                                      list_sequence=list_sequence, is_reminder=is_reminder,
-                                      user_id=user_id, is_public=is_public, category=category, remind_time_stamp=remind_time_stamp, is_active=is_active)
+                new_notepad = NotePad(
+                    note=note,
+                    is_todolist=is_todolist,
+                    list_name=list_name,
+                    list_sequence=list_sequence,
+                    is_reminder=is_reminder,
+                    user_id=user_id,
+                    is_public=is_public,
+                    category=category,
+                    remind_time_stamp=remind_time_stamp,
+                    is_active=is_active
+                )
                 self.db_session.add(new_notepad)
                 self.db_session.commit()
             else:

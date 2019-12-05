@@ -337,10 +337,10 @@ def answer(text, gender_prefix, user_id, previous=None):
 
     Combines the results of these methods into a single JSON document:
 
-     - :func:`dragonfire.arithmetic.arithmetic_parse` function
-     - :func:`dragonfire.learn.Learner.respond` method
-     - :func:`dragonfire.odqa.ODQA.respond` method
-     - :func:`dragonfire.deepconv.DeepConversation.respond` method
+    - :func:`dragonfire.arithmetic.arithmetic_parse` function
+    - :func:`dragonfire.learn.Learner.respond` method
+    - :func:`dragonfire.odqa.ODQA.respond` method
+    - :func:`dragonfire.deepconv.DeepConversation.respond` method
 
     Args:
         text (str):             User's current command.
