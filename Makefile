@@ -24,6 +24,9 @@ dev-pip-uninstall:
 	python3 setup.py develop --uninstall
 
 
+docker-build:
+	./install.sh --docker
+
 docker-pull:
 	docker pull dragoncomputer/dragonfire
 

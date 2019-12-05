@@ -20,7 +20,7 @@ WORKDIR /app
 ADD . /app
 
 # Install Dragonfire
-RUN make dev-install
+RUN make docker-build
 
 # Make port 3301 available to the world outside this container
 EXPOSE 3301
