@@ -14,19 +14,5 @@ RUN apt install -y git make
 # Install OpenSSL and libffi for Tensorflow
 RUN apt -qqy install libssl-dev libffi-dev
 
-# Set the working directory to /app
-WORKDIR /app
-# Copy the current directory contents into the container at /app
-ADD . /app
-
 # Install Dragonfire
 RUN make docker-build
-
-# Make port 3301 available to the world outside this container
-EXPOSE 3301
-
-# Start Dragonfire
-ENTRYPOINT ["dragonfire"]
-
-# Default arguments
-CMD ["--server", "API_KEY"]
