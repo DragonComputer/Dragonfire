@@ -8,6 +8,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    - uses: docker://dragoncomputer/dragonfire:latest
     - uses: actions/checkout@v1
 
     - name: Cache pip packages
