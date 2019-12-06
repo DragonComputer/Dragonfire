@@ -8,11 +8,11 @@ ARG DEBIAN_FRONTEND=noninteractive
 LABEL maintainer="Mehmet Mert Yıldıran mert.yildiran@boun.edu.tr"
 
 # Update the apt index
-RUN apt update
-# Install git and make
-RUN apt install -y git make
+RUN apt-get update
+# Install git, make and wget
+RUN apt-get install -y git make wget
 # Install OpenSSL and libffi for Tensorflow
-RUN apt -qqy install libssl-dev libffi-dev
+RUN apt-get -qqy install libssl-dev libffi-dev
 
 # Set the working directory to /app
 WORKDIR /app
