@@ -20,4 +20,4 @@ WORKDIR /app
 ADD . /app
 
 # Install Dragonfire
-RUN make docker-build
+RUN make dev-install

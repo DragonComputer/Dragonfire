@@ -11,34 +11,18 @@ jobs:
     - uses: docker://dragoncomputer/dragonfire:latest
     - uses: actions/checkout@v1
 
+    - name: Get pip cache
+      id: pip-cache
+      run: |
+        python3 -c "from pip.utils.appdirs import user_cache_dir; print('::set-output name=dir::' + user_cache_dir('pip'))"
+
     - name: Cache pip packages
       uses: actions/cache@v1
       with:
-        path: ~/.cache/pip
+        path: ${{ steps.pip-cache.outputs.dir }}
         key: ${{ runner.os }}-pip-${{ hashFiles('**/setup.py') }}
         restore-keys: |
           ${{ runner.os }}-pip-
-
-    - name: Get spaCy cache path
-      id: spacy-cache
-      run: |
-        python3 -c "import site; print('::set-output name=dir::' + site.getsitepackages()[0] + '/en_core_web_sm')"
-
-    - name: Cache spaCy en_core_web_sm model
-      uses: actions/cache@v1
-      with:
-        path: ${{ steps.spacy-cache.outputs.dir }}
-        key: ${{ runner.os }}-spacy-${{ hashFiles('**/debian/postinst') }}
-        restore-keys: |
-          ${{ runner.os }}-spacy-
-
-    - name: Cache DeepPavlov models
-      uses: actions/cache@v1
-      with:
-        path: ~/.deeppavlov/
-        key: ${{ runner.os }}-deeppavlov-${{ hashFiles('**/debian/postinst') }}
-        restore-keys: |
-          ${{ runner.os }}-deeppavlov-
 
     - name: Install dependencies
       run: |

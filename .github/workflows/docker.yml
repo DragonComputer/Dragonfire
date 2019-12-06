@@ -6,8 +6,8 @@ on:
     - master
     paths:
     - 'Dockerfile'
-    - 'setup.py'
     - 'install*.sh'
+    - 'debian/postinst'
 
 jobs:
   build:
