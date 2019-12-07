@@ -7,20 +7,6 @@ the open-source virtual assistant for Ubuntu based Linux distributions
 <p align="center"><sup><i>Special thanks to Jassu Ilama for the beautiful 3D modelling and material design of this avatar.</i></sup></p>
 
 <p align="center">
-  <a href="https://github.com/DragonComputer/Dragonfire/actions?query=workflow%3ADocker%20Build">
-    <img alt="GitHub Workflow Docker Build Status" src="https://github.com/DragonComputer/Dragonfire/workflows/Docker%20Build/badge.svg">
-  </a>
-
-  <a href="https://github.com/DragonComputer/Dragonfire/actions?query=workflow%3ALinter%20Checks">
-    <img alt="GitHub Workflow Linter Checks Status" src="https://github.com/DragonComputer/Dragonfire/workflows/Linter%20Checks/badge.svg">
-  </a>
-
-  <a href="https://github.com/DragonComputer/Dragonfire/actions?query=workflow%3AAutomated%20Tests">
-    <img alt="GitHub Workflow Automated Tests Status" src="https://github.com/DragonComputer/Dragonfire/workflows/Automated%20Tests/badge.svg">
-  </a>
-</p>
-
-<p align="center">
   <a href="https://github.com/DragonComputer/Dragonfire/releases/latest">
     <img alt="GitHub Latest Tag" src="https://img.shields.io/github/v/release/DragonComputer/Dragonfire?logo=GitHub&style=flat-square">
   </a>
@@ -31,6 +17,18 @@ the open-source virtual assistant for Ubuntu based Linux distributions
 
   <a href="https://github.com/DragonComputer/Dragonfire/blob/master/LICENSE.txt">
     <img alt="GitHub License" src="https://img.shields.io/github/license/DragonComputer/Dragonfire?logo=GitHub&style=flat-square">
+  </a>
+
+  <a href="https://github.com/DragonComputer/Dragonfire/actions?query=workflow%3ALinter%20Checks">
+    <img alt="GitHub Workflow Linter Checks Status" src="https://img.shields.io/github/workflow/status/DragonComputer/Dragonfire/Linter%20Checks?logo=GitHub&label=linter%20checks&style=flat-square">
+  </a>
+
+  <a href="https://github.com/DragonComputer/Dragonfire/actions?query=workflow%3AAutomated%20Tests">
+    <img alt="GitHub Workflow Automated Tests Status" src="https://img.shields.io/github/workflow/status/DragonComputer/Dragonfire/Automated%20Tests?logo=GitHub&label=automated%20tests&style=flat-square">
+  </a>
+
+  <a href="https://github.com/DragonComputer/Dragonfire/actions?query=workflow%3ADocker%20Build">
+    <img alt="GitHub Workflow Docker Build Status" src="https://img.shields.io/github/workflow/status/DragonComputer/Dragonfire/Docker%20Build?logo=Docker&label=docker%20build&style=flat-square">
   </a>
 
   <a href="https://hub.docker.com/repository/docker/dragoncomputer/dragonfire">
