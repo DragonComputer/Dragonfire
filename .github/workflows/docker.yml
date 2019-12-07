@@ -19,7 +19,7 @@ jobs:
     - name: Publish to GitHub Registry
       uses: elgohr/Publish-Docker-Github-Action@master
       with:
-        name: dragoncomputer/dragonfire
+        name: dragoncomputer/dragonfire/latest
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
         registry: docker.pkg.github.com
