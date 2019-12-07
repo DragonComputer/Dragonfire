@@ -23,7 +23,6 @@ jobs:
         username: ${{ secrets.GITHUB_PACKAGE_REGISTRY_USERNAME }}
         password: ${{ secrets.GITHUB_PACKAGE_REGISTRY_TOKEN }}
         registry: docker.pkg.github.com
-        cache: ${{ github.event_name != 'schedule' }}
 
   docker-hub:
     runs-on: ubuntu-latest
