@@ -7,6 +7,12 @@ the open-source virtual assistant for Ubuntu based Linux distributions
 <p align="center"><sup><i>Special thanks to Jassu Ilama for the beautiful 3D modelling and material design of this avatar.</i></sup></p>
 
 <p align="center">
+  <a href="https://github.com/DragonComputer/Dragonfire/actions?query=workflow%3ADocker%20Build">
+    <img alt="GitHub Workflow Docker Build Status" src="https://github.com/DragonComputer/Dragonfire/workflows/Docker%20Build/badge.svg">
+  </a>
+</p>
+
+<p align="center">
   <a href="https://github.com/DragonComputer/Dragonfire/releases/latest">
     <img alt="GitHub Latest Tag" src="https://img.shields.io/github/v/release/DragonComputer/Dragonfire?logo=GitHub&style=flat-square">
   </a>
@@ -21,10 +27,6 @@ the open-source virtual assistant for Ubuntu based Linux distributions
 
   <a href="https://github.com/DragonComputer/Dragonfire/actions?query=workflow%3Abuild">
     <img alt="GitHub Workflow Status" src="https://img.shields.io/github/workflow/status/DragonComputer/Dragonfire/build?logo=GitHub&style=flat-square">
-  </a>
-
-  <a href="https://github.com/DragonComputer/Dragonfire/actions?query=workflow%3Adocker">
-    <img alt="GitHub Workflow Docker Build Status" src="https://img.shields.io/github/workflow/status/DragonComputer/Dragonfire/docker?logo=Docker&style=flat-square">
   </a>
 
   <a href="https://hub.docker.com/repository/docker/dragoncomputer/dragonfire">

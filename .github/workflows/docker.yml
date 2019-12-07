@@ -1,4 +1,4 @@
-name: docker
+name: Docker Build
 
 on:
   push:
@@ -8,15 +8,31 @@ on:
     - 'Dockerfile'
     - 'install*.sh'
     - 'debian/postinst'
+  schedule:
+    - cron: '0 2 * * 0' # Weekly on Sundays at 02:00
 
 jobs:
-  build:
+  github:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@master
-    - name: Publish to Registry
+    - name: Publish to GitHub Registry
       uses: elgohr/Publish-Docker-Github-Action@master
       with:
         name: dragoncomputer/dragonfire
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
+        registry: docker.pkg.github.com
+        cache: ${{ github.event_name != 'schedule' }}
+
+  docker-hub:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@master
+    - name: Publish to Docker Hub
+      uses: elgohr/Publish-Docker-Github-Action@master
+      with:
+        name: dragoncomputer/dragonfire
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
+        cache: ${{ github.event_name != 'schedule' }}
