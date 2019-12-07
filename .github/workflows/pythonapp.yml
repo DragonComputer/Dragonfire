@@ -6,9 +6,10 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
+    container:
+      image: docker://dragoncomputer/dragonfire:latest
 
     steps:
-    - uses: docker://dragoncomputer/dragonfire:latest
     - uses: actions/checkout@v1
 
     - name: Get pip cache
@@ -26,13 +27,13 @@ jobs:
 
     - name: Install dependencies
       run: |
-        sudo make dev-install-no-model
-        sudo pip3 install pytest-faulthandler
-        sudo apt install xvfb
+        pip3 install -e .
+        pip3 install pytest-faulthandler
+        apt-get -y install xvfb
 
     - name: Lint with flake8
       run: |
-        sudo pip3 install flake8
+        pip3 install flake8
         # stop the build if there are Python syntax errors or undefined names
         flake8 . --count --select=E9,F63,F72,F82 --show-source --statistics
         # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
@@ -40,7 +41,7 @@ jobs:
 
     - name: Test with pytest
       run: |
-        sudo pip3 install pytest pytest-cov codecov
+        pip3 install pytest pytest-cov codecov
         xvfb-run --auto-servernum python3 -m pytest --cov=dragonfire/ --capture=sys --disable-pytest-warnings -vv
         # send the code coverage report to Codeconv
         codecov --token=${{ secrets.CODECOV_TOKEN }}
