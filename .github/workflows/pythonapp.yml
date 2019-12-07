@@ -7,7 +7,7 @@ jobs:
 
     runs-on: ubuntu-latest
     container:
-      image: docker://dragoncomputer/dragonfire:latest
+      image: dragoncomputer/dragonfire:latest
 
     steps:
     - uses: actions/checkout@v1

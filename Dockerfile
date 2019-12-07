@@ -5,7 +5,7 @@ ENV PYTHONUNBUFFERED 1
 ARG DEBIAN_FRONTEND=noninteractive
 
 # Maintainer
-LABEL maintainer="Mehmet Mert Yıldıran mert.yildiran@boun.edu.tr"
+LABEL maintainer="Mehmet Mert Yildiran mert.yildiran@boun.edu.tr"
 
 # Update the apt index
 RUN apt-get update
