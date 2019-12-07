@@ -12,15 +12,10 @@ jobs:
     steps:
     - uses: actions/checkout@v1
 
-    - name: Get pip cache
-      id: pip-cache
-      run: |
-        python3 -c "from pip.utils.appdirs import user_cache_dir; print('::set-output name=dir::' + user_cache_dir('pip'))"
-
     - name: Cache pip packages
       uses: actions/cache@v1
       with:
-        path: ${{ steps.pip-cache.outputs.dir }}
+        path: /root/.cache/pip
         key: ${{ runner.os }}-pip-${{ hashFiles('**/setup.py') }}
         restore-keys: |
           ${{ runner.os }}-pip-
