@@ -10,6 +10,14 @@ the open-source virtual assistant for Ubuntu based Linux distributions
   <a href="https://github.com/DragonComputer/Dragonfire/actions?query=workflow%3ADocker%20Build">
     <img alt="GitHub Workflow Docker Build Status" src="https://github.com/DragonComputer/Dragonfire/workflows/Docker%20Build/badge.svg">
   </a>
+
+  <a href="https://github.com/DragonComputer/Dragonfire/actions?query=workflow%3ALinter%20Checks">
+    <img alt="GitHub Workflow Linter Checks Status" src="https://github.com/DragonComputer/Dragonfire/workflows/Linter%20Checks/badge.svg">
+  </a>
+
+  <a href="https://github.com/DragonComputer/Dragonfire/actions?query=workflow%3AAutomated%20Tests">
+    <img alt="GitHub Workflow Automated Tests Status" src="https://github.com/DragonComputer/Dragonfire/workflows/Automated%20Tests/badge.svg">
+  </a>
 </p>
 
 <p align="center">
@@ -23,10 +31,6 @@ the open-source virtual assistant for Ubuntu based Linux distributions
 
   <a href="https://github.com/DragonComputer/Dragonfire/blob/master/LICENSE.txt">
     <img alt="GitHub License" src="https://img.shields.io/github/license/DragonComputer/Dragonfire?logo=GitHub&style=flat-square">
-  </a>
-
-  <a href="https://github.com/DragonComputer/Dragonfire/actions?query=workflow%3Abuild">
-    <img alt="GitHub Workflow Status" src="https://img.shields.io/github/workflow/status/DragonComputer/Dragonfire/build?logo=GitHub&style=flat-square">
   </a>
 
   <a href="https://hub.docker.com/repository/docker/dragoncomputer/dragonfire">

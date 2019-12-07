@@ -1,4 +1,4 @@
-name: Automated Tests
+name: Linter Checks
 
 on: [push]
 
@@ -26,9 +26,10 @@ jobs:
         pip3 install pytest-faulthandler
         apt-get -y install xvfb
 
-    - name: Test with pytest
+    - name: Lint with flake8
       run: |
-        pip3 install pytest pytest-cov codecov
-        xvfb-run --auto-servernum python3 -m pytest --cov=dragonfire/ --capture=sys --disable-pytest-warnings -vv
-        # send the code coverage report to Codeconv
-        codecov --token=${{ secrets.CODECOV_TOKEN }}
+        pip3 install flake8
+        # stop the build if there are Python syntax errors or undefined names
+        flake8 . --count --select=E9,F63,F72,F82 --show-source --statistics
+        # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
+        flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
