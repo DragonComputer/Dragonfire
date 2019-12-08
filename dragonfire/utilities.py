@@ -22,6 +22,7 @@ try:
 except ImportError:
     import io as cStringIO  # Read and write strings as files (Python 3.x)
 import sys  # System-specific parameters and functions
+from threading import Lock  # Thread-based parallelism
 
 import realhud  # Dragonfire's Python C extension to display a click-through, transparent background images or GIFs
 
@@ -37,6 +38,7 @@ FNULL = open(os.devnull, 'w')
 TWITTER_CHAR_LIMIT = 280
 
 songRunning = False
+s_print_lock = Lock()
 
 
 class TextToAction:
@@ -251,3 +253,15 @@ def nostderr():
     sys.stderr = cStringIO.StringIO()
     yield
     sys.stderr = save_stderr
+
+
+def split(a, n):
+    """Function to split a list into N parts of approximately equal length"""
+    k, m = divmod(len(a), n)
+    return (a[i * k + min(i, m):(i + 1) * k + min(i + 1, m)] for i in range(n))
+
+
+def s_print(*a, **b):
+    """Thread safe print function"""
+    with s_print_lock:
+        print(*a, **b)

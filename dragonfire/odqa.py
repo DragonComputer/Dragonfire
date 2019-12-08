@@ -190,10 +190,18 @@ class ODQA():
         import json
         import urllib.request
         import random
+        import multiprocessing
+        import threading
         from termcolor import colored
 
+        from dragonfire.utilities import split, s_print
+
         HOTPOTQA_DATASET_URL = 'http://curtis.ml.cmu.edu/datasets/hotpot/hotpot_dev_fullwiki_v1.json'
-        SAMPLE_LENGTH = None
+        SAMPLE_LENGTH = 100
+
+        THREAD_MULTIPLIER = 1
+        CPU_COUNT = multiprocessing.cpu_count()
+        THREAD_COUNT = CPU_COUNT * THREAD_MULTIPLIER
 
         correct_counter = 0
         wrong_counter = 0
@@ -205,39 +213,88 @@ class ODQA():
         else:
             samples = json.loads(dataset)
 
-        print('\nStarting to test {0} questions'.format(len(samples)))
-
         question_number = 0
         for sample in samples:
             question_number += 1
-            print('\n({0})'.format(question_number))
-            question = sample['question']
-            correct_answer = sample['answer']
-            print('Question: {0}'.format(question))
-            print('Correct Answer: {0}'.format(correct_answer))
-            if not question or not correct_answer:
-                print(colored('Dataset contains an empty question or answer, so it\'s skipped!', 'yellow'))
-                continue
+            sample['question_number'] = question_number
 
-            answer = self.respond(question, user_prefix="sir")
-            print('Our Answer: {0}'.format(answer))
-            if not isinstance(answer, str):
-                wrong_counter += 1
-                print(colored('WRONG', 'red'))
-            elif answer in correct_answer:
-                correct_counter += 1
-                print(colored('CORRECT', 'green'))
-            else:
-                wrong_counter += 1
-                print(colored('WRONG', 'red'))
+        print('\nThread Count: {0}\n'.format(THREAD_COUNT))
+        print('\nStarting to test {0} questions'.format(len(samples)))
 
-        success = correct_counter / (correct_counter + wrong_counter)
+        samples_split = list(split(samples, THREAD_COUNT))
+        results = []
+        threads = []
+        for j in range(THREAD_COUNT):
+            t = threading.Thread(
+                target=self.async_performer,
+                args=(
+                    j,
+                    samples_split[j],
+                    results,
+                    s_print
+                )
+            )
+
+            t.daemon = True
+            t.start()
+            threads.append(t)
+
+        for t in threads:
+            t.join()
+
+        print(colored('\n(Correct, Wrong) Pairs: {0}\n'.format(results), 'yellow'))
+
+        correct_total = sum([pair[0] for pair in results])
+        wrong_total = sum([pair[1] for pair in results])
+
+        success = correct_total / (correct_total + wrong_total)
 
         print(colored('\nPerformance: {0}\n'.format(success), 'yellow'))
 
-        if success > 0.4:
+        if success >= 0.05:
             print(colored('SUCCESS!', 'green'))
             exit(0)
         else:
             print(colored('FAILURE!', 'red'))
             exit(1)
+
+    def async_performer(self, thread_number, samples, results, s_print):
+        s_print('\nThead {0} is started.\n'.format(thread_number + 1))
+        from termcolor import colored
+
+        correct_counter = 0
+        wrong_counter = 0
+
+        for sample in samples:
+            out = ''
+            out += '\n({0})'.format(sample['question_number'])
+            question = sample['question']
+            correct_answer = sample['answer']
+            out += '\nQuestion: {0}'.format(question)
+            out += '\nCorrect Answer: {0}'.format(correct_answer)
+            if not question or not correct_answer:
+                out += colored('\nDataset contains an empty question or answer, so it\'s skipped!', 'yellow')
+                continue
+
+            answer = self.respond(question, user_prefix="sir", is_server=True)
+            out += '\nOur Answer: {0}'.format(answer)
+            if not isinstance(answer, str):
+                wrong_counter += 1
+                out += colored('\nWRONG', 'red')
+            elif answer in correct_answer:
+                correct_counter += 1
+                out += colored('\nCORRECT', 'green')
+            else:
+                wrong_counter += 1
+                out += colored('\nWRONG', 'red')
+
+            s_print(out)
+
+        results.append((correct_counter, wrong_counter))
+        return True
+
+
+if __name__ == '__main__':
+    import spacy
+    odqa = ODQA(spacy.load('en'))
+    odqa.check_how_odqa_performs()
