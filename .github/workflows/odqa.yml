@@ -1,0 +1,29 @@
+name: ODQA Performance
+
+on: [push]
+
+jobs:
+  main:
+
+    runs-on: ubuntu-latest
+    container:
+      image: docker://dragoncomputer/dragonfire:latest
+
+    steps:
+    - uses: actions/checkout@v1
+
+    - name: Cache pip packages
+      uses: actions/cache@v1
+      with:
+        path: /root/.cache/pip
+        key: ${{ runner.os }}-pip-${{ hashFiles('**/setup.py') }}
+        restore-keys: |
+          ${{ runner.os }}-pip-
+
+    - name: Install dependencies
+      run: |
+        pip3 install -e .
+
+    - name: Test the ODQA Performance
+      run: |
+        python3 dragonfire/odqa.py

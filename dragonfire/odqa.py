@@ -197,7 +197,7 @@ class ODQA():
         from dragonfire.utilities import split, s_print
 
         HOTPOTQA_DATASET_URL = 'http://curtis.ml.cmu.edu/datasets/hotpot/hotpot_dev_fullwiki_v1.json'
-        SAMPLE_LENGTH = 100
+        SAMPLE_LENGTH = None
 
         THREAD_MULTIPLIER = 1
         CPU_COUNT = multiprocessing.cpu_count()
