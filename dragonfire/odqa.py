@@ -185,3 +185,59 @@ class ODQA():
             return None, None, None, None
 
         return the_subject, subjects, focus, subject_with_objects
+
+    def check_how_odqa_performs(self):
+        import json
+        import urllib.request
+        import random
+        from termcolor import colored
+
+        HOTPOTQA_DATASET_URL = 'http://curtis.ml.cmu.edu/datasets/hotpot/hotpot_dev_fullwiki_v1.json'
+        SAMPLE_LENGTH = None
+
+        correct_counter = 0
+        wrong_counter = 0
+
+        response = urllib.request.urlopen(HOTPOTQA_DATASET_URL)
+        dataset = response.read()
+        if SAMPLE_LENGTH is not None:
+            samples = random.sample(json.loads(dataset), SAMPLE_LENGTH)
+        else:
+            samples = json.loads(dataset)
+
+        print('\nStarting to test {0} questions'.format(len(samples)))
+
+        question_number = 0
+        for sample in samples:
+            question_number += 1
+            print('\n({0})'.format(question_number))
+            question = sample['question']
+            correct_answer = sample['answer']
+            print('Question: {0}'.format(question))
+            print('Correct Answer: {0}'.format(correct_answer))
+            if not question or not correct_answer:
+                print(colored('Dataset contains an empty question or answer, so it\'s skipped!', 'yellow'))
+                continue
+
+            answer = self.respond(question, user_prefix="sir")
+            print('Our Answer: {0}'.format(answer))
+            if not isinstance(answer, str):
+                wrong_counter += 1
+                print(colored('WRONG', 'red'))
+            elif answer in correct_answer:
+                correct_counter += 1
+                print(colored('CORRECT', 'green'))
+            else:
+                wrong_counter += 1
+                print(colored('WRONG', 'red'))
+
+        success = correct_counter / (correct_counter + wrong_counter)
+
+        print(colored('\nPerformance: {0}\n'.format(success), 'yellow'))
+
+        if success > 0.4:
+            print(colored('SUCCESS!', 'green'))
+            exit(0)
+        else:
+            print(colored('FAILURE!', 'red'))
+            exit(1)
