@@ -94,11 +94,9 @@ class Learner():
             if np.root.dep_ == 'pobj' and types[-2] == 'nsubj':  # if it's an object of a preposition and the previous noun phrase's type was nsubj(nominal subject) then (it's purpose is capturing subject like MY PLACE OF BIRTH)
                 subject.append(np.root.head.text)  # append the parent text from syntactic relations tree (example: while nsubj is 'MY PLACE', np.root.head.text is 'OF')
                 subject.append(np_text)  # append the text of this noun phrase (example: while nsubj is 'MY PLACE', np.text is 'BIRTH')
-            if np.root.dep_ == 'nsubj' and types[-2] not in ['pobj', 'nsubj'] and np.root.tag_ not in ['WDT', 'WP', 'WP$', 'WRB']:  # if it's a nsubj(nominal subject) ("wh-" words can be considered as nsubj(nominal subject) but they are out of scope.  This is why we are excluding them.)
-                subject.append(np_text)  # append the text of this noun phrase
-            if np.root.dep_ == 'attr' and types[-2] not in ['pobj', 'nsubj'] and np.root.tag_ not in ['WDT', 'WP', 'WP$', 'WRB']:  # if it's an attribute and the previous noun phrase's type was not nsubj(nominal subject)
-                subject.append(np_text)  # append the text of this noun phrase
-            if np.root.dep_ == 'dobj' and types[-2] not in ['pobj', 'nsubj'] and np.root.tag_ not in ['WDT', 'WP', 'WP$', 'WRB']:  # if it's a dobj(direct object) and the previous noun phrase's type was not nsubj(nominal subject)
+            # if it's a nsubj(nominal subject), an attribute or a dobj(direct object) and the previous noun phrase's type was not nsubj(nominal subject)
+            # ("wh-" words can be considered as nsubj(nominal subject) but they are out of scope.  This is why we are excluding them.)
+            if np.root.dep_ in ['nsubj', 'attr', 'dobj'] and types[-2] not in ['pobj', 'nsubj'] and np.root.tag_ not in ['WDT', 'WP', 'WP$', 'WRB']:
                 subject.append(np_text)  # append the text of this noun phrase
         subject = [x.strip() for x in subject]
         subject = ' '.join(subject)  # concatenate all noun phrases found
@@ -161,10 +159,7 @@ class Learner():
 
         if self.is_server:
             try:
-                if invert:
-                    fact = self.db_session.query(Fact).filter(Fact.clause == subject, Fact.user_id == user_id, Fact.is_public == is_public).order_by(Fact.counter.desc()).first()
-                else:
-                    fact = self.db_session.query(Fact).filter(Fact.subject == subject, Fact.user_id == user_id, Fact.is_public == is_public).order_by(Fact.counter.desc()).first()
+                fact = self.invert_fact_and_filter(invert, subject, user_id, is_public)
                 answer = fact.subject + ' ' + fact.verbtense + ' ' + fact.clause
                 return self.mirror(answer)
             except NoResultFound:
@@ -286,19 +281,18 @@ class Learner():
         doc = self.nlp(answer)
         for token in doc:
             types.append(token.lemma_)
-            if token.lemma_ == "-PRON-":  # if it's a pronoun, mirror it
-                if token.text.upper() in self.pronouns:
-                    result.append(self.pronouns[token.text.upper()].lower().strip())
-                    continue
-                if token.text.upper() in self.inv_pronouns:
-                    result.append(self.inv_pronouns[token.text.upper()].lower().strip())
-                    continue
-            if (token.lemma_ == "be" or token.dep_ == "aux") and types[-2] == "-PRON-":  # if it's an auxiliary that comes right after a pronoun, mirror it
-                if token.text.upper() in self.auxiliaries:
-                    result.append(self.auxiliaries[token.text.upper()].lower().strip())
-                    continue
-                if token.text.upper() in self.inv_auxiliaries:
-                    result.append(self.inv_auxiliaries[token.text.upper()].lower().strip())
+            # if it's a pronoun or it's an auxiliary that comes right after a pronoun mirror it
+            if token.lemma_ == "-PRON-" or ((token.lemma_ == "be" or token.dep_ == "aux") and types[-2] == "-PRON-"):
+                if self.append_word_from_el_mappers(
+                    [
+                        self.pronouns,
+                        self.inv_pronouns,
+                        self.auxiliaries,
+                        self.inv_auxiliaries
+                    ],
+                    token.text,
+                    result
+                ):
                     continue
             result.append(token.text.strip())
         for i in range(len(result)):
@@ -380,3 +374,46 @@ class Learner():
                 com = com.replace(token.tag_, '')
 
         return com
+
+    def append_word_from_el_mappers(self, el_mapper_lists, word, result):
+        """Append the corresponding value of given word from a element mapper lists to the result.
+
+        Args:
+            array ((list) of (list) of (str)s):     List of list of strings.
+            str:                                    Word.
+            str:                                    Result.
+
+        Returns:
+            bool:   True if the word exists in the mapper lists otherwise False
+        """
+
+        for el_mapper_list in el_mapper_lists:
+            if word.upper() in el_mapper_list:
+                result.append(el_mapper_list[word.upper()].lower().strip())
+                return True
+        return False
+
+    def invert_fact_and_filter(self, invert, subject, user_id, is_public):
+        """Append the corresponding value of given word from a element mapper lists to the result.
+
+        Args:
+            bool:       Are we inverting?
+            str:        Subject.
+            int:        User's ID in DB.
+            bool:       Is that a public fact?
+
+        Returns:
+            Fact:       Result after the DB filter.
+        """
+
+        subject_ref = None
+        if invert:
+            subject_ref = Fact.clause
+        else:
+            subject_ref = Fact.subject
+
+        return self.db_session.query(Fact).filter(
+            subject_ref == subject,
+            Fact.user_id == user_id,
+            Fact.is_public == is_public
+        ).order_by(Fact.counter.desc()).first()

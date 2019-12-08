@@ -13,6 +13,7 @@ from threading import Thread
 
 import pyaudio  # Provides Python bindings for PortAudio, the cross platform audio API
 from dragonfire import VirtualAssistant
+from dragonfire.sr import noalsaerr
 from gi.repository import GObject
 
 from .decoder import DecoderPipeline
@@ -53,12 +54,12 @@ class KaldiRecognizer():
         self.gi_thread.start()
 
     @classmethod
-    def word_getter(self, word):
-        self.words.append(word)
+    def word_getter(cls, word):
+        cls.words.append(word)
 
     @classmethod
-    def set_finished(self, finished):
-        self.finished = True
+    def set_finished(cls, finished):
+        cls.finished = True
 
     def reset(self):
         self.__class__.words = []
@@ -132,8 +133,7 @@ class KaldiRecognizer():
             raise KeyboardInterrupt
 
 
-ERROR_HANDLER_FUNC = CFUNCTYPE(None, c_char_p, c_int, c_char_p, c_int,
-                               c_char_p)
+ERROR_HANDLER_FUNC = CFUNCTYPE(None, c_char_p, c_int, c_char_p, c_int, c_char_p)
 
 
 def py_error_handler(filename, line, function, err, fmt):
@@ -141,14 +141,6 @@ def py_error_handler(filename, line, function, err, fmt):
 
 
 c_error_handler = ERROR_HANDLER_FUNC(py_error_handler)
-
-
-@contextmanager
-def noalsaerr():
-    asound = cdll.LoadLibrary('libasound.so')
-    asound.snd_lib_error_set_handler(c_error_handler)
-    yield
-    asound.snd_lib_error_set_handler(None)
 
 
 if __name__ == '__main__':

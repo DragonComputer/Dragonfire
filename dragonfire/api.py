@@ -18,6 +18,7 @@ from datetime import datetime  # Basic date and time types
 from dragonfire.config import Config  # Credentials for the database connection
 from dragonfire.arithmetic import arithmetic_parse  # Submodule of Dragonfire to analyze arithmetic expressions
 from dragonfire.database import User, Notification  # Submodule of Dragonfire module that contains the database schema
+from dragonfire.utilities import TextToAction  # Submodule of Dragonfire to provide various utilities
 
 import hug  # Embrace the APIs of the future
 from hug_middleware_cors import CORSMiddleware  # Middleware for allowing CORS (cross-origin resource sharing) requests from hug servers
@@ -235,9 +236,9 @@ def cmd(text):
 
     Combines the results of these methods into a single JSON document:
 
-     - :func:`dragonfire.api.tagger` method (**POS Tagging**)
-     - :func:`dragonfire.api.dependency_parser` method (**Dependency Parse**)
-     - :func:`dragonfire.api.entity_recognizer` method (**Named Entity Recognition**)
+    - :func:`dragonfire.api.tagger` method (**POS Tagging**)
+    - :func:`dragonfire.api.dependency_parser` method (**Dependency Parse**)
+    - :func:`dragonfire.api.entity_recognizer` method (**Named Entity Recognition**)
 
     Args:
         text (str):  Text.
@@ -382,6 +383,8 @@ def wikipedia(query, gender_prefix):
         JSON document.
     """
 
+    global userin
+
     response = ""
     url = ""
     wikiresult = wikipedia_lib.search(query)
@@ -389,10 +392,7 @@ def wikipedia(query, gender_prefix):
         response = "Sorry, " + gender_prefix + ". But I couldn't find anything about " + query + " in Wikipedia."
     else:
         wikipage = wikipedia_lib.page(wikiresult[0])
-        wikicontent = "".join([
-            i if ord(i) < 128 else ' '
-            for i in wikipage.content
-        ])
+        wikicontent = TextToAction.fix_the_encoding_in_text_for_tts(wikipage.content)
         wikicontent = re.sub(r'\([^)]*\)', '', wikicontent)
         response = " ".join(sentence_segmenter(wikicontent)[:3])
         url = wikipage.url

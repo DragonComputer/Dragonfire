@@ -9,10 +9,7 @@
 .. moduleauthor:: Mehmet Mert Yıldıran <mert.yildiran@bil.omu.edu.tr>
 """
 
-try:
-    import thread  # Low-level threading API
-except ImportError:
-    import _thread as thread  # Low-level threading API
+import _thread as thread  # Low-level threading API
 import json  # JSON encoder and decoder
 import re  # Regular expression operations
 from tweepy.streaming import StreamListener  # An easy-to-use Python library for accessing the Twitter API

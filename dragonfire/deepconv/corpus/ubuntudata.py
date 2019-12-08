@@ -2,6 +2,8 @@ import os
 
 from tqdm import tqdm
 
+from dragonfire.deepconv.corpus.base import CorpusBase
+
 """
 Ubuntu Dialogue Corpus
 
@@ -9,7 +11,7 @@ http://arxiv.org/abs/1506.08909
 
 """
 
-class UbuntuData:
+class UbuntuData(CorpusBase):
     """
     """
 
@@ -18,6 +20,8 @@ class UbuntuData:
         Args:
             dirName (string): directory where to load the corpus
         """
+        super().__init__(dirName)
+
         self.MAX_NUMBER_SUBDIR = 10
         self.conversations = []
         __dir = os.path.join(dirName, "dialogs")
@@ -32,24 +36,3 @@ class UbuntuData:
                 for f in os.scandir(sub.path):
                     if f.name.endswith(".tsv"):
                         self.conversations.append({"lines": self.loadLines(f.path)})
-
-
-    def loadLines(self, fileName):
-        """
-        Args:
-            fileName (str): file to load
-        Return:
-            list<dict<str>>: the extracted fields for each line
-        """
-        lines = []
-        with open(fileName, 'r') as f:
-            for line in f:
-                l = line[line.rindex("\t")+1:].strip()  # Strip metadata (timestamps, speaker names)
-
-                lines.append({"text": l})
-
-        return lines
-
-
-    def getConversations(self):
-        return self.conversations

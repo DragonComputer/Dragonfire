@@ -26,6 +26,19 @@ class NeuralCoref():
         neuralcoref.add_to_pipe(self.nlp)
         self.coms = []
 
+    def core(self, doc, n_sents):
+        """Core resolution
+        """
+
+        resolution = doc._.coref_resolved
+        chained = self.nlp(resolution)
+        total_sents = sum(1 for sent in chained.sents)
+        sents = itertools.islice(chained.sents, total_sents - n_sents, None)
+        sents_arr = []
+        for sent in sents:
+            sents_arr.append(sent.text)
+        return " ".join(sents_arr)
+
     def resolve(self, com):
         """Method to return the version of command where each corefering mention is replaced by the main mention in the associated cluster (compared to previous commands).
 
@@ -51,14 +64,7 @@ class NeuralCoref():
 
             doc = self.nlp(chain)
             if doc._.has_coref:
-                resolution = doc._.coref_resolved
-                chained = self.nlp(resolution)
-                total_sents = sum(1 for sent in chained.sents)
-                sents = itertools.islice(chained.sents, total_sents - n_sents, None)
-                sents_arr = []
-                for sent in sents:
-                    sents_arr.append(sent.text)
-                return " ".join(sents_arr)
+                return self.core(doc, n_sents)
 
             return com
 
@@ -86,13 +92,6 @@ class NeuralCoref():
         chain = previous + " " + com
         doc = self.nlp(chain)
         if doc._.has_coref:
-            resolution = doc._.coref_resolved
-            chained = self.nlp(resolution)
-            total_sents = sum(1 for sent in chained.sents)
-            sents = itertools.islice(chained.sents, total_sents - n_sents, None)
-            sents_arr = []
-            for sent in sents:
-                sents_arr.append(sent.text)
-            return " ".join(sents_arr)
+            return self.core(doc, n_sents)
 
         return com

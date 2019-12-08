@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
+# -*- coding: UTF-8 -*-
 
 """
 .. module:: utilities
@@ -17,10 +17,7 @@ from multiprocessing import Pool  # Process-based “threading” interface
 from sys import stdout  # System-specific parameters and functions
 from random import randint  # Generate pseudo-random numbers
 import contextlib  # Utilities for with-statement contexts
-try:
-    import cStringIO  # Read and write strings as files (Python 2.7)
-except ImportError:
-    import io as cStringIO  # Read and write strings as files (Python 3.x)
+import io as cStringIO  # Read and write strings as files (Python 3.x)
 import sys  # System-specific parameters and functions
 from threading import Lock  # Thread-based parallelism
 
@@ -232,6 +229,19 @@ class TextToAction:
             for chunk in doc.noun_chunks:
                 print("{:12}  {:12}  {:12}  {:12}".format(chunk.text, chunk.root.text, chunk.root.dep_, chunk.root.head.text))
             print("")
+
+    @staticmethod
+    def fix_the_encoding_in_text_for_tts(text):
+        """Replaces any character character that greater than or equal to Unicode value 128 with an empty character to solve TTS issue.
+
+        Args:
+            text (str):  Text.
+
+        Returns:
+            str:  Cleaned up text.
+        """
+
+        return "".join([i if ord(i) < 128 else ' ' for i in text])
 
 
 @contextlib.contextmanager

@@ -370,3 +370,20 @@ class Helper():
         """
 
         return len(self.doc) <= n
+
+    def check_gender_lemmas(self, gender):
+        """Method to check if the word length of the user's input/command is less than or equal to given value.
+
+        Args:
+            gender (str):  'male' or 'female'.
+
+        Returns:
+            bool:  True or False
+        """
+
+        if gender == 'male':
+            return self.check_lemma("sir") or self.check_lemma("man") or self.check_lemma("boy")
+        elif gender == 'female':
+            return self.check_lemma("lady") or self.check_lemma("woman") or self.check_lemma("girl")
+        else:
+            return False

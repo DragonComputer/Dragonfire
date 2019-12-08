@@ -217,7 +217,6 @@ MOCK_MODULES = [
     'dragonfire.deepconv.corpus.scotusdata',
     'dragonfire.deepconv.corpus.ubuntudata',
     'dragonfire.deepconv.corpus',
-    'dragonfire.sr.decoder_test',
-    'dragonfire.sr.experimental'
+    'dragonfire.sr.decoder_test'
 ]
 sys.modules.update((mod_name, Mock()) for mod_name in MOCK_MODULES)

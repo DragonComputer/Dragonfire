@@ -4,10 +4,7 @@ from __future__ import print_function
 from __future__ import absolute_import
 import unittest
 from gi.repository import GObject
-try:
-    import thread  # Low-level threading API (Python 2.7)
-except ImportError:
-    import _thread as thread  # Low-level threading API (Python 3.x)
+import _thread as thread  # Low-level threading API (Python 3.x)
 import logging
 from dragonfire.sr.decoder import DecoderPipeline
 import time
@@ -54,7 +51,7 @@ class DecoderPipelineTests(unittest.TestCase):
 
     @classmethod
     def set_finished(cls, finished):
-        cls.finished = True
+        cls.finished = finished
 
     def setUp(self):
         self.__class__.words = []

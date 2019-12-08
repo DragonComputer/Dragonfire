@@ -27,14 +27,6 @@ dragonfire.sr.decoder\_test module
     :undoc-members:
     :show-inheritance:
 
-dragonfire.sr.experimental module
----------------------------------
-
-.. automodule:: dragonfire.sr.experimental
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
 dragonfire.sr.gspeech module
 ----------------------------
 

@@ -209,9 +209,10 @@ class Model:
         feedDict = {}
         ops = None
 
-        if not self.args.test:  # Training
-            for i in range(self.args.maxLengthEnco):
+        for i in range(self.args.maxLengthEnco):
                 feedDict[self.encoderInputs[i]]  = batch.encoderSeqs[i]
+
+        if not self.args.test:  # Training
             for i in range(self.args.maxLengthDeco):
                 feedDict[self.decoderInputs[i]]  = batch.decoderSeqs[i]
                 feedDict[self.decoderTargets[i]] = batch.targetSeqs[i]
@@ -219,8 +220,6 @@ class Model:
 
             ops = (self.optOp, self.lossFct)
         else:  # Testing (batchSize == 1)
-            for i in range(self.args.maxLengthEnco):
-                feedDict[self.encoderInputs[i]]  = batch.encoderSeqs[i]
             feedDict[self.decoderInputs[0]]  = [self.textData.goToken]
 
             ops = (self.outputs,)

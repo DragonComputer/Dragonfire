@@ -106,7 +106,7 @@ def test_builtin_commands(virtual_assistant, command, response):
 
 
 def test_builtin_commands_sleep(virtual_assistant):
-    assert virtual_assistant.command("open files") == ""
+    assert virtual_assistant.command("open files") == "File Manager"
     assert virtual_assistant.command("dragonfire") in hey_answers
     assert virtual_assistant.command("dragon fire") in hey_answers
     assert virtual_assistant.command("go to sleep") == "I'm going to sleep"
@@ -124,6 +124,12 @@ def test_builtin_commands_startswith(virtual_assistant, command, response):
     assert virtual_assistant.command("hey") in hey_answers
     assert virtual_assistant.command(command).startswith(response)
 
+@pytest.mark.parametrize("command, search_query", [
+    ("search Asdasdasdasdsdasdas BLasdasdasdasd in Wikipedia", "Asdasdasdasdsdasdas BLasdasdasdasd")
+])
+def test_builtin_commands_wikipedia_no_results(virtual_assistant, command, search_query):
+    assert virtual_assistant.command("hey") in hey_answers
+    assert virtual_assistant.command(command) == "Sorry, " + user_prefix + ". But I couldn't find anything about " + search_query + " in Wikipedia."
 
 def test_arithmetic_response(virtual_assistant):
 

@@ -16,10 +16,7 @@ import os  # Miscellaneous operating system interfaces
 import re  # Regular expression operations
 import subprocess  # Subprocess managements
 import sys  # System-specific parameters and functions
-try:
-    import thread  # Low-level threading API (Python 2.7)
-except ImportError:
-    import _thread as thread  # Low-level threading API (Python 3.x)
+import _thread as thread  # Low-level threading API (Python 3.x)
 import time  # Time access and conversions
 import uuid  # UUID objects according to RFC 4122
 from multiprocessing import Event, Process  # Process-based “threading” interface
@@ -42,7 +39,8 @@ from dragonfire.arithmetic import arithmetic_parse  # Submodule of Dragonfire to
 from dragonfire.deepconv import DeepConversation  # Submodule of Dragonfire to answer questions directly using an Artificial Neural Network
 from dragonfire.coref import NeuralCoref  # Submodule of Dragonfire that aims to create corefference based dialogs
 from dragonfire.config import Config  # Submodule of Dragonfire to store configurations
-from dragonfire.database import Base  # Submodule of Dragonfire module that contains the database schema
+from dragonfire.database import Base  # Submodule of Dragonfire that contains the database schema
+from dragonfire.exceptions import WikipediaNoResultsFoundError  # Submodule of Dragonfire that holds the custom exceptions
 
 import spacy  # Industrial-strength Natural Language Processing in Python
 import pyowm  # A Python wrapper around the OpenWeatherMap API
@@ -128,17 +126,13 @@ def start(args, userin):
                 com = raw_input("Enter your command: ")
                 thread.start_new_thread(her.command, (com,))
                 time.sleep(0.5)
-        elif args["gspeech"]:
-            from dragonfire.sr.gspeech import GspeechRecognizer
-
-            her = VirtualAssistant(args, userin, user_full_name, user_prefix)
-            recognizer = GspeechRecognizer()
-            recognizer.recognize(her)
         else:
-            from dragonfire.sr.deepspeech import DeepSpeechRecognizer
-
+            from dragonfire.sr import SpeechRecognizer
             her = VirtualAssistant(args, userin, user_full_name, user_prefix)
-            recognizer = DeepSpeechRecognizer()
+            if args["gspeech"]:
+                recognizer = SpeechRecognizer('gspeech')
+            else:
+                recognizer = SpeechRecognizer('deepspeech')
             recognizer.recognize(her)
 
 
@@ -174,6 +168,7 @@ class VirtualAssistant():
         self.userin.twitter_user = tw_user
         self.testing = testing
         self.inactive = False
+        self.h = None
         if not self.args["server"]:
             self.inactive = True
         if self.testing:
@@ -219,12 +214,13 @@ class VirtualAssistant():
         print("You: " + com.upper())
         doc = nlp(com)
         h = Helper(doc)
+        self.h = h
 
         if args["verbose"]:
             userin.pretty_print_nlp_parsing_results(doc)
 
         # Input: DRAGONFIRE | WAKE UP | HEY
-        if self.inactive and not (h.directly_equal(["dragonfire", "hey"]) or (h.check_verb_lemma("wake") and h.check_nth_lemma(-1, "up")) or (h.check_nth_lemma(0, "dragon") and h.check_nth_lemma(1, "fire") and h.max_word_count(2))):
+        if self.inactive and not self.check_wake_up_intent:
             return ""
 
         # User is answering to Dragonfire
@@ -243,23 +239,16 @@ class VirtualAssistant():
                     with nostderr():
                         search_query = user_answering['options'][selection]
                         try:
-                            wikiresult = wikipedia.search(search_query)
-                            if len(wikiresult) == 0:
-                                userin.say("Sorry, " + user_prefix + ". But I couldn't find anything about " + search_query + " in Wikipedia.")
-                                return True
-                            wikipage = wikipedia.page(wikiresult[0])
-                            wikicontent = "".join([i if ord(i) < 128 else ' ' for i in wikipage.content])
-                            wikicontent = re.sub(r'\([^)]*\)', '', wikicontent)
-                            userin.execute(["sensible-browser", wikipage.url], search_query)
-                            return userin.say(wikicontent, cmd=["sensible-browser", wikipage.url])
+                            return self.wikisearch(search_query)
                         except requests.exceptions.ConnectionError:
-                            userin.execute([" "], "Wikipedia connection error.")
-                            return userin.say("Sorry, " + user_prefix + ". But I'm unable to connect to Wikipedia servers.")
+                            return self.wikipedia_connection_error()
+                        except WikipediaNoResultsFoundError:
+                            return self.wikipedia_no_results_found_error(search_query)
                         except Exception:
                             return False
 
         # Input: DRAGONFIRE | WAKE UP | HEY
-        if h.directly_equal(["dragonfire", "hey"]) or (h.check_verb_lemma("wake") and h.check_nth_lemma(-1, "up")) or (h.check_nth_lemma(0, "dragon") and h.check_nth_lemma(1, "fire") and h.max_word_count(2)):
+        if self.check_wake_up_intent():
             self.inactive = False
             return userin.say(choice([
                 "Yes, " + user_prefix + ".",
@@ -314,10 +303,7 @@ class VirtualAssistant():
                 userin.execute(["steam"], "Steam")
                 return userin.say("Opening Steam Game Store")
             if h.check_text("files"):
-                userin.execute(["dolphin"], "File Manager")  # KDE neon
-                userin.execute(["pantheon-files"], "File Manager")  # elementary OS
-                userin.execute(["nautilus", "--browser"], "File Manager")  # Ubuntu
-                return userin.say("File Manager")
+                return self.start_file_manager();
             if h.check_noun_lemma("camera"):
                 userin.execute(["kamoso"], "Camera")  # KDE neon
                 userin.execute(["snap-photobooth"], "Camera")  # elementary OS
@@ -340,10 +326,7 @@ class VirtualAssistant():
                 return userin.say("Terminal")
         # Input FILE MANAGER | FILE EXPLORER
         if h.check_noun_lemma("file") and (h.check_noun_lemma("manager") or h.check_noun_lemma("explorer")):
-            userin.execute(["dolphin"], "File Manager")  # KDE neon
-            userin.execute(["pantheon-files"], "File Manager")  # elementary OS
-            userin.execute(["nautilus", "--browser"], "File Manager")  # Ubuntu
-            return userin.say("File Manager")
+            return self.start_file_manager();
         # Input: SOFTWARE CENTER
         if h.check_noun_lemma("software") and h.check_text("center"):
             userin.execute(["plasma-discover"], "Software Center")  # KDE neon
@@ -367,19 +350,11 @@ class VirtualAssistant():
             return userin.say("Opening the video editor software.")
 
         # Input: MY TITLE IS LADY | I'M A LADY | I'M A WOMAN | I'M A GIRL
-        if h.check_lemma("be") and h.check_lemma("-PRON-") and (h.check_lemma("lady") or h.check_lemma("woman") or h.check_lemma("girl")):
-            config_file.update({'gender': 'female'}, Query().datatype == 'gender')
-            config_file.remove(Query().datatype == 'callme')
-            self.user_prefix = GENDER_PREFIX['female']
-            user_prefix = self.user_prefix
-            return userin.say("Pardon, " + user_prefix + ".")
+        if h.check_lemma("be") and h.check_lemma("-PRON-") and h.check_gender_lemmas('female'):
+            return self.gender_update('female')
         # Input: MY TITLE IS SIR | I'M A MAN | I'M A BOY
-        if h.check_lemma("be") and h.check_lemma("-PRON-") and (h.check_lemma("sir") or h.check_lemma("man") or h.check_lemma("boy")):
-            config_file.update({'gender': 'male'}, Query().datatype == 'gender')
-            config_file.remove(Query().datatype == 'callme')
-            self.user_prefix = GENDER_PREFIX['male']
-            user_prefix = self.user_prefix
-            return userin.say("Pardon, " + user_prefix + ".")
+        if h.check_lemma("be") and h.check_lemma("-PRON-") and h.check_gender_lemmas('male'):
+            return self.gender_update('male')
         # Input: CALL ME *
         if h.check_lemma("call") and h.check_lemma("-PRON-"):
             title = ""
@@ -462,20 +437,10 @@ class VirtualAssistant():
                         k.press_keys([k.control_l_key, 'w'])
                         k.tap_key(k.escape_key)
             return "close"
-        if h.check_lemma("back") and h.max_word_count(4) and not args["server"]:
-            with nostdout():
-                with nostderr():
-                    k = PyKeyboard()
-                    if not self.testing:
-                        k.press_keys([k.alt_l_key, k.left_key])
-            return "back"
-        if h.check_lemma("forward") and h.max_word_count(4) and not args["server"]:
-            with nostdout():
-                with nostderr():
-                    k = PyKeyboard()
-                    if not self.testing:
-                        k.press_keys([k.alt_l_key, k.right_key])
-            return "forward"
+        if self.check_browser_history_nav_intent("back"):
+            return self.press_browser_history_nav("back")
+        if self.check_browser_history_nav_intent("forward"):
+            return self.press_browser_history_nav("forward")
         # Input: SCROLL LEFT | SCROLL RIGHT | SCROLL UP | SCROLL DOWN
         if (h.check_text("swipe") or h.check_text("scroll")) and not args["server"]:
             if h.check_text("left"):
@@ -529,25 +494,12 @@ class VirtualAssistant():
         # Input: (SEARCH|FIND) * (IN|ON|AT|USING) WIKIPEDIA
         if (h.check_lemma("search") or h.check_lemma("find")) and h.check_lemma("Wikipedia"):
             with nostderr():
-                search_query = ""
-                for token in doc:
-                    if not (token.lemma_ == "search" or token.lemma_ == "find" or token.lemma_ == "Wikipedia" or token.is_stop):
-                        search_query += ' ' + token.text
-                search_query = search_query.strip()
+                search_query = self.strip_the_search_query_by_intent(doc, "Wikipedia")
                 if search_query:
                     try:
-                        wikiresult = wikipedia.search(search_query)
-                        if len(wikiresult) == 0:
-                            userin.say("Sorry, " + user_prefix + ". But I couldn't find anything about " + search_query + " in Wikipedia.")
-                            return True
-                        wikipage = wikipedia.page(wikiresult[0])
-                        wikicontent = "".join([i if ord(i) < 128 else ' ' for i in wikipage.content])
-                        wikicontent = re.sub(r'\([^)]*\)', '', wikicontent)
-                        userin.execute(["sensible-browser", wikipage.url], search_query)
-                        return userin.say(wikicontent, cmd=["sensible-browser", wikipage.url])
+                        return self.wikisearch(search_query)
                     except requests.exceptions.ConnectionError:
-                        userin.execute([" "], "Wikipedia connection error.")
-                        return userin.say("Sorry, " + user_prefix + ". But I'm unable to connect to Wikipedia servers.")
+                        return self.wikipedia_connection_error()
                     except wikipedia.exceptions.DisambiguationError as disambiguation:
                         user_answering['status'] = True
                         user_answering['for'] = 'wikipedia'
@@ -561,24 +513,22 @@ class VirtualAssistant():
                         notify += '\nSay, for example: "THE FIRST ONE" to choose.'
                         userin.execute([" "], notify)
                         return userin.say(msg)
-                    except BaseException:
+                    except WikipediaNoResultsFoundError:
+                        return self.wikipedia_no_results_found_error(search_query)
+                    except Exception:
                         pass
         # Input: (SEARCH|FIND) * (IN|ON|AT|USING) YOUTUBE
         if (h.check_lemma("search") or h.check_lemma("find")) and h.check_lemma("YouTube"):
             with nostdout():
                 with nostderr():
-                    search_query = ""
-                    for token in doc:
-                        if not (token.lemma_ == "search" or token.lemma_ == "find" or token.lemma_ == "YouTube" or token.is_stop):
-                            search_query += ' ' + token.text
-                    search_query = search_query.strip()
+                    search_query = self.strip_the_search_query_by_intent(doc, "YouTube")
                     if search_query:
                         info = youtube_dl.YoutubeDL({}).extract_info('ytsearch:' + search_query, download=False, ie_key='YoutubeSearch')
                         if len(info['entries']) > 0:
                             youtube_title = info['entries'][0]['title']
                             youtube_url = "https://www.youtube.com/watch?v=%s" % (info['entries'][0]['id'])
                             userin.execute(["sensible-browser", youtube_url], youtube_title)
-                            youtube_title = "".join([i if ord(i) < 128 else ' ' for i in youtube_title])
+                            youtube_title = TextToAction.fix_the_encoding_in_text_for_tts(youtube_title)
                             response = userin.say(youtube_title, ["sensible-browser", youtube_url])
                         else:
                             youtube_title = "No video found, " + user_prefix + "."
@@ -637,6 +587,148 @@ class VirtualAssistant():
                     dc_response = dc.respond(original_com, user_prefix)
                     if dc_response:
                         return userin.say(dc_response)
+
+    def wikisearch(self, search_query):
+        """Method to start Wikipedia search.
+
+        Args:
+            search_query (str):  Topic extracted from user's input.
+
+        Returns:
+            str:  Response.
+        """
+
+        wikiresult = wikipedia.search(search_query)
+        if len(wikiresult) == 0:
+            raise WikipediaNoResultsFoundError()
+        wikipage = wikipedia.page(wikiresult[0])
+        wikicontent = TextToAction.fix_the_encoding_in_text_for_tts(wikipage.content)
+        wikicontent = re.sub(r'\([^)]*\)', '', wikicontent)
+        self.userin.execute(["sensible-browser", wikipage.url], search_query)
+        return self.userin.say(wikicontent, cmd=["sensible-browser", wikipage.url])
+
+    def gender_update(self, gender):
+        """Method to gender preference of the user.
+
+        Args:
+            gender (str):  'male' or 'female'.
+
+        Returns:
+            str:  Response.
+        """
+
+        global config_file
+        global user_prefix
+
+        if gender not in ['male', 'female']:
+            return False
+
+        config_file.update({'gender': gender}, Query().datatype == 'gender')
+        config_file.remove(Query().datatype == 'callme')
+        self.user_prefix = GENDER_PREFIX[gender]
+        user_prefix = self.user_prefix
+        return self.userin.say("Pardon, " + user_prefix + ".")
+
+    def check_browser_history_nav_intent(self, direction):
+        """Checks the navigation in browser history intent.
+
+        Args:
+            direction (str):  'back' or 'forward'.
+
+        Returns:
+            bool:  True if the expression matches othewise False.
+        """
+
+        return self.h.check_lemma(direction) and self.h.max_word_count(4) and not self.args["server"]
+
+    def press_browser_history_nav(self, direction):
+        """Presses the keys according to the navigation browser in history intent.
+
+        Args:
+            direction (str):  'back' or 'forward'.
+
+        Returns:
+            str:  'back' or 'forward'.
+        """
+
+        with nostdout():
+            with nostderr():
+                k = PyKeyboard()
+                if not self.testing:
+                    if direction == "back":
+                        k.press_keys([k.alt_l_key, k.left_key])
+                    elif direction == "forward":
+                        k.press_keys([k.alt_l_key, k.right_key])
+                    else:
+                        pass
+        return direction
+
+    def strip_the_search_query_by_intent(self, doc, intent):
+        """Strips the search query by intent.
+
+        Args:
+            doc:                    spaCy result of the command
+            intent (str):           Intent e.g. YouTube, Wikipedia
+
+        Returns:
+            (str):                  Search query.
+        """
+
+        search_query = ""
+        for token in doc:
+            if not (token.lemma_ == "search" or token.lemma_ == "find" or token.lemma_ == intent or token.is_stop):
+                search_query += ' ' + token.text
+        search_query = search_query.strip()
+        return search_query
+
+    def check_wake_up_intent(self):
+        """Checks the wake up intent.
+
+        Returns:
+            bool:  True if the expression matches othewise False.
+        """
+
+        return self.h.directly_equal(["dragonfire", "hey"])\
+            or (self.h.check_verb_lemma("wake") and self.h.check_nth_lemma(-1, "up"))\
+            or (self.h.check_nth_lemma(0, "dragon") and self.h.check_nth_lemma(1, "fire") and self.h.max_word_count(2))
+
+    def start_file_manager(self):
+        """Start the file manager application.
+
+        Returns:
+            str:  Response.
+        """
+
+        self.userin.execute(["dolphin"], "File Manager")  # KDE neon
+        self.userin.execute(["pantheon-files"], "File Manager")  # elementary OS
+        self.userin.execute(["nautilus", "--browser"], "File Manager")  # Ubuntu
+        return self.userin.say("File Manager")
+
+    def wikipedia_connection_error(self):
+        """Call this when a connection error to Wikipedia's servers occurs.
+
+        Returns:
+            str:  Response.
+        """
+
+        global user_prefix
+
+        self.userin.execute([" "], "Wikipedia connection error.")
+        return self.userin.say("Sorry, " + user_prefix + ". But I'm unable to connect to Wikipedia servers.")
+
+    def wikipedia_no_results_found_error(self, search_query):
+        """Call this when no results found in Wikipedia.
+
+        Args:
+            search_query (str):  Topic extracted from user's input.
+
+        Returns:
+            str:  Response.
+        """
+
+        global user_prefix
+
+        return self.userin.say("Sorry, " + user_prefix + ". But I couldn't find anything about " + search_query + " in Wikipedia.")
 
 
 def tts_kill():
