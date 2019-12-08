@@ -137,7 +137,8 @@ class NoteTaker():
                 return userin.say(choice(["The note taken", "The note was recorded", "I get it"]) + choice([".", ", " + user_prefix + "."]))
 
         if user_answering['status']:
-            if com.startswith("whatever") or com.startswith("give up") or com.startswith("not now") or com.startswith("forget it") or com.startswith("WHATEVER") or com.startswith("GIVE UP") or com.startswith("NOT NOW") or com.startswith("FORGET IT"):  # for writing interrupt while taking notes and creating reminders.
+            # for writing interrupt while taking notes and creating reminders.
+            if h.directly_equal("whatever") or (h.check_verb_lemma("give") and h.check_lemma("up")) or h.check_verb_lemma('forget'):
                 user_answering['status'] = False
                 user_answering.pop('todo_list', None)
                 user_answering.pop('takenote_query', None)
@@ -152,7 +153,7 @@ class NoteTaker():
                         self.db_upsert(user_answering['takenote_query'], None, None, user_answering['todo_list']['name'], user_answering['todo_list']['count'], True)
                         return userin.say("I get it. Enter the " + str(user_answering['todo_list']['count'] + 1) + ". item...")
                 else:
-                    if com.startswith("enough") or com.startswith("it is okay") or com.startswith("it is ok") or com.startswith("it's okay") or com.startswith("it's ok") or com.startswith("end") or com.startswith("ENOUGH") or com.startswith("IT IS OKAY") or com.startswith("IT IS OK") or com.startswith("IT'S OKAY") or com.startswith("IT'S OK") or com.startswith("END"):
+                    if h.directly_equal(["enough"]) or h.check_adj_lemma("ok"):
                         temporary_keeper = user_answering['todo_list']['name']
                         user_answering['status'] = False
                         user_answering.pop('todo_list', None)
@@ -333,7 +334,8 @@ class NoteTaker():
                     else:
                         return userin.say(result)
 
-        if com.startswith("whatever") or com.startswith("give up") or com.startswith("not now") or com.startswith("forget it") or com.startswith("WHATEVER") or com.startswith("GIVE UP") or com.startswith("NOT NOW") or com.startswith("FORGET IT"):  # for writing interrupr while taking notes and creating reminders.
+        # for writing interrupt while taking notes and creating reminders.
+        if h.directly_equal("whatever") or (h.check_verb_lemma("give") and h.check_lemma("up")) or h.check_verb_lemma('forget'):
             return userin.say(
                 choice(["As you wish", "I understand", "Alright", "Ready whenever you want", "Get it"]) + choice(
                     [". ", ", " + user_prefix + ". "]))
