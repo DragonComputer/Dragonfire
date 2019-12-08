@@ -48,8 +48,8 @@ apt-get -y install ${python3:Depends} ${misc:Depends} flite python3-xlib portaud
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 NC='\033[0m' # No Color
-CHECKSUM="21198f6b6f24ef1f45082aebc6fd452e"
-CHECKSUM2="c775d819ffc06118053a48808003df84"
+CHECKSUM="32a93c35215a4a7498a7940d2d32fa9b"
+CHECKSUM2="7823532dce2ca25596905e93515588b1"
 TAR=downloaded.tar.gz
 
 DRAGONFIRE_DIR=/usr/share/dragonfire
@@ -62,7 +62,7 @@ if [ "$NO_MODEL" = false ] ; then
     if [ ! -d "$DEEPSPEECH_DIR" ]; then
       mkdir $DEEPSPEECH_DIR
     fi
-    verified=$(md5sum models/* | md5sum)
+    verified=$(md5sum ${DEEPSPEECH_DIR}/models/* | md5sum)
     if [ ! ${verified::-3} = "$CHECKSUM" ]; then
       wget -c https://github.com/mozilla/DeepSpeech/releases/download/v0.4.1/deepspeech-0.4.1-models.tar.gz -O $TAR && tar xvfz $TAR -C $DEEPSPEECH_DIR && rm $TAR
     fi
@@ -72,7 +72,7 @@ DEEPCONV_DIR=/usr/share/dragonfire/deepconv
 if [ ! -d "$DEEPCONV_DIR" ]; then
   mkdir $DEEPCONV_DIR
 fi
-verified=$(find . -type f -exec md5sum {} \; | md5sum)
+verified=$(find $DEEPCONV_DIR -type f -exec md5sum {} \; | md5sum)
 if [ ! ${verified::-3} = "$CHECKSUM2" ]; then
   wget -c https://github.com/DragonComputer/Dragonfire/releases/download/v1.0.4/deepconv-v3.tar.gz -O $TAR && tar xvfz $TAR -C $DEEPCONV_DIR && rm $TAR
 fi
