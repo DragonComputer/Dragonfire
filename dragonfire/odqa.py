@@ -270,14 +270,18 @@ class ODQA():
             out += '\n({0})'.format(sample['question_number'])
             question = sample['question']
             correct_answer = sample['answer']
-            out += '\nQuestion: {0}'.format(question)
-            out += '\nCorrect Answer: {0}'.format(correct_answer)
+            out += '\nQuestion: {0}'.format(question.encode('ascii', 'ignore').decode('ascii'))
+            out += '\nCorrect Answer: {0}'.format(correct_answer.encode('ascii', 'ignore').decode('ascii'))
             if not question or not correct_answer:
                 out += colored('\nDataset contains an empty question or answer, so it\'s skipped!', 'yellow')
                 continue
 
             answer = self.respond(question, user_prefix="sir", is_server=True)
-            out += '\nOur Answer: {0}'.format(answer)
+            if isinstance(answer, str):
+                out += '\nOur Answer: {0}'.format(answer.encode('ascii', 'ignore').decode('ascii'))
+            else:
+                out += '\nOur Answer: {0}'.format(answer)
+
             if not isinstance(answer, str):
                 wrong_counter += 1
                 out += colored('\nWRONG', 'red')
