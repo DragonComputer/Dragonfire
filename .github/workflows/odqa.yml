@@ -1,6 +1,12 @@
 name: ODQA Performance
 
-on: [push]
+on:
+  push:
+    paths:
+    - 'Dockerfile'
+    - 'install*.sh'
+    - 'debian/postinst'
+    - 'dragonfire/odqa.py'
 
 jobs:
   main:
