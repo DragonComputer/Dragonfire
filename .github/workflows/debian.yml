@@ -30,11 +30,12 @@ jobs:
         run: |
           dpkg-buildpackage -us -uc
           cd ..
+          ls -al
           echo ${{ github.ref }} | cut -c12- | { read version; }
 
       - name: Upload to release
         uses: JasonEtco/upload-to-release@master
         with:
-          args: dragonfire_${version}_amd64.deb
+          args: dragonfire_1.0.7_amd64.deb
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
