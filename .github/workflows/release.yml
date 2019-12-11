@@ -4,12 +4,15 @@ on:
     tags:
       - 'v*' # Push events to matching v*, i.e. v1.0, v20.15.10
 
-name: Publish a Release
+name: Publish a Release and the Debian Package
 
 jobs:
   create-release:
     name: Create Release
     runs-on: ubuntu-latest
+    container:
+      image: docker://dragoncomputer/dragonfire:latest
+
     steps:
       - name: Checkout code
         uses: actions/checkout@master
@@ -17,7 +20,7 @@ jobs:
         id: create_release
         uses: actions/create-release@master
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: ${{ github.ref }}
           release_name: Dragonfire ${{ github.ref }}
@@ -25,5 +28,36 @@ jobs:
             Changes in this Release
             - First Change
             - Second Change
-          draft: true
+          draft: false
           prerelease: false
+
+      - name: Cache pip packages
+        uses: actions/cache@v1
+        with:
+          path: /root/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/setup.py') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+
+      - name: Install dependencies
+        run: |
+          pip3 install -e .
+
+      - name: Generate the Debian package
+        run: |
+          dpkg-buildpackage -us -uc
+          RELEASE_VERSION=$(echo ${{ github.ref }} | cut -c12-)
+          mv ../dragonfire_${RELEASE_VERSION}_amd64.deb .
+          ls -al
+          echo ::set-env name=RELEASE_VERSION::$RELEASE_VERSION
+
+      - name: Upload the Debian package to Release Assets
+        id: upload-release-asset
+        uses: actions/upload-release-asset@v1.0.1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./dragonfire_${RELEASE_VERSION}_amd64.deb
+          asset_name: dragonfire_${RELEASE_VERSION}_amd64.deb
+          asset_content_type: application/vnd.debian.binary-package
