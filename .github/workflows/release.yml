@@ -4,7 +4,7 @@ on:
     tags:
       - 'v*' # Push events to matching v*, i.e. v1.0, v20.15.10
 
-name: Publish a Release and the Debian Package
+name: Publish a Release
 
 jobs:
   create-release:
@@ -15,7 +15,7 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@master
+        uses: actions/checkout@v1
       - name: Create Release
         id: create_release
         uses: actions/create-release@master
