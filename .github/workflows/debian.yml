@@ -6,6 +6,9 @@ jobs:
   publish-deb-package:
     name: Build and publish the Debian package
     runs-on: ubuntu-latest
+    container:
+      image: docker://dragoncomputer/dragonfire:latest
+
     steps:
       - uses: actions/checkout@v1
 
