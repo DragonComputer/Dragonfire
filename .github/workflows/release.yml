@@ -8,7 +8,7 @@ name: Publish a Release
 
 jobs:
   create-release:
-    name: Create Release
+    name: Main Job
     runs-on: ubuntu-latest
     container:
       image: docker://dragoncomputer/dragonfire:latest
@@ -58,6 +58,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./dragonfire_${RELEASE_VERSION}_amd64.deb
-          asset_name: dragonfire_${RELEASE_VERSION}_amd64.deb
+          asset_path: ./dragonfire_${{ RELEASE_VERSION }}_amd64.deb
+          asset_name: dragonfire_${{ RELEASE_VERSION }}_amd64.deb
           asset_content_type: application/vnd.debian.binary-package
