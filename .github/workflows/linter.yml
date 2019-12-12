@@ -1,9 +1,6 @@
 name: Linter Checks
 
-on:
-  push:
-    tags-ignore:
-    - '*'
+on: [push]
 
 jobs:
   main:

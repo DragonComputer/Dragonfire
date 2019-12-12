@@ -1,9 +1,6 @@
 name: Automated Tests
 
-on:
-  push:
-    tags-ignore:
-    - '*'
+on: [push]
 
 jobs:
   main:

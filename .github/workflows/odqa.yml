@@ -7,8 +7,6 @@ on:
     - 'install*.sh'
     - 'debian/postinst'
     - 'dragonfire/odqa.py'
-    tags-ignore:
-    - '*'
 
 jobs:
   main:
