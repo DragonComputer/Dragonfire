@@ -1,10 +1,13 @@
 name: Automated Tests
 
-on: [push]
+on:
+  push:
+    tags-ignore:
+    - '*'
 
 jobs:
   main:
-
+    name: Main Job
     runs-on: ubuntu-latest
     container:
       image: docker://dragoncomputer/dragonfire:latest

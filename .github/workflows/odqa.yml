@@ -7,10 +7,12 @@ on:
     - 'install*.sh'
     - 'debian/postinst'
     - 'dragonfire/odqa.py'
+    tags-ignore:
+    - '*'
 
 jobs:
   main:
-
+    name: Main Job
     runs-on: ubuntu-latest
     container:
       image: docker://dragoncomputer/dragonfire:latest
