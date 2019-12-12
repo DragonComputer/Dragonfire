@@ -1,9 +1,20 @@
-dragonfire (1.0.7) unstable; urgency=medium
+dragonfire (1.1.0) unstable; urgency=medium
 
-  * First Change
-  * Second Change
+  * The badge generation service changed from Badgen to Shields
+  * Omniscient module replaced with DeepPavlov SQuAD BERT and renamed as ODQA
+  * Loglevel of TensorFlow set to ERROR and disabled FutureWarning(s)
+  * Added a GitHub workflow for automated Docker builds
+  * Travis CI is removed
+  * `requests` package version upgraded to `>=2.20.0`
+  * Post-installation scripts are merged
+  * The Docker image has been updated
+  * Added separate GitHub workflows to handle Automated Tests and Linter Checks
+  * Added a GitHub workflow to test the ODQA module's performance against HotpotQA dataset
+  * Fixed most of the major code maintainability issues detected by Code Climate
+  * Added a GitHub workflow to automatically publish a GitHub release, build and upload a Debian package to release assets
+  * Checksum values are updated in the post-installation script
 
--- Mehmet Mert Yildiran <mehmetmertyildiran@gmail.com>  Thu, Dec 12 2019 00:28:47 +0300
+-- Mehmet Mert Yildiran <mehmetmertyildiran@gmail.com>  Thu, Dec 12 2019 03:43:35 +0300
 
 dragonfire (1.0.4) unstable; urgency=medium
 
