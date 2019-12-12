@@ -31,6 +31,10 @@ the open-source virtual assistant for Ubuntu based Linux distributions
     <img alt="GitHub Workflow ODQA Performance Status" src="https://img.shields.io/github/workflow/status/DragonComputer/Dragonfire/ODQA%20Performance?logo=GitHub&label=odqa%20performance&style=flat-square">
   </a>
 
+  <a href="https://github.com/DragonComputer/Dragonfire/actions?query=workflow%3APublish%20a%20Release">
+    <img alt="GitHub Workflow Debian Build Status" src="https://img.shields.io/github/workflow/status/DragonComputer/Dragonfire/Publish%20a%20Release?logo=Debian&label=debian%20build&style=flat-square">
+  </a>
+
   <a href="https://github.com/DragonComputer/Dragonfire/actions?query=workflow%3ADocker%20Build">
     <img alt="GitHub Workflow Docker Build Status" src="https://img.shields.io/github/workflow/status/DragonComputer/Dragonfire/Docker%20Build?logo=Docker&label=docker%20build&style=flat-square">
   </a>
