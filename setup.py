@@ -127,7 +127,7 @@ setup(
         'youtube_dl',
         'spacy==2.1.3',
         'pyowm==2.9.0',
-        'tensorflow==1.14.0',
+        'tensorflow==1.15.0',
         'deepspeech==0.4.1',
         'requests>=2.20.0',
         'nltk',

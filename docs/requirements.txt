@@ -2,7 +2,7 @@ wikipedia==1.4.0
 PyUserInput==0.1.11
 tinydb==3.9.0.post1
 pyowm==2.9.0
-tensorflow==1.14.0
+tensorflow==1.15.0
 tqdm
 requests>=2.20.0
 lxml==4.2.1
