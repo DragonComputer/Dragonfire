@@ -127,7 +127,7 @@ setup(
         'youtube_dl',
         'spacy==2.1.3',
         'pyowm==2.9.0',
-        'tensorflow==1.14.0',
+        'tensorflow==1.15.0',
         'deepspeech==0.4.1',
         'requests>=2.20.0',
         'nltk',
@@ -143,7 +143,7 @@ setup(
         'PyMySQL==0.8.1',
         'msgpack==0.5.6',
         'neuralcoref==4.0',
-        'deeppavlov==0.6.1'
+        'deeppavlov==0.7.1'
     ],
 
     # List additional groups of dependencies here (e.g. development
