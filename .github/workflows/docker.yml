@@ -23,4 +23,5 @@ jobs:
         name: dragoncomputer/dragonfire
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
-        cache: ${{ github.event_name != 'schedule' }}
+        #cache: ${{ github.event_name != 'schedule' }}
+        cache: false
