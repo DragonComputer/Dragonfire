@@ -4,10 +4,10 @@ on:
   push:
     branches:
     - master
-    #paths:
-    #- 'Dockerfile'
-    #- 'install*.sh'
-    #- 'debian/postinst'
+    paths:
+    - 'Dockerfile'
+    - 'install*.sh'
+    - 'debian/postinst'
   schedule:
     - cron: '0 2 * * 0' # Weekly on Sundays at 02:00
 
@@ -23,5 +23,4 @@ jobs:
         name: dragoncomputer/dragonfire
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
-        #cache: ${{ github.event_name != 'schedule' }}
-        cache: false
+        cache: ${{ github.event_name != 'schedule' }}
