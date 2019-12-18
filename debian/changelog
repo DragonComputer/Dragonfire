@@ -1,3 +1,11 @@
+dragonfire (1.1.1) unstable; urgency=medium
+
+  * Upgraded pip version from `9.0.1` to `19.3.1` for TensorFlow `1.15.0`
+  * Upgraded TensorFlow version from `1.14.0` to `1.15.0`
+  * Upgraded DeepPavlov version from `0.6.1` to `0.7.1`
+
+-- Mehmet Mert Yildiran <mehmetmertyildiran@gmail.com>  Wed, Dec 18 2019 22:15:17 +0300
+
 dragonfire (1.1.0) unstable; urgency=medium
 
   * The badge generation service changed from Badgen to Shields

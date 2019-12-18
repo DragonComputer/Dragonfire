@@ -55,7 +55,7 @@ from sqlalchemy import create_engine  # the Python SQL toolkit and Object Relati
 from sqlalchemy.orm import sessionmaker  # ORM submodule of SQLAlchemy
 
 
-__version__ = '1.1.0'
+__version__ = '1.1.1'
 
 DRAGONFIRE_PATH = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 FNULL = open(os.devnull, 'w')
