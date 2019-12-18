@@ -15,7 +15,7 @@ from codecs import open
 from os import path
 from subprocess import PIPE, Popen
 
-here = path.abspath(path.dirname(__file__))
+__location__ = path.abspath(path.dirname(__file__))
 
 
 def pkgconfig(*packages):
@@ -54,8 +54,24 @@ def pkgconfig(*packages):
     return config
 
 
+def read_requirements():
+    """parses requirements from requirements.txt"""
+    reqs_path = path.join(__location__, 'requirements.txt')
+    with open(reqs_path, encoding='utf8') as f:
+        reqs = [line.strip() for line in f if not line.strip().startswith('#')]
+
+    names = []
+    links = []
+    for req in reqs:
+        if '://' in req:
+            links.append(req)
+        else:
+            names.append(req)
+    return {'install_requires': names, 'dependency_links': links}
+
+
 # Get the long description from the README file
-with open(path.join(here, 'README.md'), encoding='utf-8') as f:
+with open(path.join(__location__, 'README.md'), encoding='utf-8') as f:
     long_description = f.read()
 
 setup(
@@ -120,31 +136,7 @@ setup(
     # your project is installed. For an analysis of "install_requires" vs pip's
     # requirements files see:
     # https://packaging.python.org/en/latest/requirements.html
-    install_requires=[
-        'wikipedia==1.4.0',
-        'PyUserInput==0.1.11',
-        'tinydb==3.9.0.post1',
-        'youtube_dl',
-        'spacy==2.1.3',
-        'pyowm==2.9.0',
-        'tensorflow==1.15.0',
-        'deepspeech==0.4.1',
-        'requests>=2.20.0',
-        'nltk',
-        'httplib2>=0.9.1',
-        'tweepy==3.7.0',
-        'metadata_parser==0.9.20',
-        'hug==2.4.0',
-        'hug-middleware-cors==1.0.0',
-        'waitress==1.1.0',
-        'SpeechRecognition',
-        'pyjwt==1.6.4',
-        'SQLAlchemy>=1.3.0',
-        'PyMySQL==0.8.1',
-        'msgpack==0.5.6',
-        'neuralcoref==4.0',
-        'deeppavlov==0.7.1'
-    ],
+    **read_requirements(),
 
     # List additional groups of dependencies here (e.g. development
     # dependencies). You can install these using the following syntax,
@@ -190,4 +182,5 @@ setup(
     ext_modules=[
         Extension('realhud', ['dragonfire/realhud/realhud.c'],
                   **pkgconfig('gtk+-2.0 x11 xext'))
-    ])
+    ]
+)
