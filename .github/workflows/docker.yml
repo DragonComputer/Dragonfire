@@ -9,7 +9,7 @@ on:
     - 'install*.sh'
     - 'debian/postinst'
   schedule:
-    - cron: '0 2 * * 0' # Weekly on Sundays at 02:00
+    - cron: '0 1 * * *' # Every day at 01:00 AM
 
 jobs:
   docker-hub:
