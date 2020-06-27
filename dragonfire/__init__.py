@@ -26,17 +26,17 @@ import shutil  # High-level file operations
 import readline  # GNU readline interface
 
 import logging  # Logging facility for Python
-logging.getLogger('tensorflow').setLevel(logging.ERROR)
+#logging.getLogger('tensorflow').setLevel(logging.ERROR)
 import warnings  # Warning control
 warnings.simplefilter(action='ignore', category=FutureWarning)
 
 from dragonfire.learn import Learner  # Submodule of Dragonfire that forms her learning ability
 from dragonfire.nlplib import Classifier, Helper  # Submodule of Dragonfire to handle extra NLP tasks
-from dragonfire.odqa import ODQA  # Submodule of Dragonfire that serves as an Open-Domain Question Answering Engine
+#from dragonfire.odqa import ODQA  # Submodule of Dragonfire that serves as an Open-Domain Question Answering Engine
 from dragonfire.stray import SystemTrayExitListenerSet, SystemTrayInit  # Submodule of Dragonfire for System Tray Icon related functionalities
 from dragonfire.utilities import TextToAction, nostdout, nostderr  # Submodule of Dragonfire to provide various utilities
 from dragonfire.arithmetic import arithmetic_parse  # Submodule of Dragonfire to analyze arithmetic expressions
-from dragonfire.deepconv import DeepConversation  # Submodule of Dragonfire to answer questions directly using an Artificial Neural Network
+#from dragonfire.deepconv import DeepConversation  # Submodule of Dragonfire to answer questions directly using an Artificial Neural Network
 from dragonfire.coref import NeuralCoref  # Submodule of Dragonfire that aims to create corefference based dialogs
 from dragonfire.config import Config  # Submodule of Dragonfire to store configurations
 from dragonfire.database import Base  # Submodule of Dragonfire that contains the database schema
@@ -55,7 +55,7 @@ from sqlalchemy import create_engine  # the Python SQL toolkit and Object Relati
 from sqlalchemy.orm import sessionmaker  # ORM submodule of SQLAlchemy
 
 
-__version__ = '1.1.1'
+__version__ = '1.2.0'
 
 DRAGONFIRE_PATH = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 FNULL = open(os.devnull, 'w')
@@ -64,8 +64,8 @@ CONVERSATION_ID = uuid.uuid4()
 userin = None
 nlp = spacy.load('en')  # Load en_core_web_sm, English, 50 MB, default model
 learner = Learner(nlp)
-odqa = ODQA(nlp)
-dc = DeepConversation()
+#odqa = ODQA(nlp)
+#dc = DeepConversation()
 coref = NeuralCoref(nlp)
 e = Event()
 
@@ -580,13 +580,14 @@ class VirtualAssistant():
             if learner_response:
                 return userin.say(learner_response)
             else:
-                odqa_response = odqa.respond(com, not args["silent"], userin, user_prefix, args["server"])
-                if odqa_response:
-                    return userin.say(odqa_response)
-                else:
-                    dc_response = dc.respond(original_com, user_prefix)
-                    if dc_response:
-                        return userin.say(dc_response)
+                pass
+                #odqa_response = odqa.respond(com, not args["silent"], userin, user_prefix, args["server"])
+                #if odqa_response:
+                #    return userin.say(odqa_response)
+                #else:
+                    #dc_response = dc.respond(original_com, user_prefix)
+                    #if dc_response:
+                    #    return userin.say(dc_response)
 
     def wikisearch(self, search_query):
         """Method to start Wikipedia search.
@@ -821,7 +822,7 @@ def initiate():
         print(pkg_resources.get_distribution("dragonfire").version)
         sys.exit(1)
     try:
-        global dc
+        #global dc
         userin = TextToAction(args)
         if not args["server"]:
             SystemTrayExitListenerSet(e)

@@ -13,9 +13,7 @@ from threading import Thread
 import speech_recognition as sr
 import pyaudio  # Provides Python bindings for PortAudio, the cross platform audio API
 from dragonfire import VirtualAssistant
-
-from dragonfire.sr.deepspeech.config import ConfigDeepSpeech
-from dragonfire.sr.deepspeech.server import SpeechServerMain
+import deepspeech
 from dragonfire.sr.exceptions import UnknownSpeechRecognitionMode
 import numpy as np
 
@@ -26,6 +24,8 @@ RATE = 16000  # Bit Rate of audio stream / Frame Rate
 THRESHOLD = 1000  # Threshhold value for detecting stimulant
 LISTENING = False
 
+DEEPSPEECH_MODEL = '/usr/share/dragonfire/deepspeech/models/deepspeech-0.7.4-models.pbmm'
+DEEPSPEECH_SCORER = '/usr/share/dragonfire/deepspeech/models/deepspeech-0.7.4-models.scorer'
 
 class SpeechRecognizer():
     def __init__(self, mode):
@@ -40,7 +40,10 @@ class SpeechRecognizer():
 
         if self.mode == 'gspeech':
             self.silence_detection = 3
+            self.recognizer = sr.Recognizer()
         else:
+            self.recognizer = deepspeech.Model(DEEPSPEECH_MODEL)
+            self.recognizer.enableExternalScorer(DEEPSPEECH_SCORER)
             self.silence_detection = 1
 
     @classmethod
@@ -91,7 +94,10 @@ class SpeechRecognizer():
 
                     if self.mode == 'deepspeech':
                         audio = np.fromstring(audio, dtype=np.int16)  # Fix data type
-                        com = SpeechServerMain.ds.stt(audio, RATE)
+                        #com = SpeechServerMain.ds.stt(audio, RATE)
+                        stream_context = self.recognizer.createStream()
+                        stream_context.feedAudioContent(audio)
+                        com = stream_context.finishStream()
                         stream.start_stream()
                         # print(com)
                         t = Thread(target=her.command, args=(com,))

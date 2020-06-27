@@ -91,8 +91,8 @@ Feel free to join [our Gitter chat room](https://gitter.im/DragonComputer/Lobby)
 |                         |                                         |
 |-------------------------|-----------------------------------------|
 | **Operating systems**   | Linux                                   |
-| **Python versions**     | Python 3.x (64-bit)                     |
-| **Distros**             | KDE neon, elementary OS, Ubuntu         |
+| **Python versions**     | Python 3.8.x (64-bit)                   |
+| **Distros**             | Ubuntu 20.04                            |
 | **Package managers**    | APT, pip                                |
 | **Languages**           | English                                 |
 | **System requirements** | preferably a [CUDA supported GPU](https://www.geforce.com/hardware/technology/cuda/supported-gpus), 2GB of free RAM   |
@@ -300,8 +300,6 @@ that are retrieved from web, found by the subject
 |                                                                 |                                                                  |
 
 <br>
-
-**Supported Distributions:** KDE neon, elementary OS and Ubuntu. All modern releases (Ubuntu 12.04 LTS and above) of these distributions are fully supported. Any other Ubuntu based distributions are partially supported.
 
 ### Contribute
 

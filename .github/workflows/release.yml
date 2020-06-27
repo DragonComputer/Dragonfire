@@ -9,7 +9,7 @@ name: Publish a Release
 jobs:
   create-release:
     name: Main Job
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     container:
       image: docker://dragoncomputer/dragonfire:latest
 

@@ -5,7 +5,7 @@ on: [push]
 jobs:
   main:
     name: Main Job
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     container:
       image: docker://dragoncomputer/dragonfire:latest
 
