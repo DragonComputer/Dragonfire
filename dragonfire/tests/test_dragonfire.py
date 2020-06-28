@@ -147,21 +147,6 @@ def test_learner_response(virtual_assistant):
     assert virtual_assistant.command("What is the Sun") == "the Sun is hot and yellow"
 
 
-def test_odqa_response(virtual_assistant):
-
-    assert virtual_assistant.command("hey") in hey_answers
-    assert virtual_assistant.command("Where is the Times Square?") == "Midtown Manhattan section of New York City"
-    assert virtual_assistant.command("What is the height of Burj Khalifa?") ==  "829.8 m"
-
-
-def test_deepconv_response(virtual_assistant):
-
-    assert virtual_assistant.command("hey") in hey_answers
-    assert virtual_assistant.command("Do you like to listen music?") == "No, i'm not sure."
-    assert virtual_assistant.command("Are you evil?") == "No."
-    assert virtual_assistant.command("You are so sexy") == "I'm not sure."
-
-
 def test_greet(virtual_assistant):
 
     assert greet(virtual_assistant.userin).startswith("Good")

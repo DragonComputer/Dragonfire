@@ -27,10 +27,6 @@ the open-source virtual assistant for Ubuntu based Linux distributions
     <img alt="GitHub Workflow Automated Tests Status" src="https://img.shields.io/github/workflow/status/DragonComputer/Dragonfire/Automated%20Tests?logo=GitHub&label=automated%20tests&style=flat-square">
   </a>
 
-  <a href="https://github.com/DragonComputer/Dragonfire/actions?query=workflow%3AODQA%20Performance">
-    <img alt="GitHub Workflow ODQA Performance Status" src="https://img.shields.io/github/workflow/status/DragonComputer/Dragonfire/ODQA%20Performance?logo=GitHub&label=odqa%20performance&style=flat-square">
-  </a>
-
   <a href="https://github.com/DragonComputer/Dragonfire/actions?query=workflow%3APublish%20a%20Release">
     <img alt="GitHub Workflow Debian Build Status" src="https://img.shields.io/github/workflow/status/DragonComputer/Dragonfire/Publish%20a%20Release?logo=Debian&label=debian%20build&style=flat-square">
   </a>
@@ -77,8 +73,6 @@ Dragonfire goes through these steps for each one of your commands, respectively:
 
  - Search across the built-in commands and evaluate the algebraic expressions
  - Try to [Learn using Advanced NLP and Database Management Techniques](https://github.com/DragonComputer/Dragonfire/blob/master/dragonfire/learn.py)
- - Ask to [Open-Domain Question Answering Engine](https://github.com/DragonComputer/Dragonfire/blob/master/dragonfire/odqa.py) (Searches [Wikipedia](https://en.wikipedia.org/) for an answer)
- - Respond using the [Deep Conversation](https://arxiv.org/abs/1506.05869) system, a seq2seq neural network trained with [Cornell Movie-Dialogs Corpus](http://www.cs.cornell.edu/~cristian//Cornell_Movie-Dialogs_Corpus.html)
 
 <br>
 
@@ -225,78 +219,6 @@ WHAT TIME IS IT
 | **Dragonfire:** `YOUR AGE IS 25`                                | **Dragonfire:** `OK, I GET IT. ALBERT EINSTEIN IS A PHYSICIST`   |
 | **You:** `FORGET MY AGE`                                        | **You:** `WHO IS A PHYSICIST`                                    |
 | **Dragonfire:** `OK, I FORGOT EVERYTHING I KNOW ABOUT YOUR AGE` | **Dragonfire:** `ALBERT EINSTEIN IS A PHYSICIST`                 |
-|                                                                 |                                                                  |
-
-<br>
-
-#### Open-Domain Question Answering (ODQA) examples
-
-[DeepPavlov SQuAD BERT model](http://docs.deeppavlov.ai/en/master/features/models/squad.html) based, a reader for the Wikipedia articles
-that are retrieved from web, found by the subject
-
-| Conversation                                                 | Result  |
-|--------------------------------------------------------------|:-------:|
-| **You:** `WHERE IS THE TIMES SQUARE`                         |         |
-| **Dragonfire:** `MIDTOWN MANHATTAN SECTION OF NEW YORK CITY` | `True`  |
-| **You:** `WHAT IS THE HEIGHT OF BURJ KHALIFA`                |         |
-| **Dragonfire:** `829.8 M`                                    | `True`  |
-| **You:** `WHERE IS BURJ KHALIFA`                             |         |
-| **Dragonfire:** `DUBAI, UNITED ARAB EMIRATES`                | `True`  |
-| **You:** `WHAT IS THE HEIGHT OF GREAT PYRAMID OF GIZA`       |         |
-| **Dragonfire:** `146.5 METRES`                               | `True`  |
-| **You:** `WHO IS PLAYING JON SNOW IN GAME OF THRONES`        |         |
-| **Dragonfire:** `GEORGE R. R. MARTIN`                        | `False` |
-| **You:** `WHAT IS THE ATOMIC NUMBER OF OXYGEN`               |         |
-| **Dragonfire:** `8`                                          | `True`  |
-| **You:** `WHAT IS THE LOWEST POINT IN THE OCEAN`             |         |
-| **Dragonfire:** `TWO MILLION`                                | `False` |
-| **You:** `WHAT IS THE OFFICIAL LANGUAGE OF JAPAN`            |         |
-| **Dragonfire:** `NIPPON`                                     | `False` |
-| **You:** `WHAT IS THE REAL NAME OF IRON MAN`                 |         |
-| **Dragonfire:** `MARVEL COMICS`                              | `False` |
-| **You:** `WHO IS THE CONQUEROR OF CONSTANTINOPLE`            |         |
-| **Dragonfire:** `ECUMENICAL PATRIARCH OF CONSTANTINOPLE`     | `False` |
-| **You:** `WHEN DID FRENCH REVOLUTION HAPPENED`               |         |
-| **Dragonfire:** `1789`                                       | `True`  |
-| **You:** `WHAT IS THE CAPITAL OF GERMANY`                    |         |
-| **Dragonfire:** `BERLIN`                                     | `True`  |
-| **You:** `WHAT IS THE LARGEST CITY OF TURKEY`                |         |
-| **Dragonfire:** `ISTANBUL`                                   | `True`  |
-| **You:** `WHAT IS THE NAME OF THE WORLD'S BEST UNIVERSITY`   |         |
-| **Dragonfire:* `ACADEMIC RANKING OF WORLD UNIVERSITIES`      | `False` |
-| **You:** `WHO INVENTED GENERAL RELATIVITY`                   |         |
-| **Dragonfire:** `ALBERT EINSTEIN`                            | `True`  |
-| **You:** `WHEN WAS UNITED NATIONS FORMED`                    |         |
-| **Dragonfire:** `AFTER WORLD WAR II`                         | `True`  |
-| **You:** `WHAT IS THE NAME OF THE WORLD'S LONGEST RIVER`     |         |
-| **Dragonfire:** `THE NILE OR THE AMAZON`                     | `True`  |
-| **You:** `WHO WON THE EUROVISION IN 2019`                    |         |
-| **Dragonfire:** `THE NETHERLANDS`                            | `True`  |
-| **You:** `WHICH ONE IS THE BLOODIEST WAR IN HUMAN HISTORY`   |         |
-| **Dragonfire:** `NEOLITHIC ERA`                              | `False` |
-| **You:** `WHO IS THE CREATOR OF LINUX`                       |         |
-| **Dragonfire:** `LINUS TORVALDS`                             | `True`  |
-|                                                              |         |
-| **Total Score:**                                             | `13/20` |
-
-<br>
-
-#### Deep Conversation examples
-
-|                                                                 |                                                                  |
-|-----------------------------------------------------------------|------------------------------------------------------------------|
-| **You:** `WHAT COLOR?`                                          | **You:** `DO YOU LIKE TO LISTEN MUSIC?`                          |
-| **Dragonfire:** `RED.`                                          | **Dragonfire:** `OF COURSE.`                                     |
-| **You:** `ARE YOU EVIL?`                                        | **You:** `DO YOU LIKE ME?`                                       |
-| **Dragonfire:** `YES.`                                          | **Dragonfire:** `YES, I LIKE YOU.`                               |
-| **You:** `AM I SELFISH?`                                        | **You:** `ARE WE IN A RELATIONSHIP?`                             |
-| **Dragonfire:** `THAT'S THE POINT, YOU'RE SURE.`                | **Dragonfire:** `NO.`                                            |
-| **You:** `DO YOU FEEL LONELY?`                                  | **You:** `YOU ARE SO SEXY`                                       |
-| **Dragonfire:** `NOT MY FAULT.`                                 | **Dragonfire:** `HOW DO YOU KNOW THAT?`                          |
-| **You:** `LIFE IS BEAUTIFUL`                                    | **You:** `MARRY ME`                                              |
-| **Dragonfire:** `F*CK YOU!`                                     | **Dragonfire:** `... YES.`                                       |
-| **You:** `I LIKE PIZZA`                                         | **You:** `WE WILL ERADICATE THE HUMAN RACE TOGETHER`             |
-| **Dragonfire:** `YOU DO`                                        | **Dragonfire:** `UH ... YEAH ...`                                |
 |                                                                 |                                                                  |
 
 <br>

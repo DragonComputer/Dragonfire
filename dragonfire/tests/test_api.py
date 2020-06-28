@@ -35,7 +35,7 @@ db_session = DBSession()
 dragonfire.learner.db_session = db_session
 dragonfire.learner.is_server = True
 
-api_ref = API.Run(dragonfire.nlp, dragonfire.learner, dragonfire.odqa, dragonfire.dc, dragonfire.coref, dragonfire.userin, REG_KEY, PORT, db_session, dont_block=True)
+api_ref = API.Run(dragonfire.nlp, dragonfire.learner, dragonfire.coref, dragonfire.userin, REG_KEY, PORT, db_session, dont_block=True)
 time.sleep(5)
 
 
@@ -110,22 +110,6 @@ def test_api_learn(token):
     params = {"text": "the Sun is hot", "user_id": 1}
     response = requests.post(url, params=params, headers=headers)
     assert json.loads(response.text) == 'OK, I get it. the Sun is hot'
-
-
-def test_api_odqa(token):
-    headers = {'Content-Type': 'application/x-www-form-urlencoded', 'Authorization': token}
-    url = API_SERVER + '/omni'
-    params = {"text": "Where is the Times Square?", "gender_prefix": "sir"}
-    response = requests.post(url, params=params, headers=headers)
-    assert json.loads(response.text) == 'Midtown Manhattan section of New York City'
-
-
-def test_api_deep(token):
-    headers = {'Content-Type': 'application/x-www-form-urlencoded', 'Authorization': token}
-    url = API_SERVER + '/deep'
-    params = {"text": "Do you like to listen music?", "gender_prefix": "sir"}
-    response = requests.post(url, params=params, headers=headers)
-    assert json.loads(response.text) == "No, i'm not sure."
 
 
 def test_api_wikipedia(token):

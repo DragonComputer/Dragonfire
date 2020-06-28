@@ -32,11 +32,9 @@ warnings.simplefilter(action='ignore', category=FutureWarning)
 
 from dragonfire.learn import Learner  # Submodule of Dragonfire that forms her learning ability
 from dragonfire.nlplib import Classifier, Helper  # Submodule of Dragonfire to handle extra NLP tasks
-#from dragonfire.odqa import ODQA  # Submodule of Dragonfire that serves as an Open-Domain Question Answering Engine
 from dragonfire.stray import SystemTrayExitListenerSet, SystemTrayInit  # Submodule of Dragonfire for System Tray Icon related functionalities
 from dragonfire.utilities import TextToAction, nostdout, nostderr  # Submodule of Dragonfire to provide various utilities
 from dragonfire.arithmetic import arithmetic_parse  # Submodule of Dragonfire to analyze arithmetic expressions
-#from dragonfire.deepconv import DeepConversation  # Submodule of Dragonfire to answer questions directly using an Artificial Neural Network
 from dragonfire.coref import NeuralCoref  # Submodule of Dragonfire that aims to create corefference based dialogs
 from dragonfire.config import Config  # Submodule of Dragonfire to store configurations
 from dragonfire.database import Base  # Submodule of Dragonfire that contains the database schema
@@ -64,8 +62,6 @@ CONVERSATION_ID = uuid.uuid4()
 userin = None
 nlp = spacy.load('en')  # Load en_core_web_sm, English, 50 MB, default model
 learner = Learner(nlp)
-#odqa = ODQA(nlp)
-#dc = DeepConversation()
 coref = NeuralCoref(nlp)
 e = Event()
 
@@ -116,7 +112,7 @@ def start(args, userin):
             l = MentionListener(args, userin)
             stream = Stream(auth, l)
             stream.filter(track=['DragonfireAI'], is_async=True)
-        API.Run(nlp, learner, odqa, dc, coref, userin, args["server"], args["port"], db_session)
+        API.Run(nlp, learner, coref, userin, args["server"], args["port"], db_session)
     else:
         global user_full_name
         global user_prefix
@@ -184,7 +180,6 @@ class VirtualAssistant():
         - Search across the built-in commands via a simple if-else control flow.
         - Try to get a response from :func:`dragonfire.arithmetic.arithmetic_parse` function.
         - Try to get a response from :func:`dragonfire.learn.Learner.respond` method.
-        - Try to get a answer from :func:`dragonfire.odqa.ODQA.respond` method.
         - Try to get a response from :func:`dragonfire.deepconv.DeepConversation.respond` method.
 
         Args:
@@ -580,14 +575,7 @@ class VirtualAssistant():
             if learner_response:
                 return userin.say(learner_response)
             else:
-                pass
-                #odqa_response = odqa.respond(com, not args["silent"], userin, user_prefix, args["server"])
-                #if odqa_response:
-                #    return userin.say(odqa_response)
-                #else:
-                    #dc_response = dc.respond(original_com, user_prefix)
-                    #if dc_response:
-                    #    return userin.say(dc_response)
+                return userin.say('Sorry ' + user_prefix + ', but I\'m unable to grasp your intent.')
 
     def wikisearch(self, search_query):
         """Method to start Wikipedia search.
@@ -822,7 +810,6 @@ def initiate():
         print(pkg_resources.get_distribution("dragonfire").version)
         sys.exit(1)
     try:
-        #global dc
         userin = TextToAction(args)
         if not args["server"]:
             SystemTrayExitListenerSet(e)

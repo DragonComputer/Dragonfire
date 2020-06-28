@@ -297,80 +297,6 @@ def learn(text, user_id):
     return json.dumps(response, indent=4)
 
 
-@hug.post('/omni', requires=token_authentication)
-def omni(text, gender_prefix):
-    """**Endpoint** to return the answer of :func:`dragonfire.odqa.ODQA.respond` method.
-
-    Args:
-        text (str):             Text.
-        gender_prefix (str):    Prefix to address/call user when answering.
-
-    Returns:
-        JSON document.
-    """
-
-    answer = odqa.respond(text, userin=userin, user_prefix=gender_prefix, is_server=True)
-    if not answer:
-        answer = ""
-    return json.dumps(answer, indent=4)
-
-
-@hug.post('/deep', requires=token_authentication)
-def deep(text, gender_prefix):
-    """**Endpoint** to return the response of :func:`dragonfire.deepconv.DeepConversation.respond` method.
-
-    Args:
-        text (str):             Text.
-        gender_prefix (str):    Prefix to address/call user when answering.
-
-    Returns:
-        JSON document.
-    """
-
-    answer = dc.respond(text, user_prefix=gender_prefix)
-    return json.dumps(answer, indent=4)
-
-
-# All-in-One Answering
-@hug.post('/answer', requires=token_authentication)
-def answer(text, gender_prefix, user_id, previous=None):
-    """Serves the **all Q&A related API endpoints** in a single **endpoint**.
-
-    Combines the results of these methods into a single JSON document:
-
-    - :func:`dragonfire.arithmetic.arithmetic_parse` function
-    - :func:`dragonfire.learn.Learner.respond` method
-    - :func:`dragonfire.odqa.ODQA.respond` method
-    - :func:`dragonfire.deepconv.DeepConversation.respond` method
-
-    Args:
-        text (str):             User's current command.
-        gender_prefix (str):    Prefix to address/call user when answering.
-        user_id (int):          User's ID.
-        previous (str):         User's previous command.
-
-    Returns:
-        JSON document.
-    """
-
-    data = {}
-    text = coref.resolve_api(text, previous)
-    subject, subjects, focus, subject_with_objects = odqa.semantic_extractor(text)
-    data['subject'] = subject
-    data['focus'] = focus
-    answer = arithmetic_parse(text)
-    if not answer:
-        answer = learner.respond(text, is_server=True, user_id=user_id)
-        if not answer:
-            answer = odqa.respond(text, userin=userin, user_prefix=gender_prefix, is_server=True)
-            if not answer:
-                answer = dc.respond(text, user_prefix=gender_prefix)
-    data['answer'] = answer
-    return json.dumps(data, indent=4)
-
-# Directly on server-side Q&A related API endpoints END
-
-
 @hug.post('/wikipedia', requires=token_authentication)
 def wikipedia(query, gender_prefix):
     """**Endpoint** to make a **Wikipedia search** and return its **text content**.
@@ -505,7 +431,7 @@ class Run():
 
     """
 
-    def __init__(self, nlp_ref, learner_ref, odqa_ref, dc_ref, coref_ref, userin_ref, reg_key, port_number, db_session_ref, dont_block=False):
+    def __init__(self, nlp_ref, learner_ref, coref_ref, userin_ref, reg_key, port_number, db_session_ref, dont_block=False):
         """Initialization method of :class:`dragonfire.api.Run` class
 
         This method starts an API server using :mod:`waitress` (*a pure-Python WSGI server*)
@@ -514,8 +440,6 @@ class Run():
         Args:
             nlp_ref:                :mod:`spacy` model instance.
             learner_ref:            :class:`dragonfire.learn.Learner` instance.
-            odqa_ref:               :class:`dragonfire.odqa.ODQA` instance.
-            dc_ref:                 :class:`dragonfire.deepconv.DeepConversation` instance.
             userin_ref:             :class:`dragonfire.utilities.TextToAction` instance.
             reg_key (str):          Registration key of the API.
             port_number (int):      Port number that the API will be served.
@@ -525,16 +449,12 @@ class Run():
         global __hug_wsgi__  # Fixes flake8 F821: Undefined name
         global nlp
         global learner
-        global odqa
-        global dc
         global coref
         global userin
         global server_reg_key
         global db_session
         nlp = nlp_ref  # Load en_core_web_sm, English, 50 MB, default model
         learner = learner_ref
-        odqa = odqa_ref
-        dc = dc_ref
         coref = coref_ref
         userin = userin_ref
         server_reg_key = reg_key
