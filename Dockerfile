@@ -1,7 +1,9 @@
 # Use an official Python runtime as a parent image
 FROM ubuntu:18.04
 RUN rm /bin/sh && ln -s /bin/bash /bin/sh
-ENV PYTHONUNBUFFERED 1
+ENV PYTHONUNBUFFERED 1 \
+    PIP_NO_CACHE_DIR=off
+
 ARG DEBIAN_FRONTEND=noninteractive
 
 # Maintainer
