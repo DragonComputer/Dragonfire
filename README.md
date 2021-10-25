@@ -263,7 +263,7 @@ that are retrieved from web, found by the subject
 | **You:** `WHAT IS THE LARGEST CITY OF TURKEY`                |         |
 | **Dragonfire:** `ISTANBUL`                                   | `True`  |
 | **You:** `WHAT IS THE NAME OF THE WORLD'S BEST UNIVERSITY`   |         |
-| **Dragonfire:* `ACADEMIC RANKING OF WORLD UNIVERSITIES`      | `False` |
+| **Dragonfire:** `ACADEMIC RANKING OF WORLD UNIVERSITIES`      | `False` |
 | **You:** `WHO INVENTED GENERAL RELATIVITY`                   |         |
 | **Dragonfire:** `ALBERT EINSTEIN`                            | `True`  |
 | **You:** `WHEN WAS UNITED NATIONS FORMED`                    |         |
